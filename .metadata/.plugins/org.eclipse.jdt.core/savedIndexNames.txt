@@ -1,0 +1,1 @@
+INDEX VERSION 1.134+C:\GDJ77\DREAMLAND\.metadata\.plugins\org.eclipse.jdt.core
