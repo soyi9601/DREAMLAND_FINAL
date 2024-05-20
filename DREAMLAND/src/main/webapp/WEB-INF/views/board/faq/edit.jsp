@@ -187,13 +187,15 @@
 <!-- Form 시작 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
                       <form id="frm-faq-register"
 											      method="POST"
-											      action="${contextPath}/board/faq/registerFaq.do">
+											      action="${contextPath}/board/faq/modify.do">
+											  <input class="faqno" name="faqNo" type="hidden" value="${faq.faqNo}" >
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label" for="basic-default-name">질문제목</label>
                           <div class="col-sm-10">
                             <input type="text" class="form-control" id="basic-default-name"
                              placeholder="제목을 입력해주세요. Q란에 들어갈 부분입니다." 
-                             name="boardTitle" />
+                             name="boardTitle" /
+                             value="${faq.boardTitle}">
                           </div>
                         </div>
                         <div class="row mb-3">
@@ -203,7 +205,7 @@
 	                        </label>
 	                        <div class="col-sm-10">
 	                        	<select id="defaultSelect" class="form-select col-sm-10" name="category">
-		                          <option>Default select</option>
+		                          <option>${faq.category}</option>
 		                          <option value="1">인사</option>
 		                          <option value="2">경영지원</option>
 		                          <option value="3">안전관리</option>
@@ -219,11 +221,10 @@
                             <textarea
                               id="basic-default-message"
                               class="form-control"
-                              placeholder="A에 들어갈 부분입니다.답변을 입력해주세요."
                               aria-label="Hi, Do you have a moment to talk Joe?"
                               aria-describedby="basic-icon-default-message2"
                               name="boardContents"
-                            ></textarea>
+                            >${faq.boardContents}</textarea>
                           </div>
                         </div>
                         <div class="row justify-content-end">
@@ -317,3 +318,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>
+<script>
+
+
+</script>
