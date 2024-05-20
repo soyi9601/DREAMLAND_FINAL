@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 public class NoticeAttachDto {
 	
-	int attachNo, noticeNo;
-	String uploadPath, filesystemName, originalfileSystem;
+	private int attachNo, noticeNo;
+	private String uploadPath, filesystemName, originalfileSystem;
 	
 }
