@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 
 public class NoticeBoardDto {
 	
-	int notciceNo, signal, hit, empNo;
-	String boardTitle, boardContents;
-	Date boardCreateDt, boardModifyDt;
+	private int notciceNo, signal, hit, empNo;
+	private String boardTitle, boardContents;
+	private Date boardCreateDt, boardModifyDt;
 	
 }

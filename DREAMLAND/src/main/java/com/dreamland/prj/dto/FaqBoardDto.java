@@ -13,8 +13,9 @@ import lombok.NoArgsConstructor;
 
 public class FaqBoardDto {
 	
-	int faqNo, hit, category, empNo;
-	String boardTitle, boardContents;
-	Date boardCreateDt, boardModifyDt;
+	private int faqNo, hit, category, empNo;
+	private String boardTitle, boardContents;
+	private Date boardCreateDt, boardModifyDt;
+	private EmployeeDto employee;
 	
 }
