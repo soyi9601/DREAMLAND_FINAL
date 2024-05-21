@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:include page="./../layout/approval-header.jsp" />  
-
+<jsp:include page="./../layout/approvalWrite-header.jsp" />  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 
 <div class="container-xxl flex-grow-1 container-p-y">
 <div class="col-6 mb-4" style="width:100%; height:100%">
@@ -81,8 +83,7 @@
         </div>  
 	  	</div> 
     </div> 
-    
-    
+
   </div>
 </div>
 </div>
@@ -96,10 +97,19 @@
         </select>
     </div>
     <div id="approvalForm" class="page">
+      <form method="GET"
+        action="${contextPath}/apprval/approval.do">
         <h2>품의서</h2>
         <!-- 품의서 내용 -->
         <div class="container">
             <div class="title">품 의 서</div>
+            
+           <div class="section">
+                <div class="section-title">제목</div>
+                        	<input type="text" style="width:750px;" name="title"></input>
+
+            </div>
+             <div class="section-title">결재자</div>
             <table class="approval-table">
                 <tr>
                     <td>담당</td>
@@ -108,45 +118,28 @@
                     <td>대표이사</td>
                 </tr>
                 <tr>
-                    <td>/</td>
-                    <td>/</td>
-                    <td>/</td>
-                    <td>/</td>
+                    <td><input type="text" name="approver"></input></td>
+                    <td><input type="text" name="approver2"></input></td>
+                    <td><input type="text" name="approver3"></input></td>
+                    <td><input type="text" name="approver4"></input></td>
                 </tr>
             </table>
             <div class="section">
-                <div class="section-title">1. 작성자</div>
+                <div class="section-title">참조</div>
                 <table class="input-table">
                     <tr>
-                        <td>소속</td>
-                        <td></td>
-                        <td>직급</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>성명</td>
-                        <td></td>
-                        <td>작성일</td>
-                        <td></td>
-                    </tr>
+                   <td>	<input type="text" style="width:750px;" name="wathcer"></input></td>
+                    </tr>           
                 </table>
             </div>
             <div class="section">
-                <div class="section-title">2. 품의 내용</div>
+                <div class="section-title">품의 내용</div>
                 <table class="input-table">
                     <tr>
-                        <td style="width: 150px;">품의 사유 및 상세 내역</td>
+                        <td style="width: 150px;" >품의 사유 및 상세 내역</td>
                         <td>
-                            <textarea class="textarea"></textarea>
+                            <textarea class="textarea" name="contents"></textarea>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>예상 비용</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>비고</td>
-                        <td></td>
                     </tr>
                 </table>
             </div>
@@ -163,6 +156,7 @@
               <button class="button button-primary">제출하기</button>
             </div>
         </div>
+        </form>
     </div>
     
     <div id="leaveRequestForm" class="page">
@@ -237,6 +231,9 @@
    */
    
 
+   
+   
+   
    
    function showPage(pageId) {
        const pages = document.querySelectorAll('.page');

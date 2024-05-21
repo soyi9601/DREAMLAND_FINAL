@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.dreamland.prj.mapper.ApprovalMapper">
+ 
+   <insert id="insertAproval"
+          parameterType="AppletterDto">
+    INSERT APPROVAL (
+      , APV_NO
+      , EMP_NO
+      , APV_WRITE_DATE
+      , APV_CHECK
+      , APV_KINDS
+    ) VALUES (
+        APV_SEQ.NEXTVAL
+      ,
+      ,
+      , 
+      , 
+      , 
+      , 
+    )
+  </insert>
+ 
+  <insert id="insertApvLetter"
+          parameterType="AppletterDto">
+    INSERT APV_LETTER (
+        LETTER_NO
+      , APV_NO
+      , LETTER_TITLE
+      , LETTER_DETAIL
+      , LETTER_STATUS
+      , ORI_FILENAME
+      , RER_FILENAME
+    ) VALUES (
+        LETTER_SEQ.NEXTVAL
+      , 
+      , 
+      , 
+      , 
+      , 
+      , 
+      , 
+    )
+  </insert>
+  
+  
+</mapper>

@@ -87,6 +87,60 @@
         .page.active {
             display: block;
         }
+          .button-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .button-secondary {
+            background-color: #888;
+            color: white;
+        }
+        .post-list-container {
+    min-width:1300px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-list-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.post-list-table th, .post-list-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.post-list-table th {
+    background-color: #f9f9f9;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination span {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    margin-left: -1px;
+    cursor: pointer;
+}
+
+.pagination span:hover {
+    background-color: #f1f1f1;
+}
      
     </style>
 

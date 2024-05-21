@@ -9,9 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ApprovalController {
 	
 	@GetMapping("/appWrite")
-	public String getMethodName() {
+	public String appWrite() {
 		return "approval/appWrite";
 	}
 	
+	@GetMapping("/appList")
+	public String appList() {
+		return "approval/appList";
+	}
+	
+	@GetMapping("/approval.do")
+	public String approval() {
+		return "approval/appList";
+	}
 
 }
