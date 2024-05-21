@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"/>
+<c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,12 +66,12 @@
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-layout"></i>
-              <div>근태</div>
+              <div>인사관리</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="layouts-without-menu.html" class="menu-link">
-                  <div>근태1</div>
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>직원등록</div>
                 </a>
               </li>
               <li class="menu-item">
