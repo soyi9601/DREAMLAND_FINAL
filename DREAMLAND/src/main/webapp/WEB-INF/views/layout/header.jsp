@@ -19,15 +19,16 @@
   <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="../assets/css/demo.css" />
-  <link rel="stylesheet" href="../assets/css/index.css" />
+  
 
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
-  <!-- Page CSS -->
+  <!-- page CSS -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
 
+  <!-- jquery 플러그인 -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <!-- Helpers -->
   <script src="../assets/vendor/js/helpers.js"></script>
@@ -189,7 +190,7 @@
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                            
                           </div>
                         </div>
                         <div class="flex-grow-1">
