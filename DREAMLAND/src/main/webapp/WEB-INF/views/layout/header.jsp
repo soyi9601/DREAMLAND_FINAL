@@ -49,7 +49,7 @@
 
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-          <a href="index.jsp" class="app-brand-link">
+          <a href="${contextPath}/" class="app-brand-link">
             <span class="app-brand-logo demo"></span>
             <span class="app-brand-text demo menu-text fw-bolder ms-2">DreamLand</span>
           </a>
@@ -207,9 +207,9 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="${contextPath}/user/mypage">
                       <i class="bx bx-user me-2"></i>
-                      <span class="align-middle">My Profile</span>
+                      <span class="align-middle">마이페이지</span>
                     </a>
                   </li>
                   <li>
@@ -231,7 +231,7 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="auth-login-basic.html">
+                    <a class="dropdown-item" href="/logout">
                       <i class="bx bx-power-off me-2"></i>
                       <span class="align-middle">Log Out</span>
                     </a>
