@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreamland.prj.mapper.EmployeeMapper">
+
+  <select id="getEmployeeByMap"
+          parameterType="Map"
+          resultType="EmployeeDto">
+    SELECT EMP_NO, EMP_NAME, BIRTH, ENTER_DATE, EMAIL, RESIGN_DATE, MOBILE
+         , ADDRESS, DETAIL_ADDRESS, PASSWORD, DAY_OFF, PROFILE_PATH, USED_DAY_OFF
+         , SIGN_PATH, DEPT_NO, POS_NO, ROLE, ID
+      FROM EMPLOYEE
+    <where>
+      <if test="id!=null">ID = ${id}</if>
+    </where>
+  </select>
+
+<!--   <select id="getLeaveUserByMap"
+          parameterType="Map"
+          resultType="LeaveUserDto">
+    SELECT LEAVE_USER_NO
+      FROM LEAVE_USER_T
+    <where>
+      <if test="email!=null">EMAIL = #{email}</if>
+    </where>
+  </select>-->
+
+  <insert id="insertEmployee"
+          parameterType="EmployeeDto">
+    <selectKey order="BEFORE" keyProperty="empNo" resultType="int">
+      SELECT EMP_SEQ.NEXTVAL
+        FROM DUAL
+    </selectKey>
+    INSERT INTO EMPLOYEE (
+        EMP_NO
+      , EMP_NAME
+      , BIRTH
+      , ENTER_DATE
+      , EMAIL
+      , RESIGN_DATE
+      , MOBILE
+      , ADDRESS
+      , DETAIL_ADDRESS
+      , PASSWORD
+      , DAY_OFF
+      , PROFILE_PATH
+      , USED_DAY_OFF
+      , SIGN_PATH
+      , DEPT_NO
+      , POS_NO
+      , ROLE
+      , ID
+    ) VALUES (
+        #{empNo}
+      , #{empName}
+      , #{birth}
+      , #{enterDate}
+      , #{email}
+      , NULL
+      , #{mobile}
+      , NULL
+      , NULL
+      , #{password}
+      , 15
+      , #{profilePath}
+      , 0
+      , NULL
+      , #{deptNo}
+      , #{posNo}
+      , #{role}
+      , #{deptNo} || (
+            SELECT 
+                CASE 
+                    WHEN LENGTH(TO_CHAR(#{empNo})) = 1 THEN '000'||TO_CHAR(#{empNo})
+                    WHEN LENGTH(TO_CHAR(#{empNo})) = 2 THEN '00'||TO_CHAR(#{empNo})
+                    WHEN LENGTH(TO_CHAR(#{empNo})) = 3 THEN '0'||TO_CHAR(#{empNo})
+                    ELSE TO_CHAR(#{empNo})
+                END
+            FROM DUAL
+        )
+    )  
+  </insert>
+
+  <delete id="deleteUser">
+    DELETE
+      FROM USER_T
+     WHERE USER_NO = #{userNo}
+  </delete>
+
+  <insert id="insertAccessHistory"
+          parameterType="Map">
+    INSERT INTO ACCESS_HISTORY_T (
+        ACCESS_HISTORY_NO
+      , EMAIL
+      , IP
+      , USER_AGENT
+      , SESSION_ID
+      , SIGNIN_DT
+      , SIGNOUT_DT
+    ) VALUES (
+        ACCESS_HISTORY_SEQ.NEXTVAL
+      , #{email}
+      , #{ip}
+      , #{userAgent}
+      , #{sessionId}
+      , CURRENT_DATE
+      , NULL
+    )
+  </insert>
+  
+  <update id="updateAccessHistory">
+    UPDATE ACCESS_HISTORY_T
+       SET SIGNOUT_DT = CURRENT_DATE
+     WHERE SESSION_ID = #{sessionId} 
+  </update>
+
+</mapper>
