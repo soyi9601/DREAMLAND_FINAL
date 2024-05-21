@@ -29,9 +29,9 @@
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
           editable: true,
-          googleCalendarApiKey: 'AIzaSyCT9YkzosV4YR59v0CJH9GSvFEP3FM9DYQ',
+          googleCalendarApiKey: '',
           events: {
-            googleCalendarId: '80573f432890d7efe4b869bef38ce95cba80387da9b613e667ecafab9cca3df8@group.calendar.google.com'
+            googleCalendarId: ''
           },
           eventClick: function(info) {
             info.jsEvent.preventDefault(); // don't let the browser navigate
