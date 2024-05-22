@@ -38,6 +38,7 @@ public class FaqBoardController {
 		  redirectAttributes.addFlashAttribute("insertFaqCount", faqBoardService.registerFaq(request));
 		 return "redirect:/board/faq/list.do";
 	  }
+	  
 	  @GetMapping("/edit.do")
 	  public String edit(@RequestParam int faqNo, Model model) {
 	  	model.addAttribute("faq",faqBoardService.getFaqBoardByNo(faqNo));
@@ -56,6 +57,18 @@ public class FaqBoardController {
 	  		int removeCount = faqBoardService.removeFaqBoard(faqNo);
 	  	  redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "삭제되었습니다." : "삭제를 하지 못했습니다.");
 	  	return "redirect:/board/faq/list.do"; 
+	  }
+	  
+	  @GetMapping("/sort.do")
+	  public String sort(HttpServletRequest request, Model model) {
+	    faqBoardService.loadFaqCategoryList(request, model);
+		return "board/faq/list"; 
+	  }
+	  
+	  @GetMapping("/search.do")
+	  public String search(HttpServletRequest rquest, Model model) {
+		  faqBoardService.loadFaqSearchList(rquest, model);
+		  return "board/faq/list";
 	  }
 	  
 	  
