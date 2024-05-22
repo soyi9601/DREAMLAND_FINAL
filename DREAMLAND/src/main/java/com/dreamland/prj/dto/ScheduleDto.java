@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-
 public class ScheduleDto {
 	
-  private int skdNo, deptCode, empNo;
+  private int skdNo;
   private Date skdStart, skdEnd;
-  private String skdCategory, skdTitle, skdContents;
+  private String skdCategory, skdTitle, skdContents, skdColor;
+  private EmployeeDto employeeDto;
   
 }

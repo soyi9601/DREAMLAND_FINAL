@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.dreamland.prj.mapper.ScheduleMapper">
+   
+  <resultMap id="ScheduleMap" type="ScheduleDto">
+      <id property="skdNo" column="SKD_NO"/>
+      <result property="skdStart" column="SKD_START"/>
+      <result property="skdEnd" column="SKD_END"/>
+      <result property="skdCategory" column="SKD_CATEGORY"/>
+      <result property="skdTitle" column="SKD_TITLE"/>
+      <result property="skdContents" column="SKD_CONTENTS"/>
+      <result property="skdColor" column="SKD_COLOR"/>
+      <association property="employee" javaType="EmployeeDto">
+          <id property="empNo" column="EMP_NO"/>
+          <result property="deptNo" column="DEPT_NO"/>
+      </association>
+  </resultMap>
+   
+  <insert id="skdAdd"
+          parameterType="ScheduleDto">
+      INSERT INTO SCHEDULE (
+          SKD_NO
+        , EMP_NO  
+        , SKD_START
+        , SKD_END
+        , SKD_CATEGORY,
+        , SKD_TITLE
+        , SKD_CONTENTS
+        , SKD_COLOR
+        , DEPT_NO
+      ) VALUES (
+          SKD_SEQ.NEXTVAL,
+          #{emp.empNo},
+          #{start},
+          #{end},
+          #{category},
+          #{title},
+          #{contents},
+          #{color},
+          #{emp.deptNo}
+        )
+  </insert>
+   
+  
+ </mapper>
