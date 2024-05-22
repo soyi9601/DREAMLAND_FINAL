@@ -17,16 +17,6 @@
     </where>
   </select>
 
-<!--   <select id="getLeaveUserByMap"
-          parameterType="Map"
-          resultType="LeaveUserDto">
-    SELECT LEAVE_USER_NO
-      FROM LEAVE_USER_T
-    <where>
-      <if test="email!=null">EMAIL = #{email}</if>
-    </where>
-  </select>-->
-
   <insert id="insertEmployee"
           parameterType="EmployeeDto">
     <selectKey order="BEFORE" keyProperty="empNo" resultType="int">
@@ -83,37 +73,28 @@
     )  
   </insert>
 
-  <delete id="deleteUser">
+  <delete id="deleteEmployee">
     DELETE
-      FROM USER_T
-     WHERE USER_NO = #{userNo}
+      FROM EMPLOYEE
+     WHERE EMP_NO = #{empNo}
   </delete>
-
-  <insert id="insertAccessHistory"
-          parameterType="Map">
-    INSERT INTO ACCESS_HISTORY_T (
-        ACCESS_HISTORY_NO
-      , EMAIL
-      , IP
-      , USER_AGENT
-      , SESSION_ID
-      , SIGNIN_DT
-      , SIGNOUT_DT
-    ) VALUES (
-        ACCESS_HISTORY_SEQ.NEXTVAL
-      , #{email}
-      , #{ip}
-      , #{userAgent}
-      , #{sessionId}
-      , CURRENT_DATE
-      , NULL
-    )
-  </insert>
   
-  <update id="updateAccessHistory">
-    UPDATE ACCESS_HISTORY_T
-       SET SIGNOUT_DT = CURRENT_DATE
-     WHERE SESSION_ID = #{sessionId} 
-  </update>
+  <select id="getDeptNameByDeptNo"
+          parameterType="int"
+          resultType="String">
+    SELECT DEPT_NAME
+      FROM DEPARTMENT
+     WHERE DEPT_NO = #{deptNo}
+  </select>
+  
+  <select id="getPosNameByPosNo"
+          parameterType="int"
+          resultType="String">
+    SELECT POS_NAME
+      FROM POSITION
+     WHERE POS_NO = #{posNo}
+  </select>
+  
+
 
 </mapper>

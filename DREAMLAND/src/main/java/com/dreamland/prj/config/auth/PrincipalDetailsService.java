@@ -28,5 +28,15 @@ public class PrincipalDetailsService implements UserDetailsService{
       throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
     }
   }
+  
+  public String getDeptName(int deptNo) {
+    String deptName = employeeService.getDeptNameByDeptNo(deptNo);
+    return deptName;
+  }
+  
+  public String getPosName(int posNo) {
+    String posName = employeeService.getPosNameByPosNo(posNo);
+    return posName;
+  }
 
 }

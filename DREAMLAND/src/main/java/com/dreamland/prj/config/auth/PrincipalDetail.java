@@ -1,5 +1,6 @@
 package com.dreamland.prj.config.auth;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,6 +25,7 @@ public class PrincipalDetail implements UserDetails{
    */
   private static final long serialVersionUID = 1L;
   private EmployeeDto emp; // 콤포지션
+  private PrincipalDetailsService principalDetailsService;
   
   public PrincipalDetail(EmployeeDto emp) {
     this.emp = emp;
@@ -78,6 +80,53 @@ public class PrincipalDetail implements UserDetails{
   public boolean isEnabled() {
     // 현재 사이트에서 1년동안 회원이 로그인을 안하면 휴면 계정을 하기로 함
     return true;
+  }
+  
+  // 회원정보 가져오기
+  
+  // 프로필경로
+  public String getProfilePath() {
+    return emp.getProfilePath();
+  }
+  
+  // 이름
+  public String getEmpName() {
+    return emp.getEmpName();
+  }
+   
+  // 생년월일
+  public Date getBirth() {
+    return emp.getBirth();
+  }
+  
+  // 휴대전화
+  public String getMobile() {
+    return emp.getMobile();
+  }
+  
+  // 이메일
+  public String getEmail() {
+    return emp.getEmail();
+  }
+  
+  // 부서
+  public int getDeptNo() {
+    return emp.getDeptNo();
+  }
+  
+  // 직급
+  public int getPosNo() {
+    return emp.getPosNo();
+  }
+  
+  // 입사일
+  public Date getEnterDate() {
+    return emp.getEnterDate();
+  }
+  
+  // 권한
+  public String getRole() {
+    return emp.getRole();
   }
 
 }
