@@ -74,7 +74,7 @@
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
-                <a href="index.html" class="app-brand-link gap-2">
+                <a href="${contextPath}/" class="app-brand-link gap-2">
                   <span class="app-brand-text demo text-body fw-bolder">
 	                  <img
 	                  src="../assets/img/logo/logo1.png"
