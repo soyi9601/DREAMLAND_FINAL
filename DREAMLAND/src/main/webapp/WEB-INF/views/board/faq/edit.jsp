@@ -4,64 +4,27 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
+        
+
+
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-    <title>DREAMLAND</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="/../assets/vendor/fonts/boxicons.css" />
-
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="/../assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="/../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="/../assets/css/demo.css" />
-    <link rel="stylesheet" href="/../assets/css/index.css" />
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="/../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-
-    <link rel="stylesheet" href="/../assets/vendor/libs/apex-charts/apex-charts.css" />
-
-    <!-- Page CSS -->
-
-    <!-- Helpers -->
-    <script src="/../assets/vendor/js/helpers.js"></script>
-
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="/../assets/js/config.js"></script>
-    
-    <!-- jQuery 추가 -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  </head>
 
   <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
-		
-		<!-- 상단 titlearea 공통부분 -->
-		<style>
-			.title-area{height:120px;}
-			.title-area .title{font-size:36px;font-weight:600;text-align:Center;color:#90b54c;margin-top:30px;}
-		</style>
+    
+    <!-- 상단 titlearea 공통부분 -->
+    <style>
+      .title-area{height:120px;}
+      .title-area .title{font-size:36px;font-weight:600;text-align:Center;color:#90b54c;margin-top:30px;}
+    </style>
 
         <!-- Layout container -->
         <div class="layout-page">
           <div class="title-area">
-          	<p class="title">FAQ 작성</p>
-          </div>	
+            <p class="title">FAQ 작성</p>
+          </div>  
           <!-- Navbar -->
           <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
@@ -186,9 +149,9 @@
                     <div class="card-body">
 <!-- Form 시작 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
                       <form id="frm-faq-register"
-											      method="POST"
-											      action="${contextPath}/board/faq/modify.do">
-											  <input class="faqno" name="faqNo" type="hidden" value="${faq.faqNo}" >
+                            method="POST"
+                            action="${contextPath}/board/faq/modify.do">
+                        <input class="faqno" name="faqNo" type="hidden" value="${faq.faqNo}" >
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label" for="basic-default-name">질문제목</label>
                           <div class="col-sm-10">
@@ -199,22 +162,22 @@
                           </div>
                         </div>
                         <div class="row mb-3">
-	                        <label for="defaultSelect" class="form-label col-sm-2" 
-	                        name="category">
-	                        분류
-	                        </label>
-	                        <div class="col-sm-10">
-	                        	<select id="defaultSelect" class="form-select col-sm-10" name="category">
-		                          <option>${faq.category}</option>
-		                          <option value="1">인사</option>
-		                          <option value="2">경영지원</option>
-		                          <option value="3">안전관리</option>
-		                          <option value="4">시설운영</option>
-		                          <option value="5">마케팅</option>
-		                        </select>
-	                        </div>
-	                    </div>
-                      	
+                          <label for="defaultSelect" class="form-label col-sm-2" 
+                          name="category">
+                          분류
+                          </label>
+                          <div class="col-sm-10">
+                            <select id="defaultSelect" class="form-select col-sm-10" name="category">
+                              <option>${faq.category}</option>
+                              <option value="1">인사</option>
+                              <option value="2">경영지원</option>
+                              <option value="3">안전관리</option>
+                              <option value="4">시설운영</option>
+                              <option value="5">마케팅</option>
+                            </select>
+                          </div>
+                      </div>
+                        
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label" for="basic-default-message">답변</label>
                           <div class="col-sm-10">
