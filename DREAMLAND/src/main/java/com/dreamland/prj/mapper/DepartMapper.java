@@ -10,5 +10,8 @@ import com.dreamland.prj.dto.DepartmentDto;
 public interface DepartMapper {
   
   List<DepartmentDto> getDepartList();
+  void updateDepartment(DepartmentDto departmentDto);
+  
+  void deleteNode(DepartmentDto departmentDto);
   
 }

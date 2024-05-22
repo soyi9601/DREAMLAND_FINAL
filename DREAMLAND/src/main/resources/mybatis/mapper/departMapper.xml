@@ -4,10 +4,41 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.dreamland.prj.mapper.DepartMapper">
+<resultMap type="DepartmentDto" id="DepartmentMap">
+  <id     property="deptNo"   column="DEPT_NO" />
+  <result property="deptName" column="DEPT_NAME"/>
+  <result property="depth"    column="DEPTH"/>
+  <result property="parentId" column="PARENT_ID"/>
+  <result property="treeText" column="TREE_TEXT"/>
+  <association property="employee"  javaType="EmployeeDto">
+     <id     property="empNo"     column="EMP_NO"/>
+     <result property="empName"   column="EMP_NAME"/>
+     <result property="birth"     column="BIRTH"/>
+     <result property="enterDate" column="ENTER_DATE"/>
+     <result property="email"     column="EMAIL"/>
+     <result property="mobile"    column="MOBILE"/>
+     <result property="posNo"     column="POS_NO"/>
+     <result property="role"      column="ROLE"/>
+     <result property="id"        column="ID"/>
+   </association>
+</resultMap>
+
+
   <select id="getDepartList"
-          resultType="DepartmentDto">
-    SELECT DEPT_NO, DEPT_NAME, DEPTH, PARENT_ID, TREE_TEXT
-      FROM DEPARTMENT
+          resultMap="DepartmentMap">    
+    SELECT D.DEPT_NO, D.DEPT_NAME, D.DEPTH, D.PARENT_ID, D.TREE_TEXT,
+	         E.EMP_NO, E.EMP_NAME, E.POS_NO, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.ROLE, E.ID, LEVEL
+	    FROM DEPARTMENT D
+      LEFT JOIN EMPLOYEE E ON D.DEPT_NO = E.DEPT_NO
+	   START WITH D.PARENT_ID = '#'
+	 CONNECT BY PRIOR CAST(D.DEPT_NO AS VARCHAR2(20)) = D.PARENT_ID
   </select>
+  
+  <!-- 부서 정보 업데이트 -->
+	<update id="updateDepartment" parameterType="DepartmentDto">
+	  UPDATE DEPARTMENT 
+	     SET DEPT_NAME = #{deptName}, PARENT_ID = #{parentId}, TREE_TEXT = #{treeText}
+	   WHERE DEPT_NO = #{deptNo}
+	</update>
 
 </mapper> 
