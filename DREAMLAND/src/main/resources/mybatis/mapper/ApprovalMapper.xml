@@ -4,6 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.dreamland.prj.mapper.ApprovalMapper">
+
+	 <select id="getEmployee" parameterType="EmployeeDto">
+	 
+	 </select>
  
    <insert id="insertAproval"
           parameterType="AppletterDto">
@@ -40,6 +44,39 @@
       , 
       , 
       , 
+      , 
+      , 
+      , 
+    )
+  </insert>
+  
+    <insert id="insertaApvWriter"
+          parameterType="AppletterDto">
+    INSERT APV_WRITER (
+        APV_NO
+      , APV_STATE
+      , APV_EMP_TIME
+      , RETURN_REASON
+      , WRITER_LIST
+      , EMP_NO
+    ) VALUES (
+      , 
+      , 
+      , 
+      , 
+      , 
+      , 
+      , 
+    )
+  </insert>
+  
+      <insert id="insertApvRef"
+          parameterType="AppletterDto">
+    INSERT APV_REF (
+        REF_NO
+      , EMP_NO
+      , APV_NO
+    ) VALUES (
       , 
       , 
       , 

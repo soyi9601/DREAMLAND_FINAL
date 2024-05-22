@@ -103,7 +103,9 @@
         <!-- 품의서 내용 -->
         <div class="container">
             <div class="title">품 의 서</div>
-            
+            <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
+            <input type="hidden" name="userNo" value="111">
+            <input type="hidden" name="appKinds" value="1">
            <div class="section">
                 <div class="section-title">제목</div>
                         	<input type="text" style="width:750px;" name="title"></input>
