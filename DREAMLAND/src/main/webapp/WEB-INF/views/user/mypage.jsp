@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:include page="../layout/header.jsp" /> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
-
-
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }" />
+<jsp:include page="../layout/header.jsp" /> 
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
@@ -24,7 +23,7 @@
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
                         <img
-                          src="../assets/img/logo/logo2.png"
+                          src="${loginEmployee.profilePath}" 
                           alt="user-avatar"
                           class="d-block rounded"
                           height="100"
@@ -63,6 +62,7 @@
                               type="text"
                               id="empName"
                               name="empName"
+                              value="${loginEmployee.empName}" 
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -72,7 +72,7 @@
                               type="date"
                               id="birth"
                               name="birth"
-                              value="2024-05-20"
+                              value="${loginEmployee.birth}"
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -86,7 +86,7 @@
                                 id="mobile"
                                 name="mobile"
                                 class="form-control"
-                                placeholder="- 붙여서 작성해주세요"
+                                value="${loginEmployee.mobile}"
                               />
                           </div>
                           <div class="mb-3">
@@ -96,6 +96,7 @@
                               type="text"
                               id="email"
                               name="email"
+                              value="${loginEmployee.email}"
                               placeholder="example@example.com"
                             />
                           </div>
@@ -106,6 +107,7 @@
                               type="text"
                               id="deptNo"
                               name="deptNo"
+                              value="${loginEmployee.deptNo}"
                               readOnly
                             />
                           </div>
@@ -116,17 +118,29 @@
                               type="text"
                               id="posNo"
                               name="posNo"
+                              value="${loginEmployee.posNo}"
                               readOnly
                             />
                           </div>
                           <div class="mb-3 col-md-6">
-                            <label for="enterDate" class="form-label">입사일</label>
-                            <input
+                            <label class="form-label" for="deptNo">입사일</label>
+                             <input
                               class="form-control"
                               type="date"
-                              value="2024-05-20"
                               id="enterDate"
                               name="enterDate"
+                              value="${loginEmployee.enterDate}"
+                              readOnly
+                            />
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="posNo" class="form-label">권한</label>
+                              <input
+                              class="form-control"
+                              type="text"
+                              id="role"
+                              name="role"
+                              value="${loginEmployee.role}"
                               readOnly
                             />
                           </div>
@@ -149,7 +163,7 @@
                             </select>
                           </div> -->
                         </div>
-                                            <div class="card-body">
+<!--                    <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
                         <img
                           src="../assets/img/logo/logo2.png"
@@ -179,11 +193,11 @@
                           <p class="text-muted mb-0">JPG, GIF, PNG 가능. 최대 800KB</p>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <hr class="my-0" />
                     <div class="card-body">
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2">저장</button>
+                          <button type="button" class="btn btn-primary me-2">저장</button>
                           <button type="reset" class="btn btn-outline-secondary">취소</button>
                         </div>
                     </div>
@@ -194,7 +208,7 @@
                 </div>
               </div>
             </div>
+            </div>
             <!-- / Content -->
-<script src="../assets/js/pages-add-employee.js"></script>
 <%@ include file="../layout/footer.jsp" %>
     
