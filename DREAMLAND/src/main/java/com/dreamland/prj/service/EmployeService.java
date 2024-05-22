@@ -13,13 +13,16 @@ public interface EmployeService {
   // ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params);
   // ResponseEntity<Map<String, Object>> sendCode(Map<String, Object> params);
   void addEmployee(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response);  
-  //void leave(HttpServletRequest request, HttpServletResponse response);
 
   // 로그인 및 로그아웃
-  // String getRedirectURLAfterSignin(HttpServletRequest request);  
-   EmployeeDto signin(String username);
-  // void signout(HttpServletRequest request, HttpServletResponse response);
+  EmployeeDto signin(String username);
+   
+  // 부서, 직급 가져오기
+  String getDeptNameByDeptNo(int deptNo);
+  String getPosNameByPosNo(int posNo);
   
+  
+   
   
   
 }

@@ -10,6 +10,8 @@ import com.dreamland.prj.dto.EmployeeDto;
 public interface EmployeeMapper {
   int insertEmployee(EmployeeDto emp);
   EmployeeDto getEmployeeByMap(Map<String, Object> map);
+  String getDeptNameByDeptNo(int deptNo);
+  String getPosNameByPosNo(int posNo);
 //  int deleteUser(int userNo);
 //  int insertAccessHistory(Map<String, Object> map);
 //  int updateAccessHistory(String sessionId);

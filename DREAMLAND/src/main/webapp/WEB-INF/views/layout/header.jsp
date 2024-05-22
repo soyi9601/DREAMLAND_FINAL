@@ -4,9 +4,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }" />
+
 <!DOCTYPE html>
 <html>
 <head>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
@@ -17,28 +20,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"/>
 
   <!-- Icons. Uncomment required icon fonts -->
-  <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="/resources/assets/vendor/fonts/boxicons.css" />
 
   <!-- Core CSS -->
-  <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
-  <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-  <link rel="stylesheet" href="../assets/css/demo.css" />
-  <link rel="stylesheet" href="../assets/css/index.css" />
+  <link rel="stylesheet" href="/resources/assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="/resources/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="/resources/assets/css/demo.css" />
+  <link rel="stylesheet" href="/resources/assets/css/index.css" />
 
   <!-- Vendors CSS -->
-  <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-  <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
+  <link rel="stylesheet" href="/resources/assets/vendor/libs/apex-charts/apex-charts.css" />
 
   <!-- Page CSS -->
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <!-- Helpers -->
-  <script src="../assets/vendor/js/helpers.js"></script>
+  <script src="/resources/assets/vendor/js/helpers.js"></script>
 
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-  <script src="../assets/js/config.js"></script>
+  <script src="/resources/assets/js/config.js"></script>
+
 </head>
 
 <body>
@@ -180,11 +184,14 @@
               <li class="nav-item lh-1 me-3">
                 <a>알림</a>
               </li>
+              
               <!-- User -->
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                   <div class="avatar">
-                    <i class="tf-icons bx bxs-user-circle"></i>                      
+                    <div class="avatar avatar-online">
+                      <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+                    </div>                    
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -193,12 +200,12 @@
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                            <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
                           </div>
                         </div>
                         <div class="flex-grow-1">
-                          <span class="fw-semibold d-block">John Doe</span>
-                          <small class="text-muted">Admin</small>
+                          <span class="fw-semibold d-block">${loginEmployee.empName}</span>
+                          <small class="text-muted">${loginEmployee.posNo}</small>
                         </div>
                       </div>
                     </a>
