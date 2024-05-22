@@ -5,23 +5,49 @@
   
 <mapper namespace="com.dreamland.prj.mapper.ApprovalMapper">
 
-	 <select id="getEmployee" parameterType="EmployeeDto">
-	 
+	 <select id="getApvNo"
+	 				  resultType="int">
+	 	SELECT ApvNo 
+	 	  FROM APPROVAL
+	 	 WHERE MAX(ApvNo)	 
 	 </select>
- 
+
    <insert id="insertAproval"
           parameterType="AppletterDto">
     INSERT APPROVAL (
       , APV_NO
       , EMP_NO
       , APV_WRITE_DATE
-      , APV_CHECK
       , APV_KINDS
     ) VALUES (
         APV_SEQ.NEXTVAL
-      ,
-      ,
-      , 
+      , #{empNo}
+      , CURRENT_DATE
+      , #{appkinds}
+    )
+  </insert>
+  
+  <insert id="insertaApvWriter"
+          parameterType="AppletterDto">
+    INSERT APV_WRITER (
+        APV_NO
+      , WRITER_LIST
+      , EMP_NO
+    ) VALUES (
+      , #{apvNo}
+      , #{writerList}
+      , #{empNo}
+    )
+  </insert>
+  
+  <insert id="insertApvRef"
+          parameterType="AppletterDto">
+    INSERT APV_REF (
+        
+      , REF_NO
+      , EMP_NO
+      , APV_NO
+    ) VALUES (
       , 
       , 
       , 
@@ -35,53 +61,19 @@
       , APV_NO
       , LETTER_TITLE
       , LETTER_DETAIL
-      , LETTER_STATUS
-      , ORI_FILENAME
-      , RER_FILENAME
     ) VALUES (
         LETTER_SEQ.NEXTVAL
-      , 
-      , 
-      , 
-      , 
-      , 
-      , 
-      , 
+      , #{apvNo}
+      , #{title}
+      , #{contents}
     )
   </insert>
   
-    <insert id="insertaApvWriter"
-          parameterType="AppletterDto">
-    INSERT APV_WRITER (
-        APV_NO
-      , APV_STATE
-      , APV_EMP_TIME
-      , RETURN_REASON
-      , WRITER_LIST
-      , EMP_NO
-    ) VALUES (
-      , 
-      , 
-      , 
-      , 
-      , 
-      , 
-      , 
-    )
-  </insert>
   
-      <insert id="insertApvRef"
-          parameterType="AppletterDto">
-    INSERT APV_REF (
-        REF_NO
-      , EMP_NO
-      , APV_NO
-    ) VALUES (
-      , 
-      , 
-      , 
-    )
-  </insert>
+  
+ 
+  
+
   
   
 </mapper>

@@ -7,6 +7,7 @@ import com.dreamland.prj.dto.FaqBoardDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface ApprovalService {
-	int registerApproval(HttpServletRequest request);
+	int registerAppletter(HttpServletRequest request);
+	int registerAppLeave(HttpServletRequest request);
 
 }

@@ -28,7 +28,13 @@ public class ApprovalController {
 	
 	@GetMapping("/approval.do")
 	public String approval(HttpServletRequest request) {
-		
+		approvalService.registerAppletter(request);
+		return "approval/appList";
+	}
+	
+	@GetMapping("/leave.do")
+	public String leave(HttpServletRequest request) {
+		approvalService.registerAppLeave(request);
 		return "approval/appList";
 	}
 

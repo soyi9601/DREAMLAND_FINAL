@@ -155,42 +155,60 @@
        			  <button class="button button-secondary">파일선택</button>
               <button class="button button-secondary">삭제</button>
               <button class="button button-primary">임시저장</button>
-              <button class="button button-primary">제출하기</button>
+              <button class="button button-primary" type="submit">제출하기</button>
             </div>
         </div>
         </form>
     </div>
     
     <div id="leaveRequestForm" class="page">
+         <form method="GET"
+        action="${contextPath}/apprval/leave.do">
         <h2>휴가신청서</h2>
         <!-- 휴가신청서 내용 -->
         <div class="container">
             <div class="title">휴가신청서</div>
+                            <div class="section-title">제목</div>
+                        	<input type="text" style="width:750px;" name="title"></input>
+
+        
+             <div class="section-title">결재자</div>
+            <table class="approval-table">
+                <tr>
+                    <td>담당</td>
+                    <td>팀장</td>
+                    <td>본부장</td>
+                    <td>대표이사</td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="approver"></input></td>
+                    <td><input type="text" name="approver2"></input></td>
+                    <td><input type="text" name="approver3"></input></td>
+                    <td><input type="text" name="approver4"></input></td>
+                </tr>
+            </table>
+            <div class="section">
+                <div class="section-title">참조</div>
+                <table class="input-table">
+                    <tr>
+                   <td>	<input type="text" style="width:750px;" name="wathcer"></input></td>
+                    </tr>           
+                </table>
+            </div>
+            
             <table class="input-table">
                 <tr>
-                    <td>소속</td>
-                    <td></td>
-                    <td>직급</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>성명</td>
-                    <td></td>
-                    <td>작성일</td>
-                    <td></td>
-                </tr>
-                <tr>
                     <td>휴가 종류</td>
-                    <td></td>
+                    <td><input type="text" name="leavekind"></input></td>
                 </tr>
                 <tr>
                     <td>휴가 기간</td>
-                    <td></td>
+                    <td><input type="date" name="leavestart"> ~ <input type="date" name="leaveend"></td>
                 </tr>
                 <tr>
                     <td>사유</td>
                     <td>
-                        <textarea class="textarea"></textarea>
+                        <textarea class="textarea" name="contents"></textarea>
                     </td>
                 </tr>
             </table>
@@ -204,9 +222,10 @@
        			  <button class="button button-secondary">파일선택</button>
               <button class="button button-secondary">삭제</button>
               <button class="button button-primary">임시저장</button>
-              <button class="button button-primary">제출하기</button>
+              <button class="button button-primary" type="submit">제출하기</button>
             </div>
         </div>
+        </form>s
     </div>
 </div>
 
@@ -231,10 +250,6 @@
        }
    });
    */
-   
-
-   
-   
    
    
    function showPage(pageId) {
