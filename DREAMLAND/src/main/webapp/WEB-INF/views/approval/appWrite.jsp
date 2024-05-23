@@ -98,13 +98,13 @@
     </div>
     <div id="approvalForm" class="page">
       <form method="GET"
-        action="${contextPath}/apprval/approval.do">
+        action="${contextPath}/approval/approval.do">
         <h2>품의서</h2>
         <!-- 품의서 내용 -->
         <div class="container">
             <div class="title">품 의 서</div>
             <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
-            <input type="hidden" name="userNo" value="111">
+            <input type="hidden" name="userNo" value="1">
             <input type="hidden" name="appKinds" value="1">
            <div class="section">
                 <div class="section-title">제목</div>
@@ -130,7 +130,7 @@
                 <div class="section-title">참조</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:750px;" name="wathcer"></input></td>
+                   <td>	<input type="text" style="width:750px;" name="referrer"></input></td>
                     </tr>           
                 </table>
             </div>
@@ -191,7 +191,7 @@
                 <div class="section-title">참조</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:750px;" name="wathcer"></input></td>
+                   <td>	<input type="text" style="width:750px;" name="referrer"></input></td>
                     </tr>           
                 </table>
             </div>
@@ -225,7 +225,7 @@
               <button class="button button-primary" type="submit">제출하기</button>
             </div>
         </div>
-        </form>s
+        </form>
     </div>
 </div>
 

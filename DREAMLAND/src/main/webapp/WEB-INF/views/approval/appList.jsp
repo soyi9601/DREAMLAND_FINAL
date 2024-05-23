@@ -33,6 +33,9 @@
                     </tr>
                 </c:forEach>
             </tbody>
+            <tfoot>
+               <td colspan="4">${paging}</td>
+            </tfoot>
         </table>
         <div class="footer">
             문서 수 : <span id="document-count">0</span>
@@ -50,7 +53,23 @@
    <!-- / Content -->            
    
    <script>
+   
+   const fnDisplay = () => {
+	   document.getElementById('display').value = '${display}';
+	   document.getElementById('display').addEventListener('change', (evt) => {
+	     location.href = '${contextPath}/upload/list.do?page=1&sort=${sort}&display=' + evt.target.value;
+	   })
+	 }
 
+	 const fnSort = () => {
+	   $(':radio[value=${sort}]').prop('checked', true);
+	   $(':radio').on('click', (evt) => {
+	     location.href = '${contextPath}/upload/list.do?page=${page}&sort=' + evt.target.value + '&display=${display}';
+	   })
+	 }
+
+	 fnDisplay();
+	 fnSort();
    
    </script>
 

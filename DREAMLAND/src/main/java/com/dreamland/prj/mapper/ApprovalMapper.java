@@ -15,9 +15,9 @@ import com.dreamland.prj.dto.FaqBoardDto;
 @Mapper
 public interface ApprovalMapper {
 	int getApvNo();
-	int insertAproval(ApprovalDto appdto);
+	int insertApproval(ApprovalDto appdto);
 	int insertApvLetter(AppletterDto appLetterdto );
 	int insertApvLeave(AppleaveDto appLeaveto );
-	int insertaApvWriter(ApvWriterDto appwridto);
+	int insertApvWriter(ApvWriterDto appwridto);
 	int insertApvRef(ApvRefDto apprefdto);
 }

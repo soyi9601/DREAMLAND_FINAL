@@ -45,8 +45,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    int [] approvers = {approver, approver2, approver3, approver4};
 	    
 	    String wathcer  =  request.getParameter("wathcer");
-	    
-	    
+	    	    
 	    // 뷰에서 전달된 userNo
 	    String userNo = request.getParameter("userNo");
 	    
@@ -57,7 +56,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    						.appKinds("0")
 	    						.build();
 	    
-	    approvalMapper.insertAproval(app);
+	    approvalMapper.insertApproval(app);
 	    int apvNo = approvalMapper.getApvNo();
 	    
 	    for(int i=0; i<approvers.length; i++) {
@@ -67,7 +66,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 					 .writerList(i)
 					 .empNo(approvers[i])
 					  .build();
-		    approvalMapper.insertaApvWriter(appwriter);
+		    approvalMapper.insertApvWriter(appwriter);
 		    
 	    	
 	    }
@@ -98,7 +97,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    
 	    int [] approvers = {approver, approver2, approver3, approver4};
 	    
-	    String wathcer  =  request.getParameter("wathcer");
+	    String referrer  =  request.getParameter("referrer");
 	    
 	    
 	    // 뷰에서 전달된 userNo
@@ -112,7 +111,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 				.appKinds("1")
 				.build();
 	    
-	    approvalMapper.insertAproval(app);
+	    approvalMapper.insertApproval(app);
 	    int apvNo = approvalMapper.getApvNo();
 	    
 	    for(int i=0; i<approvers.length; i++) {
@@ -122,8 +121,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 					 .writerList(i)
 					 .empNo(approvers[i])
 					  .build();
-		    approvalMapper.insertaApvWriter(appwriter);
-		    
+		    approvalMapper.insertApvWriter(appwriter);
 	    	
 	    }
 
@@ -135,13 +133,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 				.build();
     
 	    	
-	    approvalMapper.insert(appwriter);
-	    	
-	    
-
-	    
-	    
-		
+	    approvalMapper.insertApvLeave(appleave);		
 		return 0;
 	}
 
