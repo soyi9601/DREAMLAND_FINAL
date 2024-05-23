@@ -17,11 +17,9 @@ import lombok.RequiredArgsConstructor;
 
 public class SecurityConfig {
 
-  
-
   // 해당 메서드의 리턴되는 오브젝트를 IoC로 등록
   @Bean
-  public BCryptPasswordEncoder encodePwd() {
+  BCryptPasswordEncoder encodePwd() {
     return new BCryptPasswordEncoder();
   }
   
@@ -39,7 +37,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/user/**").authenticated()  // 인증만 되면 들어갈 수 있는 주소
             .requestMatchers("/manager/**", "/").hasAnyRole("ADMIN", "USER")
-            .requestMatchers("/employee/**").hasRole("ADMIN")
+            //.requestMatchers("/employee/**").hasRole("ADMIN")
             //.requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().permitAll()) 
         .formLogin(formLogin -> formLogin
@@ -52,6 +50,6 @@ public class SecurityConfig {
         
         .build();
   }
-
+  
   
 }
