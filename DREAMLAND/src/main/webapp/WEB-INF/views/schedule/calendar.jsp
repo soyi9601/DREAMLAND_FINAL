@@ -38,7 +38,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="frm-schedule">
+                    <form id="frm-schedule" method="POST" action="${contextPath}/schedule/register.do">
                         <div class="mb-3">
                             <label for="title" class="form-label">일정 제목</label>
                             <input type="text" class="form-control" id="title" name="title" required>
@@ -80,11 +80,11 @@
                         <!-- 세션 정보를 전달하는 숨겨진 필드 -->
                         <input type="hidden" name="empNo" value="${sessionScope.empNo}">
                         <!-- <input type="hidden" name="deptNo" value="${sessionScope.user.deptNo}">  -->
-                    </form>
-                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-primary" id="btn-save">저장</button>
+                    <button type="submit" class="btn btn-primary" id="btn-save">저장</button>
+                </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -110,40 +110,33 @@
                 events: [] // 이벤트 데이터
             });
             calendar.render();
-
-            $('#btn-save').on('click', function() {
-                var formData = $('#frm-schedule').serialize(); // 폼 데이터 직렬화
-
+       
+            $('#frm-schedule').on('submit', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                
                 $.ajax({
-                    type: 'POST',
-                    url: '${contextPath}/schedule/register.do',
+                    url: "${contextPath}/schedule/register.do",
+                    type: "POST",
                     data: formData,
                     success: function(response) {
                         if (response === 'success') {
-                            var title = $('#title').val();
-                            var start = $('#start').val();
-                            var end = $('#end').val();
-                            var color = $('#color').val();
-
-                            calendar.addEvent({
-                                title: title,
-                                start: start,
-                                end: end,
-                                color: color
-                            });
-
+                            // 모달 닫기
                             $('#insertModal').modal('hide');
-                            $('#frm-schedule')[0].reset(); // 폼 초기화
+                            // 캘린더 이벤트 다시 로드
+                            calendar.refetchEvents();
                         } else {
-                            alert('일정 등록에 실패했습니다.');
+                            alert('일정 등록 실패');
                         }
                     },
-                    error: function(xhr, status, error) {
-                        alert('일정 등록에 실패했습니다.');
+                    error: function() {
+                        alert('서버 오류 발생');
                     }
                 });
             });
         });
+        
     </script>
+
 
 <%@ include file="../layout/footer.jsp" %>    

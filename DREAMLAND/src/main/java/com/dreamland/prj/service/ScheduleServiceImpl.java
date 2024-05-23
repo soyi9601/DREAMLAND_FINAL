@@ -24,7 +24,7 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Override
   public int registerSkd(HttpServletRequest request) {
     
-    // 뷰에서 전달된 empNo와 deptCode
+    // 뷰에서 전달된 데이
     int empNo = Integer.parseInt(request.getParameter("empNo"));
     int deptNo = Integer.parseInt(request.getParameter("deptNo"));
     Date start = Date.valueOf(request.getParameter("start"));
@@ -33,7 +33,17 @@ public class ScheduleServiceImpl implements ScheduleService {
     String title = request.getParameter("title");
     String contents = request.getParameter("contents");
     String color = request.getParameter("color");
-
+    
+ // 로그 출력
+    System.out.println("empNo: " + empNo);
+    System.out.println("skdStart: " + start);
+    System.out.println("skdEnd: " + end);
+    System.out.println("skdCategory: " + category);
+    System.out.println("skdTitle: " + title);
+    System.out.println("skdContents: " + contents);
+    System.out.println("skdColor: " + color);
+    
+    
     // EmployeeDto 객체 생성 (
     EmployeeDto emp = new EmployeeDto();
     emp.setEmpNo(empNo);
