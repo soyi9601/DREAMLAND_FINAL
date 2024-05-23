@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="./../layout/approvalList-header.jsp" />  
 
 
@@ -23,13 +24,13 @@
                 </tr>
             </thead>
             <tbody id="post-list-body">
-                <c:forEach var="post" items="${postList}">
-                    <tr>
-                        <td class="column-doc-number">${post.documentNumber}</td>
-                        <td class="column-title">${post.title}</td>
-                        <td class="column-author">${post.author}</td>
-                        <td class="column-date">${post.date}</td>
-                        <td class="column-category">${post.category}</td>
+                <c:forEach var="approval" items="${approvalList}">
+                    <tr class="approval">
+                        <td class="column-doc-number"  style= "border: none;">${approval.apvNo}</td>
+                        <td class="column-title" style= "border: none;">${approval.apvTitle}</td>
+                        <td class="column-author" style= "border: none;">${approval.empNo}</td>
+                        <td class="column-date" style= "border: none;">${approval.apvWriteDate}</td>
+                        <td class="column-category" style= "border: none;">${approval.apvKinds}</td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -54,22 +55,18 @@
    
    <script>
    
-   const fnDisplay = () => {
-	   document.getElementById('display').value = '${display}';
-	   document.getElementById('display').addEventListener('change', (evt) => {
-	     location.href = '${contextPath}/upload/list.do?page=1&sort=${sort}&display=' + evt.target.value;
-	   })
-	 }
+	 
+	 const fnDetail = () => {
+		   const approvalElements = document.getElementsByClassName('approval');
 
-	 const fnSort = () => {
-	   $(':radio[value=${sort}]').prop('checked', true);
-	   $(':radio').on('click', (evt) => {
-	     location.href = '${contextPath}/upload/list.do?page=${page}&sort=' + evt.target.value + '&display=${display}';
-	   })
+	        Array.from(approvalElements).forEach(element => {
+	            element.addEventListener('click', (evt) => {
+	                console.log(evt.target.parentElement.firstElementChild.textContent);
+	            });
+	        });
 	 }
-
-	 fnDisplay();
-	 fnSort();
+	 
+	 fnDetail();
    
    </script>
 

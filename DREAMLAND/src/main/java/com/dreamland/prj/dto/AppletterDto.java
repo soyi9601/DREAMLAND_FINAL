@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class AppletterDto {
 	
 	private int letterNo, apvNo, letterStatus;
-	private String letterTitle, letterDetail, orifileName, rerfileName;
+	private String letterDetail, orifileName, rerfileName;
 
 }

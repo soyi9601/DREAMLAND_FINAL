@@ -114,19 +114,19 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/approval/write" class="menu-link" target="_blank">
-                  <div>기안서 작성</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="${contextPath} }" class="menu-link" target="_blank">
-                  <div>진헹중인 문서함</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                  <div>내 문서함</div>
-                </a>
+                  <a href="auth-login-basic.html" class="menu-link" target="_blank">
+                    <div>Login</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="auth-register-basic.html" class="menu-link" target="_blank">
+                    <div>Register</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
+                    <div>Forgot Password</div>
+                  </a>
               </li>
             </ul>
           </li>
