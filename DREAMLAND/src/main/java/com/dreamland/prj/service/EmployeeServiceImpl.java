@@ -5,11 +5,15 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.Map;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dreamland.prj.config.DBConnectionProvider;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.mapper.EmployeeMapper;
 import com.dreamland.prj.utils.MyFileUtils;
@@ -27,11 +31,13 @@ public class EmployeeServiceImpl implements EmployeService {
   private final MyFileUtils myFileUtils;
   private final MyJavaMailUtils myJavaMailUtils;
   
-  public EmployeeServiceImpl(EmployeeMapper employeeMapper, MyJavaMailUtils myJavaMailUtils, MyFileUtils myFileUtils) {
+  public EmployeeServiceImpl(EmployeeMapper employeeMapper, MyJavaMailUtils myJavaMailUtils
+                          , MyFileUtils myFileUtils) {
     super();
     this.employeeMapper = employeeMapper;
     this.myJavaMailUtils = myJavaMailUtils;
     this.myFileUtils = myFileUtils;
+
   }
  
 //  @Transactional(readOnly=true)
@@ -128,53 +134,53 @@ public class EmployeeServiceImpl implements EmployeService {
     
   }
   
-  @Override
-  public void modifyUserInfo(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {
-
-    String newProfilePath= null;
-    if(profilePath != null && !profilePath.isEmpty()) {
-      String uploadPath = myFileUtils.getUploadPath();
-      
-      File dir = new File(uploadPath);
-      if(!dir.exists()) {
-        dir.mkdirs();
-      }
-      String filesystemName = myFileUtils.getFilesystemName(profilePath.getOriginalFilename());
-      File file = new File(dir, filesystemName);
-      try {
-        profilePath.transferTo(file);
-      } catch(Exception e) {
-        e.printStackTrace();
-      }
-      newProfilePath = uploadPath + "/" + filesystemName;
-    } else {
-      newProfilePath = request.getParameter("beforeProfilePath");
-    }
-    
-    String empName = request.getParameter("empName");
-    Date birth = Date.valueOf(request.getParameter("birth"));
-    String mobile = request.getParameter("mobile");
-    String postcode = request.getParameter("postcode");
-    String address = request.getParameter("address");
-    String detailAddress = request.getParameter("detailAddress");
-    String email = request.getParameter("email");
-    
-    // Mapper 로 보낼 EmployeeDto 객체 생성
-    EmployeeDto emp = EmployeeDto.builder()
-                        .empName(empName)
-                        .birth(birth)
-                        .mobile(mobile)
-                        .postcode(postcode)
-                        .address(address)
-                        .detailAddress(detailAddress)
-                        .profilePath(newProfilePath)
-                        .email(email)
-                      .build();
-    
-    // 수정
-    employeeMapper.updateUserInfo(emp);
-    
-  }
+//  @Override
+//  public void modifyUserInfo(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {
+//
+//    String newProfilePath= null;
+//    if(profilePath != null && !profilePath.isEmpty()) {
+//      String uploadPath = myFileUtils.getUploadPath();
+//      
+//      File dir = new File(uploadPath);
+//      if(!dir.exists()) {
+//        dir.mkdirs();
+//      }
+//      String filesystemName = myFileUtils.getFilesystemName(profilePath.getOriginalFilename());
+//      File file = new File(dir, filesystemName);
+//      try {
+//        profilePath.transferTo(file);
+//      } catch(Exception e) {
+//        e.printStackTrace();
+//      }
+//      newProfilePath = uploadPath + "/" + filesystemName;
+//    } else {
+//      newProfilePath = request.getParameter("beforeProfilePath");
+//    }
+//    
+//    String empName = request.getParameter("empName");
+//    Date birth = Date.valueOf(request.getParameter("birth"));
+//    String mobile = request.getParameter("mobile");
+//    String postcode = request.getParameter("postcode");
+//    String address = request.getParameter("address");
+//    String detailAddress = request.getParameter("detailAddress");
+//    String email = request.getParameter("email");
+//    
+//    // Mapper 로 보낼 EmployeeDto 객체 생성
+//    EmployeeDto emp = EmployeeDto.builder()
+//                        .empName(empName)
+//                        .birth(birth)
+//                        .mobile(mobile)
+//                        .postcode(postcode)
+//                        .address(address)
+//                        .detailAddress(detailAddress)
+//                        .profilePath(newProfilePath)
+//                        .email(email)
+//                      .build();
+//    
+//    // 수정
+//    employeeMapper.updateUserInfo(emp);
+//    
+//  }
   
 //  @Override
 //  public void leave(HttpServletRequest request, HttpServletResponse response) {
@@ -247,30 +253,5 @@ public class EmployeeServiceImpl implements EmployeService {
 //    
 //  }
 //  
-  @Override
-  public EmployeeDto signin(String username) {
-    // 입력한 아이디
-    String email = username;
-    
-    Map<String, Object> params = Map.of("email", email);
-    
-    // email/pw 가 일치하는 회원 정보 가져오기
-    EmployeeDto emp = employeeMapper.getEmployeeByMap(params);
-    return emp; 
-  }
-  
-  @Override
-  public String getDeptNameByDeptNo(int deptNo) {
-    String deptName = employeeMapper.getDeptNameByDeptNo(deptNo);
-    return deptName;
-  }
-  
-  @Override
-  public String getPosNameByPosNo(int posNo) {
-    String posName = employeeMapper.getPosNameByPosNo(posNo);
-    return posName;
-  }
-
-
 
 }

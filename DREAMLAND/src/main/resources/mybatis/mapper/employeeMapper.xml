@@ -6,11 +6,11 @@
 <mapper namespace="com.dreamland.prj.mapper.EmployeeMapper">
 
   <select id="getEmployeeByMap"
-          parameterType="Map"
+          parameterType="String"
           resultType="EmployeeDto">
     SELECT EMP_NO, EMP_NAME, BIRTH, ENTER_DATE, EMAIL, RESIGN_DATE, MOBILE
          , ADDRESS, DETAIL_ADDRESS, PASSWORD, DAY_OFF, PROFILE_PATH, USED_DAY_OFF
-         , SIGN_PATH, DEPT_NO, POS_NO, ROLE
+         , SIGN_PATH, DEPT_NO, POS_NO, ROLE, POSTCODE
       FROM EMPLOYEE
     <where>
       <if test="email!=null">EMAIL = #{email}</if>
