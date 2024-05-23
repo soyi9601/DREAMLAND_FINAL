@@ -128,5 +128,10 @@ public class PrincipalDetail implements UserDetails{
   public String getRole() {
     return emp.getRole();
   }
+  
+  // 사원번호 
+  public int getEmpNo() {
+	  return emp.getEmpNo();
+  }
 
 }
