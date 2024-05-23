@@ -34,11 +34,16 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 		String boardTitle = MySecurityUtils.getPreventXss(request.getParameter("boardTitle"));
 		String boardContents = MySecurityUtils.getPreventXss(request.getParameter("boardContents"));
 		int category =  Integer.parseInt(request.getParameter("category"));
+		int empNo = Integer.parseInt(request.getParameter("empNo"));
+		
+		EmployeeDto emp = new EmployeeDto();
+		emp.setEmpNo(empNo);
 		
 		FaqBoardDto faq = FaqBoardDto.builder()
 								.boardTitle(boardTitle)
 								.boardContents(boardContents)
 								.category(category)
+								.employee(emp)
 							.build();
 		return faqBoardMapper.insertFaqBoard(faq);
 	}

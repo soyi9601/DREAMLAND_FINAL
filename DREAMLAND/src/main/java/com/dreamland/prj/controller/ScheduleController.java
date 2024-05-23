@@ -1,5 +1,8 @@
 package com.dreamland.prj.controller;
 
+import java.util.Enumeration;
+
+import org.apache.taglibs.standard.lang.jstl.EnumeratedMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,12 +34,20 @@ public class ScheduleController {
 	public String calendarPage() {
 	  return "schedule/calendar";
 	}
-	
-	@PostMapping("/register.do")
-  @ResponseBody
-  public String register(HttpServletRequest request) {
-      int result = scheduleService.registerSkd(request);
-      return result > 0 ? "success" : "failure";
+	@PostMapping(value="/register.do", produces="application/json")
+  public String register(@RequestParam HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	  
+	// 요청 파라미터 로그 출력
+    System.out.println("Request Parameters:");
+    Enumeration<String> parameterNames = request.getParameterNames();
+    while (parameterNames.hasMoreElements()) {
+        String paramName = parameterNames.nextElement();
+        System.out.println(paramName + ": " + request.getParameter(paramName));
+    }
+	  
+    redirectAttributes.addFlashAttribute("insertCount", scheduleService.registerSkd(request));
+	  //scheduleService.registerSkd(request);
+	  return "redirect:/schedule/calendar";
   }
 	  
 }

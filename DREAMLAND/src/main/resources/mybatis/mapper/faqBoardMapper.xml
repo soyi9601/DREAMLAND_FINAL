@@ -27,7 +27,7 @@
        , BOARD_CREATE_DT
        , BOARD_MODIFY_DT
        , CATEGORY
-         , EMP_NO
+       , EMP_NO
       ) VALUES (
          FAQ_SEQ.NEXTVAL
        , #{boardTitle}
@@ -35,7 +35,7 @@
        , CURRENT_TIMESTAMP
        , CURRENT_TIMESTAMP
        , #{category}
-         , 1
+       , #{employee.empNo}
       )
   </insert>
   
