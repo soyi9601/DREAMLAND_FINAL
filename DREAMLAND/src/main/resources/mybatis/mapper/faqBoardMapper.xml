@@ -12,7 +12,7 @@
     <result property="boardModifyDt"    column="BOARD_MODIFY_DT"/>
     <result property="hit"              column="HIT"/>
     <result property="category"         column="CATEGORY"/>
-    <association property="employee" 		javaType="EmployeeDto">
+    <association property="employee"    javaType="EmployeeDto">
       <id     property="empNo"          column="EMP_NO"/>
       <result property="empName"        column="EMP_NAME"/>
     </association>
@@ -20,64 +20,133 @@
   
   <insert id="insertFaqBoard"
           parameterType="FaqBoardDto" >
-	   INSERT INTO FAQ_BOARD(
-	       FAQ_NO
-	     , BOARD_TITLE
-	     , BOARD_CONTENTS
-	     , BOARD_CREATE_DT
-	     , BOARD_MODIFY_DT
-	     , CATEGORY
-	       , EMP_NO
-	    ) VALUES (
-	       FAQ_SEQ.NEXTVAL
-	     , #{boardTitle}
-	     , #{boardContents}
-	     , CURRENT_TIMESTAMP
-	     , CURRENT_TIMESTAMP
-	     , #{category}
-	       , 1
-	    )
+     INSERT INTO FAQ_BOARD(
+         FAQ_NO
+       , BOARD_TITLE
+       , BOARD_CONTENTS
+       , BOARD_CREATE_DT
+       , BOARD_MODIFY_DT
+       , CATEGORY
+         , EMP_NO
+      ) VALUES (
+         FAQ_SEQ.NEXTVAL
+       , #{boardTitle}
+       , #{boardContents}
+       , CURRENT_TIMESTAMP
+       , CURRENT_TIMESTAMP
+       , #{category}
+         , 1
+      )
   </insert>
   
   <select id="getFaqBoardCount">
-	 	SELECT COUNT(*)
-	 	  FROM FAQ_BOARD
+    SELECT COUNT(*)
+      FROM FAQ_BOARD
   </select>
   
   <select id="getFaqBoardList"
-  				parameterType="Map"
-  				resultMap="FaqMap">
-		SELECT FAQ_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, HIT, CATEGORY
-		     , EMP_NO, EMP_NAME
-		  FROM (SELECT ROW_NUMBER() OVER (ORDER BY FAQ_NO ${sort}) AS RN
-		  					 , FAQ.FAQ_NO, FAQ.BOARD_TITLE, FAQ.BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY
-								 , EMP.EMP_NO, EMP.EMP_NAME
-							FROM EMPLOYEE EMP INNER JOIN FAQ_BOARD FAQ
-							  ON EMP.EMP_NO = FAQ.EMP_NO)
-		 WHERE RN BETWEEN #{begin} AND #{end}	 
+          parameterType="Map"
+          resultMap="FaqMap">
+    SELECT FAQ_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, HIT, CATEGORY
+         , EMP_NO, EMP_NAME
+      FROM (SELECT ROW_NUMBER() OVER (ORDER BY FAQ_NO ${sort}) AS RN
+                 , FAQ.FAQ_NO, FAQ.BOARD_TITLE, FAQ.BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY
+                 , EMP.EMP_NO, EMP.EMP_NAME
+              FROM EMPLOYEE EMP INNER JOIN FAQ_BOARD FAQ
+                ON EMP.EMP_NO = FAQ.EMP_NO)
+     WHERE RN BETWEEN #{begin} AND #{end}  
   </select>
   
   <select id="getFaqBoarByNo"
-  				resultMap="FaqMap">
-  	SELECT FAQ.FAQ_NO, FAQ.BOARD_TITLE, BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY
-  	  FROM EMPLOYEE EMP INNER JOIN FAQ_BOARD FAQ
-  	    ON EMP.EMP_NO = FAQ.EMP_NO
-  	 WHERE FAQ.FAQ_NO = #{faqNo}			
+          resultMap="FaqMap">
+    SELECT FAQ.FAQ_NO, FAQ.BOARD_TITLE, BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY
+      FROM EMPLOYEE EMP INNER JOIN FAQ_BOARD FAQ
+        ON EMP.EMP_NO = FAQ.EMP_NO
+     WHERE FAQ.FAQ_NO = #{faqNo}      
   </select>
   
   <update id="updateFaqBoard"
-  				parameterType="FaqBoardDto">
- 		UPDATE FAQ_BOARD
- 		   SET BOARD_TITLE = #{boardTitle}
- 		     , BOARD_CONTENTS = #{boardContents}
- 		     , BOARD_MODIFY_DT = CURRENT_TIMESTAMP
- 		 WHERE FAQ_NO = #{faqNo}   
+          parameterType="FaqBoardDto">
+    UPDATE FAQ_BOARD
+       SET BOARD_TITLE = #{boardTitle}
+         , BOARD_CONTENTS = #{boardContents}
+         , BOARD_MODIFY_DT = CURRENT_TIMESTAMP
+     WHERE FAQ_NO = #{faqNo}   
   </update>
   
   <delete id="deleteFaqBoard">
-  	DELETE
-  	  FROM FAQ_BOARD
-  	 WHERE FAQ_NO = #{faqNo}
+    DELETE
+      FROM FAQ_BOARD
+     WHERE FAQ_NO = #{faqNo}
   </delete>
+  
+  <!-- 카테고리별 개수-->
+  <select id="getSortCount"
+          parameterType="Map"
+          resultType="int">
+    SELECT COUNT(*)
+      FROM FAQ_BOARD
+     WHERE CATEGORY = ${category}
+  </select>
+  
+  <!-- 카테고리별 결과 목록 -->
+  <select id="getSortList"
+          parameterType="Map"
+          resultMap="FaqMap">
+    SELECT FAQ_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, HIT, CATEGORY
+         , EMP_NO, EMP_NAME
+      FROM (SELECT ROW_NUMBER() OVER (ORDER BY FAQ_NO ${sort}) AS RN
+                 , FAQ.FAQ_NO, FAQ.BOARD_TITLE, FAQ.BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY
+                 , EMP.EMP_NO, EMP.EMP_NAME
+              FROM EMPLOYEE EMP INNER JOIN FAQ_BOARD FAQ
+                ON EMP.EMP_NO = FAQ.EMP_NO
+             WHERE FAQ.CATEGORY = ${category})
+     WHERE RN BETWEEN #{begin} AND #{end} 
+  </select>
+  
+  <!-- 검색 결과 개수 -->
+  <select id="getSearchCount"
+          parameterType="Map"
+          resultType="int">
+   SELECT COUNT(*)
+  FROM FAQ_BOARD
+  <where>
+    <if test="category != null">
+      CATEGORY = #{category}
+      AND (BOARD_TITLE LIKE '%' || #{query} || '%'
+      OR BOARD_CONTENTS LIKE '%' || #{query} || '%')
+    </if>
+    <if test="category == null">
+      (BOARD_TITLE LIKE '%' || #{query} || '%'
+      OR BOARD_CONTENTS LIKE '%' || #{query} || '%')
+    </if>
+  </where>
+  </select>
+  
+  <!-- 검색 결과 목록 -->
+  <select id="getSearchList"
+          parameterType="Map"
+          resultMap="FaqMap">
+    SELECT FAQ_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, HIT, CATEGORY, EMP_NO, EMP_NAME
+  FROM (
+    SELECT ROW_NUMBER() OVER (ORDER BY FAQ_NO ${sort}) AS RN,
+           FAQ.FAQ_NO, FAQ.BOARD_TITLE, FAQ.BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY,
+           EMP.EMP_NO, EMP.EMP_NAME
+    FROM EMPLOYEE EMP
+    INNER JOIN FAQ_BOARD FAQ ON EMP.EMP_NO = FAQ.EMP_NO
+    <where>
+      <if test="category != null">
+        CATEGORY = #{category}
+        AND (FAQ.BOARD_TITLE LIKE '%' || #{query} || '%'
+        OR FAQ.BOARD_CONTENTS LIKE '%' || #{query} || '%')
+      </if>
+      <if test="category == null">
+        (FAQ.BOARD_TITLE LIKE '%' || #{query} || '%'
+        OR FAQ.BOARD_CONTENTS LIKE '%' || #{query} || '%')
+      </if>
+    </where>
+  )
+  WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
   
  </mapper>

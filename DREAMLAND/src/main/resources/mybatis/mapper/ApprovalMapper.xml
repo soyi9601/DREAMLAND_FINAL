@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.dreamland.prj.mapper.ApprovalMapper">
+
+	 <select id="getApvNo"
+	 				  resultType="int">
+	 	SELECT MAX(APV_NO) 
+	 	  FROM APPROVAL
+	 </select>
+
+   <insert id="insertApproval"
+          parameterType="ApprovalDto">
+    INSERT INTO APPROVAL (
+       APV_NO
+      , EMP_NO
+      , APV_WRITE_DATE
+      , APV_KINDS
+    ) VALUES (
+        APV_SEQ.NEXTVAL
+      , #{empNo}
+      , CURRENT_DATE
+      , #{appKinds}
+    )
+  </insert>
+  
+  <insert id="insertApvWriter"
+          parameterType="ApvWriterDto">
+    INSERT INTO APV_WRITER (
+        APV_NO
+      , APV_STATE
+      , WRITER_LIST
+      , EMP_NO
+    ) VALUES (
+        #{apvNo}
+      , 100
+      , #{writerList}
+      , #{empNo}
+    )
+  </insert>
+
+ 
+  <insert id="insertApvLetter"
+          parameterType="AppletterDto">
+    INSERT INTO APV_LETTER (
+        LETTER_NO
+      , APV_NO
+      , LETTER_TITLE
+      , LETTER_DETAIL
+    ) VALUES (
+        LETTER_SEQ.NEXTVAL
+      , #{apvNo}
+      , #{letterTitle}
+      , #{letterDetail}
+    )
+  </insert>
+  
+  <insert id="insertApvLeave"
+          parameterType="AppleaveDto">
+    INSERT INTO APV_LEAVE (
+        LEAVE_NO
+      , APV_NO
+      , LEAVE_CLASSIFY
+      , LEAVE_START
+      , LEAVE_END
+      , LEAVE_DETAIL
+      
+    ) VALUES (
+        LEAVE_SEQ.NEXTVAL
+      , #{apvNo}
+      , #{leaveClassify}
+      , #{leaveStart}
+      , #{leaveEnd}
+    )
+  </insert>
+  
+  
+  
+ 
+  
+
+  
+  
+</mapper>
