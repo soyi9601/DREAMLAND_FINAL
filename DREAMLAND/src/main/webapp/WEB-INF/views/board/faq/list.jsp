@@ -373,33 +373,36 @@
               <div class="row">
                 <div class="col-md mb-4 mb-md-0">
                   <small class="text-light fw-semibold">Basic Accordion</small>
-                  <div class="accordion mt-3" id="accordionExample">
-                    <div class="card accordion-item active">
-                      <h2 class="accordion-header" id="headingOne">
-                        <button
-                          type="button"
-                          class="accordion-button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#accordionOne"
-                          aria-expanded="true"
-                          aria-controls="accordionOne"
-                        >
-                          Accordion Item 1
-                        </button>
-                      </h2>
-
-                      <div
-                        id="accordionOne"
-                        class="accordion-collapse collapse show"
-                        data-bs-parent="#accordionExample"
-                      >
-                        <div class="accordion-body">
-                          Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing
-                          marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping
-                          soufflé. Wafer gummi bears marshmallow pastry pie.
-                        </div>
-                      </div>
+                  <%
+String paramValue = request.getParameter("category");
+%>
+                  <form method="GET"
+                        action="${contextPath}/board/faq/search.do">
+                    <div>
+                     <% if (paramValue != null && !paramValue.isEmpty()) { %>
+            <input type="text" name="category" value="<%= paramValue %>">
+        <% } %>
+                      <input type="text" name="query">
+                      
+                      <button type="submit">검색</button>
                     </div>
+                  </form>
+
+                  <ul>
+                      <li>
+                          <!-- 검색 쿼리가 있을 경우 이를 포함 -->
+                          <a href="${contextPath}/board/faq/list.do">전체</a>
+                      </li>
+                      <li>
+                          <a href="${contextPath}/board/faq/sort.do?category=1"">1번 카테고리</a>
+                      </li>
+                      <li>
+                          <a href="${contextPath}/board/faq/sort.do?category=2">2번 카테고리</a>
+                      </li>
+                      
+                  </ul>
+                  
+                  <div class="accordion mt-3" id="accordionExample">
                     
                     <div class="card accordion-item">
                       <h2 class="accordion-header" id="headingTwo">
@@ -430,43 +433,43 @@
                     
                     <!--  -->
                     <div class="card accordion-item">
-                    	<div class="accordion-header sdheader" id="headingTwo">
-                    		<div class="sdtitle"></div>
-                    		<div class="sdicon on"></div>
-                    	</div>
-                    	<div class="accordion-body">
-                    			ㄴㅇㅎㄴㅇㅎㄴㅇㅎㄴㅇㅎㄶ
-                    			
-                    	</div>
+                      <div class="accordion-header sdheader" id="headingTwo">
+                        <div class="sdtitle"></div>
+                        <div class="sdicon on"></div>
+                      </div>
+                      <div class="accordion-body">
+                          ㄴㅇㅎㄴㅇㅎㄴㅇㅎㄴㅇㅎㄶ
+                          
+                      </div>
                     </div>
                     <!--  -->
                     <!-- 이거 -->
                     <c:forEach items="${faqBoardList}" var="faq" varStatus="vs">
-                    	<div class="card accordion-item">
-	                    	<div class="accordion-header faqheader" id="headingTwo">
-	                    		
-	                    		<div class="faqtitle">
-	                    			<span class="faq-category">
-	                    				<c:if test="${faq.category==1}">
-	                    				인사
-	                    				</c:if>
-	                    			</span>
-	                    			<span class="faq-q">Q.</span>
-	                    			${faq.boardTitle}
-	                    			<span>index : ${beginNo - vs.index}</span>
-	                    			<span>faqNo : ${faq.faqNo}</span>
-	                    		</div>
-	                    		<div class="faqicon on"></div>
-	                    	</div>
-	                    	<div class="accordion-body">
-	                    		<span class="faq-a">A.</span>
-	                    		${faq.boardContents}
-	                    		 
-										        <button type="button"  class="btn-edit btn btn-warning btn-sm">편집</button>
-										        <button type="button"  class="btn-remove btn btn-danger btn-sm">삭제</button>
-										        <input class="faqno" type="hidden" value="${faq.faqNo}" >
-	                    	</div>
-	                    </div>
+                      <div class="card accordion-item">
+                        <div class="accordion-header faqheader" id="headingTwo">
+                          
+                          <div class="faqtitle">
+                            <span class="faq-category">
+                              <c:if test="${faq.category==1}">
+                              인사
+                              </c:if>
+                            </span>
+                            <span class="faq-q">Q.</span>
+                            ${faq.boardTitle}
+                            <span>index : ${beginNo - vs.index}</span>
+                            <span>faqNo : ${faq.faqNo}</span>
+                          </div>
+                          <div class="faqicon on"></div>
+                        </div>
+                        <div class="accordion-body">
+                          <span class="faq-a">A.</span>
+                          ${faq.boardContents}
+                           
+                            <button type="button"  class="btn-edit btn btn-warning btn-sm">편집</button>
+                            <button type="button"  class="btn-remove btn btn-danger btn-sm">삭제</button>
+                            <input class="faqno" type="hidden" value="${faq.faqNo}" >
+                        </div>
+                      </div>
                     </c:forEach>
                     <!--  -->
                     
@@ -474,66 +477,66 @@
                     
                     // 탭
                     $(".accordion-header").click(function(){
-	                		if($(this).children('.faqicon').hasClass('on')){
-	                			$(this).children('.faqicon').removeClass('on');
-	                			$(this).children('.faqicon').addClass('on1');
-	                		}else{
-	                			$(this).children('.faqicon').removeClass('on1');
-	                			$(this).children('.faqicon').addClass('on');
-	                		}
-	                		$(this).siblings('.accordion-body').slideToggle(400);
-	                	})
-	                	
-	                	//var frmBtn = $('#frm-btn');
+                      if($(this).children('.faqicon').hasClass('on')){
+                        $(this).children('.faqicon').removeClass('on');
+                        $(this).children('.faqicon').addClass('on1');
+                      }else{
+                        $(this).children('.faqicon').removeClass('on1');
+                        $(this).children('.faqicon').addClass('on');
+                      }
+                      $(this).siblings('.accordion-body').slideToggle(400);
+                    })
+                    
+                    //var frmBtn = $('#frm-btn');
                     /*
-	                	const fnEditFaq = () => {
-	                		$(".btn-edit").on('click', (evt)=>{
-	                			alert($(evt.target));
-	                			location.href = '${contextPath}/board/faq/edit.do?faqNo='+$(evt.target).next().val();
-	                		})
-	                		 
-	                	}
-	                	*/
-	                	
-	                	const fnEditFaq = () => {
-									    $(".btn-edit").on('click', (evt) => {
-									    	//alert('gggg');
-									        const faqNo = $(evt.target).closest('.accordion-item').find('.faqno').val();
-									        location.href = '${contextPath}/board/faq/edit.do?faqNo=' + faqNo;
-									    });
-										}
-	                	
+                    const fnEditFaq = () => {
+                      $(".btn-edit").on('click', (evt)=>{
+                        alert($(evt.target));
+                        location.href = '${contextPath}/board/faq/edit.do?faqNo='+$(evt.target).next().val();
+                      })
+                       
+                    }
+                    */
+                    
+                    const fnEditFaq = () => {
+                      $(".btn-edit").on('click', (evt) => {
+                        //alert('gggg');
+                          const faqNo = $(evt.target).closest('.accordion-item').find('.faqno').val();
+                          location.href = '${contextPath}/board/faq/edit.do?faqNo=' + faqNo;
+                      });
+                    }
+                    
                     const fnRemoveFaq = () => {
-                    	$(".btn-remove").on('click', (evt) => {
-                    	  if(confirm('해당 게시글을 삭제할까요?')){
-                    		  	const faqNo = $(evt.target).closest('.accordion-item').find('.faqno').val();
-                    		  	location.href = '${contextPath}/board/faq/remove.do?faqNo=' + faqNo;
-                    	  }
-                    	});
+                      $(".btn-remove").on('click', (evt) => {
+                        if(confirm('해당 게시글을 삭제할까요?')){
+                            const faqNo = $(evt.target).closest('.accordion-item').find('.faqno').val();
+                            location.href = '${contextPath}/board/faq/remove.do?faqNo=' + faqNo;
+                        }
+                      });
                     }
                     
                     const fnAfterModifyFaq = () => {
-                  	  const modifyResult = '${modifyResult}';
-                  	  if(modifyResult !== '') {
-                  	    alert(modifyResult);
-                  	  }
-                  	}
+                      const modifyResult = '${modifyResult}';
+                      if(modifyResult !== '') {
+                        alert(modifyResult);
+                      }
+                    }
                     
                     const fnAfterDeleteFaq = () => {
-                    	  const modifyResult = '${removeResult}';
-                    	  if(modifyResult !== '') {
-                    	    alert(modifyResult);
-                    	  }
-                    	}
+                        const modifyResult = '${removeResult}';
+                        if(modifyResult !== '') {
+                          alert(modifyResult);
+                        }
+                      }
                   
-                  fnEditFaq();	
+                  fnEditFaq();  
                   fnAfterModifyFaq();
-                  fnRemoveFaq();  	
-                  fnAfterDeleteFaq();	
+                  fnRemoveFaq();    
+                  fnAfterDeleteFaq(); 
+                  
+                 
                     </script>
-                    <script>
 
-                    </script>
                     <style>
                     .faqheader{display:flex;justify-content: space-between;align-items:center;    padding: 0.79rem 1.125rem;}
                     
@@ -541,15 +544,15 @@
                     .faq-a{font-weight:600; margin-right:10px;color:blue;}
                     .faqicon{width: 0.75rem;height: 0.75rem; transition: transform 0.3s ease-in-out;}
                     .faqicon.on{
-                    	background-repeat: no-repeat;
-    									background-size: 0.75rem;
+                      background-repeat: no-repeat;
+                      background-size: 0.75rem;
                       background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Cpath id='a' d='m1.532 12 6.182-6-6.182-6L0 1.487 4.65 6 0 10.513z'/%3E%3C/defs%3E%3Cg transform='translate%282.571%29' fill='none' fill-rule='evenodd'%3E%3Cuse fill='%23435971' xlink:href='%23a'/%3E%3Cuse fill-opacity='.1' fill='%23566a7f' xlink:href='%23a'/%3E%3C/g%3E%3C/svg%3E%0A");
                     }
                     .faqicon.on1{
-                    	background-repeat: no-repeat;
-    									background-size: 0.75rem;
+                      background-repeat: no-repeat;
+                      background-size: 0.75rem;
                       background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Cpath id='a' d='m1.532 12 6.182-6-6.182-6L0 1.487 4.65 6 0 10.513z'/%3E%3C/defs%3E%3Cg transform='translate%282.571%29' fill='none' fill-rule='evenodd'%3E%3Cuse fill='%23435971' xlink:href='%23a'/%3E%3Cuse fill-opacity='.1' fill='%23566a7f' xlink:href='%23a'/%3E%3C/g%3E%3C/svg%3E%0A");
-                    	transform: rotate(90deg);
+                      transform: rotate(90deg);
                     }
                    
                     .accordion-body{display:none;}
@@ -566,9 +569,9 @@
                 <div>${paging}</div>
               </div>
               <!--/ Accordion -->
-									
-									
-									
+                  
+                  
+                  
               <!--/ Advance Styling Options -->
             </div>
             

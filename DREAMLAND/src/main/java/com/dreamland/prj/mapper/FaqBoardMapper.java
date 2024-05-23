@@ -14,5 +14,10 @@ public interface FaqBoardMapper {
 	List<FaqBoardDto> getFaqBoardList(Map<String, Object> map);
 	FaqBoardDto getFaqBoarByNo(int faqNo);
 	int updateFaqBoard(FaqBoardDto faqBoardDto);
-	int deleteFaqBoard(int faqNo); 
+	int deleteFaqBoard(int faqNo);
+	int getSortCount(Map<String, Object> map);
+	List<FaqBoardDto> getSortList(Map<String, Object> map);
+	int getSearchCount(Map<String, Object> map);
+	List<FaqBoardDto> getSearchList(Map<String, Object> map);
+	
 }
