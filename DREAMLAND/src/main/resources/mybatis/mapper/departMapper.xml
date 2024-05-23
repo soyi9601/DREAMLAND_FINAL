@@ -19,7 +19,6 @@
      <result property="mobile"    column="MOBILE"/>
      <result property="posNo"     column="POS_NO"/>
      <result property="role"      column="ROLE"/>
-     <result property="id"        column="ID"/>
    </association>
 </resultMap>
 
@@ -27,7 +26,7 @@
   <select id="getDepartList"
           resultMap="DepartmentMap">    
     SELECT D.DEPT_NO, D.DEPT_NAME, D.DEPTH, D.PARENT_ID, D.TREE_TEXT,
-	         E.EMP_NO, E.EMP_NAME, E.POS_NO, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.ROLE, E.ID, LEVEL
+	         E.EMP_NO, E.EMP_NAME, E.POS_NO, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.ROLE, LEVEL
 	    FROM DEPARTMENT D
       LEFT JOIN EMPLOYEE E ON D.DEPT_NO = E.DEPT_NO
 	   START WITH D.PARENT_ID = '#'
@@ -35,10 +34,23 @@
   </select>
   
   <!-- 부서 정보 업데이트 -->
-	<update id="updateDepartment" parameterType="DepartmentDto">
+	<update id="updateDepart" parameterType="DepartmentDto">
 	  UPDATE DEPARTMENT 
 	     SET DEPT_NAME = #{deptName}, PARENT_ID = #{parentId}, TREE_TEXT = #{treeText}
 	   WHERE DEPT_NO = #{deptNo}
 	</update>
+	
+	<!-- 부서 및 직원 삭제 -->
+	<!-- <delete id="deleteDepart">
+    DELETE
+      FROM DEPARTMENT
+     WHERE DEPT_NO = #{deptNo}       
+	</delete> -->
+	
+	<!-- <delete id="deleteEmployee">
+    DELETE
+      FROM EMPLOYEE
+     WHERE EMP_NO = #{empNo}       
+  </delete> -->
 
 </mapper> 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dreamland.prj.dto.DepartmentDto;
+import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.service.DepartService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,14 +40,20 @@ public class DepartController {
   }
   
   @PostMapping("/updateNode")
-  public ResponseEntity<?> updateNode(@RequestBody DepartmentDto departmentDto) {
-    departService.updateNode(departmentDto);
+  public ResponseEntity<?> updateDepart(@RequestBody DepartmentDto departmentDto) {
+    departService.updateDepart(departmentDto);
     return ResponseEntity.ok().build();
   }
   
   @PostMapping("/deleteNode")
-  public ResponseEntity<?> deleteNode(@RequestBody DepartmentDto departmentDto) {
-    departService.deleteNode(departmentDto);
+  public ResponseEntity<?> deleteDepart(@RequestBody DepartmentDto departmentDto) {
+    departService.deleteDepart(departmentDto);
+    return ResponseEntity.ok().build();
+  }
+  
+  @PostMapping("/deleteNode")
+  public ResponseEntity<?> deleteEmployee(@RequestBody EmployeeDto employeeDto) {
+    departService.deleteEmployee(employeeDto);
     return ResponseEntity.ok().build();
   }
   
