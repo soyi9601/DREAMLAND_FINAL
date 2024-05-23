@@ -141,6 +141,9 @@
 .pagination span:hover {
     background-color: #f1f1f1;
 }
+      tbody tr:hover {
+            cursor: pointer;
+        }
      
     </style>
 

@@ -20,4 +20,6 @@ public interface ApprovalMapper {
 	int insertApvLeave(AppleaveDto appLeaveto );
 	int insertApvWriter(ApvWriterDto appwridto);
 	int insertApvRef(ApvRefDto apprefdto);
+	int getApvCount();
+	 List<ApprovalDto> getApvList(Map<String, Object> map);
 }
