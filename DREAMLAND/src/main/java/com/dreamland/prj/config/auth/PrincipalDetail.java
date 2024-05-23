@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.dreamland.prj.dto.EmployeeDto;
 
@@ -48,14 +49,14 @@ public class PrincipalDetail implements UserDetails{
 
   @Override
   public String getPassword() {
-    // TODO Auto-generated method stub
+
     return emp.getPassword();
   }
 
   @Override
   public String getUsername() {
     // TODO Auto-generated method stub
-    return emp.getId()+"";
+    return emp.getEmail();
   }
 
   @Override
@@ -104,11 +105,6 @@ public class PrincipalDetail implements UserDetails{
     return emp.getMobile();
   }
   
-  // 이메일
-  public String getEmail() {
-    return emp.getEmail();
-  }
-  
   // 부서
   public int getDeptNo() {
     return emp.getDeptNo();
@@ -128,5 +124,20 @@ public class PrincipalDetail implements UserDetails{
   public String getRole() {
     return emp.getRole();
   }
+  
+  //우편번호
+  public String getPostcode() {
+    return emp.getPostcode();
+  }
 
+  // 주소
+  public String getAddress() {
+    return emp.getAddress();
+  }
+  
+  // 상세주소
+  public String getDetailAddress() {
+    return emp.getDetailAddress();
+  }
+  
 }

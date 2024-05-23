@@ -10,10 +10,10 @@
           resultType="EmployeeDto">
     SELECT EMP_NO, EMP_NAME, BIRTH, ENTER_DATE, EMAIL, RESIGN_DATE, MOBILE
          , ADDRESS, DETAIL_ADDRESS, PASSWORD, DAY_OFF, PROFILE_PATH, USED_DAY_OFF
-         , SIGN_PATH, DEPT_NO, POS_NO, ROLE, ID
+         , SIGN_PATH, DEPT_NO, POS_NO, ROLE
       FROM EMPLOYEE
     <where>
-      <if test="id!=null">ID = ${id}</if>
+      <if test="email!=null">EMAIL = #{email}</if>
     </where>
   </select>
 
@@ -41,7 +41,7 @@
       , DEPT_NO
       , POS_NO
       , ROLE
-      , ID
+      , POSTCODE
     ) VALUES (
         #{empNo}
       , #{empName}
@@ -60,16 +60,7 @@
       , #{deptNo}
       , #{posNo}
       , #{role}
-      , #{deptNo} || (
-            SELECT 
-                CASE 
-                    WHEN LENGTH(TO_CHAR(#{empNo})) = 1 THEN '000'||TO_CHAR(#{empNo})
-                    WHEN LENGTH(TO_CHAR(#{empNo})) = 2 THEN '00'||TO_CHAR(#{empNo})
-                    WHEN LENGTH(TO_CHAR(#{empNo})) = 3 THEN '0'||TO_CHAR(#{empNo})
-                    ELSE TO_CHAR(#{empNo})
-                END
-            FROM DUAL
-        )
+      , NULL
     )  
   </insert>
 
@@ -95,6 +86,18 @@
      WHERE POS_NO = #{posNo}
   </select>
   
+  <update id="updateUserInfo"
+          parameterType="EmployeeDto">
+    UPDATE EMPLOYEE
+       SET EMP_NAME = #{empName}
+         , BIRTH = #{birth}
+         , MOBILE = #{mobile}
+         , POSTCODE = #{postcode}
+         , ADDRESS = #{address}
+         , DETAIL_ADDRESS = #{detailAddress}
+         , PROFILE_PATH = #{profilePath}
+     WHERE EMAIL = #{email}
+  </update>
 
 
 </mapper>

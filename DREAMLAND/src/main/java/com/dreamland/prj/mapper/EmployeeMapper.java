@@ -12,6 +12,7 @@ public interface EmployeeMapper {
   EmployeeDto getEmployeeByMap(Map<String, Object> map);
   String getDeptNameByDeptNo(int deptNo);
   String getPosNameByPosNo(int posNo);
+  int updateUserInfo(EmployeeDto emp);
 //  int deleteUser(int userNo);
 //  int insertAccessHistory(Map<String, Object> map);
 //  int updateAccessHistory(String sessionId);

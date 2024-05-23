@@ -47,6 +47,12 @@ public class EmployeeContorller {
     employeeService.addEmployee(profilePath, request, response);
     return "redirect:/employee/add";
   }
+  
+  @PostMapping("/user/modify.do")
+  public String modifyUserInfo(@RequestParam("profilePath") MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {
+    employeeService.modifyUserInfo(profilePath, request, response);
+    return "redirect:/user/mypage";
+  }
 
     
 }

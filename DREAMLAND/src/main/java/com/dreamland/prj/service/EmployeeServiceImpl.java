@@ -97,7 +97,7 @@ public class EmployeeServiceImpl implements EmployeService {
       }
       newProfilePath = uploadPath + "/" + filesystemName;
     } else {
-      newProfilePath = "C:/upload/user-solid.png";
+      newProfilePath = "/c:/dreamland/upload/user-solid.png";
     }
     String password = encoder.encode(request.getParameter("empPw"));
     String name = request.getParameter("empName");
@@ -124,7 +124,55 @@ public class EmployeeServiceImpl implements EmployeService {
                       .build();
     
     // 회원 가입
-    int insertCount = employeeMapper.insertEmployee(emp);  
+    employeeMapper.insertEmployee(emp);  
+    
+  }
+  
+  @Override
+  public void modifyUserInfo(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {
+
+    String newProfilePath= null;
+    if(profilePath != null && !profilePath.isEmpty()) {
+      String uploadPath = myFileUtils.getUploadPath();
+      
+      File dir = new File(uploadPath);
+      if(!dir.exists()) {
+        dir.mkdirs();
+      }
+      String filesystemName = myFileUtils.getFilesystemName(profilePath.getOriginalFilename());
+      File file = new File(dir, filesystemName);
+      try {
+        profilePath.transferTo(file);
+      } catch(Exception e) {
+        e.printStackTrace();
+      }
+      newProfilePath = uploadPath + "/" + filesystemName;
+    } else {
+      newProfilePath = request.getParameter("beforeProfilePath");
+    }
+    
+    String empName = request.getParameter("empName");
+    Date birth = Date.valueOf(request.getParameter("birth"));
+    String mobile = request.getParameter("mobile");
+    String postcode = request.getParameter("postcode");
+    String address = request.getParameter("address");
+    String detailAddress = request.getParameter("detailAddress");
+    String email = request.getParameter("email");
+    
+    // Mapper 로 보낼 EmployeeDto 객체 생성
+    EmployeeDto emp = EmployeeDto.builder()
+                        .empName(empName)
+                        .birth(birth)
+                        .mobile(mobile)
+                        .postcode(postcode)
+                        .address(address)
+                        .detailAddress(detailAddress)
+                        .profilePath(newProfilePath)
+                        .email(email)
+                      .build();
+    
+    // 수정
+    employeeMapper.updateUserInfo(emp);
     
   }
   
@@ -202,9 +250,9 @@ public class EmployeeServiceImpl implements EmployeService {
   @Override
   public EmployeeDto signin(String username) {
     // 입력한 아이디
-    int id = Integer.parseInt(username);
+    String email = username;
     
-    Map<String, Object> params = Map.of("id", id);
+    Map<String, Object> params = Map.of("email", email);
     
     // email/pw 가 일치하는 회원 정보 가져오기
     EmployeeDto emp = employeeMapper.getEmployeeByMap(params);
