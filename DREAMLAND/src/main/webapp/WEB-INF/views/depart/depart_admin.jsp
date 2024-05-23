@@ -105,7 +105,7 @@
 		            }
 		          }
 			    });
-			    $('#jsTree').on('rename_node.jstree', function(e, data) {
+			    $('#jsTree').on('rename_node.jstree', function(e, data) {			    	
 			    	fetch('/depart/updateNode', {
 			    		method: 'POST',
 			    		headers: {
@@ -121,18 +121,24 @@
 			    	  .then(response => console.log('Node renamed:', response))
 			    	  .catch(error => console.error('Error rename node:', error));
 			    }).on('delete_node.jstree', function(e, data) {
-			    	fetch('/depart/deleteNode', {
+			    	var isDepart = data.node.type === 'default';
+			    	var deleteNo = isDepart ? {deptNo: data.node.id} : {empNo: data.node.id};
+		        var url = isDepart ? '/depart/deleteDepart' : '/depart/deleteEmployee';
+			    	fetch(url, {
 			    		method: 'POST',
 			    		headers: {
 	   	          'Content-Type': 'application/json'
 	   	        },
-	    	      body: JSON.stringify({
-	    	    	  deptNo: data.node.id,
-	    	    	  empNo: data.node.employee.empNo,
-	    	      })
-			    	}).then(response => response.json())
-			    	  .then(response => console.log('Node deleted:', response))
-	            .catch(error => console.error('Error deleting node:', error));
+	    	      body: JSON.stringify(deleteNo)
+			    	}).then(response => {
+			    	    if (response.ok) {
+		    	        return response.json(); // JSON 응답을 파싱하여 반환
+			    	    } else {
+		    	        throw new Error('Network 응답 실패');
+			    	    }
+			    	})
+		    	  .then(data => {alert(data.message);})
+            .catch(error => console.error('Error deleting node:', error));
 			    });
 		    })
 				.catch(error => console.log('Error node:', error));	

@@ -45,16 +45,16 @@ public class DepartController {
     return ResponseEntity.ok().build();
   }
   
-  @PostMapping("/deleteNode")
+  @PostMapping("/deleteDepart")
   public ResponseEntity<?> deleteDepart(@RequestBody DepartmentDto departmentDto) {
     departService.deleteDepart(departmentDto);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok().body("{\"message\": \"부서가 삭제되었습니다.\"}");
   }
   
-  @PostMapping("/deleteNode")
+  @PostMapping("/deleteEmployee")
   public ResponseEntity<?> deleteEmployee(@RequestBody EmployeeDto employeeDto) {
     departService.deleteEmployee(employeeDto);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok().body("{\"message\": \"직원이 삭제되었습니다.\"}");
   }
   
 }

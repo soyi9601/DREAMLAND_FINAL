@@ -41,16 +41,16 @@
 	</update>
 	
 	<!-- 부서 및 직원 삭제 -->
-	<!-- <delete id="deleteDepart">
+	<delete id="deleteDepart" parameterType="DepartmentDto">
     DELETE
       FROM DEPARTMENT
      WHERE DEPT_NO = #{deptNo}       
-	</delete> -->
+	</delete>
 	
-	<!-- <delete id="deleteEmployee">
+	<delete id="deleteEmployee" parameterType="EmployeeDto">
     DELETE
       FROM EMPLOYEE
      WHERE EMP_NO = #{empNo}       
-  </delete> -->
+  </delete>
 
 </mapper> 
