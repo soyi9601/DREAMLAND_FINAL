@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,10 +36,11 @@ public class ScheduleController {
 	public String calendarPage() {
 	  return "schedule/calendar";
 	}
-	@PostMapping(value="/register.do", produces="application/json")
-  public String register(@RequestParam HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	
+	@PostMapping("/register.do")
+  public String register(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 	  
-	// 요청 파라미터 로그 출력
+	  // 요청 파라미터 로그 출력
     System.out.println("Request Parameters:");
     Enumeration<String> parameterNames = request.getParameterNames();
     while (parameterNames.hasMoreElements()) {
@@ -46,7 +49,7 @@ public class ScheduleController {
     }
 	  
     redirectAttributes.addFlashAttribute("insertCount", scheduleService.registerSkd(request));
-	  //scheduleService.registerSkd(request);
+
 	  return "redirect:/schedule/calendar";
   }
 	  

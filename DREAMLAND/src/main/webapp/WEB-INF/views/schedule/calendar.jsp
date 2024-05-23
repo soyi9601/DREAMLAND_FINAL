@@ -11,6 +11,10 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.11/index.global.min.js'></script>  
 
+<!-- moment.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+
+
 <style>
     body {
         margin: 40px 10px;
@@ -29,7 +33,8 @@
         <div id='calendar'></div>
     </div>
 
-   <!-- 일정 추가 모달 -->
+     <!-- 일정 추가 모달 -->
+    <form id="frm-schedule">
     <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -38,7 +43,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="frm-schedule" method="POST" action="${contextPath}/schedule/register.do">
                         <div class="mb-3">
                             <label for="title" class="form-label">일정 제목</label>
                             <input type="text" class="form-control" id="title" name="title" required>
@@ -63,12 +67,12 @@
                         <div class="mb-3">
                             <label for="color" class="form-label">색상 선택</label>
                             <select id="color" name="color" class="form-select" style="width: 100%;">
-                              <option value="gray" style="color:#808080;">기본색상</option>
-                              <option value="red" style="color:#FF0000;">빨간색</option>
+                              <option value="gray"   style="color:#808080;">기본색상</option>
+                              <option value="red"    style="color:#FF0000;">빨간색</option>
                               <option value="orange" style="color:#FFA500;">주황색</option>
                               <option value="yellow" style="color:#FFFF00;">노란색</option>
-                              <option value="green" style="color:#008000;">초록색</option>
-                              <option value="blue" style="color:#0000FF;">파란색</option>
+                              <option value="green"  style="color:#008000;">초록색</option>
+                              <option value="blue"   style="color:#0000FF;">파란색</option>
                               <option value="indigo" style="color:#000080;">남색</option>
                               <option value="purple" style="color:#800080;">보라색</option>
                             </select>
@@ -79,18 +83,19 @@
                         </div>
                         <!-- 세션 정보를 전달하는 숨겨진 필드 -->
                         <input type="hidden" name="empNo" value="${sessionScope.empNo}">
+                        <input type="hidden" name="deptNo" value="${sessionScope.deptNo}">
                         <!-- <input type="hidden" name="deptNo" value="${sessionScope.user.deptNo}">  -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     <button type="submit" class="btn btn-primary" id="btn-save">저장</button>
-                </div>
-                    </form>
+                </div>   
                 </div>
             </div>
         </div>
     </div>
-    
-    <script>
+</form>
+
+  <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -119,6 +124,7 @@
                     url: "${contextPath}/schedule/register.do",
                     type: "POST",
                     data: formData,
+                    dataType: "json",
                     success: function(response) {
                         if (response === 'success') {
                             // 모달 닫기
@@ -137,6 +143,5 @@
         });
         
     </script>
-
 
 <%@ include file="../layout/footer.jsp" %>    

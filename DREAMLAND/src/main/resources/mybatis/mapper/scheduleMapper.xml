@@ -5,7 +5,7 @@
   
  <mapper namespace="com.dreamland.prj.mapper.ScheduleMapper">
    
-  <resultMap id="ScheduleMap" type="ScheduleDto">
+<!--   <resultMap id="ScheduleMap" type="ScheduleDto">
       <id property="skdNo" column="SKD_NO"/>
       <result property="skdStart" column="SKD_START"/>
       <result property="skdEnd" column="SKD_END"/>
@@ -17,32 +17,31 @@
           <id property="empNo" column="EMP_NO"/>
           <result property="deptNo" column="DEPT_NO"/>
       </association>
-  </resultMap>
+  </resultMap> -->
    
   <insert id="skdAdd"
           parameterType="ScheduleDto">
       INSERT INTO SCHEDULE (
           SKD_NO
-        , EMP_NO  
         , SKD_START
         , SKD_END
-        , SKD_CATEGORY,
+        , SKD_CATEGORY
         , SKD_TITLE
         , SKD_CONTENTS
-        , SKD_COLOR
+        , EMP_NO  
         , DEPT_NO
+        , SKD_COLOR
       ) VALUES (
           SKD_SEQ.NEXTVAL
-        , #{emp.empNo}
-        , #to_date(#{start},'YYYY-MM-DD HH24:MI:SS')
-        , #to_date(#{end},'YYYY-MM-DD HH24:MI:SS')
-        , #{category}
-        , #{title}
-        , #{contents}
-        , #{color}
-        , 6000
+        , #{skdStart}
+        , #{skdEnd}
+        , #{skdCategory}
+        , #{skdTitle}
+        , #{skdContents}
+        , #{employee.empNo}
+        , #{employee.deptNo}
+        , #{skdColor}
       )
   </insert>
-   
   
  </mapper>
