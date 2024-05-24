@@ -58,7 +58,7 @@
 	          <div class="card">
 	            <div class="card-body">
 	              <div class="card-title">
-	                <h5 class="text-nowrap mb-2">오늘의 날씨</h5>                   
+	                <h5 class="text-nowrap mb-2 text-primary">오늘의 날씨</h5>                   
 	              </div>
 	              <div class="weather">
 	               <div class="col-md">
@@ -166,8 +166,8 @@
 	   currentTemp.textContent = resData.main.temp.toFixed(1) + 'º'; // toFixed(1) : 소수점1개까지 표시
 	   tempMin.textContent = '최저기온 : ' + resData.main.temp_min.toFixed(1) + 'º';
 	   tempMax.textContent = '최고기온 : ' + resData.main.temp_max.toFixed(1) + 'º';
-	   wind.textContent = resData.wind.speed + 'm/s';
-	   cloud.textContent = resData.clouds.all + '%';
+	   wind.textContent = '풍속 : ' + resData.wind.speed + 'm/s';
+	   cloud.textContent = '습도 : ' + resData.clouds.all + '%';
 	  },
 	  error: (jqXHR) => {
 	   alert('날씨 API 연결 이상');
