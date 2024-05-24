@@ -196,7 +196,14 @@
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                   <div class="avatar">
                     <div class="avatar avatar-online">
-                      <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+                      <c:choose>
+                        <c:when test="${loginEmployee.profilePath != null}">
+                          <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+                        </c:when>
+                        <c:otherwise>
+                          <img src="../assets/img/user-solid.png"  alt class="w-px-40 h-auto rounded-circle" />
+                        </c:otherwise>
+                      </c:choose>
                     </div>                    
                   </div>
                 </a>
@@ -206,7 +213,14 @@
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+			                      <c:choose>
+			                        <c:when test="${loginEmployee.profilePath != null}">
+			                          <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+			                        </c:when>
+			                        <c:otherwise>
+			                          <img src="../assets/img/user-solid.png"  alt class="w-px-40 h-auto rounded-circle" />
+			                        </c:otherwise>
+			                      </c:choose>
                           </div>
                         </div>
                         <div class="flex-grow-1">

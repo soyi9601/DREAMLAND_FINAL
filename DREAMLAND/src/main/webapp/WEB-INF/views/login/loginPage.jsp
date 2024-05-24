@@ -88,15 +88,16 @@
               <!-- /Logo -->
               <form id="formAuthentication" class="mb-3" action="/login" method="POST">
                 <div class="mb-3">
-                  <label for="username" class="form-label">아이디</label>
+                  <label for="username" class="form-label">이메일</label>
                   <input
                     type="text"
                     class="form-control"
                     id="username"
                     name="username"
-                    placeholder="아이디를 입력하세요"
+                    placeholder="example@dreamland.com"
                     autofocus
                   />
+                  <div class="mb-3" id="email-result"></div>
                 </div>
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
@@ -111,8 +112,9 @@
                       id="password"
                       class="form-control"
                       name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                       aria-describedby="password"
+                      maxlength="30"
                     />
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
@@ -155,22 +157,49 @@
 
     <!-- Page JS -->
     <script>
+    /**
+     * 작성자 : 고은정
+     * 기능   : 로그인
+     * 이력   :
+     *    1) 240524 - 로그인 이메일 체크 함수 추가
+     */
+    
+    
+    // 로그인 submit 후 에러메시지 출력
     function getErrorMessageFromURL() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('exception');
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('exception');
     }
 
     // 페이지가 로드될 때 실행
     document.addEventListener('DOMContentLoaded', function() {
-        const errorMessage = getErrorMessageFromURL();
-        if (errorMessage) {
-            // 오류 메시지를 출력할 요소를 찾아서 오류 메시지를 삽입
-            const loginResultElement = document.querySelector('.login-result');
-            if (loginResultElement) {
-                loginResultElement.textContent = errorMessage;
-            }
+      const errorMessage = getErrorMessageFromURL();
+      if (errorMessage) {
+        // 오류 메시지를 출력할 요소를 찾아서 오류 메시지를 삽입
+        const loginResultElement = document.querySelector('.login-result');
+        if (loginResultElement) {
+          loginResultElement.textContent = errorMessage;
         }
+      }
     });
+    
+    // 이메일 체크 함수
+    const fnEmailCheck = () => {
+   	  let inpEmail = document.getElementById('username');
+   	  let regEmail = /^[A-Za-z0-9-_]{2,}@[A-Za-z0-9]+(\.[A-Za-z]{2,6}){1,2}$/;
+   	  let emailResult = document.getElementById('email-result');
+   	  if(!regEmail.test(inpEmail.value)){
+   	    emailResult.innerHTML = '이메일을 확인해주세요';
+   	    emailResult.style.fontSize = '0.75rem';
+   	    emailResult.style.color = '#EE2B4B';
+   	    return;
+   	  } else {
+   		  emailResult.innerHTML = '';
+   	  }
+    }
+    
+    document.getElementById('username').addEventListener('blur', fnEmailCheck);
+    
     </script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
