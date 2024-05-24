@@ -58,13 +58,13 @@
                           </button>
                           <p class="text-muted mb-0">JPG, GIF, PNG 가능. 최대 800KB</p>
                         </div>
-                                               <img
+                          <img
                               src="/resources/assets/img/logo/logo2.png" 
                               alt="서명"
                               class="d-block rounded"
                               height="100"
                               width="100"
-                              id="signPath"
+                              id="uploadSign"
                           />
                           <input
                               type="text"
@@ -82,12 +82,12 @@
                              type="file"
                              id="signPath"
                              name="signPath"
-                             class="account-file-input"
+                             class="account-sign-input"
                              hidden
                              accept="image/png, image/jpeg, image/gif"
                            />
                          </label>
-                         <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                         <button type="button" class="btn btn-outline-secondary account-sign-reset mb-4">
                            <i class="bx bx-reset d-block d-sm-none"></i>
                            <span class="d-none d-sm-block">초기화</span>
                          </button>
