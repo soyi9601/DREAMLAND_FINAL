@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.dreamland.prj.mapper.IndexMapper">
+	
+  <select id="getUser" resultType="EmployeeDto">
+    SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.EMAIL, E.MOBILE,  E.ROLE, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
+      FROM EMPLOYEE E
+      JOIN DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
+      JOIN POSITION P ON E.POS_NO = P.POS_NO
+     WHERE EMAIL = #{email}
+  </select>
+
+  
+
+</mapper> 

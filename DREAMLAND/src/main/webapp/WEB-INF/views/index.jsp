@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:include page="./layout/header.jsp" />  
-
 <!-- Content wrapper -->
 <div class="content-wrapper">
  <!-- Content -->
@@ -11,7 +12,7 @@
 		    <div class="row">
 			    <div class="col-6 mb-4">
 					  <h2 class="py-3 mb-4">
-						  안녕하세요. <span class="user-name"> OOO</span>님
+						  안녕하세요. <span class="user-name">${emp.empName}</span>님
 						</h2>	    
 			    </div>
 			    <div class="col-6 mb-4 py-3">
@@ -37,7 +38,19 @@
 	                사진
 	                
 	              </div>
-	              <span class="fw-semibold d-block mb-1">OO팀 OOO 주임<br/>111@example.com<br/>02-1234-5678</span>
+	              <span class="fw-semibold d-block mb-1">
+	                ${emp.deptName}팀
+	                <c:choose>
+	                 <c:when test="${emp.role == 'ROLE_ADMIN'}">
+	                   <strong>${emp.empName}</strong>
+	                 </c:when>
+	                 <c:when test="${emp.role == 'ROLE_USER'}">
+                     <strong>${emp.empName}${emp.posName}</strong>
+                   </c:when>                   
+	                </c:choose><br/>
+	                ${emp.email}<br/>
+	                ${emp.mobile}
+	              </span>
 	            </div>
 	          </div>
 	        </div>
@@ -56,11 +69,11 @@
 	                  <div id="current-temp" class="col-md-6 display-3"></div>
 	               </div>  
 	               </div>
-	                <div>
-	                  <div id="temp-min"></div>
-	                  <div id="temp-max"></div>
-	                  <div id="wind"></div>
-	                  <div id="cloud"></div>
+	                <div class="temt-wrap">
+	                  <div id="temp-min" class="py-1"></div>
+	                  <div id="temp-max" class="py-1"></div>
+	                  <div id="wind" class="py-1"></div>
+	                  <div id="cloud" class="py-1"></div>
 	                </div>
 	              </div>
 	            </div>
@@ -107,7 +120,9 @@
 	    </div>
 	    <div class="col-12 col-lg-6">
 	      <h4 class="mb-4">
-	       <span class="today"></span><span class="time"></span>
+	       <span class="today"></span>
+	       <span class="day-name"></span>
+	       <span class="time"></span>
 	      </h4> 
 	        <div class="row">
 	          <div class="col-md-8">
@@ -165,25 +180,41 @@
 	/* 현재 시간 및 날짜 */
 	const today = document.querySelector('.today');
 	const time = document.querySelector('.time');
+	const dayName = document.querySelector('.day-name');
 	
-	function getTime() {
+	function fnGetDate() {
+    const todayDate = new Date();
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const days_num = todayDate.getDay();
+    const year = todayDate.getFullYear();
+    const month = String(todayDate.getMonth() + 1).padStart(2, "0");  // month는 0부터 시작하기 때문에 +1 해줘야함. padStart 는 두자리수로 표현할 때 앞에 0으로 나타낼 수 있음.
+    const date = String(todayDate.getDate()).padStart(2, "0");
+    const day = days[days_num];
+    today.innerText = year + '. ' + month + '. ' + date;
+    dayName.innerText =  day + '요일';
+  }
+	
+	function fnGetTime() {
 		let now = new Date();
 		let hours = now.getHours();
 		let minutes = String(now.getMinutes()).padStart(2, "0");
 		let seconds = String(now.getSeconds()).padStart(2, "0");
 		let ampm = '';
-		if(hours > 12) {
+		if(hours > 12) {    // 13시부터는 12시를 빼주고 앞에 0 붙여주기
 			hours -= 12;
 			hours = String(hours).padStart(2, "0");
 			ampm = 'PM';
 		} else {
 			ampm = 'AM';
 		}
-		time.innerText = ampm + hours + ':' + minutes + ':' + seconds;
+		time.innerText = ampm + hours + ' : ' + minutes + ' : ' + seconds;
 	}
 	
-	getTime();
-	setInterval(getTime, 1000);
+	fnGetDate();
+	fnGetTime();
+	setInterval(fnGetTime, 1000);
+	
+	
 	</script>
 
 
