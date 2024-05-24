@@ -11,6 +11,8 @@ public interface LoginService {
   
   EmployeeDto getEmployeeByEmail(String email);
   
-  void modifyUserInfo(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response);  
+  void modifyUserInfo(MultipartFile profilePath
+                    , MultipartFile signPath 
+                    , HttpServletRequest request, HttpServletResponse response);  
 
 }

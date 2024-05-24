@@ -36,8 +36,10 @@ public class LoginController {
   
   // 마이페이지 수정
   @PostMapping("/user/modify.do")
-  public String modifyUserInfo(@RequestParam("profilePath") MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {
-    loginService.modifyUserInfo(profilePath, request, response);
+  public String modifyUserInfo(@RequestParam("profilePath") MultipartFile profilePath
+                             , @RequestParam("signPath") MultipartFile signPath,
+                             HttpServletRequest request, HttpServletResponse response) {
+    loginService.modifyUserInfo(profilePath, signPath, request, response);
     EmployeeDto employee = loginService.getEmployeeByEmail(request.getParameter("email"));
     
     return "redirect:/user/mypage";

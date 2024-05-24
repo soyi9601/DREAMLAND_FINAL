@@ -12,7 +12,8 @@ public interface EmployeService {
   // ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params);
   // ResponseEntity<Map<String, Object>> sendCode(Map<String, Object> params);
   // 직원등록
-  void addEmployee(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response);  
+  void addEmployee(MultipartFile profilePath
+                 , HttpServletRequest request, HttpServletResponse response);  
 
   // 정보수정
   // void modifyUserInfo(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response);  

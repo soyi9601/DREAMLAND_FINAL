@@ -9,5 +9,5 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface ApprovalService {
 	int registerAppletter(HttpServletRequest request);
 	int registerAppLeave(HttpServletRequest request);
-
+	void loadAppList(Model model);
 }
