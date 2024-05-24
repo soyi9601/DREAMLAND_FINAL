@@ -1,6 +1,7 @@
 package com.dreamland.prj.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,8 +22,10 @@ public class ApprovalController {
 		return "approval/appWrite";
 	}
 	
-	@GetMapping("/appList")
-	public String appList() {
+	@GetMapping("/appList.do")
+	  public String applist(HttpServletRequest request, Model model) {
+	    model.addAttribute("request", request);
+	    approvalService.loadAppList(model);
 		return "approval/appList";
 	}
 	

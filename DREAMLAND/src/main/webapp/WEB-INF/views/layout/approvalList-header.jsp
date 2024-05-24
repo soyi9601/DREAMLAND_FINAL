@@ -141,6 +141,9 @@
 .pagination span:hover {
     background-color: #f1f1f1;
 }
+      tbody tr:hover {
+            cursor: pointer;
+        }
      
     </style>
 
@@ -222,7 +225,7 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="auth-login-basic.html" class="menu-link" target="_blank">
+                                   <a href="auth-login-basic.html" class="menu-link" target="_blank">
                     <div>Login</div>
                   </a>
                 </li>
