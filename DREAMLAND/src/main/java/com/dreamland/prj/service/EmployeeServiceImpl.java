@@ -80,31 +80,42 @@ public class EmployeeServiceImpl implements EmployeService {
 //    
 //  }
   
-  @Override
-  public void addEmployee(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {
-
-    // 전달된 파라미터
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-    String newProfilePath= null;
-    if(profilePath != null && !profilePath.isEmpty()) {
+  private String filePath(MultipartFile filePath) {
+    
+    String newFilePath = null;
+    
+    if(filePath != null && !filePath.isEmpty()) {
       String uploadPath = myFileUtils.getUploadPath();
       
       File dir = new File(uploadPath);
       if(!dir.exists()) {
         dir.mkdirs();
       }
-      String filesystemName = myFileUtils.getFilesystemName(profilePath.getOriginalFilename());
+      String filesystemName = myFileUtils.getFilesystemName(filePath.getOriginalFilename());
       File file = new File(dir, filesystemName);
       try {
-        profilePath.transferTo(file);
+        filePath.transferTo(file);
       } catch(Exception e) {
         e.printStackTrace();
       }
-      newProfilePath = uploadPath + "/" + filesystemName;
+      newFilePath = uploadPath + "/" + filesystemName;
     } else {
-      newProfilePath = "/c:/dreamland/upload/user-solid.png";
+      newFilePath = "";
     }
+    return newFilePath;
+  }
+  
+  @Override
+  public void addEmployee(MultipartFile profilePath
+                        , HttpServletRequest request, HttpServletResponse response) {
+
+    // 전달된 파라미터
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    String newProfilePath = null;
+    
+    newProfilePath = filePath(profilePath);
+    
     String password = encoder.encode(request.getParameter("empPw"));
     String name = request.getParameter("empName");
     Date birth = Date.valueOf(request.getParameter("birth"));

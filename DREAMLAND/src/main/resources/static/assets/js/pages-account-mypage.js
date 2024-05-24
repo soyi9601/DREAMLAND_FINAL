@@ -1,9 +1,30 @@
 /**
- * Account Settings - Account
+ * 작성자 : 고은정
+ * 기능   : 마이페이지 수정
+ * 이력   :
+ *    1) 240524
+ *        - preventDefault 완료
+ *        - 정규식(이름, 이메일, 휴대전화)
  */
 
 'use strict';
+/************************** 변수 설정 **************************/
+var nameCheck = false;
+var mobileCheck = false;
 
+
+/************************** 함수 정의 **************************/
+// contextPath 저장 함수
+const fnGetContextPath = ()=>{
+  const host = location.host;  /* localhost:8080 */
+  const url = location.href;   /* http://localhost:8080/mvc/getDate.do */
+  const begin = url.indexOf(host) + host.length;
+  const end = url.indexOf('/', begin + 1);
+  return url.substring(begin, end);
+}
+
+
+// 이미지 등록 함수(프로필 사진, 전자서명)
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
     const deactivateAcc = document.querySelector('#formAccountDeactivation');
@@ -12,16 +33,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
     let accountUserImage = document.getElementById('uploadedAvatar');
     const fileInput = document.querySelector('.account-file-input'),
       resetFileInput = document.querySelector('.account-image-reset');
+
       
     // 전자 서명
     let accountSignImage = document.getElementById('uploadSign');
     const signInput = document.querySelector('.account-sign-input'),
       resetSignInput = document.querySelector('.account-sign-reset');
-
     if (accountUserImage && accountSignImage) {
       const resetImage = accountUserImage.src;
       const resetSign = accountSignImage.src;
-      
+
       // 프로필 이미지
       fileInput.onchange = () => {
         let maxSize = 800 * 1024;
@@ -107,3 +128,96 @@ function fnExecDaumPostcode() {
     }
   }).open();
 }
+
+// 이름 체크 함수
+const fnCheckName = () => {
+  let inpName = document.getElementById('emp-name');
+  let name = inpName.value;
+  let totalByte = 0;
+  let msgName = document.getElementById('name-result');
+  let regName = /^[가-힣a-zA-Z]+$/;
+  
+  // 글자수 -> byte 계산
+  for(let i = 0; i < name.length; i++){
+    if(name.charCodeAt(i) > 127) {  // 코드값이 127 초과이면 한 글자 당 2바이트 처리한다.
+      totalByte += 2;
+    } else {
+      totalByte++;
+    }
+  }
+
+  nameCheck = (totalByte <= 20);
+
+  // 공백 및 byte 초과 체크
+  if(totalByte === 0){
+    nameCheck = false;
+    msgName.innerHTML = '이름은 공백일 수 없습니다';
+    msgName.style.fontSize = '0.75rem';
+    msgName.style.color = '#EE2B4B';
+  } else if(!nameCheck){
+      nameCheck = false;
+      msgName.innerHTML = '이름은 20 바이트를 초과할 수 없습니다.';
+      msgName.style.fontSize = '0.75rem';
+      msgName.style.color = '#EE2B4B';
+  } else if(!regName.test(name)) {
+      nameCheck = false;
+      msgName.innerHTML = '이름은 숫자와 특수문자가 포함될 수 없습니다.';
+      msgName.style.fontSize = '0.75rem';
+      msgName.style.color = '#EE2B4B';
+  } else {
+    nameCheck = true;
+    msgName.innerHTML = '';
+  }
+
+}
+
+// 휴대전화 체크 함수
+const fnCheckMobile = () => {
+  let inpMobile = document.getElementById('emp-mobile');
+  let msgMobile = document.getElementById('result-mobile');
+  let regMobile = /^01[0-1,6-9]-\d{4}-\d{4}$/;
+  
+  if(inpMobile.value.length === 0){
+    mobileCheck = false;
+    msgMobile.innerHTML = '휴대전화는 공백일 수 없습니다';
+    msgMobile.style.fontSize = '0.75rem';
+    msgMobile.style.color = '#EE2B4B';
+  } else if(!regMobile.test(inpMobile.value)){
+    mobileCheck = false;
+    msgMobile.innerHTML = '전화번호 양식을 확인해주세요';
+    msgMobile.style.fontSize = '0.75rem';
+    msgMobile.style.color = '#EE2B4B';
+  } else {
+    mobileCheck = true;
+    msgMobile.innerHTML = '';
+  }
+}
+
+// preventDefault 부분
+const fnAddEmployee = () =>{
+  document.getElementById('frm-modify-info').addEventListener('submit', (evt)=>{
+    if(!nameCheck){
+      alert('이름을 확인하세요.');
+      evt.preventDefault();
+      return;
+    } else if(!mobileCheck){
+      alert('휴대전화를 확인하세요.');
+      evt.preventDefault();
+      return;
+    } 
+    
+  });
+
+}
+
+
+// 비밀번호 변경 페이지 이동
+const moveModifyPassword = () => {
+  location.href = fnGetContextPath() + '/modifyPassword';
+}
+/************************** 함수 호출 **************************/
+document.getElementById('emp-name').addEventListener('blur', fnCheckName);
+document.getElementById('emp-mobile').addEventListener('blur', fnCheckMobile);
+document.getElementById('modify-password').addEventListener('click', moveModifyPassword);
+
+fnAddEmployee();

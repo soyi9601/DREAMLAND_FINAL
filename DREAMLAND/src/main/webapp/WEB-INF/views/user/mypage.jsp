@@ -5,7 +5,19 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }" />
+
+<!-- 이미지 경로 확인 -->
+<c:set var="signPath" value="${loginEmployee.signPath}"/>
+<c:set var="profilePath" value="${loginEmployee.profilePath}"/>
+<c:if test="${signPath == null}">
+   <c:set var="signPath" value="../assets/img/logo/logo2.png" />
+</c:if>
+<c:if test="${profilePath == null}">
+   <c:set var="profilePath" value="../assets/img/user-solid.png" />
+</c:if>
+
 <jsp:include page="../layout/header.jsp" /> 
+
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
@@ -17,20 +29,20 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="card mb-4">
-                    <h5 class="card-header">정보수정</h5>
+                    <h5 class="card-header">정보수정 - 이미지 수정 후 반드시 저장 누를 것</h5>
                     
                     <!-- Account -->
-                    <form id="formAddEmployee" method="POST" action="${contextPath}/user/modify.do" enctype="multipart/form-data">
+                    <form id="frm-modify-info" method="POST" action="${contextPath}/user/modify.do" enctype="multipart/form-data">
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
-                        <img
-                          src="${loginEmployee.profilePath}" 
-                          alt="user-avatar"
-                          class="d-block rounded"
-                          height="100"
-                          width="100"
-                          id="uploadedAvatar"
-                        />
+						            <img
+						                src="${profilePath}" 
+						                alt="user-avatar"
+						                class="d-block rounded"
+						                height="100"
+						                width="100"
+						                id="uploadedAvatar"
+						            />
                         <input
                           type="text"
                           id="beforeProfilePath"
@@ -58,18 +70,18 @@
                           </button>
                           <p class="text-muted mb-0">JPG, GIF, PNG 가능. 최대 800KB</p>
                         </div>
-                          <img
-                              src="/resources/assets/img/logo/logo2.png" 
-                              alt="서명"
-                              class="d-block rounded"
-                              height="100"
-                              width="100"
-                              id="uploadSign"
-                          />
+                           <img
+                               src="${signPath}" 
+                               alt="user-avatar"
+                               class="d-block rounded"
+                               height="100"
+                               width="100"
+                               id="uploadSign"
+                           />
                           <input
                               type="text"
-                              id="beforeProfilePath"
-                              name="beforeProfilePath"
+                              id="beforeSignPath"
+                              name="beforeSignPath"
                               class="form-control"
                               hidden
                               value="${loginEmployee.signPath}"
@@ -91,7 +103,7 @@
                            <i class="bx bx-reset d-block d-sm-none"></i>
                            <span class="d-none d-sm-block">초기화</span>
                          </button>
-                         <p class="text-muted mb-0">JPG, GIF, PNG 가능. 최대 100KB</p>
+                         <p class="text-muted mb-0">서명 사진(gif, png, jpg 가능) 최대 100KB</p>
                        </div>
                       </div>
 
@@ -105,10 +117,11 @@
                            <input
                              class="form-control"
                              type="text"
-                             id="empName"
+                             id="emp-name"
                              name="empName"
                              value="${loginEmployee.empName}" 
                            />
+	                         <div id="name-result"></div>
                          </div>
                          <div class="mb-3 col-md-6">
                            <label for="birth" class="form-label">생년월일</label>
@@ -124,11 +137,12 @@
                            <label class="form-label" for="mobile">휴대전화</label>
                              <input
                                type="tel"
-                               id="mobile"
+                               id="emp-mobile"
                                name="mobile"
                                class="form-control"
                                value="${loginEmployee.mobile}"
                              />
+	                         <div id="result-mobile"></div>
                          </div>
                          <div class="mb-3 col-md-6">
                            <label for="email" class="form-label">E-mail</label>
@@ -208,7 +222,7 @@
                    <div class="card-body">
                        <div class="mt-2">
                          <button type="submit" class="btn btn-primary me-2">저장</button>
-                         <button type="button" class="btn btn-warning me-2" id="modifyPw" >비밀번호변경</button>
+                         <button type="button" class="btn btn-warning me-2" id="modify-password" >비밀번호변경</button>
                          <button type="reset" class="btn btn-outline-secondary">취소</button>
                          </div>
                        </div>

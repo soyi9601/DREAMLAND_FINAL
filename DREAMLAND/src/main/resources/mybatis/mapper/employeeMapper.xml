@@ -96,6 +96,7 @@
          , ADDRESS = #{address}
          , DETAIL_ADDRESS = #{detailAddress}
          , PROFILE_PATH = #{profilePath}
+         , SIGN_PATH = #{signPath}
      WHERE EMAIL = #{email}
   </update>
 
