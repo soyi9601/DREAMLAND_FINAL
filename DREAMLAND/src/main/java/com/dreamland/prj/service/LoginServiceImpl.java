@@ -42,28 +42,43 @@ public class LoginServiceImpl implements LoginService {
     return emp; 
   }
   
-  // 마이페이지 수정
-  @Override
-  public void modifyUserInfo(MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {
-    String newProfilePath= null;
-    if(profilePath != null && !profilePath.isEmpty()) {
+  private String filePath(MultipartFile filePath, String beforePath) {
+    
+    String newFilePath = null;
+    String beforeFilePath = beforePath;
+    
+    if(filePath != null && !filePath.isEmpty()) {
       String uploadPath = myFileUtils.getUploadPath();
       
       File dir = new File(uploadPath);
       if(!dir.exists()) {
         dir.mkdirs();
       }
-      String filesystemName = myFileUtils.getFilesystemName(profilePath.getOriginalFilename());
+      String filesystemName = myFileUtils.getFilesystemName(filePath.getOriginalFilename());
       File file = new File(dir, filesystemName);
       try {
-        profilePath.transferTo(file);
+        filePath.transferTo(file);
       } catch(Exception e) {
         e.printStackTrace();
       }
-      newProfilePath = uploadPath + "/" + filesystemName;
+      newFilePath = uploadPath + "/" + filesystemName;
     } else {
-      newProfilePath = request.getParameter("beforeProfilePath");
+      newFilePath = beforePath;
     }
+    return newFilePath;
+  }
+  
+  // 마이페이지 수정
+  @Override
+  public void modifyUserInfo(MultipartFile profilePath
+                           , MultipartFile signPath
+                           , HttpServletRequest request, HttpServletResponse response) {
+    String newProfilePath= null;
+    String newSignPath = null;
+    
+    newProfilePath = filePath(profilePath, request.getParameter("beforeProfilePath"));
+    newSignPath = filePath(signPath, request.getParameter("beforeSignPath"));
+    
     
     String empName = request.getParameter("empName");
     Date birth = Date.valueOf(request.getParameter("birth"));
@@ -82,6 +97,7 @@ public class LoginServiceImpl implements LoginService {
                         .address(address)
                         .detailAddress(detailAddress)
                         .profilePath(newProfilePath)
+                        .signPath(newSignPath)
                         .email(email)
                       .build();
     
