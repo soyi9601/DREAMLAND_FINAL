@@ -33,7 +33,7 @@
       , #{apvTitle}    
       , #{empNo}
       , CURRENT_DATE
-      , #{appKinds}
+      , #{apvKinds}
     )
   </insert>
   
@@ -93,11 +93,13 @@
   <select id="getApvList"
           parameterType="Map"
           resultMap="ApprovalMap">
+   <if test="1==1">
     SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
       FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO ${sort}) AS RN
                  , APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE 
               FROM APPROVAL)
      WHERE RN BETWEEN #{begin} AND #{end}
+     </if>  
   </select>
  
 
