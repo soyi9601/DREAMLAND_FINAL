@@ -20,11 +20,11 @@
                     <h5 class="card-header">직원등록</h5>
                     
                     <!-- Account -->
-                    <form id="formAddEmployee" method="POST" action="${contextPath}/employee/add.do" enctype="multipart/form-data">
+                    <form id="frm-add-employee" method="POST" action="${contextPath}/employee/add.do" enctype="multipart/form-data">
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
                         <img
-                          src="../assets/img/logo/logo2.png"
+                          src="../assets/img/user-solid.png"
                           alt="user-avatar"
                           class="d-block rounded"
                           height="100"
@@ -61,9 +61,10 @@
                             <input
                               class="form-control"
                               type="text"
-                              id="empName"
+                              id="emp-name"
                               name="empName"
                             />
+                            <div id="name-result"></div>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="birth" class="form-label">생년월일</label>
@@ -83,25 +84,27 @@
                             <label class="form-label" for="mobile">휴대전화</label>
                               <input
                                 type="tel"
-                                id="mobile"
+                                id="emp-mobile"
                                 name="mobile"
                                 class="form-control"
                                 placeholder="- 붙여서 작성해주세요"
                               />
+	                          <div id="result-mobile"></div>
                           </div>
                           <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
                             <input
                               class="form-control"
                               type="text"
-                              id="email"
+                              id="emp-email"
                               name="email"
                               placeholder="example@example.com"
                             />
+                            <div id="result-email"></div>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label class="form-label" for="deptNo">소속</label>
-                            <select id="deptNo" name="deptNo" class="select2 form-select">
+                            <select id="dept-no" name="deptNo" class="select2 form-select">
                               <option value="">선택하세요</option>
                               <option value="9999">대표이사</option>
                               <option value="1000">인사</option>
@@ -113,7 +116,7 @@
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="posNo" class="form-label">직급</label>
-                            <select id="posNo" name="posNo" class="select2 form-select">
+                            <select id="pos-no" name="posNo" class="select2 form-select">
                               <option value="">선택하세요</option>
                               <option value="10">사원</option>
                               <option value="20">주임</option>
@@ -154,7 +157,7 @@
                           </div>
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2">저장</button>
+                          <button type="submit" class="btn btn-primary me-2" id="frm-add-employee">저장</button>
                           <button type="reset" class="btn btn-outline-secondary">취소</button>
                         </div>
                     </div>

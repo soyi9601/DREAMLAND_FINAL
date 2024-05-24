@@ -114,19 +114,19 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/approval/write" class="menu-link" target="_blank">
-                  <div>기안서 작성</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="${contextPath} }" class="menu-link" target="_blank">
-                  <div>진헹중인 문서함</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                  <div>내 문서함</div>
-                </a>
+                  <a href="auth-login-basic.html" class="menu-link" target="_blank">
+                    <div>Login</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="auth-register-basic.html" class="menu-link" target="_blank">
+                    <div>Register</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
+                    <div>Forgot Password</div>
+                  </a>
               </li>
             </ul>
           </li>
@@ -165,8 +165,14 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="ui-accordion.html" class="menu-link">
-                  <div>결재</div>
+                <a href="${contextPath}/approval/appWrite" class="menu-link">
+                  <div>기안서 작성</div>
+                </a>
+                <a href="${contextPath}/approval/appList" class="menu-link">
+                  <div>진행 중인 문서</div>
+                </a>
+                <a href="${contextPath}/approval/appMyList" class="menu-link">
+                  <div>내 문서</div>
                 </a>
               </li>
             </ul>
@@ -190,7 +196,14 @@
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                   <div class="avatar">
                     <div class="avatar avatar-online">
-                      <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+                      <c:choose>
+                        <c:when test="${loginEmployee.profilePath != null}">
+                          <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+                        </c:when>
+                        <c:otherwise>
+                          <img src="../assets/img/user-solid.png"  alt class="w-px-40 h-auto rounded-circle" />
+                        </c:otherwise>
+                      </c:choose>
                     </div>                    
                   </div>
                 </a>
@@ -200,7 +213,14 @@
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+			                      <c:choose>
+			                        <c:when test="${loginEmployee.profilePath != null}">
+			                          <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
+			                        </c:when>
+			                        <c:otherwise>
+			                          <img src="../assets/img/user-solid.png"  alt class="w-px-40 h-auto rounded-circle" />
+			                        </c:otherwise>
+			                      </c:choose>
                           </div>
                         </div>
                         <div class="flex-grow-1">

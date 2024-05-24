@@ -5,6 +5,15 @@
   
 <mapper namespace="com.dreamland.prj.mapper.ApprovalMapper">
 
+   <resultMap type="ApprovalDto" id="ApprovalMap">
+     <id     property="apvNo"    column="APV_NO" />
+     <result property="empNo"       column="EMP_NO"/>
+     <result property="apvWriteDate"    column="APV_WRITE_DATE"/>
+     <result property="apvCheck"    column="APV_CHECK"/>
+     <result property="apvKinds"    column="APV_KINDS"/>
+     <result property="apvTitle"       column="APV_TITLE"/>
+   </resultMap>
+
 	 <select id="getApvNo"
 	 				  resultType="int">
 	 	SELECT MAX(APV_NO) 
@@ -14,15 +23,17 @@
    <insert id="insertApproval"
           parameterType="ApprovalDto">
     INSERT INTO APPROVAL (
-       APV_NO
+        APV_NO
+      , APV_TITLE 
       , EMP_NO
       , APV_WRITE_DATE
       , APV_KINDS
     ) VALUES (
         APV_SEQ.NEXTVAL
+      , #{apvTitle}    
       , #{empNo}
       , CURRENT_DATE
-      , #{appKinds}
+      , #{apvKinds}
     )
   </insert>
   
@@ -47,12 +58,10 @@
     INSERT INTO APV_LETTER (
         LETTER_NO
       , APV_NO
-      , LETTER_TITLE
       , LETTER_DETAIL
     ) VALUES (
         LETTER_SEQ.NEXTVAL
       , #{apvNo}
-      , #{letterTitle}
       , #{letterDetail}
     )
   </insert>
@@ -76,11 +85,23 @@
     )
   </insert>
   
-  
-  
- 
-  
+  <select id="getApvCount">
+    SELECT COUNT(*)
+      FROM APPROVAL
+  </select>
 
-  
+  <select id="getApvList"
+          parameterType="Map"
+          resultMap="ApprovalMap">
+   <if test="1==1">
+    SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
+      FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO ${sort}) AS RN
+                 , APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE 
+              FROM APPROVAL)
+     WHERE RN BETWEEN #{begin} AND #{end}
+     </if>  
+  </select>
+ 
+
   
 </mapper>
