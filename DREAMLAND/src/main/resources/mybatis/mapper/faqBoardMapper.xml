@@ -71,6 +71,7 @@
        SET BOARD_TITLE = #{boardTitle}
          , BOARD_CONTENTS = #{boardContents}
          , BOARD_MODIFY_DT = CURRENT_TIMESTAMP
+         , CATEGORY = #{category}
      WHERE FAQ_NO = #{faqNo}   
   </update>
   
