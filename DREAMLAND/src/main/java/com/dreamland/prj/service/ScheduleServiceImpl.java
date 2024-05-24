@@ -1,6 +1,11 @@
 package com.dreamland.prj.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.ScheduleDto;
@@ -27,26 +32,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     int deptNo = Integer.parseInt(request.getParameter("deptNo"));
     String start = request.getParameter("start");
     String end = request.getParameter("end");
- 
-//    Date start = null;
-//    Date end = null;
-//    
-//    try {
-//      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//      start = formatter.parse(request.getParameter("start"));
-//      end = formatter.parse(request.getParameter("end"));
-//
-//    } catch (ParseException e) {
-//      System.out.println("날짜포맷오류");
-//    }
     String category = request.getParameter("category");
     String title = request.getParameter("title");
     String contents = request.getParameter("contents");
     String color = request.getParameter("color");
     
-//    SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//    System.out.println("start: " + outputFormatter.format(start));
-//    System.out.println("end: " + outputFormatter.format(end));
     
     // 로그 출력
     System.out.println("====== service ======");
@@ -79,5 +69,18 @@ public class ScheduleServiceImpl implements ScheduleService {
     // DB에 일정 저장
     return scheduleMapper.skdAdd(schedule);
   }
+  
+  // 모든 일정 조회
+  @Override
+  public void loadSkdList(HttpServletRequest request, Model model) {
+    
+   Map<String, Object> map = new HashMap<>();
+   
+   List<ScheduleDto> skdList = scheduleMapper.getSkdList(map);
+   model.addAttribute("skdList" ,skdList);
+   
+  }
+  
+  
   
 }

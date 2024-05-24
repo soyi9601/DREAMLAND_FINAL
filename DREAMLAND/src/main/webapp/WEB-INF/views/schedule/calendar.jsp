@@ -58,7 +58,7 @@
                         <div class="mb-3">
                             <label for="category" class="form-label">카테고리</label>
                             <select id="category" name="category" class="form-select">
-                                <option value="work">업무</option>
+                                <option value="work" selected>업무</option>
                                 <option value="meeting">회의</option>
                                 <option value="outing">외근</option>
                                 <option value="business-trip">출장</option>
@@ -67,7 +67,7 @@
                         <div class="mb-3">
                             <label for="color" class="form-label">색상 선택</label>
                             <select id="color" name="color" class="form-select" style="width: 100%;">
-                              <option value="gray"   style="color:#808080;">기본색상</option>
+                              <option value="gray"   style="color:#808080;" selected>회색</option>
                               <option value="red"    style="color:#FF0000;">빨간색</option>
                               <option value="orange" style="color:#FFA500;">주황색</option>
                               <option value="yellow" style="color:#FFFF00;">노란색</option>
@@ -95,8 +95,23 @@
     </div>
 </form>
 
-  <script>
+ <script>
         document.addEventListener('DOMContentLoaded', function() {
+            
+        	 // 전체 일정 데이터
+            var eventArray = [];
+            <c:forEach var="skd" items="${skdList}">
+                eventArray.push({
+                    title: "${skd.skdTitle}",
+                    start: "${skd.skdStart}",
+                    end: "${skd.skdEnd}",
+                    color: "${skd.skdColor}"
+                });
+            </c:forEach>
+            
+            // 전체 일정 데이터 확인용 (개발완료 후 삭제!!)
+            console.log(eventArray);
+            
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 headerToolbar: {
@@ -104,44 +119,63 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                dayMaxEvents: true,           // 이벤트 오버되면 높이 제한
+                dayMaxEvents: true, // 일정 오버되면 높이 제한
+                events: eventArray, // 일정 캘린더에 표시
                 dateClick: function(info) {
-                    // 클릭한 날짜를 모달의 시작일과 종료일로 설정
-                    $('#start').val(info.dateStr + "T09:00");
+                    $('#start').val(info.dateStr + "T09:00"); // 클릭한 날짜를 모달의 시작일과 종료일로 설정
                     $('#end').val(info.dateStr + "T18:00");
-                    // 모달 표시
-                    $('#insertModal').modal('show');
-                },
-                events: [] // 이벤트 데이터
+                    $('#insertModal').modal('show'); // 모달창 표시
+                }
             });
-            calendar.render();
-       
+
+            calendar.render(); // 캘린더 렌더링
+
+            /**************** 일정 등록 ****************/
             $('#frm-schedule').on('submit', function(e) {
                 e.preventDefault();
                 var formData = $(this).serialize();
-                
+
                 $.ajax({
-                    url: "${contextPath}/schedule/register.do",
                     type: "POST",
+                    url: "${contextPath}/schedule/register.do",
                     data: formData,
                     dataType: "json",
-                    success: function(response) {
-                        if (response === 'success') {
-                            // 모달 닫기
+                    success: function(resData) {
+                        if (resData.insertSkdCount === 1) {
+                        	// 모달 닫기
                             $('#insertModal').modal('hide');
-                            // 캘린더 이벤트 다시 로드
-                            calendar.refetchEvents();
+                            // 새로운 이벤트 추가
+                            var newEvent = {
+                                title: $('#title').val(),
+                                start: $('#start').val(),
+                                end: $('#end').val(),
+                                color: $('#color').val()
+                            };
+                            calendar.addEvent(newEvent);
+                            // 입력 필드 초기화
+                            $('#title').val('');
+                            $('#start').val('');
+                            $('#end').val('');
+                            $('#category').val('work'); 
+                            $('#color').val('gray'); 
+                            $('#contents').val('');
                         } else {
-                            alert('일정 등록 실패');
+                            alert('일정 등록 실패했습니다.');
+                            // 입력 필드 초기화
+                            $('#title').val('');
+                            $('#start').val('');
+                            $('#end').val('');
+                            $('#category').val('work'); 
+                            $('#color').val('gray'); 
+                            $('#contents').val('');
                         }
                     },
-                    error: function() {
-                        alert('서버 오류 발생');
+                    error: function(jqXHR) {
+                        alert(jqXHR.statusText + '(' + jqXHR.status + ')');
                     }
                 });
             });
         });
-        
     </script>
 
 <%@ include file="../layout/footer.jsp" %>    
