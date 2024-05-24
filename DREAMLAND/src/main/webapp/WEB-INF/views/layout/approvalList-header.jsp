@@ -28,6 +28,10 @@
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <!-- Helpers -->
+    
 		
     <!-- Page CSS -->
      <style>
@@ -276,9 +280,15 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="ui-accordion.html" class="menu-link">
-                    <div>결재</div>
-                  </a>
+                <a href="${contextPath}/approval/appWrite" class="menu-link">
+                  <div>기안서 작성</div>
+                </a>
+                <a href="${contextPath}/approval/appList" class="menu-link">
+                  <div>진행 중인 문서</div>
+                </a>
+                <a href="${contextPath}/approval/appMyList" class="menu-link">
+                  <div>내 문서</div>
+                </a>
                 </li>
               </ul>
             </li>
