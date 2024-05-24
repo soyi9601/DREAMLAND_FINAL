@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -142,7 +144,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public void loadAppList(Model model) {
+	public  ResponseEntity<Map<String, Object>> loadAppList(Model model) {
 		
 		 Map<String, Object> modelMap = model.asMap();
 		    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
@@ -174,12 +176,137 @@ public class ApprovalServiceImpl implements ApprovalService {
 		     * 4     40
 		     * 5     20
 		     */
-		    model.addAttribute("beginNo", total - (page - 1) * display);
-		    model.addAttribute("approvalList", approvalMapper.getApvList(map));
-		    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/approval/appList.do", sort, display));
-		    model.addAttribute("display", display);
-		    model.addAttribute("sort", sort);
-		    model.addAttribute("page", page);
+		    return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
+                    ,"paging",myPageUtils.getPaging(request.getContextPath() + "/approval/totalList.do", sort, display)
+                    , "approvalList" , approvalMapper.getApvList(map)
+                    , "sort", sort
+                    ,"page", page), HttpStatus.OK);
 		
 	}
+	
+	public  ResponseEntity<Map<String, Object>> loadWaitAppList(Model model) {
+		
+		Map<String, Object> modelMap = model.asMap();
+		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+		
+		int total = approvalMapper.getApvCount();
+		
+		Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+		int display = Integer.parseInt(optDisplay.orElse("20"));
+		
+		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(optPage.orElse("1"));
+		
+		String empNo = request.getParameter("empNo");
+		
+		myPageUtils.setPaging(total, display, page);
+		
+		Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+		String sort = optSort.orElse("DESC");
+		
+		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+				, "end", myPageUtils.getEnd()
+				, "sort", sort
+				, "empNo", empNo);
+		
+		/*
+		 * total = 100, display = 20
+		 * 
+		 * page  beginNo
+		 * 1     100
+		 * 2     80
+		 * 3     60
+		 * 4     40
+		 * 5     20
+		 */
+		return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
+				,"paging",myPageUtils.getPaging(request.getContextPath() + "/approval/appList.do", sort, display)
+				, "approvalList" , approvalMapper.getApvList(map)
+				, "sort", sort
+				,"page", page), HttpStatus.OK);
+		
+	}
+	
+	public  ResponseEntity<Map<String, Object>> loadComfirmAppList(Model model) {
+		
+		Map<String, Object> modelMap = model.asMap();
+		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+		
+		int total = approvalMapper.getApvCount();
+		
+		Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+		int display = Integer.parseInt(optDisplay.orElse("20"));
+		
+		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(optPage.orElse("1"));
+		
+		myPageUtils.setPaging(total, display, page);
+		
+		Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+		String sort = optSort.orElse("DESC");
+		
+		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+				, "end", myPageUtils.getEnd()
+				, "sort", sort);
+		
+		/*
+		 * total = 100, display = 20
+		 * 
+		 * page  beginNo
+		 * 1     100
+		 * 2     80
+		 * 3     60
+		 * 4     40
+		 * 5     20
+		 */
+		return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
+				,"paging",myPageUtils.getPaging(request.getContextPath() + "/approval/appList.do", sort, display)
+				, "approvalList" , approvalMapper.getApvList(map)
+				, "sort", sort
+				,"page", page), HttpStatus.OK);
+		
+	}
+	
+	public  ResponseEntity<Map<String, Object>> loadCompleteAppList(Model model) {
+		
+		Map<String, Object> modelMap = model.asMap();
+		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+		
+		int total = approvalMapper.getApvCount();
+		
+		Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+		int display = Integer.parseInt(optDisplay.orElse("20"));
+		
+		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(optPage.orElse("1"));
+		
+		myPageUtils.setPaging(total, display, page);
+		
+		Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+		String sort = optSort.orElse("DESC");
+		
+		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+				, "end", myPageUtils.getEnd()
+				, "sort", sort);
+		
+		/*
+		 * total = 100, display = 20
+		 * 
+		 * page  beginNo
+		 * 1     100
+		 * 2     80
+		 * 3     60
+		 * 4     40
+		 * 5     20
+		 */
+		return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
+				,"paging",myPageUtils.getPaging(request.getContextPath() + "/approval/appList.do", sort, display)
+				, "approvalList" , approvalMapper.getApvList(map)
+				, "sort", sort
+				,"page", page), HttpStatus.OK);
+		
+	}
+
 }
+	
+	

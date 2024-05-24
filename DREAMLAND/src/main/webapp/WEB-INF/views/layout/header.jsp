@@ -163,8 +163,14 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="ui-accordion.html" class="menu-link">
-                  <div>결재</div>
+                <a href="${contextPath}/approval/appWrite" class="menu-link">
+                  <div>기안서 작성</div>
+                </a>
+                <a href="${contextPath}/approval/appList" class="menu-link">
+                  <div>진행 중인 문서</div>
+                </a>
+                <a href="${contextPath}/approval/appMyList" class="menu-link">
+                  <div>내 문서</div>
                 </a>
               </li>
             </ul>
