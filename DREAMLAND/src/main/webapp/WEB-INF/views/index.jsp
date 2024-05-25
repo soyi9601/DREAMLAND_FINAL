@@ -16,7 +16,7 @@
 						</h2>	    
 			    </div>
 			    <div class="col-6 mb-4 py-3">
-			       <div class="button-wrapper text-end">
+			      <div class="button-wrapper text-end">
 	            <button type="submit" class="btn btn-primary mb-4">
 	              <span class="d-none d-sm-block">출근</span>
 	            </button>
@@ -31,12 +31,11 @@
 	  <div class="row">
 	    <div class="col-12 col-lg-6">
 	      <div class="row">
-	        <div class="col-6 mb-4">
+	        <div class="col-6 mb-4 h-100">
 	          <div class="card">
 	            <div class="card-body text-center">
-	              <div class="card-title">
-	                사진
-	                
+	              <div class="text-center my-3">
+	                <img src="${emp.profilePath}" alt="user-avatar" class="rounded" height="100" width="100" id="uploadedAvatar" />
 	              </div>
 	              <span class="fw-semibold d-block mb-1">
 	                ${emp.deptName}팀
@@ -55,39 +54,40 @@
 	          </div>
 	        </div>
 	        <div class="col-6 mb-4">
-	          <div class="card">
+	          <div class="card h-100">
 	            <div class="card-body">
 	              <div class="card-title">
 	                <h5 class="text-nowrap mb-2 text-primary">오늘의 날씨</h5>                   
 	              </div>
 	              <div class="weather">
-	               <div class="col-md">
-	                <div class="row">
-	                  <div id="weather-icon-wrap" class="col-md-6">
-	                    <img id="weather-icon">
-	                  </div>
-	                  <div id="current-temp" class="col-md-6 display-3"></div>
-	               </div>  
-	               </div>
-	                <div class="temt-wrap">
-	                  <div id="temp-min" class="py-1"></div>
-	                  <div id="temp-max" class="py-1"></div>
-	                  <div id="wind" class="py-1"></div>
-	                  <div id="cloud" class="py-1"></div>
+	                <div class="col-md">
+	                  <div class="row">
+	                    <div id="weather-icon-wrap" class="col-md-6">
+	                      <img id="weather-icon">
+	                    </div>
+	                    <div id="current-temp" class="col-md-6 display-3"></div>
+	                  </div>  
+	                </div>
+	                <div class="temt-wrap mt-3">
+	                  <div><span class="tit d-inline-block mr-1">최저기온 : </span><span id="temp-min" class="py-1"></span></div>
+	                  <div><span class="tit d-inline-block">풍속 : </span><span id="wind" class="py-1"></span></div>
+	                  <div><span class="tit d-inline-block">최고기온 : </span><span id="temp-max" class="py-1"></span></div>
+	                  <div><span class="tit d-inline-block">습도 : </span><span id="cloud" class="py-1"></span></div>
 	                </div>
 	              </div>
 	            </div>
 	          </div>
-	        </div>
+	        </div>	        
+        </div>
+	      <div class="row">
 	        <div class="col-12 mb-4">
-	          <div class="card">
+	          <div class="card h-100">
 	            <div class="card-body">
 	              <div class="gap-3">
-	                <div>
-	                  <div class="card-title">
-	                    <h5 class="text-nowrap mb-2">공지사항</h5>
-	                  </div>
-	                  <div class="table-responsive text-nowrap">
+                  <div class="card-title">
+                    <h5 class="text-nowrap mb-2">공지사항</h5>
+                  </div>
+                  <div class="table-responsive text-nowrap">
 								    <table class="table">
 								      <thead class="table-light">
 								        <tr>
@@ -101,17 +101,16 @@
 								          <td scope="col">Albert Cook</td>
 								        </tr>
 								        <tr>
-	                           <td scope="col"><span class="fw-medium">2</span></td>
-	                           <td scope="col">Albert Cook</td>
-	                         </tr>
+                          <td scope="col"><span class="fw-medium">2</span></td>
+                          <td scope="col">Albert Cook</td>
+                        </tr>
 								        <tr>
-	                           <td scope="col"><span class="fw-medium">3</span></td>
-	                           <td scope="col">Albert Cook</td>
-	                         </tr>
+                          <td scope="col"><span class="fw-medium">3</span></td>
+                          <td scope="col">Albert Cook</td>
+                        </tr>
 								      </tbody>
 								    </table>
-								  </div>
-	                </div>
+							    </div>
 	              </div>
 	            </div>
 	          </div>
@@ -120,25 +119,24 @@
 	    </div>
 	    <div class="col-12 col-lg-6">
 	      <h4 class="mb-4">
-	       <span class="today"></span>
-	       <span class="day-name"></span>
-	       <span class="time"></span>
+	        <span class="today"></span>
+	        <span class="day-name"></span>
+	        <span class="time"></span>
 	      </h4> 
-	        <div class="row">
-	          <div class="col-md-8">
-	            <div class="card">캘린더</div>
-	          </div>
-	          <div class="col-md-4">
-	            <div class="main-news-wrap">
-	              <div class="btn rounded-pill btn-outline-secondary mb-4 py-3">안읽은 쪽지<br/><strong class="msg-count">0</strong> 건입니다.</div>
-	              <div class="btn rounded-pill btn-outline-success mb-4 py-3">대기 전자문서<br/><strong class="wait-count">0</strong> 건입니다.</div>
-	              <div class="btn rounded-pill btn-outline-info py-3">진행 전자문서<br/><strong class="continue-count">0</strong> 건입니다.</div>
-	            </div>
-	          </div>
-	        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card">캘린더</div>
+          </div>
+          <div class="col-md-4">
+            <div class="main-news-wrap">
+              <div class="btn rounded-pill btn-outline-secondary mb-4 py-3">안읽은 쪽지<br/><strong class="msg-count">0</strong> 건입니다.</div>
+              <div class="btn rounded-pill btn-outline-success mb-4 py-3">대기 전자문서<br/><strong class="wait-count">0</strong> 건입니다.</div>
+              <div class="btn rounded-pill btn-outline-info py-3">진행 전자문서<br/><strong class="continue-count">0</strong> 건입니다.</div>
+            </div>
+          </div>
+        </div>
 	    </div>
-	  </div>
-	  
+	  </div>	  
 	</div>
   <!-- / Content -->            
  
@@ -154,25 +152,25 @@
 	
 	var apiURI = 'https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=6bde3279e91a83b26c3903c8ab07c8b6&lang=kr&units=metric';
 	const fnWeather = () => {
-	 $.ajax({
-	  type: 'GET',
-	  url: apiURI,
-	  data: 'json',
-	  success: (resData) => {
-	   console.log(resData);
-	   const weatherIcon = resData.weather[0].icon;
-	   const weatherIconAdrs = 'http://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';  // 날씨 icon 링크 연결
-	   weatherIconImg.setAttribute('src', weatherIconAdrs);  // 날씨 icon <img> 태그 src 변경
-	   currentTemp.textContent = resData.main.temp.toFixed(1) + 'º'; // toFixed(1) : 소수점1개까지 표시
-	   tempMin.textContent = '최저기온 : ' + resData.main.temp_min.toFixed(1) + 'º';
-	   tempMax.textContent = '최고기온 : ' + resData.main.temp_max.toFixed(1) + 'º';
-	   wind.textContent = '풍속 : ' + resData.wind.speed + 'm/s';
-	   cloud.textContent = '습도 : ' + resData.clouds.all + '%';
-	  },
-	  error: (jqXHR) => {
-	   alert('날씨 API 연결 이상');
-	  }
-	 })
+		$.ajax({
+		  type: 'GET',
+		  url: apiURI,
+		  data: 'json',
+		  success: (resData) => {
+			  console.log(resData);
+			  const weatherIcon = resData.weather[0].icon;
+			  const weatherIconAdrs = 'http://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';  // 날씨 icon 링크 연결
+			  weatherIconImg.setAttribute('src', weatherIconAdrs);  // 날씨 icon <img> 태그 src 변경
+			  currentTemp.textContent = resData.main.temp.toFixed(1) + 'º'; // toFixed(1) : 소수점1개까지 표시
+			  tempMin.textContent = resData.main.temp_min.toFixed(1) + 'º';
+			  tempMax.textContent = resData.main.temp_max.toFixed(1) + 'º';
+			  wind.textContent = resData.wind.speed + 'm/s';
+			  cloud.textContent = resData.clouds.all + '%';
+		  },
+		  error: (jqXHR) => {
+		    alert('날씨 API 연결 이상');
+		  }
+		})
 	};
 	
 	fnWeather();

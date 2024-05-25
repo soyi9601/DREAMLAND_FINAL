@@ -6,7 +6,7 @@
 <mapper namespace="com.dreamland.prj.mapper.IndexMapper">
 	
   <select id="getUser" resultType="EmployeeDto">
-    SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.EMAIL, E.MOBILE,  E.ROLE, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
+    SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.EMAIL, E.MOBILE,  E.ROLE, E.PROFILE_PATH, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
       FROM EMPLOYEE E
       JOIN DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
       JOIN POSITION P ON E.POS_NO = P.POS_NO

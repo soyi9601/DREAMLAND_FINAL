@@ -8,4 +8,9 @@ nav .avatar i {font-size: 3rem}
 #current-temp {line-height: 2em;}
 .temt-wrap {overflow: hidden;}
 .temt-wrap div {float: left; width: 50%;}
+.temt-wrap div .tit {margin-right: 10px;}
 .main-news-wrap .btn {display: block;}
+
+
+/* 조직도 */
+.jstree-default .jstree-icon.bxs-spreadsheet:before {color: #90b54c;}

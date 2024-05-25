@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/resources/assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="/resources/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="/resources/assets/css/demo.css" />
-  <link rel="stylesheet" href="/resources/assets/css/index.css" />
+  <link rel="stylesheet" href="/resources/assets/css/main.css" />
 
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
