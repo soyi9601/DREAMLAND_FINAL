@@ -39,7 +39,7 @@
 						  id: item.deptNo,
 						  parent: item.parentId === '#' ? '#':item.parentId,
 						  text: item.treeText,
-						  icon: 'jstree-folder',
+						  icon: 'bx bxs-spreadsheet',
 						  type: 'default'
 					  };
 					  nodes.push(deptNode);				 
@@ -48,7 +48,7 @@
 					 	    id: item.employee.empNo,
 					 	    parent: item.deptNo,
 						    text: item.employee.empName,
-						    icon: 'jstree-file',
+						    icon: 'bx bxs-user-rectangle',
 						    type: 'file'
 						  };
 						  nodes.push(empNode);
@@ -57,7 +57,7 @@
 				  console.log(nodes);
 			    // 트리 생성
 			    $('#jsTree').jstree({
-			    	plugins: ['dnd', 'search', 'types', 'themes', 'contextmenu'],
+			    	plugins: ['search', 'types', 'themes', 'contextmenu'],
 		        core: {
 		             data: nodes,    //데이터 연결	  
 		             check_callback : true, 
@@ -79,6 +79,13 @@
 		            	var tree = $('#jsTree').jstree(true);
 		            	if($node.type === 'file') {
 		            		return {
+		            			"updateInfo": {
+		            				label: '정보수정',
+		            				action: function(obj) {
+		            					var empNo = $node.id;
+		            					window.location.href = 'editEmployee?empNo=' + empNo;
+		            				}
+		            			},
 		            			"delete": {
 		                    label: "삭제",
 		                    action: function (obj) {
@@ -112,15 +119,15 @@
 			    			'Content-Type': 'application/json'
 			    		},
 			    	  body: JSON.stringify({
-			    		  deptNo: data.node.id, // 부서 번호
-		    		    deptName: data.node.text, // 부서 이름
+			    		  deptNo: data.node.id,       // 부서 번호
+		    		    deptName: data.node.text,   // 부서 이름
 		    		    parentId: data.node.parent, // 상위 부서 번호
-		    		    treeText: data.node.text, // 트리 텍스트
+		    		    treeText: data.node.text,   // 트리 텍스트
 			    	  })
 			    	}).then(response => response.json())
 			    	  .then(response => console.log('Node renamed:', response))
 			    	  .catch(error => console.error('Error rename node:', error));
-			    }).on('delete_node.jstree', function(e, data) {
+			      }).on('delete_node.jstree', function(e, data) {
 			    	var isDepart = data.node.type === 'default';
 			    	var deleteNo = isDepart ? {deptNo: data.node.id} : {empNo: data.node.id};
 		        var url = isDepart ? '/depart/deleteDepart' : '/depart/deleteEmployee';
@@ -136,9 +143,8 @@
 			    	    } else {
 		    	        throw new Error('Network 응답 실패');
 			    	    }
-			    	})
-		    	  .then(data => {alert(data.message);})
-            .catch(error => console.error('Error deleting node:', error));
+			    	}).then(data => {alert(data.message);})
+              .catch(error => console.error('Error deleting node:', error));
 			    });
 		    })
 				.catch(error => console.log('Error node:', error));	

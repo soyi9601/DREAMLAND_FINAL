@@ -52,5 +52,20 @@
       FROM EMPLOYEE
      WHERE EMP_NO = #{empNo}       
   </delete>
+  
+  <select id="getEmployeeById" resultType="EmployeeDto" parameterType="String">
+    SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.MOBILE, E.ROLE, E.PROFILE_PATH, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
+      FROM EMPLOYEE E
+      JOIN DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
+      JOIN POSITION P ON E.POS_NO = P.POS_NO
+     WHERE EMAIL = #{email}
+  </select>
+  
+  <!-- 직원 정보 업데이트 -->
+  <update id="updateEmployee" parameterType="EmployeeDto">
+    UPDATE EMPLOYEE
+       SET EMP_NAME = #{empName}, EMAIL = #{email}, MOBILE = #{mobile}, ROLE = #{role}, DEPT_NO = #{deptNo}, POS_NO = #{posNo}
+     WHERE EMP_NO = #{empNo}
+  </update>
 
 </mapper> 
