@@ -20,29 +20,15 @@
         <h5 class="card-header">직원수정</h5>
         
         <!-- Account -->
-        <form id="frm-add-employee" method="POST" action="${contextPath}/employee/updateEmployee.do" enctype="multipart/form-data">
+        <form id="frm-add-employee" method="POST" action="${contextPath}/depart/updateEmployee.do" enctype="multipart/form-data">
         <div class="card-body">
           <div class="d-flex align-items-start align-items-sm-center gap-4">
-            <img
-              src="../assets/img/user-solid.png"
-              alt="user-avatar"
-              class="d-block rounded"
-              height="100"
-              width="100"
-              id="uploadedAvatar"
-            />
+            <img src="../assets/img/user-solid.png" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
             <div class="button-wrapper">
               <label for="profilePath" class="btn btn-primary me-2 mb-4" tabindex="0">
                 <span class="d-none d-sm-block">사진등록</span>
                 <i class="bx bx-upload d-block d-sm-none"></i>
-                <input
-                  type="file"
-                  id="profilePath"
-                  name="profilePath"
-                  class="account-file-input"
-                  hidden
-                  accept="image/png, image/jpeg, image/gif"
-                />
+                <input type="file" id="profilePath" name="profilePath" class="account-file-input" accept="image/png, image/jpeg, image/gif" hidden />
               </label>
               <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
                 <i class="bx bx-reset d-block d-sm-none"></i>
@@ -57,6 +43,7 @@
           
             <div class="row">
               <div class="mb-3 col-md-6">
+                <input class="form-control" type="text" id="emp-no" name="empNo" value="${emp.empNo}" hidden />
                 <label for="empName" class="form-label">이름</label>
                 <input class="form-control" type="text" id="emp-name" name="empName" value="${emp.empName}" />
                 <div id="name-result"></div>
@@ -131,5 +118,7 @@
   </div>
 </div>
 <!-- / Content -->
+<script>
+</script>
 <%@ include file="../layout/footer.jsp" %>
     

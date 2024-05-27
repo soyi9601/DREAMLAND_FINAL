@@ -6,6 +6,7 @@ import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface DepartService {
 
@@ -15,7 +16,10 @@ public interface DepartService {
   void deleteEmployee(EmployeeDto employeetDto);
   
   // 조직도 내에서 수정
-  EmployeeDto getEmployeeById(String email);
+  EmployeeDto getEmployeeById(int empNo);
   void updateEmployee(HttpServletRequest request);
+  
+  // 부서 추가
+  void addDepartment(HttpServletRequest request, HttpServletResponse response);
   
 }

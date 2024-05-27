@@ -15,6 +15,8 @@ public interface DepartMapper {
   void deleteDepart(DepartmentDto departmentDto);
   void deleteEmployee(EmployeeDto employeeDto);
   
-  EmployeeDto getEmployeeById(String email); // 조직도 내에서 직원 수정
+  EmployeeDto getEmployeeById(int empNo); // 조직도 내에서 직원 수정
   void updateEmployee(EmployeeDto employeeDto);
+  
+  void insertDepart(DepartmentDto departmentDto);
 }

@@ -15,10 +15,6 @@
         <div class="col-md-6">
           <input type="text" class="form-control" id="departSearch" placeholder="사원 및 부서를 입력해주세요.">
         </div>
-        <div class="col-md-1"></div>
-        <div class="col-md-2">
-          <button type="button" class="btn btn-primary">검색</button>
-        </div>
       </div>
     </div>
     <div>
@@ -151,6 +147,12 @@
 		};
 		
 	departAdmin();
+	
+	$('#departSearch').keyup(function() {
+	  var searchString = $(this).val();
+	  $('#jsTree').jstree('search', searchString);
+  });
+	
 	});
 	
 	</script>

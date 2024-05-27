@@ -10,6 +10,7 @@ import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.mapper.DepartMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @Service
@@ -46,8 +47,8 @@ public class DepartServiceImpl implements DepartService {
   
   // 직원 정보 수정
   @Override
-  public EmployeeDto getEmployeeById(String email) {
-    return departMapper.getEmployeeById(email);
+  public EmployeeDto getEmployeeById(int empNo) {
+    return departMapper.getEmployeeById(empNo);
   }
   
   @Override
@@ -74,6 +75,21 @@ public class DepartServiceImpl implements DepartService {
                                 .posNo(posNo)
                               .build();
     departMapper.updateEmployee(employeeDto);    
+  }
+  
+  @Override
+  public void addDepartment(HttpServletRequest request, HttpServletResponse response) {
+    String deptName = request.getParameter("deptName");
+    int deptNo = Integer.parseInt(request.getParameter("deptNo"));
+    String parentId = request.getParameter("parentId");
+    
+    DepartmentDto depart = DepartmentDto.builder()
+                              .deptName(deptName)
+                              .deptNo(deptNo)
+                              .parentId(parentId)
+                            .build();
+    departMapper.insertDepart(depart);
+    
   }
   
 

@@ -26,7 +26,7 @@
   <select id="getDepartList"
           resultMap="DepartmentMap">    
     SELECT D.DEPT_NO, D.DEPT_NAME, D.DEPTH, D.PARENT_ID, D.TREE_TEXT,
-	         E.EMP_NO, E.EMP_NAME, E.POS_NO, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.ROLE, LEVEL
+	         E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.RESIGN_DATE, E.MOBILE, E.ROLE, E.POS_NO, LEVEL
 	    FROM DEPARTMENT D
       LEFT JOIN EMPLOYEE E ON D.DEPT_NO = E.DEPT_NO
 	   START WITH D.PARENT_ID = '#'
@@ -47,18 +47,18 @@
      WHERE DEPT_NO = #{deptNo}       
 	</delete>
 	
-	<delete id="deleteEmployee" parameterType="EmployeeDto">
-    DELETE
-      FROM EMPLOYEE
-     WHERE EMP_NO = #{empNo}       
-  </delete>
+	<update id="deleteEmployee" parameterType="EmployeeDto">
+    UPDATE EMPLOYEE
+       SET RESIGN_DATE = #{resignDate}
+     WHERE EMP_NO = #{empNo}     
+  </update>
   
-  <select id="getEmployeeById" resultType="EmployeeDto" parameterType="String">
+  <select id="getEmployeeById" resultType="EmployeeDto">
     SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.MOBILE, E.ROLE, E.PROFILE_PATH, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
       FROM EMPLOYEE E
       JOIN DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
       JOIN POSITION P ON E.POS_NO = P.POS_NO
-     WHERE EMAIL = #{email}
+     WHERE EMP_NO = #{empNo}
   </select>
   
   <!-- 직원 정보 업데이트 -->
@@ -67,5 +67,22 @@
        SET EMP_NAME = #{empName}, EMAIL = #{email}, MOBILE = #{mobile}, ROLE = #{role}, DEPT_NO = #{deptNo}, POS_NO = #{posNo}
      WHERE EMP_NO = #{empNo}
   </update>
+  
+  <insert id="insertDepart" parameterType="DepartmentDto">
+    INSERT INTO DEPARTMENT(
+        DEPT_NO
+      , DEPT_NAME
+      , DEPTH
+      , PARENT_ID
+      , TREE_TEXT
+    ) VALUES (
+        #{deptNo}
+      , #{deptName}
+      , 1
+      , #{parentId}
+      , #{deptName}
+    ) 
+      
+  </insert>
 
 </mapper> 
