@@ -1,6 +1,7 @@
 package com.dreamland.prj.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.dreamland.prj.dto.AppleaveDto;
@@ -18,7 +20,7 @@ import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.FaqBoardDto;
 import com.dreamland.prj.mapper.ApprovalMapper;
 import com.dreamland.prj.mapper.FaqBoardMapper;
-import com.dreamland.prj.utils.MyPageUtils;
+import com.dreamland.prj.utils.MyAppPageUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class ApprovalServiceImpl implements ApprovalService {
 	
 	private final ApprovalMapper approvalMapper; 
-	private final MyPageUtils myPageUtils;
+	private final MyAppPageUtils myPageUtils;
 	
 
 	@Override
@@ -40,22 +42,22 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 	    String contents =  request.getParameter("contents");
 	    
-	    int approver =  Integer.parseInt(request.getParameter("approver"));
-	    int approver2 =  Integer.parseInt(request.getParameter("approver2"));
-	    int approver3 =  Integer.parseInt(request.getParameter("approver3"));	    
-	    int approver4 =  Integer.parseInt(request.getParameter("approver4"));
 	    
-	    int [] approvers = {approver, approver2, approver3, approver4};
+	    int approver  =  Integer.parseInt(approvalMapper.getEmployeeNo(request.getParameter("approver")));
+	    int approver2 =  Integer.parseInt(approvalMapper.getEmployeeNo(request.getParameter("approver2")));
+	    int approver3 =  Integer.parseInt(approvalMapper.getEmployeeNo(request.getParameter("approver3")));
+	    int approver4 =  Integer.parseInt(approvalMapper.getEmployeeNo(request.getParameter("approver4")));
+	    
+	    int [] approvers = {approver2, approver3, approver4};
 	    
 	    String wathcer  =  request.getParameter("wathcer");
 	    	    
 	    // 뷰에서 전달된 userNo
-	    String userNo = request.getParameter("userNo");
 	    
 	   
 	    
 	    ApprovalDto app = ApprovalDto.builder()
-	    						.empNo(Integer.parseInt(userNo))
+	    						.empNo(approver)
 	    						.apvTitle(title)
 	    						.apvKinds("0")
 	    						.build();
@@ -77,7 +79,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 		    AppletterDto appletter = AppletterDto.builder()
 		    		.apvNo(apvNo)
-                    .letterDetail(contents)
+                    .detail(contents)
                   .build();
 		  approvalMapper.insertApvLetter(appletter);
 		
@@ -93,30 +95,29 @@ public class ApprovalServiceImpl implements ApprovalService {
 		// 사용자가 입력한 contents
 	    String contents =  request.getParameter("contents");
 	    
-	  
+	    int approver =  Integer.parseInt(approvalMapper.getEmployeeNo(request.getParameter("approver")));
+	    int approver2 =  Integer.parseInt(approvalMapper.getEmployeeNo(request.getParameter("approver2")));
+	    int approver3 =  Integer.parseInt(approvalMapper.getEmployeeNo(request.getParameter("approver3")));
+	    int approver4 =  Integer.parseInt(approvalMapper.getEmployeeNo(request.getParameter("approver4")));
 	    
-	    int approver =  Integer.parseInt(request.getParameter("approver"));
-	    int approver2 =  Integer.parseInt(request.getParameter("approver2"));
-	    int approver3 =  Integer.parseInt(request.getParameter("approver3"));	    
-	    int approver4 =  Integer.parseInt(request.getParameter("approver4"));
-	    
-	    int [] approvers = {approver, approver2, approver3, approver4};
+	    int [] approvers = {approver2, approver3, approver4};
 	    
 	    String referrer  =  request.getParameter("referrer");
 	    
 	    
 	    // 뷰에서 전달된 userNo
-	    String userNo = request.getParameter("userNo");
 	    String leavekind = request.getParameter("leavekind");
 	    String leavestart = request.getParameter("leavestart");
 	    String leaveend = request.getParameter("leaveend");
 	   
+	    
+	    
 	    ApprovalDto app = ApprovalDto.builder()
-				.empNo(Integer.parseInt(userNo))
+				.empNo(approver)
 				.apvTitle(title)
 				.apvKinds("1")
 				.build();
-	    
+	    System.out.println(1231241);
 	    approvalMapper.insertApproval(app);
 	    int apvNo = approvalMapper.getApvNo();
 	    
@@ -131,13 +132,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    	
 	    }
 
+	    
 	    AppleaveDto appleave = AppleaveDto.builder()
-                .leaveDeatil(contents)
+	    		.apvNo(apvNo)
 				.leaveClassify(leavekind)
 				.leaveStart(leavestart)
 				.leaveEnd(leaveend)
+				.detail(contents)
 				.build();
-    
 	    	
 	    approvalMapper.insertApvLeave(appleave);		
 		return 0;
@@ -145,11 +147,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	@Override
 	public  ResponseEntity<Map<String, Object>> loadAppList(Model model) {
-		
-		 Map<String, Object> modelMap = model.asMap();
+
+		    Map<String, Object> modelMap = model.asMap();
 		    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+			String empNo = request.getParameter("empNo");
+
+			
 		    
-		    int total = approvalMapper.getApvCount();
+		    int total = approvalMapper.getApvCount(empNo);
 		    
 		    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
 		    int display = Integer.parseInt(optDisplay.orElse("20"));
@@ -164,7 +169,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 		    
 		    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
 		                                   , "end", myPageUtils.getEnd()
-		                                   , "sort", sort);
+		                                   , "sort", sort
+		                                   , "empNo", empNo);
 		    
 		    /*
 		     * total = 100, display = 20
@@ -177,7 +183,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		     * 5     20
 		     */
 		    return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
-                    ,"paging",myPageUtils.getPaging(request.getContextPath() + "/approval/totalList.do", sort, display)
+                    ,"paging",myPageUtils.getPaging(sort, display)
                     , "approvalList" , approvalMapper.getApvList(map)
                     , "sort", sort
                     ,"page", page), HttpStatus.OK);
@@ -189,7 +195,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 		Map<String, Object> modelMap = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
 		
-		int total = approvalMapper.getApvCount();
+		String empNo = request.getParameter("empNo");
+		int total = approvalMapper.getWaitApvCount(empNo);
 		
 		Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
 		int display = Integer.parseInt(optDisplay.orElse("20"));
@@ -197,7 +204,50 @@ public class ApprovalServiceImpl implements ApprovalService {
 		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(optPage.orElse("1"));
 		
+		
+		myPageUtils.setPaging(total, display, page);
+		
+		Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+		String sort = optSort.orElse("DESC");
+		
+		
+		
+		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+				, "end", myPageUtils.getEnd()
+				, "sort", sort
+				, "empNo", empNo);
+		
+		/*
+		 * total = 100, display = 20
+		 * 
+		 * page  beginNo
+		 * 1     100
+		 * 2     80
+		 * 3     60
+		 * 4     40
+		 * 5     20
+		 */
+		return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
+				,"paging",myPageUtils.getPaging( sort, display)
+				, "approvalList" , approvalMapper.getWaitApvList(map)
+				, "sort", sort
+				,"page", page), HttpStatus.OK);
+		
+	}
+	
+	public  ResponseEntity<Map<String, Object>> loadConfirmAppList(Model model) {
+		
+		Map<String, Object> modelMap = model.asMap();
+		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
 		String empNo = request.getParameter("empNo");
+		
+		int total = approvalMapper.getConfirmApvCount(empNo);
+		
+		Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+		int display = Integer.parseInt(optDisplay.orElse("20"));
+		
+		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(optPage.orElse("1"));
 		
 		myPageUtils.setPaging(total, display, page);
 		
@@ -220,48 +270,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 		 * 5     20
 		 */
 		return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
-				,"paging",myPageUtils.getPaging(request.getContextPath() + "/approval/appList.do", sort, display)
-				, "approvalList" , approvalMapper.getApvList(map)
-				, "sort", sort
-				,"page", page), HttpStatus.OK);
-		
-	}
-	
-	public  ResponseEntity<Map<String, Object>> loadComfirmAppList(Model model) {
-		
-		Map<String, Object> modelMap = model.asMap();
-		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
-		
-		int total = approvalMapper.getApvCount();
-		
-		Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
-		int display = Integer.parseInt(optDisplay.orElse("20"));
-		
-		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
-		int page = Integer.parseInt(optPage.orElse("1"));
-		
-		myPageUtils.setPaging(total, display, page);
-		
-		Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
-		String sort = optSort.orElse("DESC");
-		
-		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
-				, "end", myPageUtils.getEnd()
-				, "sort", sort);
-		
-		/*
-		 * total = 100, display = 20
-		 * 
-		 * page  beginNo
-		 * 1     100
-		 * 2     80
-		 * 3     60
-		 * 4     40
-		 * 5     20
-		 */
-		return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
-				,"paging",myPageUtils.getPaging(request.getContextPath() + "/approval/appList.do", sort, display)
-				, "approvalList" , approvalMapper.getApvList(map)
+				,"paging",myPageUtils.getPaging(sort, display)
+				, "approvalList" , approvalMapper.getConfirmApvList(map)
 				, "sort", sort
 				,"page", page), HttpStatus.OK);
 		
@@ -271,8 +281,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		Map<String, Object> modelMap = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+		String empNo = request.getParameter("empNo");
 		
-		int total = approvalMapper.getApvCount();
+		int total = approvalMapper.getCompleteApvCount(empNo);
 		
 		Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
 		int display = Integer.parseInt(optDisplay.orElse("20"));
@@ -287,7 +298,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
 				, "end", myPageUtils.getEnd()
-				, "sort", sort);
+				, "sort", sort
+				, "empNo", empNo);
 		
 		/*
 		 * total = 100, display = 20
@@ -300,11 +312,66 @@ public class ApprovalServiceImpl implements ApprovalService {
 		 * 5     20
 		 */
 		return new ResponseEntity<>(Map .of("beginNo", total - (page - 1) * display
-				,"paging",myPageUtils.getPaging(request.getContextPath() + "/approval/appList.do", sort, display)
-				, "approvalList" , approvalMapper.getApvList(map)
+				,"paging",myPageUtils.getPaging(sort, display)
+				, "approvalList" , approvalMapper.getCompleteApvList(map)
 				, "sort", sort
 				,"page", page), HttpStatus.OK);
 		
+	}
+    
+	public void loadAppByNo(HttpServletRequest request, Model model) {
+	    
+		int apvNo = Integer.parseInt(request.getParameter("apvNo"));
+		String kind2 = request.getParameter("kind");
+	    ApprovalDto a = approvalMapper.getApvDetailByNo(apvNo);
+	    String title = a.getApvTitle();
+	    String kind = a.getApvKinds();
+	    List<String> b = approvalMapper.getApprover(apvNo);
+	    
+	    String writer = approvalMapper.getEmployeeName(a.getEmpNo()+"");
+	    String approver1 =approvalMapper.getEmployeeName(b.get(0));
+	    String approver2 =approvalMapper.getEmployeeName(b.get(1));
+	    String approver3 = approvalMapper.getEmployeeName(b.get(2));
+	    
+		Map<String, Object> map = Map.of("writer", writer
+				, "approver1",approver1
+				, "approver2", approver2
+				, "approver3", approver3);
+	    
+		if(kind.equals("0")) {
+			
+			model.addAttribute("approval", approvalMapper.getApvAppDetailByNo(apvNo));
+		} else {
+			System.out.println(kind);
+			model.addAttribute("approval", approvalMapper.getApvLeaveDetailByNo(apvNo));
+		}
+		model.addAttribute("title", title);
+		model.addAttribute("kind", kind);
+		model.addAttribute("kind2", kind2);
+	    model.addAttribute("appovers", map);
+	}
+
+	
+
+	@Override
+	public int apvApprove(HttpServletRequest request) {
+		int apvNo = Integer.parseInt(request.getParameter("apvNo"));
+		int flag = 0;
+		String empNo = request.getParameter("empNo");
+		approvalMapper.updateApprover(apvNo,empNo);
+		 List<String> b = approvalMapper.getApprovers(apvNo);
+		 for(int i=0; i< b.size(); i++) {
+			 if (b.get(i).equals("100")) {
+				 flag ++;
+			 }
+		 }
+		
+		 if(flag == 0) {
+			 approvalMapper.updateApproval(apvNo);
+		 }
+		
+		
+		return 0;
 	}
 
 }

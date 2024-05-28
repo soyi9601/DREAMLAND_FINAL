@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dreamland.prj.service.ApprovalService;
 
@@ -39,20 +40,27 @@ public class ApprovalController {
 	@GetMapping(value="/waitList.do", produces="application/json")
 	public ResponseEntity<Map<String, Object>> waitList(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
-		return approvalService.loadAppList(model);
+		return approvalService.loadWaitAppList(model);
 	}
 	
-	@GetMapping(value="/comfirmlList.do", produces="application/json")
-	public ResponseEntity<Map<String, Object>> comfirmlList(HttpServletRequest request, Model model) {
+	@GetMapping(value="/confirmList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> confirmlList(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
-		return approvalService.loadAppList(model);
+		return approvalService.loadConfirmAppList(model);
 	}
 	
 	@GetMapping(value="/completeList.do", produces="application/json")
 	public ResponseEntity<Map<String, Object>> completeList(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
-		return approvalService.loadAppList(model);
+		return approvalService.loadCompleteAppList(model);
 	}
+	
+	@GetMapping("/detail.do")
+	public String detail(HttpServletRequest request, Model model) {
+		approvalService.loadAppByNo(request, model);
+		return "approval/appDetail";
+	}
+	
 	
 	@GetMapping("/approval.do")
 	public String approval(HttpServletRequest request) {
@@ -63,6 +71,12 @@ public class ApprovalController {
 	@GetMapping("/leave.do")
 	public String leave(HttpServletRequest request) {
 		approvalService.registerAppLeave(request);
+		return "approval/appList";
+	}
+	
+	@GetMapping("/approve.do")
+	public String approve(HttpServletRequest request) {
+		approvalService.apvApprove(request);
 		return "approval/appList";
 	}
 
