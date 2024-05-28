@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,16 +27,13 @@ public class DepartController {
 
   private final DepartService departService;
   
+  // 관리자 - 조직도 페이지 이동
   @GetMapping("/depart_admin.page")
   public String depart() {
     return "depart/depart_admin";
   }
   
-  @GetMapping("/addDepart.page")
-  public String addDepart() {
-    return "depart/addDepart";
-  }
-  
+  // 관리자 - 조직도 조회
   @GetMapping(value="/depart_admin.do", produces="application/json")
   public ResponseEntity<List<DepartmentDto>> departAdmin() {
     List<DepartmentDto> departmentDto = departService.getDepartList();
@@ -47,40 +43,47 @@ public class DepartController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
   }
-  
-  // 부서명 수정
-  @PostMapping("/updateNode")
-  public ResponseEntity<?> updateDepart(@RequestBody DepartmentDto departmentDto) {
-    departService.updateDepart(departmentDto);
-    return ResponseEntity.ok().build();
-  }
-  
+    
   // 부서 및 직원 삭제
-  @PostMapping("/deleteDepart")
+  @PostMapping("/removeDepart")
   public ResponseEntity<?> deleteDepart(@RequestBody DepartmentDto departmentDto) {
-    departService.deleteDepart(departmentDto);
+    departService.removeDepart(departmentDto);
     return ResponseEntity.ok().body("{\"message\": \"부서가 삭제되었습니다.\"}");
-  }
-  
-  @PostMapping("/deleteEmployee")
+  }  
+  @PostMapping("/removeEmployee")
   public ResponseEntity<?> deleteEmployee(@RequestBody EmployeeDto employeeDto) {
-    departService.deleteEmployee(employeeDto);
+    departService.removeEmployee(employeeDto);
     return ResponseEntity.ok().body("{\"message\": \"직원이 삭제되었습니다.\"}");
   }
   
-  // 직원 정보 수정 페이지 이동
-  @GetMapping("/editEmployee")
-  public String editEmployee(@RequestParam("empNo") int empNo, Model model) {
-    EmployeeDto emp = departService.getEmployeeById(empNo);
-    model.addAttribute("emp", emp);
-    return "employee/editEmployee";
-  }
-  
-  // 직원 정보 수정
-  @PostMapping("/updateEmployee.do")
-  public String updateEmployee(HttpServletRequest request) {
-    departService.updateEmployee(request);
-    return "employee/editEmployee";
+  // 노드 클릭 후 부서 및 직원 조회
+  @GetMapping("/getDepartInfo")
+  public ResponseEntity<DepartmentDto> getDepartInfo(@RequestParam("deptNo") int deptNo) {
+    DepartmentDto department = departService.getDepartById(deptNo);
+    return ResponseEntity.ok().body(department);
+  }  
+  @GetMapping("/getEmployeeInfo")
+  public ResponseEntity<EmployeeDto> getEmployeeInfo(@RequestParam("empNo") int empNo) {
+    EmployeeDto employee = departService.getEmployeeById(empNo);
+    return ResponseEntity.ok().body(employee);
+  }  
+
+  // 부서 및 직원 정보 수정
+  @PostMapping(value="/editDepart.do", produces="application/json")
+  public ResponseEntity<?> updateDepart(@RequestBody DepartmentDto departmentDto) {
+    departService.updateDepart(departmentDto);
+    return ResponseEntity.ok().body("{\"message\": \"부서정보가 수정되었습니다.\"}");
+  }      
+  @PostMapping(value="/editEmployee.do", produces="application/json")
+  public ResponseEntity<?> updateEmployee(@RequestBody EmployeeDto employeeDto) {
+    departService.updateEmployee(employeeDto);
+    return ResponseEntity.ok().body("{\"message\": \"직원정보가 수정되었습니다.\"}");
+  }   
+    
+  // 부서 등록 페이지 이동
+  @GetMapping("/addDepart.page")
+  public String addDepart() {
+    return "depart/addDepart";
   }
   
   // 부서 등록
@@ -89,5 +92,7 @@ public class DepartController {
     departService.addDepartment(request, response);
     return "depart/addDepart";
   }
+  
+  
   
 }
