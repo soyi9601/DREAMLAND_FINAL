@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.dreamland.prj.mapper.SalesMapper">
+
+  <resultMap type="SalesDto" id="SalesMap">
+    <id property="salesNo" column="SALES_NO"/>
+    <result property="sales_date" column="SALES_DATE"/>
+    <result property="qty" column="QTY"/>
+    <association property="department" javaType="DepartmentDto">
+      <id property="deptNo" column="DEPT_NO"/>
+    </association>
+    <association property="product" javaType="ProductDto">
+      <id property="productNo" column="PRODUCT_NO"/>
+    </association>
+  </resultMap>
+
+  <resultMap type="ProductDto" id="ProductMap">
+    <id property="productNo" column="PRODUCT_NO"/>
+    <result property="goods" column="GOODS"/>
+    <result property="price" column="PRICE"/>
+  </resultMap>
+
+	<!-- 매출 등록 -->
+  <insert id="insertSales" parameterType="SalesDto">
+    INSERT INTO SALES (
+        SALES_NO,
+        PRODUCT_NO,
+        DEPT_NO,
+        SALES_DATE,
+        QTY
+    ) VALUES (
+        SALES_SEQ.NEXTVAL,
+        #{product.productNo},
+        #{dept.deptNo},
+        #{salesDate},
+        #{qty}
+    )
+  </insert>
+	
+	<!-- 상품 등록 -->
+  <insert id="insertProduct" parameterType="ProductDto">
+    INSERT INTO PRODUCT (
+        PRODUCT_NO,
+        GOODS,
+        PRICE
+    ) VALUES (
+        #{productNo},
+        #{goods},
+        #{price}
+    )
+  </insert>
+  
+  <!-- 모든 상품 목록 조회 -->
+  <select id="findAllproduct"
+  				resultMap="ProductMap">
+  	SELECT PRODUCT_NO, GOODS, PRICE
+  		FROM PRODUCT
+  </select>
+  
+	<!-- 일간 매출 조회 -->
+  <select id="findTodaySalesTotal"
+  				resultType="java.math.BigDecimal">
+  	SELECT COALESCE(SUM(P.PRICE * S.QTY), 0)
+      FROM SALES S
+      JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+      WHERE TO_CHAR(S.SALES_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+  </select>
+  
+  <select id="findCurrentWeekSalesTotal"
+  				resultType="java.math.BigDecimal">
+  	SELECT COALESCE(SUM(P.PRICE * S.QTY), 0)
+			FROM SALES S
+			JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+		 WHERE TO_CHAR(S.SALES_DATE, 'IYYY-IW') = TO_CHAR(SYSDATE, 'IYYY-IW')
+  </select>
+  
+  <!-- 월간 매출 조회 -->
+  <select id="findCurrentMonthSalesTotal"
+  				resultType="java.math.BigDecimal">
+  	SELECT SUM(P.PRICE * S.QTY)
+		FROM SALES S
+		JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+		WHERE TO_CHAR(S.SALES_DATE, 'YYYY-MM') =
+		TO_CHAR(SYSDATE, 'YYYY-MM')
+  </select>
+  
+  <!-- 연간 매출액 조회 -->
+	<select id="findCurrentYearSalesTotal"
+		resultType="java.math.BigDecimal">
+		SELECT SUM(P.PRICE * S.QTY)
+		FROM SALES S
+		JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+		WHERE TO_CHAR(S.SALES_DATE, 'YYYY') =
+		TO_CHAR(SYSDATE, 'YYYY')
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

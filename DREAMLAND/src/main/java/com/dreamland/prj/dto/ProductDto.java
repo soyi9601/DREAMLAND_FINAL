@@ -1,5 +1,7 @@
 package com.dreamland.prj.dto;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 public class ProductDto {
 	
-	private int productNo, goods, qty, price;
+	private int productNo, price;
+	private String goods;
 	
 }

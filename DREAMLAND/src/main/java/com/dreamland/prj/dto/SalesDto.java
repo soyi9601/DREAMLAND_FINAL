@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 
 public class SalesDto {
 	
-	 private int  salesNo, productNo, deptNo;
-	 private Date sales_date;
-	 
+	 private int  salesNo, qty;
+	 private Date salesDate;
+	 private ProductDto product;
+	 private DepartmentDto dept;
 }
