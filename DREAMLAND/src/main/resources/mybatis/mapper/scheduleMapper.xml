@@ -5,7 +5,7 @@
   
  <mapper namespace="com.dreamland.prj.mapper.ScheduleMapper">
    
-	  <resultMap id="ScheduleMap" type="ScheduleDto">
+	  <resultMap id="SkdMap" type="ScheduleDto">
 	      <id property="skdNo" column="SKD_NO"/>
 	      <result property="skdStart" column="SKD_START"/>
 	      <result property="skdEnd" column="SKD_END"/>
@@ -14,13 +14,24 @@
 	      <result property="skdContents" column="SKD_CONTENTS"/>
 	      <result property="skdColor" column="SKD_COLOR"/>
 	      <association property="employee" javaType="EmployeeDto">
-	          <id property="empNo" column="EMP_NO"/>
-	          <result property="deptNo" column="DEPT_NO"/>
-	      </association>
+		        <id property="empNo" column="EMP_NO"/>
+		        <result property="empName" column="EMP_NAME"/>
+		        <result property="deptNo" column="DEPT_NO"/>
+        </association>
+        <collection property="shrDept" ofType="SkdShrDeptDto">
+            <result property="skdNo" column="SKD_NO"/>
+            <result property="deptNo" column="DEPT_NO"/>
+        </collection>
 	  </resultMap> 
-	   
+	  
+	  
+  <!-- INSERT 수행 이전에 파라미터 ScheduleDto의 skdNo 필드에 SKD_SEQ.NEXTVAL 값을 저장 --> 
 	  <insert id="skdAdd"
 	          parameterType="ScheduleDto">
+	   <selectKey order="BEFORE" keyProperty="skdNo" resultType="int">
+	      SELECT SKD_SEQ.NEXTVAL
+	        FROM DUAL
+	   </selectKey>       
 	      INSERT INTO SCHEDULE (
 	          SKD_NO
 	        , SKD_START
@@ -28,29 +39,75 @@
 	        , SKD_CATEGORY
 	        , SKD_TITLE
 	        , SKD_CONTENTS
-	        , EMP_NO  
-	        , DEPT_NO
 	        , SKD_COLOR
+	        , EMP_NO  
 	      ) VALUES (
-	          SKD_SEQ.NEXTVAL
+	          #{skdNo}
 	        , #{skdStart}
 	        , #{skdEnd}
 	        , #{skdCategory}
 	        , #{skdTitle}
 	        , #{skdContents}
-	        , #{employee.empNo}
-	        , #{employee.deptNo}
 	        , #{skdColor}
+	        , #{employee.empNo}
 	      )
 	  </insert>
 	  
+	  <insert id="addShrDept" 
+	          parameterType="SkdShrDeptDto">
+	     INSERT INTO SKD_SHR_DEPT (
+	         SKD_NO
+	       , DEPT_NO
+	     ) VALUES (
+	         #{skdNo}
+	       , #{deptNo}
+	     )
+    </insert>
+	  
 	  <select id="getSkdList"
 	          parameterType="Map"
-	          resultMap="ScheduleMap">
-	    SELECT SKD_NO, SKD_START, SKD_END, SKD_CATEGORY, SKD_TITLE, SKD_CONTENTS, SKD_COLOR, DEPT_NO, EMP_NO
-	      FROM (SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR, E.DEPT_NO, E.EMP_NO 
-	          FROM EMPLOYEE E INNER JOIN SCHEDULE S
-	            ON E.EMP_NO = S.EMP_NO)   
+	          resultMap="SkdMap">
+	     SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR
+	          , E.EMP_NO, E.EMP_NAME, E.DEPT_NO
+	          , SSD.DEPT_NO AS SHARED_DEPT_NO
+         FROM SCHEDULE S
+        INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
+        LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
 	  </select>
-  
+    
+    <select id="getSkdByNo"
+            resultMap="SkdMap">
+       SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR
+			      , E.EMP_NO, E.EMP_NAME, E.DEPT_NO
+			    FROM SCHEDULE S
+			    INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
+			    LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
+			    WHERE S.SKD_NO = #{skdNo}
+    </select>
+    
+    <update id="updateSkd"
+            parameterType="ScheduleDto">
+      UPDATE SCHEDULE
+			   SET SKD_START = #{skdStart},
+			       SKD_END = #{skdEnd},
+			       SKD_CATEGORY = #{skdCategory},
+			       SKD_TITLE = #{skdTitle},
+			       SKD_CONTENTS = #{skdContents},
+			       SKD_COLOR = #{skdColor}
+			 WHERE SKD_NO = #{skdNo}
+    </update>
+    
+    <delete id="deleteSkd">
+      DELETE
+        FROM SCHEDULE
+       WHERE SKD_NO = #{skdNo}
+    </delete>
+    
+    <delete id="deleteShrDept">
+        DELETE 
+          FROM SKD_SHR_DEPT 
+         WHERE SKD_NO = #{skdNo}
+    </delete>
+    
+    
  </mapper>
