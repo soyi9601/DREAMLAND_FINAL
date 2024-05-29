@@ -73,26 +73,29 @@
     			action="${contextPath}/sales/salesreg.do" 
     			id="frm-salesreg">
     			 
-				<label for="contentSelect"></label>
+				<label for="contentSelect">부서선택</label>
     				<select id="pageSelect" onchange="showPage(this.value)" name="deptNo">
         			<option value="5000">티켓</option>
-        			<option value="canteen1">매점1</option>
-        			<option value="canteen2">매점2</option>
-        			<option value="canteen3">매점3</option>
-        			<option value="canteen4">매점4</option>
-        			<option value="canteen5">매점5</option>
-        			<option value="good1">굿즈샵1</option>
-        			<option value="good2">굿즈샵2</option>
-        			<option value="good3">굿즈샵3</option>
-        			<option value="good4">굿즈샵4</option>
-        			<option value="good5">굿즈샵5</option>
+        			<option value="5110">매점1</option>
+        			<option value="5220">매점2</option>
+        			<option value="5320">매점3</option>
+        			<option value="5420">매점4</option>
+        			<option value="5520">매점5</option>
+        			<option value="5130">굿즈샵1</option>
+        			<option value="5230">굿즈샵2</option>
+        			<option value="5330">굿즈샵3</option>
+        			<option value="5430">굿즈샵4</option>
+        			<option value="5530">굿즈샵5</option>
     				</select>
-    		
-    		
+  	</form>
+
+		<form method="POST" 
+    			action="${contextPath}/sales/salesreg.do" 
+    			id="frm-salesreg">    		
     		<div id="content"></div>	
     		
         <!-- Bootstrap Dark Table -->
-        <div id="ticket" class="card">
+        <div id="5000" class="card">
         
         <div>
         	<button type="submit" id="regbtn" class="btn-reg">저장</button>
@@ -113,11 +116,11 @@
                     </thead>
                     <tbody class="table-border-bottom-0">
                         <c:forEach items="${product}" var="product">
-                        	<tr>
-                        		<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productNo}</td>
-                            <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.goods}</strong>
-                            <td><input type="text" name="qty"></td>
-                        	</tr>
+                        		<tr>
+                        			<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productNo}</td>
+                            	<td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.goods}</strong>
+                            	<td><input type="text" name="qty"></td>
+                        		</tr>
                         </c:forEach>
                     </tbody>
                 </table>
@@ -139,8 +142,7 @@ function showPage(pageId) {
 }
 
 // Initialize to show the first page
-showPage('ticket');
-
+showPage('5000');
 
 </script>
 

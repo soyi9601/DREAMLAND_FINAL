@@ -19,8 +19,12 @@
 
   <resultMap type="ProductDto" id="ProductMap">
     <id property="productNo" column="PRODUCT_NO"/>
-    <result property="goods" column="GOODS"/>
+    <result property="productSctCd" column="PRODUCT_SCT_CD"/>
+    <result property="productNM" column="PRODUCT_NM"/>
     <result property="price" column="PRICE"/>
+    <association property="department" javaType="DepartmentDto">
+      <id property="deptNo" column="DEPT_NO"/>
+    </association>
   </resultMap>
 
 	<!-- 매출 등록 -->
@@ -34,7 +38,7 @@
     ) VALUES (
         SALES_SEQ.NEXTVAL,
         #{product.productNo},
-        #{dept.deptNo},
+        #{department.deptNo},
         #{salesDate},
         #{qty}
     )
@@ -44,11 +48,15 @@
   <insert id="insertProduct" parameterType="ProductDto">
     INSERT INTO PRODUCT (
         PRODUCT_NO,
-        GOODS,
+        PRODUCT_SCT_CD,
+        DEPT_NO,
+        PRODUCT_NM,
         PRICE
     ) VALUES (
-        #{productNo},
-        #{goods},
+    		PRODUCT_SEQ.NEXTVAL,
+        #{productSctCd},
+        #{department.deptNo},
+        #{productNM},
         #{price}
     )
   </insert>
@@ -56,10 +64,10 @@
   <!-- 모든 상품 목록 조회 -->
   <select id="findAllproduct"
   				resultMap="ProductMap">
-  	SELECT PRODUCT_NO, GOODS, PRICE
+  	SELECT PRODUCT_NO, PRODUCT_SCT_CD, PRICE, DEPT_NO, PRODUCT_NM
   		FROM PRODUCT
   </select>
-  
+ 
 	<!-- 일간 매출 조회 -->
   <select id="findTodaySalesTotal"
   				resultType="java.math.BigDecimal">

@@ -16,5 +16,5 @@ public class SalesDto {
 	 private int  salesNo, qty;
 	 private Date salesDate;
 	 private ProductDto product;
-	 private DepartmentDto dept;
+	 private DepartmentDto department;
 }

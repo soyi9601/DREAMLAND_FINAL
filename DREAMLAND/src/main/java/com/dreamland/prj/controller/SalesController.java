@@ -1,7 +1,6 @@
 package com.dreamland.prj.controller;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
-import com.dreamland.prj.dto.ProductDto;
-import com.dreamland.prj.mapper.SalesMapper;
 import com.dreamland.prj.service.SalesService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +37,7 @@ public class SalesController {
   @GetMapping("/salesreg.page")
   public String showAddSalesForm(Model model) {
       List<Map<String, Object>> product = salesService.getAllproduct();
-      model.addAttribute("product", product);
+      model.addAttribute("product", product);      
       return "sales/salesreg"; 
   }
   
@@ -49,6 +46,7 @@ public class SalesController {
   		redirectAttributes.addFlashAttribute("insertSales", salesService.registerSales(request));
       return "redirect:/sales/salesreg.page";
   }
+  
   
   @GetMapping("/Allsales.page")
   public String getSalesDetails(Model model) {
