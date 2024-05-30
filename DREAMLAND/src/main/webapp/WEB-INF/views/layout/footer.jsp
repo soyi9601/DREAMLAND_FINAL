@@ -44,7 +44,6 @@
 </div>
 <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="/resources/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="/resources/assets/vendor/libs/popper/popper.js"></script>
     <script src="/resources/assets/vendor/js/bootstrap.js"></script>
     <script src="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
