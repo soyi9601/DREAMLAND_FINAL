@@ -5,6 +5,8 @@
  *    1) 240524
  *        - preventDefault 완료
  *        - 새로운 비밀번호 정규식
+ *    2) 240530
+ *        - 비밀번호 변경 java 구현
  */
 
 'use strict';
@@ -88,8 +90,17 @@ const fnModifyPassword = () =>{
 
 }
 
+// 에러메시지 반환
+const fnInsertResult = () => {
+  const msg = '${msg}';
+  if(msg !== '') {
+    alert(msg);
+  }
+}
+
 /************************** 함수 호출 **************************/
 document.getElementById('new-password').addEventListener('blur', fnCheckPassword);
 document.getElementById('new-password2').addEventListener('blur', fnConfirmPassword);
 document.getElementById('now-password').addEventListener('blur',fnCurrentPasswordCheck);
 fnModifyPassword();
+fnInsertResult();

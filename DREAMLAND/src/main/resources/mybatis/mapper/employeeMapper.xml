@@ -101,4 +101,11 @@
   </update>
 
 
+  <update id="updatePassword"
+          parameterType="String">
+    UPDATE EMPLOYEE
+       SET PASSWORD = #{changePw}
+     WHERE EMAIL = #{email}
+  </update>
+
 </mapper>
