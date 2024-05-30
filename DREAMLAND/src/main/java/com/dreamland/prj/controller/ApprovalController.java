@@ -31,6 +31,18 @@ public class ApprovalController {
 		return "approval/appList";
 	}
 	
+	@GetMapping("/appMyList" )
+	public String appMyList(HttpServletRequest request, Model model) {
+		return "approval/appMyList";
+	}
+	
+	@GetMapping("/popup")
+	public String popup() {
+		return "approval/popup";
+	}
+	
+	
+	
 	@GetMapping(value="/totalList.do", produces="application/json")
 	  public ResponseEntity<Map<String, Object>> appTotalList(HttpServletRequest request, Model model) {
 	    model.addAttribute("request", request);
@@ -55,6 +67,33 @@ public class ApprovalController {
 		return approvalService.loadCompleteAppList(model);
 	}
 	
+	
+	
+	
+	@GetMapping(value="/totalMyList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> totalMyList(HttpServletRequest request) {
+		return approvalService.loadtotalMyAppList(request);
+	}
+	
+	@GetMapping(value="/waitMyList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> confirmMyList(HttpServletRequest request) {
+		return approvalService.loadconfirmMyAppList(request);
+	}
+	
+	@GetMapping(value="/completeMyList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> completeMyList(HttpServletRequest request) {
+		return approvalService.loadCompleteMyAppList(request);
+	}
+	
+	@GetMapping(value="/rejectedMyList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> rejectedMyList(HttpServletRequest request) {
+		return approvalService.loadrejectedMyAppList(request);
+	}
+	
+	
+	
+	
+	
 	@GetMapping("/detail.do")
 	public String detail(HttpServletRequest request, Model model) {
 		approvalService.loadAppByNo(request, model);
@@ -76,8 +115,11 @@ public class ApprovalController {
 	
 	@GetMapping("/approve.do")
 	public String approve(HttpServletRequest request) {
+	  System.out.println("실행됐슈1");
 		approvalService.apvApprove(request);
 		return "approval/appList";
 	}
+	
+
 
 }

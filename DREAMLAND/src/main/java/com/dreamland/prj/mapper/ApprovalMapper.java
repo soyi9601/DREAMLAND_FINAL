@@ -18,23 +18,39 @@ public interface ApprovalMapper {
 	String getEmployeeNo(String empName);
 	String getEmployeeName(String empNo);
 	List<String> getApprover(int apvNo);
+	
 	int insertApproval(ApprovalDto appdto);
 	int insertApvLetter(AppletterDto appLetterdto );
 	int insertApvLeave(AppleaveDto appLeaveto );
 	int insertApvWriter(ApvWriterDto appwridto);
 	int insertApvRef(ApvRefDto apprefdto);
+	
 	int getApvCount(String empNo);
 	int getWaitApvCount(String empNo);
 	int getConfirmApvCount(String empNo);
 	int getCompleteApvCount(String empNo);
+	
+	int getMyApvCount(String empNo);
+	int getMyWaitApvCount(String empNo);
+	int getMyCompleApvCount(String empNo);
+	int getMyRejectApvCount(String empNo);
+	
 	 List<ApprovalDto> getApvList(Map<String, Object> map);
 	 List<ApprovalDto> getWaitApvList(Map<String, Object> map);
 	 List<ApprovalDto> getConfirmApvList(Map<String, Object> map);
 	 List<ApprovalDto> getCompleteApvList(Map<String, Object> map);
+	 
+	 List<ApprovalDto> getMyApvList(Map<String, Object> map);	 
+	 List<ApprovalDto> getMyWaitApvList(Map<String, Object> map);
+	 List<ApprovalDto> getMyCompleteApvList(Map<String, Object> map);
+	 List<ApprovalDto> getMyRejectedApvList(Map<String, Object> map);
+	 
 	 ApprovalDto getApvDetailByNo(int apvNo);
 	 AppleaveDto getApvLeaveDetailByNo(int apvNo);
 	 AppletterDto getApvAppDetailByNo(int apvNo);
-	 int updateApprover(int apvNo, String empNo);
-	 int updateApproval(int apvNo);
+	 int updateApprover(int apvNo, String empNo, String returnReason);
+	 int updateApproval(int apvNo, int state);
 	 List<String> getApprovers(int apvNo);
+	 ApvWriterDto getReturnApprover(int apvNo);
+	 
 }
