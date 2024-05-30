@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.dreamland.prj.mapper.NoticeBoardMapper">
+  
+    <resultMap type="NoticeBoardDto" id="NoticeBoardMap">
+      <id     property="noticeNo"           column="NOTICE_NO" />
+      <result property="boardTitle"         column="BOARD_TITLE"/>
+      <result property="boardContents"      column="BOARD_CONTENTS"/>
+      <result property="boardCreateDt"      column="BOARD_CREATE_DT"/>
+      <result property="boardModifyDt"      column="BOARD_MODIFY_DT"/>
+      <result property="signal"             column="SIGNAL"/>
+      <result property="hit"                column="HIT"/>
+      <result property="attachCount"        column="ATTACH_COUNT"/>
+      <association property="employee"    javaType="EmployeeDto">
+        <id     property="empNo"            column="EMP_NO"/>
+        <result property="empName"          column="EMP_NAME"/>
+      </association>
+    </resultMap>
+    
+    <insert id="insertNoticeBoard"
+            parameterType="NoticeBoardDto">
+      <selectKey order="BEFORE" keyProperty="noticeNo" resultType="int">
+        SELECT NOTICE_SEQ.NEXTVAL
+          FROM DUAL
+      </selectKey>
+      INSERT INTO NOTICE_BOARD(
+        NOTICE_NO
+      , BOARD_TITLE
+      , BOARD_CONTENTS
+      , BOARD_CREATE_DT
+      , BOARD_MODIFY_DT
+      , SIGNAL
+      , EMP_NO
+      ) VALUES (
+        #{noticeNo}
+      , #{boardTitle}
+      , #{boardContents}
+      , CURRENT_TIMESTAMP
+      , CURRENT_TIMESTAMP
+      , #{signal}
+      , #{employee.empNo}
+      )
+      
+    </insert>
+    
+    <insert id="insertNoticeAttach"
+            parameterType="NoticeAttachDto">
+      INSERT INTO NOTICE_ATTACH (
+        ATTACH_NO
+      , UPLOAD_PATH
+      , FILESYSTEM_NAME
+      , ORIGINAL_FILENAME
+      , NOTICE_NO
+      ) VALUES (
+        NOTICE_ATTACH_SEQ.NEXTVAL
+      , #{uploadPath}
+      , #{filesystemName}
+      , #{originalFilename}
+      , #{noticeNo}
+      )
+    
+    </insert>
+    
+    <select id="getNoticeCount">
+     SELECT COUNT(*)
+       FROM NOTICE_BOARD
+    </select>
+    
+    <select id="getNoticeList"
+            parameterType="Map"
+            resultMap="NoticeBoardMap">
+     SELECT NOTICE_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, SIGNAL, HIT
+         , EMP_NO, EMP_NAME
+         , ATTACH_COUNT
+       FROM (SELECT ROW_NUMBER() OVER (ORDER BY NOTICE_NO ${sort}) AS RN
+                 , NO.NOTICE_NO, NO.BOARD_TITLE, NO.BOARD_CONTENTS, NO.BOARD_CREATE_DT, NO.BOARD_MODIFY_DT
+                 , NO.SIGNAL, NO.HIT
+                 , EMP.EMP_NO, EMP.EMP_NAME
+                 , (SELECT COUNT(*)
+                      FROM NOTICE_ATTACH ATC
+                     WHERE NO.NOTICE_NO = ATC.NOTICE_NO) AS ATTACH_COUNT
+              FROM EMPLOYEE EMP INNER JOIN NOTICE_BOARD NO
+                ON EMP.EMP_NO = NO.EMP_NO)
+     WHERE RN BETWEEN #{begin} AND #{end}
+    </select>
+    
+    <select id="getNoticeByNo"
+          resultMap="NoticeBoardMap">
+      SELECT NO.NOTICE_NO, NO.BOARD_TITLE, NO.BOARD_CONTENTS, NO.BOARD_CREATE_DT, NO.BOARD_MODIFY_DT, NO.SIGNAL, NO.HIT
+           , EMP.EMP_NO, EMP.EMP_NAME
+        FROM EMPLOYEE EMP INNER JOIN NOTICE_BOARD NO
+          ON EMP.EMP_NO = NO.EMP_NO
+       WHERE NO.NOTICE_NO = #{noticeNo}
+    </select>
+    
+    <select id="getAttachList"
+          resultType="NoticeAttachDto">
+      SELECT ATTACH_NO, UPLOAD_PATH, FILESYSTEM_NAME, ORIGINAL_FILENAME 
+        FROM NOTICE_ATTACH
+       WHERE NOTICE_NO = #{noticeNo}
+    </select>
+    
+    <select id="getAttachByNo"
+          resultType="NoticeAttachDto">
+      SELECT ATTACH_NO, UPLOAD_PATH, FILESYSTEM_NAME, ORIGINAL_FILENAME
+        FROM NOTICE_ATTACH
+       WHERE ATTACH_NO = #{attachNo}
+    </select>
+    
+    <update id="updateNotice"
+          parameterType="NoticeBoardDto">
+       UPDATE NOTICE_BOARD
+          SET BOARD_TITLE = #{boardTitle}
+            , BOARD_CONTENTS = #{boardContents}
+            , BOARD_MODIFY_DT = CURRENT_TIMESTAMP
+        WHERE NOTICE_NO = #{noticeNo}
+    </update>
+    
+    <delete id="deleteAttach">
+      DELETE
+        FROM NOTICE_ATTACH
+       WHERE ATTACH_NO = #{attachNo}
+    </delete>
+  
+    <delete id="deleteNotice">
+      DELETE
+        FROM NOTICE_BOARD
+       WHERE NOTICE_NO = #{noticeNo}
+    </delete>
+    
+    <update id="updateHit">
+      UPDATE NOTICE_BOARD
+         SET HIT = HIT + 1
+       WHERE NOTICE_NO = #{noticeNo}
+    </update>
+  
+  </mapper>

@@ -16,10 +16,10 @@
            <div class="col-6 mb-4">
               <div class="post-list-container">
    						  <div>
-       				    <button class="status-btn" id="전체">전체</button>
-                  <button class="status-btn2" id="대기">대기</button>
-                  <button class="status-btn3" id="확인">확인</button>
-                  <button class="status-btn4" id="완료">완료</button>
+       				    <button class="status-btn" data-kind="total">전체</button>
+                  <button class="status-btn" data-kind="wait">대기</button>
+                  <button class="status-btn" data-kind="confirm">확인</button>
+                  <button class="status-btn" data-kind="complete">완료</button>
                 </div>
 
             <div id="post-list-body">
@@ -38,183 +38,66 @@
          </div>
        </div>
      </div>
-   <!-- / Content -->            
+
+
    
    <script>
    
-   var buttonvalue =0;
+   var kind ='total';
+   var clickableElements;
+   const id=${loginEmployee.empNo}; 
+   kindbtn = document.querySelectorAll('.status-btn');
    
-   document.addEventListener('DOMContentLoaded', () => {
-	    const buttons = document.querySelectorAll('button[class^="status-btn"]');
-
-	    buttons.forEach(button => {
-	        button.addEventListener('click', () => {
-	            console.log(button.id);
-	            // 추가적인 로직을 여기에 작성하세요
-	            // 예: 특정 상태에 따른 처리
-	            switch (button.id) {
-	                case '전체':
-	                	buttonvalue =0;
-	                    break;
-	                case '대기':
-	                	buttonvalue =1;
-	                    break;
-	                case '확인':
-	                	buttonvalue =2;
-	                    break;
-	                case '완료':
-	                	buttonvalue =3;
-	                    break;
-	                default:
-	                	buttonvalue =4;
-	                    break;
-	            }
-	        });
-	    });
-	});
-
+   kindbtn.forEach(element => {
+		    element.addEventListener('click', evt => {
+		    	kind = evt.target.dataset.kind;
+		    	FnRequestAppList(kind, 1, 'DESC', 20, id);
+		    });
+		  });
 
    
-   
-   const fnGetApprovalList = () => {
-	   
-	   
-	   
-	   
-	   
-	   
-	   let str ='';
-	   // page 에 해당하는 목록 요청
-	   
-	   
-	     switch (buttonvalue) {
-                case 0:
-             	   $.ajax({
-             		     // 요청
-             		     type: 'GET',
-             		     url: '${contextPath}/approval/totalList.do',
-             		     // 응답
-             		     dataType: 'json',
-             		     success: (resData) => {  // resData = {"blogList": [], "totalPage": 10}
-             		       totalPage = resData.totalPage;
-             		       $.each(resData.approvalList, (i, approval) => {
-             		    	   
-             		         str = '<div class="approval" data-apv-no="' +  approval.apvNo  + '">';
-             		         str += '<span>' + approval.apvNo  + '</span>';
-             		         str += '<span>' + approval.apvTitle + '</span>';
-             		         str += '<span>' + approval.empNo + '</span>';
-             		         str += '<span>' + approval.apvWriteDate+ '</span>';
-             		         str += '<span>' +approval.apvKinds + '</span>';
-             		         str += '</div>';
-             		         $('#post-list-body').append(str);
-             		         
-             		       })
-             		       str += resData.paging
-             		       $('#post-list-body').append(str);
-             		     },
-             		     error: (jqXHR) => {
-             		       alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-             		     }
-             		   });
-                    break;
-                case 1:
-              	   $.ajax({
-           		     // 요청
-           		     type: 'GET',
-           		     url: '${contextPath}/approval/waitList.do',
-           		     // 응답
-           		     dataType: 'json',
-           		     success: (resData) => {  // resData = {"blogList": [], "totalPage": 10}
-           		       totalPage = resData.totalPage;
-           		       $.each(resData.approvalList, (i, approval) => {
-           		    	   
-           		         str = '<div class="approval" data-apv-no="' +  approval.apvNo  + '">';
-           		         str += '<span>' + approval.apvNo  + '</span>';
-           		         str += '<span>' + approval.apvTitle + '</span>';
-           		         str += '<span>' + approval.empNo + '</span>';
-           		         str += '<span>' + approval.apvWriteDate+ '</span>';
-           		         str += '<span>' +approval.apvKinds + '</span>';
-           		         str += '</div>';
-           		         $('#post-list-body').append(str);
-           		         
-           		       })
-           		       str += resData.paging
-           		       $('#post-list-body').append(str);
-           		     },
-           		     error: (jqXHR) => {
-           		       alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-           		     }
-           		   });
-                    break;
-                case 2:
-              	   $.ajax({
-           		     // 요청
-           		     type: 'GET',
-           		     url: '${contextPath}/approval/comfirmList.do',
-           		     // 응답
-           		     dataType: 'json',
-           		     success: (resData) => {  // resData = {"blogList": [], "totalPage": 10}
-           		       totalPage = resData.totalPage;
-           		       $.each(resData.approvalList, (i, approval) => {
-           		    	   
-           		         str = '<div class="approval" data-apv-no="' +  approval.apvNo  + '">';
-           		         str += '<span>' + approval.apvNo  + '</span>';
-           		         str += '<span>' + approval.apvTitle + '</span>';
-           		         str += '<span>' + approval.empNo + '</span>';
-           		         str += '<span>' + approval.apvWriteDate+ '</span>';
-           		         str += '<span>' +approval.apvKinds + '</span>';
-           		         str += '</div>';
-           		         $('#post-list-body').append(str);
-           		         
-           		       })
-           		       str += resData.paging
-           		       $('#post-list-body').append(str);
-           		     },
-           		     error: (jqXHR) => {
-           		       alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-           		     }
-           		   });
-                    break;
-                case 3:
-              	   $.ajax({
-           		     // 요청
-           		     type: 'GET',
-           		     url: '${contextPath}/approval/completeList.do',
-           		     // 응답
-           		     dataType: 'json',
-           		     success: (resData) => {  // resData = {"blogList": [], "totalPage": 10}
-           		       totalPage = resData.totalPage;
-           		       $.each(resData.approvalList, (i, approval) => {
-           		    	   
-           		         str = '<div class="approval" data-apv-no="' +  approval.apvNo  + '">';
-           		         str += '<span>' + approval.apvNo  + '</span>';
-           		         str += '<span>' + approval.apvTitle + '</span>';
-           		         str += '<span>' + approval.empNo + '</span>';
-           		         str += '<span>' + approval.apvWriteDate+ '</span>';
-           		         str += '<span>' +approval.apvKinds + '</span>';
-           		         str += '</div>';
-           		         $('#post-list-body').append(str);
-           		         
-           		       })
-           		       str += resData.paging
-           		       $('#post-list-body').append(str);
-           		     },
-           		     error: (jqXHR) => {
-           		       alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-           		     }
-           		   });
-                    break;
-                default:
-                    break;
-            }
-	   
-	   
+   function  FnRequestAppList(kind, page, sort, display, id) { 
+	   $('#post-list-body').empty();
+ 	   $.ajax({
+		     // 요청
+		     type: 'GET',
+		     url: '${contextPath}/approval/'+ kind +'List.do?page='+page +'&sort='+ sort+ '&display=' +display +'&empNo=' + id,
+		     // 응답
+		     dataType: 'json',
+		     success: (resData) => { 
+		       totalPage = resData.totalPage;
+		       $.each(resData.approvalList, (i, approval) => {
+		         str = '<div class="approval" data-apv-no="' +  approval.apvNo  + '">';
+		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.apvNo  + '</span>';
+		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.apvTitle + '</span>';
+		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.empNo + '</span>';
+		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.apvWriteDate+ '</span>';
+		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.apvKinds + '</span>';
+		         str += '</div>';
+		         $('#post-list-body').append(str);
+		       })
+		       $('#post-list-body').append(resData.paging);
+		        clickableElements = document.querySelectorAll('.paging');
+				  clickableElements.forEach(element => {
+				    element.addEventListener('click', evt => {
+				      FnRequestAppList(kind,evt.target.dataset.page, 'DESC', 20, id );
+				    });
+				  });
+				  
+			        clickableElements2 = document.querySelectorAll('.approval');
+					  clickableElements2.forEach(element => {
+					    element.addEventListener('click', evt => {
+					      window.location.href = '${contextPath}/approval/detail.do?apvNo='+ evt.target.dataset.apvNo + '&kind=' + kind;
+					    });
+					  });
 
-	   
-	 }
-   
-   fnGetApprovalList();
-   
+		     },
+		     error: (jqXHR) => {
+		       alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+		     }
+		   });
+   }
+     
    </script>
 
 	

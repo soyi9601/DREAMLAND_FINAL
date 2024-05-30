@@ -14,11 +14,31 @@
      <result property="apvTitle"       column="APV_TITLE"/>
    </resultMap>
 
+
 	 <select id="getApvNo"
 	 				  resultType="int">
 	 	SELECT MAX(APV_NO) 
 	 	  FROM APPROVAL
 	 </select>
+	 
+	 <select id="getEmployeeNo">
+	 	SELECT EMP_NO 
+	 	  FROM EMPLOYEE	
+	 	 WHERE EMP_NAME = #{empName} 
+	 </select>
+
+	 <select id="getEmployeeName">
+	 	SELECT EMP_NAME 
+	 	  FROM EMPLOYEE	
+	 	 WHERE EMP_NO = #{empNo} 
+	 </select>
+	 
+	 	 <select id="getApprover">
+	 	SELECT EMP_NO 
+	 	  FROM APV_WRITER	
+	 	 WHERE APV_NO = #{apvNo} 
+	 </select>
+
 
    <insert id="insertApproval"
           parameterType="ApprovalDto">
@@ -36,6 +56,7 @@
       , #{apvKinds}
     )
   </insert>
+  
   
   <insert id="insertApvWriter"
           parameterType="ApvWriterDto">
@@ -58,13 +79,14 @@
     INSERT INTO APV_LETTER (
         LETTER_NO
       , APV_NO
-      , LETTER_DETAIL
+      , DETAIL
     ) VALUES (
         LETTER_SEQ.NEXTVAL
       , #{apvNo}
-      , #{letterDetail}
+      , #{detail}
     )
   </insert>
+  
   
   <insert id="insertApvLeave"
           parameterType="AppleaveDto">
@@ -74,7 +96,9 @@
       , LEAVE_CLASSIFY
       , LEAVE_START
       , LEAVE_END
-      , LEAVE_DETAIL
+      , DETAIL
+      , LEAVE_STATUS
+      , LEAVE_EMERGENCY_CALL
       
     ) VALUES (
         LEAVE_SEQ.NEXTVAL
@@ -82,26 +106,181 @@
       , #{leaveClassify}
       , #{leaveStart}
       , #{leaveEnd}
+      , #{detail}
+      , 0
+      , 1
     )
   </insert>
   
+  
   <select id="getApvCount">
     SELECT COUNT(*)
-      FROM APPROVAL
+      FROM (SELECT APV_NO 
+              FROM APV_WRITER 
+             WHERE EMP_NO = #{empNo} )
+      
   </select>
+  
+    <select id="getWaitApvCount">
+   SELECT count(*)
+     FROM APPROVAL B
+    WHERE B.APV_NO IN (SELECT APV_NO
+                         FROM ( SELECT  APV_NO , WRITER_LIST, APV_STATE, EMP_NO,
+                                        ROW_NUMBER() OVER (PARTITION BY APV_NO, APV_STATE ORDER BY WRITER_LIST) as rn
+                                  FROM APV_WRITER
+                                  WHERE APV_STATE = 100 )
+                                 WHERE rn = 1
+                                   AND EMP_NO = #{empNo})
+  </select>
+  
+  
+    <select id="getConfirmApvCount">
+   SELECT count(*)
+		 FROM APV_WRITER approver 
+     JOIN ( SELECT APV_NO
+              FROM APPROVAL
+             WHERE APV_CHECK = 0
+           ) approval
+       ON approver.APV_NO = approval.APV_NO
+    WHERE approver.APV_STATE = 200
+      AND approver.EMP_NO = #{empNo}
+  </select>
+  
+    <select id="getCompleteApvCount">
+   SELECT count(*)
+		 FROM APV_WRITER approver 
+     JOIN ( SELECT APV_NO
+              FROM APPROVAL
+             WHERE APV_CHECK = 1
+           ) approval
+       ON approver.APV_NO = approval.APV_NO
+    WHERE approver.EMP_NO = #{empNo}
+  </select>
+  
 
   <select id="getApvList"
           parameterType="Map"
           resultMap="ApprovalMap">
-   <if test="1==1">
     SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
       FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO ${sort}) AS RN
                  , APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE 
-              FROM APPROVAL)
+              FROM APPROVAL
+             WHERE APV_NO IN (SELECT APV_NO      
+             FROM APV_WRITER
+            WHERE EMP_NO = #{empNo}))
      WHERE RN BETWEEN #{begin} AND #{end}
-     </if>  
   </select>
- 
-
+  
+  
+  <select id="getWaitApvList"
+         parameterType="Map"
+         resultMap="ApprovalMap">
+    SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
+      FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO DESC) AS RN
+                 , APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE 
+              FROM( SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
+                      FROM APPROVAL B
+                     WHERE B.APV_NO IN (SELECT APV_NO
+                                          FROM ( SELECT  APV_NO , WRITER_LIST, APV_STATE, EMP_NO,
+                                                         ROW_NUMBER() OVER (PARTITION BY APV_NO, APV_STATE ORDER BY WRITER_LIST) as rn
+                                                   FROM APV_WRITER
+                                                    WHERE APV_STATE = 100 )
+                                          WHERE rn = 1
+                                            AND EMP_NO = #{empNo})))
+     WHERE RN BETWEEN #{begin} AND #{end}
+   </select>
+   
+   
+  <select id="getConfirmApvList"
+         parameterType="Map"
+         resultMap="ApprovalMap">
+SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE      
+  FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO DESC) AS RN
+          ,  APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE    
+   FROM approval
+  WHERE APV_NO IN (  SELECT approver.APV_NO
+	          	    FROM APV_WRITER approver 
+                    JOIN ( SELECT APV_NO
+                             FROM APPROVAL
+                            WHERE APV_CHECK = 0
+                           ) approval
+                      ON approver.APV_NO = approval.APV_NO
+                   WHERE approver.APV_STATE = 200
+                     AND approver.EMP_NO = #{empNo})) 
+         WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
+  
+  
+  
+    <select id="getCompleteApvList"
+         parameterType="Map"
+         resultMap="ApprovalMap">
+      
+ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE    
+   FROM approval
+  WHERE APV_NO IN (  SELECT approver.APV_NO
+	          	        FROM APV_WRITER approver 
+                      JOIN ( SELECT APV_NO
+                             FROM APPROVAL
+                            WHERE APV_CHECK = 1
+                            ) approval
+                      ON approver.APV_NO = approval.APV_NO
+                     AND approver.EMP_NO = #{empNo}) 
+                     
+  </select>
+  
+  
+    <select id="getApvDetailByNo"
+         parameterType="Int"
+         resultType="ApprovalDto">
+         
+    SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE    
+      FROM approval
+     WHERE APV_NO = #{apvNo}
+    
+    </select>
+    
+    <select id="getApvAppDetailByNo"
+         parameterType="Int"
+         resultType="AppletterDto">
+         
+    SELECT LETTER_NO, APV_NO, DETAIL, LETTER_STATUS, ORI_FILENAME, RER_FILENAME
+      FROM APV_LETTER
+     WHERE APV_NO = #{apvNo}
+    
+    </select>
+    
+    <select id="getApvLeaveDetailByNo"
+         parameterType="Int"
+         resultType="AppleaveDto">
+         
+    SELECT LEAVE_NO, APV_NO, LEAVE_CLASSIFY, LEAVE_START, LEAVE_END, DETAIL, LEAVE_STATUS, LEAVE_EMERGENCY_CALL
+      FROM APV_LEAVE
+     WHERE APV_NO = #{apvNo}
+    
+    </select>
+    
+    
+    <update id="updateApprover">
+    UPDATE APV_WRITER
+       SET APV_STATE = 200
+     WHERE APV_NO = #{apvNo}
+       AND EMP_NO = #{empNo}
+    </update>
+    
+    <update id="updateApproval">
+    UPDATE approval
+       SET APV_CHECK = 1
+     WHERE APV_NO = #{apvNo}
+    </update>
+    
+    <select id="getApprovers"
+            parameterType="Int"
+            resultType="String">
+        SELECT APV_STATE
+          FROM APV_WRITER
+         WHERE APV_NO = #{apvNo}   
+    </select>
+  
   
 </mapper>
