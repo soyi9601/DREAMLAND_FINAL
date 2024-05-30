@@ -1,12 +1,10 @@
-<!-- notie/list.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
-<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }" />
-
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 <jsp:include page="../../layout/header.jsp" />
 
 <!-- link -->
@@ -42,9 +40,10 @@
 									<i class="fab fa-angular fa-lg text-danger me-3"></i>
 									${beginNo - vs.index}
 									</td>
-									<td data-notice-no="${notice.noticeNo}" class="noticeTitle">
+									<td >
 										<!--  <a class="noticeTitle" href="${contextPath}/board/notice/detail.do?noticeNo=${notice.noticeNo}" style="color:#777">-->
-										${notice.boardTitle} 
+										
+										<span data-notice-no="${notice.noticeNo}" class="noticeTitle">${notice.boardTitle}</span> 
 										<c:if test="${notice.attachCount!=0}">
                   		<i class='bx bxs-file'></i>
                 		</c:if>
