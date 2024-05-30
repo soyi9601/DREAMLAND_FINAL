@@ -72,6 +72,20 @@
       , #{empNo}
     )
   </insert>
+  
+  <insert id="insertApvRef">
+  
+ 	 	INSERT INTO APV_REF (
+    	    REF_NO
+    	  , EMP_NO
+   		  , APV_NO
+  	  ) VALUES (
+  	       REF_NO.NEXTVAL
+  	    , #{empNo}
+  	    , #{apvNo}
+ 	   )
+ 
+ 	</insert>
 
  
   <insert id="insertApvLetter"
@@ -111,6 +125,12 @@
       , 1
     )
   </insert>
+  
+  
+  
+  
+  
+  
   
   
   <select id="getApvCount">
@@ -157,6 +177,82 @@
     WHERE approver.EMP_NO = #{empNo}
   </select>
   
+  
+  
+  
+  
+  
+ <select id="getMyApvCount">
+      SELECT COUNT(*)
+        FROM approval
+       WHERE EMP_NO = #{empNo}
+  </select>
+  
+   <select id="getMyWaitApvCount">
+      SELECT COUNT(*)
+        FROM approval
+       WHERE EMP_NO = #{empNo}
+         AND APV_CHECK = 0
+  </select>
+  
+   <select id="getMyCompleApvCount">
+      SELECT COUNT(*)
+        FROM approval
+       WHERE EMP_NO = #{empNo}
+         AND APV_CHECK = 1
+  </select>
+  
+   <select id="getMyRejectApvCount">
+      SELECT COUNT(*)
+        FROM approval
+       WHERE EMP_NO = #{empNo}
+         AND APV_CHECK = 2
+  </select>
+
+
+
+
+
+
+ <select id="getMyReferApvCount">
+      SELECT COUNT(*)
+        FROM approval
+       WHERE APV_NO IN (SELECT APV_NO
+       										FROM APV_REF
+       									 WHERE EMP_NO = #{empNo})
+  </select>
+  
+   <select id="getMyReferWaitApvCount">
+      SELECT COUNT(*)
+        FROM approval
+       WHERE APV_NO IN (SELECT APV_NO
+       										FROM APV_REF
+       									 WHERE EMP_NO = #{empNo})
+         AND APV_CHECK = 0
+  </select>
+  
+   <select id="getMyReferCompleApvCount">
+      SELECT COUNT(*)
+        FROM approval
+       WHERE APV_NO IN (SELECT APV_NO
+       										FROM APV_REF
+       									 WHERE EMP_NO = #{empNo})
+         AND APV_CHECK = 1
+  </select>
+  
+   <select id="getMyReferRejectApvCount">
+      SELECT COUNT(*)
+        FROM approval
+       WHERE APV_NO IN (SELECT APV_NO
+       										FROM APV_REF
+       									 WHERE EMP_NO = #{empNo})
+         AND APV_CHECK = 2
+  </select>
+    
+
+
+
+
 
   <select id="getApvList"
           parameterType="Map"
@@ -241,72 +337,13 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
      WHERE APV_NO = #{apvNo}
     </select>
     
-    <select id="getApvAppDetailByNo"
-         parameterType="Int"
-         resultType="AppletterDto">
-    SELECT LETTER_NO, APV_NO, DETAIL, LETTER_STATUS, ORI_FILENAME, RER_FILENAME
-      FROM APV_LETTER
-     WHERE APV_NO = #{apvNo}
-    </select>
-    
-    <select id="getApvLeaveDetailByNo"
-         parameterType="Int"
-         resultType="AppleaveDto">
-    SELECT LEAVE_NO, APV_NO, LEAVE_CLASSIFY, LEAVE_START, LEAVE_END, DETAIL, LEAVE_STATUS, LEAVE_EMERGENCY_CALL
-      FROM APV_LEAVE
-     WHERE APV_NO = #{apvNo}
-    </select>
-    
-    
-    <update id="updateApprover">
-    
-    UPDATE APV_WRITER
-       SET APV_STATE = 200,
-           RETURN_REASON = #{returnReason}
-     WHERE APV_NO = #{apvNo}
-       AND EMP_NO = #{empNo}
-    </update>
-    
-    <update id="updateApproval">
-    UPDATE approval
-       SET APV_CHECK = #{state}
-     WHERE APV_NO = #{apvNo}
-    </update>
-    
-    <select id="getApprovers"
-            parameterType="Int"
-            resultType="String">
-        SELECT APV_STATE
-          FROM APV_WRITER
-         WHERE APV_NO = #{apvNo}   
-    </select>
-    
-   <select id="getMyApvCount">
-      SELECT COUNT(*)
-        FROM approval
-       WHERE EMP_NO = #{empNo}
-  </select>
   
-   <select id="getMyWaitApvCount">
-      SELECT COUNT(*)
-        FROM approval
-       WHERE EMP_NO = #{empNo}
-         AND APV_CHECK = 0
-  </select>
+    
   
-   <select id="getMyCompleApvCount">
-      SELECT COUNT(*)
-        FROM approval
-       WHERE EMP_NO = #{empNo}
-         AND APV_CHECK = 1
-  </select>
   
-   <select id="getMyRejectApvCount">
-      SELECT COUNT(*)
-        FROM approval
-       WHERE EMP_NO = #{empNo}
-         AND APV_CHECK = 2
-  </select>
+  
+  
+    
     
     <select id="getMyApvList"
     				parameterType="Map"
@@ -355,6 +392,117 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
           WHERE RN BETWEEN #{begin} AND #{end}
     </select>
     
+    
+    
+    
+    
+    
+    
+       <select id="getMyReferApvList"
+    				parameterType="Map"
+    				resultMap="ApprovalMap">
+				SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE      
+          FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO DESC) AS RN
+                ,  APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE   
+                  FROM approval
+                 WHERE APV_NO IN (SELECT APV_NO
+       										          FROM APV_REF
+       									           WHERE EMP_NO = #{empNo}))
+          WHERE RN BETWEEN #{begin} AND #{end}
+    </select>
+    
+    <select id="getMyReferWaitApvList"
+    				parameterType="Map"
+    				resultMap="ApprovalMap">
+				SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE      
+          FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO DESC) AS RN
+                ,  APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE   
+                  FROM approval
+                 WHERE APV_NO IN (SELECT APV_NO
+       										          FROM APV_REF
+       									           WHERE EMP_NO = #{empNo})
+                 	 AND APV_CHECK = 0)
+          WHERE RN BETWEEN #{begin} AND #{end}
+    </select>
+    
+     <select id="getMyReferCompleteApvList"
+    				parameterType="Map"
+    				resultMap="ApprovalMap">
+				SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE      
+          FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO DESC) AS RN
+                ,  APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE   
+                  FROM approval
+                 WHERE APV_NO IN (SELECT APV_NO
+       										          FROM APV_REF
+       									           WHERE EMP_NO = #{empNo})
+                 	 AND APV_CHECK = 1)
+          WHERE RN BETWEEN #{begin} AND #{end}
+    </select>
+    
+    
+     <select id="getMyReferRejectedApvList"
+    				parameterType="Map"
+    				resultMap="ApprovalMap">
+				SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE      
+          FROM (SELECT ROW_NUMBER() OVER (ORDER BY APV_NO DESC) AS RN
+                ,  APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE   
+                  FROM approval
+                 WHERE APV_NO IN (SELECT APV_NO
+       										          FROM APV_REF
+       									           WHERE EMP_NO = #{empNo})
+                 	 AND APV_CHECK = 2)
+          WHERE RN BETWEEN #{begin} AND #{end}
+    </select>
+    
+    
+    
+    
+    
+    
+    
+    
+      <select id="getApvAppDetailByNo"
+         parameterType="Int"
+         resultType="AppletterDto">
+    SELECT LETTER_NO, APV_NO, DETAIL, LETTER_STATUS, ORI_FILENAME, RER_FILENAME
+      FROM APV_LETTER
+     WHERE APV_NO = #{apvNo}
+    </select>
+    
+    <select id="getApvLeaveDetailByNo"
+         parameterType="Int"
+         resultType="AppleaveDto">
+    SELECT LEAVE_NO, APV_NO, LEAVE_CLASSIFY, LEAVE_START, LEAVE_END, DETAIL, LEAVE_STATUS, LEAVE_EMERGENCY_CALL
+      FROM APV_LEAVE
+     WHERE APV_NO = #{apvNo}
+    </select>
+    
+    
+    <update id="updateApprover">
+    
+    UPDATE APV_WRITER
+       SET APV_STATE = 200,
+           RETURN_REASON = #{returnReason}
+     WHERE APV_NO = #{apvNo}
+       AND EMP_NO = #{empNo}
+       
+    </update>
+    
+    <update id="updateApproval">
+    UPDATE approval
+       SET APV_CHECK = #{state}
+     WHERE APV_NO = #{apvNo}
+    </update>
+    
+    <select id="getApprovers"
+            parameterType="Int"
+            resultType="String">
+        SELECT APV_STATE
+          FROM APV_WRITER
+         WHERE APV_NO = #{apvNo}   
+    </select>
+    
+    
     <select id="getReturnApprover"
             parameterType="Int"
             resultType="ApvWriterDto">
@@ -362,7 +510,6 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
          FROM APV_WRITER 
         WHERE APV_NO = #{apvNo}
           AND NOT RETURN_REASON = '0'
-            
     </select>
     				
   

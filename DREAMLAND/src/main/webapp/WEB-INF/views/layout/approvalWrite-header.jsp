@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"/>
+<c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -236,6 +242,9 @@
                 </a>
                 <a href="${contextPath}/approval/appMyList" class="menu-link">
                   <div>내 문서</div>
+                </a>
+                <a href="${contextPath}/approval/appReferList" class="menu-link">
+                  <div>참조 문서</div>
                 </a>
               </li>
             </ul>

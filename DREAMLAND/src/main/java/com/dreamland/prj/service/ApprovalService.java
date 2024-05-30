@@ -21,6 +21,11 @@ public interface ApprovalService {
 	ResponseEntity<Map<String, Object>> loadconfirmMyAppList(HttpServletRequest request);
 	ResponseEntity<Map<String, Object>> loadCompleteMyAppList(HttpServletRequest request);
 	ResponseEntity<Map<String, Object>> loadrejectedMyAppList(HttpServletRequest request);
+	
+	ResponseEntity<Map<String, Object>> loadtotalMyReferAppList(HttpServletRequest request);
+	ResponseEntity<Map<String, Object>> loadconfirmMyReferAppList(HttpServletRequest request);
+	ResponseEntity<Map<String, Object>> loadCompleteMyReferAppList(HttpServletRequest request);
+	ResponseEntity<Map<String, Object>> loadrejectedMyReferAppList(HttpServletRequest request);
 	public void loadAppByNo(HttpServletRequest request, Model model);
 		
 

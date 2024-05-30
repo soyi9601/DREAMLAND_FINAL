@@ -36,6 +36,11 @@ public class ApprovalController {
 		return "approval/appMyList";
 	}
 	
+	@GetMapping("/appReferList" )
+	public String appReferList(HttpServletRequest request, Model model) {
+		return "approval/appReferList";
+	}
+
 	@GetMapping("/popup")
 	public String popup() {
 		return "approval/popup";
@@ -93,6 +98,28 @@ public class ApprovalController {
 	
 	
 	
+	@GetMapping(value="/totalMyReferList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> totalMyReferList(HttpServletRequest request) {
+		return approvalService.loadtotalMyReferAppList(request);
+	}
+	
+	@GetMapping(value="/waitMyReferList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> confirmMyReferList(HttpServletRequest request) {
+		return approvalService.loadconfirmMyReferAppList(request);
+	}
+	
+	@GetMapping(value="/completeMyReferList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> completeMyReferList(HttpServletRequest request) {
+		return approvalService.loadCompleteMyReferAppList(request);
+	}
+	
+	@GetMapping(value="/rejectedMyReferList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> rejectedMyReferList(HttpServletRequest request) {
+		return approvalService.loadrejectedMyReferAppList(request);
+	}
+	
+	
+	
 	
 	@GetMapping("/detail.do")
 	public String detail(HttpServletRequest request, Model model) {
@@ -115,7 +142,6 @@ public class ApprovalController {
 	
 	@GetMapping("/approve.do")
 	public String approve(HttpServletRequest request) {
-	  System.out.println("실행됐슈1");
 		approvalService.apvApprove(request);
 		return "approval/appList";
 	}

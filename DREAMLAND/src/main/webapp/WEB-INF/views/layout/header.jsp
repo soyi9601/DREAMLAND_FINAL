@@ -172,6 +172,9 @@
                 <a href="${contextPath}/approval/appMyList" class="menu-link">
                   <div>내 문서</div>
                 </a>
+                <a href="${contextPath}/approval/appReferList" class="menu-link">
+                  <div>참조 문서</div>
+                </a>
               </li>
             </ul>
           </li>

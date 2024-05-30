@@ -61,7 +61,7 @@
  	   $.ajax({
 		     // 요청
 		     type: 'GET',
-		     url: '${contextPath}/approval/'+ kind +'MyList.do?page='+page +'&sort='+ sort+ '&display=' +display +'&empNo=' + id,
+		     url: '${contextPath}/approval/'+ kind +'MyReferList.do?page='+page +'&sort='+ sort+ '&display=' +display +'&empNo=' + id,
 		     // 응답
 		     dataType: 'json',
 		     success: (resData) => { 

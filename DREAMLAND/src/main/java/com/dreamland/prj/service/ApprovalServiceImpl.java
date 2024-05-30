@@ -49,18 +49,28 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    
 	    int [] approvers = {approver2, approver3, approver4};
 	    
-	    String wathcer  =  request.getParameter("wathcer");
+	    String referrer  =  request.getParameter("referrer");
+
+        String[] array = referrer.split(" ");
+        
+        ApprovalDto app = ApprovalDto.builder()
+				.empNo(approver)
+				.apvTitle(title)
+				.apvKinds("0")
+				.build();
+
+        approvalMapper.insertApproval(app);
+
+        int apvNo = approvalMapper.getApvNo();
+        // 배열 출력
+        for (String refer : array) {
+        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), apvNo);
+        }
 	    	    
 	    // 뷰에서 전달된 userNo
   
-	    ApprovalDto app = ApprovalDto.builder()
-	    						.empNo(approver)
-	    						.apvTitle(title)
-	    						.apvKinds("0")
-	    						.build();
-	    
-	    approvalMapper.insertApproval(app);
-	    int apvNo = approvalMapper.getApvNo();
+	
+	   
 	    
 	    for(int i=0; i<approvers.length; i++) {
 	    	
@@ -101,6 +111,23 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    
 	    String referrer  =  request.getParameter("referrer");
 	    
+        String[] array = referrer.split(" ");
+        
+	    ApprovalDto app = ApprovalDto.builder()
+				.empNo(approver)
+				.apvTitle(title)
+				.apvKinds("1")
+				.build();
+	    System.out.println(1231241);
+	    approvalMapper.insertApproval(app);
+	   
+
+        int apvNo = approvalMapper.getApvNo();
+        // 배열 출력
+        for (String refer : array) {
+        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer),apvNo);
+        }
+	    
 	    
 	    // 뷰에서 전달된 userNo
 	    String leavekind = request.getParameter("leavekind");
@@ -109,14 +136,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	   
 	    
 	    
-	    ApprovalDto app = ApprovalDto.builder()
-				.empNo(approver)
-				.apvTitle(title)
-				.apvKinds("1")
-				.build();
-	    System.out.println(1231241);
-	    approvalMapper.insertApproval(app);
-	    int apvNo = approvalMapper.getApvNo();
+
 	    
 	    for(int i=0; i<approvers.length; i++) {
 	    	
@@ -382,7 +402,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public ResponseEntity<Map<String, Object>> loadtotalMyAppList(HttpServletRequest request) {
 			String empNo = request.getParameter("empNo");
-		   int total = approvalMapper.getMyApvCount(empNo);
+		    int total = approvalMapper.getMyApvCount(empNo);
 		    
 		    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
 		    int display = Integer.parseInt(optDisplay.orElse("20"));
@@ -459,7 +479,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public ResponseEntity<Map<String, Object>> loadCompleteMyAppList(HttpServletRequest request) {
 		
-		String empNo = request.getParameter("empNo");
+		   String empNo = request.getParameter("empNo");
 		   int total = approvalMapper.getMyCompleApvCount(empNo);
 		    
 		    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
@@ -532,6 +552,163 @@ public class ApprovalServiceImpl implements ApprovalService {
                 , "approvalList" , approvalMapper.getMyRejectedApvList(map) 
                 , "sort", sort
                 , "page", page), HttpStatus.OK);
+	}
+   
+	@Override
+	public ResponseEntity<Map<String, Object>> loadtotalMyReferAppList(HttpServletRequest request) {
+		
+		String empNo = request.getParameter("empNo");
+	    int total = approvalMapper.getMyReferApvCount(empNo);
+	    
+	    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+	    int display = Integer.parseInt(optDisplay.orElse("20"));
+	    
+	    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+	    int page = Integer.parseInt(optPage.orElse("1"));
+
+	    myPageUtils.setPaging(total, display, page);
+	    
+	    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+	    String sort = optSort.orElse("DESC");
+	    
+	    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+	                                   , "end", myPageUtils.getEnd()
+	                                   , "sort", sort
+	                                   , "empNo", empNo);
+	    
+	    /*
+	     * total = 100, display = 20
+	     * 
+	     * page  beginNo
+	     * 1     100
+	     * 2     80
+	     * 3     60
+	     * 4     40
+	     * 5     20
+	     */
+	    return new ResponseEntity<>(Map.of("beginNo", total - (page - 1) * display
+               , "paging",myPageUtils.getPaging(sort, display)
+               , "approvalList" , approvalMapper.getMyReferApvList(map)
+               , "sort", sort
+               , "page", page), HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> loadconfirmMyReferAppList(HttpServletRequest request) {
+		
+		String empNo = request.getParameter("empNo");
+		   int total = approvalMapper.getMyReferWaitApvCount(empNo);
+		    
+		    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+		    int display = Integer.parseInt(optDisplay.orElse("20"));
+		    
+		    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+		    int page = Integer.parseInt(optPage.orElse("1"));
+
+		    myPageUtils.setPaging(total, display, page);
+		    
+		    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+		    String sort = optSort.orElse("DESC");
+		    
+		    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+		                                   , "end", myPageUtils.getEnd()
+		                                   , "sort", sort
+		                                   , "empNo", empNo);
+		    
+		    /*
+		     * total = 100, display = 20
+		     * 
+		     * page  beginNo
+		     * 1     100
+		     * 2     80
+		     * 3     60
+		     * 4     40
+		     * 5     20
+		     */
+		    return new ResponseEntity<>(Map.of("beginNo", total - (page - 1) * display
+             , "paging",myPageUtils.getPaging(sort, display)
+             , "approvalList" , approvalMapper.getMyReferWaitApvList(map)
+             , "sort", sort
+             , "page", page), HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> loadCompleteMyReferAppList(HttpServletRequest request) {
+		
+
+		   String empNo = request.getParameter("empNo");
+		   int total = approvalMapper.getMyReferCompleApvCount(empNo);
+		    
+		    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+		    int display = Integer.parseInt(optDisplay.orElse("20"));
+		    
+		    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+		    int page = Integer.parseInt(optPage.orElse("1"));
+
+		    myPageUtils.setPaging(total, display, page);
+		    
+		    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+		    String sort = optSort.orElse("DESC");
+		    
+		    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+		                                   , "end", myPageUtils.getEnd()
+		                                   , "sort", sort
+		                                   , "empNo", empNo);
+		    
+		    /*
+		     * total = 100, display = 20
+		     * 
+		     * page  beginNo
+		     * 1     100
+		     * 2     80
+		     * 3     60
+		     * 4     40
+		     * 5     20
+		     */
+		    return new ResponseEntity<>(Map.of("beginNo", total - (page - 1) * display
+             , "paging",myPageUtils.getPaging(sort, display)
+             , "approvalList" , approvalMapper.getMyReferCompleteApvList(map)
+             , "sort", sort
+             , "page", page), HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> loadrejectedMyReferAppList(HttpServletRequest request) {
+		
+		String empNo = request.getParameter("empNo");
+		   int total = approvalMapper.getMyReferRejectApvCount(empNo);
+		    
+		    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+		    int display = Integer.parseInt(optDisplay.orElse("20"));
+		    
+		    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+		    int page = Integer.parseInt(optPage.orElse("1"));
+
+		    myPageUtils.setPaging(total, display, page);
+		    
+		    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+		    String sort = optSort.orElse("DESC");
+		    
+		    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+		                                   , "end", myPageUtils.getEnd()
+		                                   , "sort", sort
+		                                   , "empNo", empNo);
+		    
+		    /*
+		     * total = 100, display = 20
+		     * 
+		     * page  beginNo
+		     * 1     100
+		     * 2     80
+		     * 3     60
+		     * 4     40
+		     * 5     20
+		     */
+		    return new ResponseEntity<>(Map.of("beginNo", total - (page - 1) * display
+             , "paging",myPageUtils.getPaging(sort, display)
+             , "approvalList" , approvalMapper.getMyReferRejectedApvList(map) 
+             , "sort", sort
+             , "page", page), HttpStatus.OK);
 	}
 
 }
