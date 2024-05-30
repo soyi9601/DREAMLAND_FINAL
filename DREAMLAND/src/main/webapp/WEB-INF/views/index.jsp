@@ -42,7 +42,13 @@
 	          <div class="card">
 	            <div class="card-body text-center">
 	              <div class="text-center my-3">
-	                <img src="${emp.profilePath}" alt="user-avatar" class="rounded" height="100" width="100" id="uploadedAvatar" />
+	                <c:if test="${not empty emp.profilePath}">
+					          <img src="${emp.profilePath}"  alt="user-avatar" class="rounded" height="100" width="100" id="uploadedAvatar" >
+					         </c:if>
+					         <!-- 프로필 이미지 없을 때 (기본이미지 첨부 됨) -->
+					         <c:if test="${empty emp.profilePath}">
+					          <img src="../assets/img/user-solid.png" class="rounded" height="100" width="100" alt="프로필 이미지">
+					         </c:if>
 	              </div>
 	              <span class="fw-semibold d-block mb-1">
 	                ${emp.deptName}팀

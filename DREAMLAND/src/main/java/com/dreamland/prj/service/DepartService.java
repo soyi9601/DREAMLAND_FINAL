@@ -10,16 +10,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface DepartService {
 
-  public List<DepartmentDto> getDepartList();
-  void updateDepart(DepartmentDto departmentDto);
-  void deleteDepart(DepartmentDto departmentDto);
-  void deleteEmployee(EmployeeDto employeetDto);
+  public List<DepartmentDto> getDepartList();       // 조직도 조회
+  void removeDepart(DepartmentDto departmentDto);   // 부서 삭제
+  void removeEmployee(EmployeeDto employeetDto);    // 직원 삭제
   
-  // 조직도 내에서 수정
-  EmployeeDto getEmployeeById(int empNo);
-  void updateEmployee(HttpServletRequest request);
-  
-  // 부서 추가
-  void addDepartment(HttpServletRequest request, HttpServletResponse response);
+  DepartmentDto getDepartById(int deptNo);          // 노드 클릭 후 부서 조회
+  EmployeeDto getEmployeeById(int empNo);           // 노드 클릭 후 직원 조회
+
+  void updateDepart(DepartmentDto departmentDto);   // 부서 정보 수정
+  void updateEmployee(EmployeeDto employeeDto);     // 직원 정보 수정
+    
+  void addDepartment(HttpServletRequest request, HttpServletResponse response); // 부서 추가
   
 }

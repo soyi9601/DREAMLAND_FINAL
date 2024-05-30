@@ -15,6 +15,7 @@
      <result property="empName"   column="EMP_NAME"/>
      <result property="birth"     column="BIRTH"/>
      <result property="enterDate" column="ENTER_DATE"/>
+     <result property="resignDate" column="RESIGN_DATE"/>
      <result property="email"     column="EMAIL"/>
      <result property="mobile"    column="MOBILE"/>
      <result property="posNo"     column="POS_NO"/>
@@ -22,7 +23,7 @@
    </association>
 </resultMap>
 
-
+  <!-- 부서 + 직원 전체 리스트 조회 -->
   <select id="getDepartList"
           resultMap="DepartmentMap">    
     SELECT D.DEPT_NO, D.DEPT_NAME, D.DEPTH, D.PARENT_ID, D.TREE_TEXT,
@@ -32,13 +33,7 @@
 	   START WITH D.PARENT_ID = '#'
 	 CONNECT BY PRIOR CAST(D.DEPT_NO AS VARCHAR2(20)) = D.PARENT_ID
   </select>
-  
-  <!-- 부서 정보 업데이트 -->
-	<update id="updateDepart" parameterType="DepartmentDto">
-	  UPDATE DEPARTMENT 
-	     SET DEPT_NAME = #{deptName}, PARENT_ID = #{parentId}, TREE_TEXT = #{treeText}
-	   WHERE DEPT_NO = #{deptNo}
-	</update>
+	
 	
 	<!-- 부서 및 직원 삭제 -->
 	<delete id="deleteDepart" parameterType="DepartmentDto">
@@ -46,28 +41,45 @@
       FROM DEPARTMENT
      WHERE DEPT_NO = #{deptNo}       
 	</delete>
-	
+		
 	<update id="deleteEmployee" parameterType="EmployeeDto">
     UPDATE EMPLOYEE
-       SET RESIGN_DATE = #{resignDate}
+       SET RESIGN_DATE = CURRENT_DATE
      WHERE EMP_NO = #{empNo}     
   </update>
   
+  
+  <!-- 부서 및 직원 정보 조회 -->
+  <select id="getDepartById" resultType="DepartmentDto">
+    SELECT DEPT_NO, DEPT_NAME, PARENT_ID
+      FROM DEPARTMENT
+     WHERE DEPT_NO = #{deptNo}
+  </select>
+  
   <select id="getEmployeeById" resultType="EmployeeDto">
-    SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.MOBILE, E.ROLE, E.PROFILE_PATH, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
+    SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.MOBILE, E.ROLE, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
       FROM EMPLOYEE E
       JOIN DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
       JOIN POSITION P ON E.POS_NO = P.POS_NO
      WHERE EMP_NO = #{empNo}
   </select>
   
-  <!-- 직원 정보 업데이트 -->
+  
+  <!-- 부서 및 직원 정보 수정 -->
+  <update id="updateDepart" parameterType="DepartmentDto">
+    UPDATE DEPARTMENT 
+       SET DEPT_NAME = #{deptName}, PARENT_ID = #{parentId}, TREE_TEXT = #{deptName}
+     WHERE DEPT_NO = #{deptNo}
+  </update>
+  
   <update id="updateEmployee" parameterType="EmployeeDto">
     UPDATE EMPLOYEE
        SET EMP_NAME = #{empName}, EMAIL = #{email}, MOBILE = #{mobile}, ROLE = #{role}, DEPT_NO = #{deptNo}, POS_NO = #{posNo}
      WHERE EMP_NO = #{empNo}
   </update>
   
+  
+  <!-- 부서 추가 -->
   <insert id="insertDepart" parameterType="DepartmentDto">
     INSERT INTO DEPARTMENT(
         DEPT_NO
@@ -82,7 +94,6 @@
       , #{parentId}
       , #{deptName}
     ) 
-      
   </insert>
 
 </mapper> 
