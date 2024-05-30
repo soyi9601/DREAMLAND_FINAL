@@ -6,8 +6,6 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class EmployeeDto implements UserDetails {
 	
 	private int empNo, dayOff, deptNo, posNo;
-	private String empName, email, address, detailAddress, password, profilePath, signPath, mobile, role, postcode;
+	private String empName, email, address, detailAddress, password, profilePath, signPath, mobile, role, postcode, deptName, posName;
 	private Date birth, enterDate, resignDate;
 	
   private static final long serialVersionUID = 1L;

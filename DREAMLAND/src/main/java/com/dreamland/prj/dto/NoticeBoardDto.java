@@ -17,5 +17,6 @@ public class NoticeBoardDto {
 	private String boardTitle, boardContents;
 	private Date boardCreateDt, boardModifyDt;
 	private EmployeeDto employee;
-	
+	private int attachCount;
+	private String delAttachList;
 }

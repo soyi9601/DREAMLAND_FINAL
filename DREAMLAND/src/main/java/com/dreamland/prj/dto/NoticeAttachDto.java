@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class NoticeAttachDto {
 	
 	private int attachNo, noticeNo;
-	private String uploadPath, filesystemName, originalfileSystem;
+	private String uploadPath, filesystemName, originalFilename;
 	
 }
