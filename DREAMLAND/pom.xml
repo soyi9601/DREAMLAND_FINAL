@@ -65,27 +65,32 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-       		<groupId>com.sun.mail</groupId><artifactId>javax.mail</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        <dependency>
-        <groupId>org.bgee.log4jdbc-log4j2</groupId>
-        <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
-        <version>1.16</version></dependency>
-     <dependency>
-        <groupId>net.logstash.logback</groupId>
-        <artifactId>logstash-logback-encoder</artifactId>
-        <version>7.4</version></dependency>
-      <dependency>
-        <groupId>org.jsoup</groupId><artifactId>jsoup</artifactId>
-        <version>1.15.4</version></dependency>
-      <dependency>
-        <groupId>org.json</groupId><artifactId>json</artifactId>
-        <version>20240303</version></dependency>
-      <dependency>
-        <groupId>net.coobird</groupId>
-        <artifactId>thumbnailator</artifactId>
-        <version>0.4.20</version></dependency>
+   		<groupId>com.sun.mail</groupId><artifactId>javax.mail</artifactId>
+        <version>1.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bgee.log4jdbc-log4j2</groupId>
+      <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+      <version>1.16</version>
+    </dependency>
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+      <version>7.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jsoup</groupId><artifactId>jsoup</artifactId>
+      <version>1.15.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId><artifactId>json</artifactId>
+      <version>20240303</version>
+    </dependency>
+    <dependency>
+      <groupId>net.coobird</groupId>
+      <artifactId>thumbnailator</artifactId>
+      <version>0.4.20</version>
+    </dependency>
 
     <dependency>
       <groupId>jakarta.servlet</groupId>
@@ -96,14 +101,14 @@
       <groupId>jakarta.servlet.jsp.jstl</groupId>
       <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
     </dependency>
-   <dependency>
+    <dependency>
       <groupId>org.glassfish.web</groupId>
       <artifactId>jakarta.servlet.jsp.jstl</artifactId>
       <version>3.0.1</version>
     </dependency>
-   <dependency>
-       <groupId>org.apache.tomcat.embed</groupId>
-       <artifactId>tomcat-embed-jasper</artifactId>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-jasper</artifactId>
     </dependency>
     <!-- spring security dependency -->   
     <dependency>
@@ -120,7 +125,7 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-taglibs</artifactId>
     </dependency> 
-	</dependencies>
+  </dependencies>
 
 	<build>
 		<plugins>

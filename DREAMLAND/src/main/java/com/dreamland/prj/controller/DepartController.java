@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -93,6 +94,12 @@ public class DepartController {
     return "depart/addDepart";
   }
   
+  
+  // 유저 - 조직도 페이지 이동
+  @GetMapping("/depart.page")
+  public String departUser(Model model) {
+    return "depart/depart_user";
+  }
   
   
 }
