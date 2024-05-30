@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Transactional
 @Service
-public class EmployeeServiceImpl implements EmployeService {
+public class EmployeeServiceImpl implements EmployeeService {
 
   private final EmployeeMapper employeeMapper;
   private final MyFileUtils myFileUtils;
