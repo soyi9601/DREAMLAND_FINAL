@@ -4,17 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
-<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }" />
-
-<!-- 이미지 경로 확인 -->
-<c:set var="signPath" value="${loginEmployee.signPath}"/>
-<c:set var="profilePath" value="${loginEmployee.profilePath}"/>
-<c:if test="${signPath == null}">
-   <c:set var="signPath" value="../assets/img/logo/logo2.png" />
-</c:if>
-<c:if test="${profilePath == null}">
-   <c:set var="profilePath" value="../assets/img/user-solid.png" />
-</c:if>
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
 <jsp:include page="../layout/header.jsp" /> 
 

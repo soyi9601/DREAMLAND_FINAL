@@ -6,18 +6,19 @@ import java.sql.Date;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dreamland.prj.config.DBConnectionProvider;
 import com.dreamland.prj.dto.EmployeeDto;
+import com.dreamland.prj.dto.PrincipalUser;
 import com.dreamland.prj.mapper.EmployeeMapper;
 import com.dreamland.prj.utils.MyFileUtils;
 import com.dreamland.prj.utils.MyJavaMailUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Transactional
 @Service
@@ -26,22 +27,18 @@ public class LoginServiceImpl implements LoginService {
   private final EmployeeMapper employeeMapper;
   private final MyFileUtils myFileUtils;
   private final MyJavaMailUtils myJavaMailUtils;
+  private final BCryptPasswordEncoder passwordEncoder;
   
-  public LoginServiceImpl(EmployeeMapper employeeMapper, MyFileUtils myFileUtils, MyJavaMailUtils myJavaMailUtils) {
+  public LoginServiceImpl(EmployeeMapper employeeMapper, MyFileUtils myFileUtils
+                        , MyJavaMailUtils myJavaMailUtils, BCryptPasswordEncoder passwordEncoder) {
     super();
     this.employeeMapper = employeeMapper;
     this.myFileUtils = myFileUtils;
     this.myJavaMailUtils = myJavaMailUtils;
-  }
-
-  // 로그인
-  @Override
-  public EmployeeDto getEmployeeByEmail(String email) {
-    
-    EmployeeDto emp = employeeMapper.getEmployeeByMap(email);
-    return emp; 
+    this.passwordEncoder = passwordEncoder;
   }
   
+  // 파일 경로 메소드
   private String filePath(MultipartFile filePath, String beforePath) {
     
     String newFilePath = null;
@@ -68,11 +65,19 @@ public class LoginServiceImpl implements LoginService {
     return newFilePath;
   }
   
+  // 로그인
+  @Override
+  public EmployeeDto getEmployeeByEmail(String email) {
+    
+    EmployeeDto emp = employeeMapper.getEmployeeByMap(email);
+    return emp; 
+  }
+  
   // 마이페이지 수정
   @Override
   public void modifyUserInfo(MultipartFile profilePath
                            , MultipartFile signPath
-                           , HttpServletRequest request, HttpServletResponse response) {
+                           , HttpServletRequest request) {
     String newProfilePath= null;
     String newSignPath = null;
     
@@ -105,8 +110,30 @@ public class LoginServiceImpl implements LoginService {
     employeeMapper.updateUserInfo(emp);
     
     EmployeeDto loginEmployee = employeeMapper.getEmployeeByMap(email);
+    PrincipalUser user = new PrincipalUser(loginEmployee);
     
-    Authentication auth = new DBConnectionProvider(this).authenticate(new UsernamePasswordAuthenticationToken(loginEmployee, "updateData", loginEmployee.getAuthorities()));
+    // 수정된 내용 세션 추가
+    Authentication auth = new DBConnectionProvider(this).authenticate(new UsernamePasswordAuthenticationToken(user, "updateData", user.getAuthorities()));
     SecurityContextHolder.getContext().setAuthentication(auth);
+  }
+  
+  
+  // 비밀번호 수정
+  @Override
+  public int modifyPassword(HttpServletRequest request, PrincipalUser user) {
+    // TODO Auto-generated method stub
+    String beforePw = request.getParameter("currentPw");
+    String changePw = passwordEncoder.encode(request.getParameter("newPw"));
+    String email = user.getEmployeeDto().getEmail();
+    
+    // 현재 로그인한 사용자의 비밀번호와 입력한 값이 일치하는지 확인
+    EmployeeDto emp = employeeMapper.getEmployeeByMap(email);
+    if(!passwordEncoder.matches(beforePw, emp.getPassword())) {
+      System.out.println("해당 회원이 존재하지 않습니다");
+      return 0;
+    }
+    
+    employeeMapper.updatePassword(email, changePw);
+    return employeeMapper.updatePassword(email, changePw);
   }
 }
