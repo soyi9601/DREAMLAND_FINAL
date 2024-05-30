@@ -7,7 +7,7 @@ import com.dreamland.prj.dto.EmployeeDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public interface EmployeService {
+public interface EmployeeService {
 
   // ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params);
   // ResponseEntity<Map<String, Object>> sendCode(Map<String, Object> params);
