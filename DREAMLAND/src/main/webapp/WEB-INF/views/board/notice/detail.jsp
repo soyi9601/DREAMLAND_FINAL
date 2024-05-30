@@ -91,14 +91,8 @@
 																</div>
 														</div>
 													
-														
-														
 												</form>
-												<form id="frm-btn" method="POST">  
-                          <input type="hidden" name="noticeNo" value="${notice.noticeNo}">
-                          <button type="button" id="btn-edit" class="btn btn-warning btn-sm">편집</button>
-                          <button type="button" id="btn-remove" class="btn btn-danger btn-sm">삭제</button>
-                        </form>
+												
 										</div>
 								</div>
 						</div>

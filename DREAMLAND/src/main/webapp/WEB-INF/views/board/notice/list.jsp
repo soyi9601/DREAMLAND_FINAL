@@ -42,9 +42,10 @@
 									<i class="fab fa-angular fa-lg text-danger me-3"></i>
 									${beginNo - vs.index}
 									</td>
-									<td data-notice-no="${notice.noticeNo}" class="noticeTitle">
+									<td >
 										<!--  <a class="noticeTitle" href="${contextPath}/board/notice/detail.do?noticeNo=${notice.noticeNo}" style="color:#777">-->
-										${notice.boardTitle} 
+										
+										<span data-notice-no="${notice.noticeNo}" class="noticeTitle">${notice.boardTitle}</span> 
 										<c:if test="${notice.attachCount!=0}">
                   		<i class='bx bxs-file'></i>
                 		</c:if>
