@@ -17,9 +17,9 @@
               <div class="post-list-container">
    						  <div>
        				    <button class="status-btn" data-kind="total">전체</button>
-                  <button class="status-btn" data-kind="wait">대기</button>
-                  <button class="status-btn" data-kind="confirm">확인</button>
-                  <button class="status-btn" data-kind="complete">완료</button>
+                  <button class="status-btn" data-kind="wait">처리 대기</button>
+                  <button class="status-btn" data-kind="confirm">처리 완료</button>
+                  <button class="status-btn" data-kind="complete">승인</button>
                 </div>
 
             <div id="post-list-body">

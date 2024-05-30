@@ -17,8 +17,8 @@
               <div class="post-list-container">
    						  <div>
        				    <button class="status-btn" data-kind="total">전체</button>
-                  <button class="status-btn" data-kind="wait">진행중</button>
-                  <button class="status-btn" data-kind="complete">완료</button>
+                  <button class="status-btn" data-kind="wait">진행 중</button>
+                  <button class="status-btn" data-kind="complete">승인</button>
                   <button class="status-btn" data-kind="rejected">반려</button>
                 </div>
 
