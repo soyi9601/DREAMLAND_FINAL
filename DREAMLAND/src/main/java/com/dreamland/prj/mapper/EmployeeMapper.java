@@ -13,6 +13,8 @@ public interface EmployeeMapper {
   String getDeptNameByDeptNo(int deptNo);
   String getPosNameByPosNo(int posNo);
   int updateUserInfo(EmployeeDto emp);
+
+  int updatePassword(String email, String changePw);
 //  int deleteUser(int userNo);
 //  int insertAccessHistory(Map<String, Object> map);
 //  int updateAccessHistory(String sessionId);
