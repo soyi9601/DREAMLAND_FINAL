@@ -3,8 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
-<%session.setAttribute("empNo", 3);%>            
-<%session.setAttribute("deptNo", 2000);%>
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
+<%-- <%session.setAttribute("empNo", 3);%>            
+<%session.setAttribute("deptNo", 2000);%> --%>
 
 <jsp:include page="../layout/header.jsp" />
 <!-- FullCalendar CDN -->
@@ -110,7 +111,7 @@
 	                        <textarea class="form-control" id="contents" name="contents" style="width: 100%;" rows="3"></textarea> 
 	                    </div>
 	                    <!-- 세션 정보 -->
-	                    <input type="hidden" name="empNo" value="${sessionScope.empNo}"> 
+	                    <input type="hidden" name="empNo" value="${loginEmployee.empNo}"> 
 	                    <input type="hidden" name="empNo" value="2">  
 	              
 	                <div class="modal-footer">
@@ -227,8 +228,8 @@
  document.addEventListener('DOMContentLoaded', function() {
 	    // 전체 일정 데이터
 	    var eventArray = [];
-	    var empNo = '${sessionScope.empNo}'; 
-	    var deptNo = '${sessionScope.deptNo}'; 
+	    var empNo = '${loginEmployee.empNo}'; 
+	    var deptNo = '${loginEmployee.deptNo}'; 
 	    console.log("사원번호 :" + empNo);
 	    console.log("부서번호 :" + deptNo);
 	    
