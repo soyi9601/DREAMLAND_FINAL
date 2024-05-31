@@ -14,6 +14,7 @@
 =========================================================
  -->
 <!-- beautify ignore:start -->
+
 <html
   lang="en"
   class="light-style customizer-hide"
@@ -61,6 +62,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -86,7 +88,6 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <form id="formAuthentication" class="mb-3" action="/tempPassword.do" method="POST">
                 <div class="mb-3">
                   <label for="emp-email" class="form-label">이메일</label>
                   <input
@@ -100,12 +101,11 @@
                   <div class="mb-3" id="result-email"></div>
                 </div>
                 <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">임시 비밀번호 발급하기</button>
+                  <button class="btn btn-primary d-grid w-100" type="button" id="send-temp">임시 비밀번호 발급하기</button>
                 </div>
                 <div class="mb-3">
-                  <button class="btn btn-outline-secondary d-grid w-100" type="submit">취소</button>
+                  <button class="btn btn-outline-secondary d-grid w-100" type="reset">취소</button>
                 </div>
-              </form>
               <p class="login-result">
               </p>
             </div>

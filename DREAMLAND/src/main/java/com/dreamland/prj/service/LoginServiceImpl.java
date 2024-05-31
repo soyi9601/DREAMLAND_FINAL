@@ -2,7 +2,10 @@ package com.dreamland.prj.service;
 
 import java.io.File;
 import java.sql.Date;
+import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +20,7 @@ import com.dreamland.prj.dto.PrincipalUser;
 import com.dreamland.prj.mapper.EmployeeMapper;
 import com.dreamland.prj.utils.MyFileUtils;
 import com.dreamland.prj.utils.MyJavaMailUtils;
+import com.dreamland.prj.utils.MySecurityUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -117,7 +121,6 @@ public class LoginServiceImpl implements LoginService {
     SecurityContextHolder.getContext().setAuthentication(auth);
   }
   
-  
   // 비밀번호 수정
   @Override
   public int modifyPassword(HttpServletRequest request, PrincipalUser user) {
@@ -135,5 +138,31 @@ public class LoginServiceImpl implements LoginService {
     
     employeeMapper.updatePassword(email, changePw);
     return employeeMapper.updatePassword(email, changePw);
+  }
+  
+  // 이메일 체크
+  @Override
+  public ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params) {
+    String email = params.get("email") + "";
+    // 있으면 true(1) 없으면 false(0)
+    boolean enableEmail = employeeMapper.getEmployeeByMap(email) != null;
+    return new ResponseEntity<>(Map.of("enableEmail", enableEmail), HttpStatus.OK);
+  }
+  
+  // 임시비밀번호 전송
+  @Override
+  public ResponseEntity<Map<String, Object>> sendTempPw(Map<String, Object> params) {
+    
+    String code=  MySecurityUtils.getRandomString(8, true, true); 
+    String email = (String)params.get("email");
+    String title = "[DREAMLAND] 임시 비밀번호 전송";
+    String contents = "<div>임시 비밀번호는 <strong>" + code +"</strong>입니다.";
+    
+    System.out.println(code);
+    String encodePw = passwordEncoder.encode(code);
+    int result = employeeMapper.updatePassword(email, encodePw);
+    
+    myJavaMailUtils.sendMail(email, title, contents);
+    return new ResponseEntity<>(Map.of("result", result), HttpStatus.OK);
   }
 }

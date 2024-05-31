@@ -13,7 +13,22 @@ var emailCheck = false;
 
 
 /************************** 함수 정의 **************************/
-// 이메일 체크 함수
+
+// contextPath
+const fnGetContextPath = ()=>{
+  const host = location.host;  /* localhost:8080 */
+  console.log(host);
+  const url = location.href;   /* http://localhost:8080/mvc/getDate.do */
+  console.log(url);
+  const begin = url.indexOf(host) + host.length;
+  console.log(begin);
+  const end = url.indexOf('/', begin + 1);
+  console.log(end);
+  console.log(url.substring(begin, end));
+  return url.substring(begin, end);
+}
+
+// 이메일 체크 및 임시 비밀번호 전송 함수
 const fnCheckEmail = () => {
   
   let inpEmail = document.getElementById('emp-email');
@@ -34,8 +49,58 @@ const fnCheckEmail = () => {
     emailCheck = true;
     msgEmail.innerHTML = '';
   }
+
+}
+
+const fnSendEmail = () => {
+  let msgEmail = document.getElementById('result-email');
+  let inpEmail = document.getElementById('emp-email');
+  fetch(fnGetContextPath() + '/user/checkEmail.do', {
+    method: 'POST',
+    headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      'email': inpEmail.value
+    })
+  })
+  .then(response => response.json())  
+  //.then( (response) => { console.log(response); return response.json(); } )
+  .then(resData => {
+    if(resData.enableEmail){
+      msgEmail.innerHTML = '';
+      fetch(fnGetContextPath() + '/user/sendTempPassword.do', {
+        method: 'POST',
+        headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          'email': inpEmail.value
+        })
+      })
+      .then(response => response.json())
+      .then(resData => {  // resData = {"code": "123qaz"}
+        if(resData.result === 1){
+          alert(inpEmail.value + '로 임시 비밀번호를 전송했습니다. 로그인 후 비밀번호를 변경해주세요');
+          location.href = '/login';         
+        } else {
+          alert('다시 시도해주세요');                    
+        }
+      })
+    } else {
+      msgEmail.innerHTML = '이메일이 존재하지 않습니다.';
+      msgEmail.style.fontSize = '0.75rem';
+      msgEmail.style.fontWeight = 'bold'; 
+      msgEmail.style.color = '#EE2B4B';
+      return;
+    }
+  })
+  
 }
 
 /************************** 함수 호출 **************************/
 document.getElementById('emp-email').addEventListener('blur', fnCheckEmail);
+document.getElementById('send-temp').addEventListener('click', fnSendEmail);
 
