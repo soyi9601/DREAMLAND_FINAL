@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 public class DepartmentDto {
 	
-  private int deptNo;
-  private String deptName;
+  private int deptNo, depth;
+  private String deptName, parentId, treeText;
   
 }
