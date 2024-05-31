@@ -31,7 +31,7 @@
               <tr>
                 <th>번호</th>
                 <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-                  <th>체크박스</th>
+                  <th>선택</th>
                 </c:if>
                 <th>제목</th>
                 <th>작성자</th>
@@ -45,9 +45,10 @@
                   <td>
                   <i class="fab fa-angular fa-lg text-danger me-3"></i>
                   ${beginNo - vs.index}
+
                   </td>
                   <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
-                    <td>체크박스</td>
+                    <td><input type="checkbox" name="noticeChk" value="${notice.noticeNo}" data-idx="${beginNo - vs.index}"/></td>
                   </c:if>
                   <td data-notice-no="${notice.noticeNo}" class="noticeTitle">
                     <c:if test="${notice.signal eq 1}">
@@ -73,8 +74,11 @@
       <!--/ Hoverable Table rows -->
       
       <div>${paging}</div>
+      
       <div class="sd-btn-write-area">
         <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+          <button id="list-edit-btn">편집</button>
+          <button id="list-del-btn">삭제</button>
           <p class="sd-btn-write">
             <a href="${contextPath}/board/notice/write.page">작성</a>
           </p>
@@ -87,8 +91,6 @@
 
 <script>
 const fnNoticeDetail = () =>{
-  
-
   $(document).on('click', '.noticeTitle', (evt)=>{
     //관리자의 경우, 조회수 증가 X
     if(${loginEmployee.empNo}===1 ){
@@ -100,11 +102,94 @@ const fnNoticeDetail = () =>{
       //alert(${loginEmployee.empNo});
       location.href = '${contextPath}/board/notice/updateHit.do?noticeNo='+evt.target.dataset.noticeNo;
     }
-      
   })
 }
 
 fnNoticeDetail();
+
+
+const fnNoticeListEdit = () =>{
+  $(document).on('click','#list-edit-btn', (evt)=>{
+    let checked = $("input[name='noticeChk']:checked");
+    if(checked.length == 1){
+      let noticeNo = checked.val();
+      let form = $('<form action="${contextPath}/board/notice/edit.do" method="post">' +
+                    '<input type="hidden" name="noticeNo" value="'+noticeNo + '"></input>'+'</form>');
+      $('body').append(form);
+      form.submit();
+    }else{
+      alert("편집할 게시글을 하나만 선택하세요");
+    }
+  })
+}
+
+fnNoticeListEdit();
+
+
+const fnNoticeListDel = () =>{
+  $(document).on('click','#list-del-btn',(evt)=>{
+
+    let checked = $("input[name='noticeChk']:checked");
+    
+    
+    if(checked.length > 0){
+      
+      let no = [];   // 게시글 진짜 no(DB상)
+      let idx = [];  // 목록상 게시글 index
+      
+      checked.each(function(){
+        no.push($(this).val());
+        idx.push($(this).data("idx"));
+        console.log(checked);
+      });
+      
+      // console.log("DB "+no);
+      // console.log("목록상"+idx);
+      
+      let msg = checked.length == 1 ? 
+          '삭제할까요?' : 
+          idx.join(",")+'번 게시글을(를) 삭제할까요?';
+      if(confirm(msg)){
+        $.ajax({
+          url:"${contextPath}/board/notice/removeNo.do",
+          type:"POST",
+          data:{no:no},
+          traditional: true,
+          success:function(response){
+             if (response === '삭제되었습니다.') {
+                // 삭제가 성공했을 때의 동작
+                alert("삭제되었습니다.");
+                loadNoticeList(); // 공지사항 목록 다시 불러오기 등의 동작
+            } else {
+                // 삭제가 실패했거나 삭제할 게시글이 없는 경우의 동작
+                alert("삭제할 게시글이 없습니다.");
+            }
+          }
+        })
+      }
+    }else{
+      alert("삭제할 게시글을 선택하세요.");
+    }
+    
+    function loadNoticeList(){
+      location.reload();
+    }
+    
+  })
+}
+
+
+fnNoticeListDel();
+
+const fnRemoveResult = () => {
+  const removeResult = '${removeResult}';
+  if(removeResult !== '') {
+    alert(removeResult);
+  }
+}
+
+fnRemoveResult();
+
 </script>
 
 <%@ include file="../../layout/footer.jsp"%>
