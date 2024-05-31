@@ -3,91 +3,12 @@
 <jsp:include page="./../layout/approvalWrite-header.jsp" />  
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }" />
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 
 <div class="container-xxl flex-grow-1 container-p-y">
 <div class="col-6 mb-4" style="width:100%; height:100%">
-<!--  
-<div class="col-6 mb-4" style="width:100%; height:100%">
-  <div class="card">
-    <div class="select-container">
-      <label for="formSelect">Select Form: </label>
-        <select id="formSelect">
-          <option value="expense">지출 품의서</option>
-         	<option value="leave">휴가신청서</option>
-       	</select>
-        <button class="button" id="addButton3">Add Selected Form</button>
-    </div>
-    </div>
-      <div class="card">
-         <div class="card-body text-center">
-       		    <div id="buttonContainer">
-            <button class="button button">결재자</button>
-   			    <button class="button button">결재자</button>
-          </div>
-   	  		<button class="button button1" id="addButton">Add Button</button>
-        </div>
-           </div>
-        <div class="card">
-        <div class="card-body text-center">
-    	    <div id="buttonContainer2">
-            <button class="button button">참조자</button>
-   		  	  <button class="button button">참조자</button>
-          </div>
-   		  	<button class="button button1" id="addButton2">Add Button</button>
-        </div>
-        </div>
 
-    <div class="expense">
-		  <div class="card">
-			  <div class="card-body text-center">
-
-      <div class="container">
-        <div class="title">기안서</div>
-          <table class="table">
-            <tr>
-            <th>문서번호</th>
-            <td><input type="text" class="input-text"></td>
-            <th>결제</th>
-            <td colspan="2"></td>
-            </tr>
-            <tr>
-            <th>문서구분</th>
-            <td>
-              <select class="input-select">
-                <option value="expense">지출품의서</option>
-                <option value="leave">병가신청서</option>
-              </select>
-            </td>
-            <th>본인</th>
-            <td></td>
-            </tr>
-            <tr>
-            <th>기안자</th>
-            <td><input type="text" class="input-text"></td>
-            </tr>
-            <tr>
-            <th>기안일자</th>
-            <td><input type="date" class="input-text"></td>
-            </tr>
-            <tr>
-            <td colspan="4"><textarea class="input-textarea" placeholder="내용을 입력해 주세요"></textarea></td>
-            </tr>
-          </table>
-          <div class="button-container">
-            <button class="button button-secondary">파일선택</button>
-            <button class="button button-secondary">삭제</button>
-            <button class="button button-primary">임시저장</button>
-            <button class="button button-primary">제출하기</button>
-          </div>
-        </div>  
-	  	</div> 
-    </div> 
-
-  </div>
-</div>
-</div>
--->
 <div class="container">
     <div class="title">기안서 작성하기</div>
   <div class="select-container">
@@ -105,7 +26,6 @@
             <div class="title">품 의 서</div>
             <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
             <input type="hidden" name="userNo" value="1">
-            <input type="hidden" name="appKinds" value="1">
            <div class="section">
                 <div class="section-title">제목</div>
                         	<input type="text" style="width:750px;" name="title"></input>
@@ -120,7 +40,7 @@
                     <td>대표이사</td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="approver"></input></td>
+                    <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
                     <td><input type="text" name="approver2"></input></td>
                     <td><input type="text" name="approver3"></input></td>
                     <td><input type="text" name="approver4"></input></td>
@@ -163,14 +83,14 @@
     
     <div id="leaveRequestForm" class="page">
          <form method="GET"
-        action="${contextPath}/apprval/leave.do">
+        action="${contextPath}/approval/leave.do">
         <h2>휴가신청서</h2>
         <!-- 휴가신청서 내용 -->
         <div class="container">
             <div class="title">휴가신청서</div>
                             <div class="section-title">제목</div>
                         	<input type="text" style="width:750px;" name="title"></input>
-
+         <input type="hidden" name="userNo" value="1">
         
              <div class="section-title">결재자</div>
             <table class="approval-table">
@@ -181,7 +101,7 @@
                     <td>대표이사</td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="approver"></input></td>
+                     <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
                     <td><input type="text" name="approver2"></input></td>
                     <td><input type="text" name="approver3"></input></td>
                     <td><input type="text" name="approver4"></input></td>
@@ -226,6 +146,8 @@
             </div>
         </div>
         </form>
+    </div>
+</div>
     </div>
 </div>
 

@@ -2,13 +2,61 @@
 
 /* 게시판 공통 */
 .sd-point{color:#90b54c;text-align:Center;}
-.sd-title{font-size:32px}
+.sd-title{font-size:32px;margin-bottom:40px;}
+.sd-table-wrapper{/*margin-top:40px;*/}
+.sd-table table thead tr{padding-top:30px !important;background:orange;} 
 
 
+/* ==========================================================
+  공지사항(/board/notice)
+=============================================================*/
+/* ========================
+  공지사항(/board/notice)
+    └ list.jsp
+===========================*/
+
+/*테이블공통*/
+.table > :not(caption) > * > * {padding:10px 0}
+/*테이블 헤더(thead)*/
+.sd-table th{font-size:13px;}
+.sd-table th:first-child{padding-left:10px;} 
+
+.sd-table td{font-size:13px;}
+.noticeTitle{cursor:pointer;}
+
+
+/*테이블 tbody*/
+.sd-notice-write .form-control{margin-bottom:12px;}
+
+
+/* ========================
+  공지사항(/board/notice)
+    └ write.jsp
+===========================*/
+.sd-notice-write .notice-input-area{width:85%;display:flex;}
+.sd-notice-write .del-btn{cursor:pointer;padding-top:9px;padding-left:6px;}
+
+
+
+/* ========================
+  공지사항(/board/notice)
+    └ detail.jsp
+===========================*/
+.sd-notice-detail .mb-3{border-bottom:1px solid #e3e3e3}
+.sd-notice-detail .col-sm-10{padding-top: calc(0.4375rem + 1px); padding-bottom: calc(0.4375rem + 1px); font-size:12px;}
+.bx-download{cursor:pointer;}
+
+
+/* ========================
+  공지사항(/board/notice)
+    └ edit.jsp
+===========================*/
+.file-input-div{display:flex;width:85%;}
+.file-input-div .del-btn{cursor:pointer;padding-top:9px;padding-left:6px;}
 
 /* FAQ게시판 */
 /* list.jsp*/
-.faq-category-list{display:flex;justify-content: center;list-style:none;width:100%;margin-top:30px;}
+.faq-category-list{display:flex;justify-content: center;list-style:none;width:100%;}
 .faq-category-list li a{display:block;font-size:18px;padding-right:20px}
 
 .faqheader {

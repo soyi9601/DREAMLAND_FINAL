@@ -1,7 +1,9 @@
 package com.dreamland.prj.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +37,7 @@ public class SecurityConfig {
         .requestCache(request -> request
             .requestCache(requestCache))
         .authorizeHttpRequests(authorize -> authorize
+            .requestMatchers("/login").permitAll()
             .requestMatchers("/user/**").authenticated()  // 인증만 되면 들어갈 수 있는 주소
             .requestMatchers("/manager/**", "/").hasAnyRole("ADMIN", "USER")
             .requestMatchers("/employee/**").hasRole("ADMIN")
@@ -45,7 +48,7 @@ public class SecurityConfig {
             .loginProcessingUrl("/login") // login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행해준다.
             .failureHandler(customFailureHandler)
             .defaultSuccessUrl("/")
-            ) 
+            )
             
         
         .build();
