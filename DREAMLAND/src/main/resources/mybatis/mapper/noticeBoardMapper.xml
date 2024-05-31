@@ -72,19 +72,22 @@
     <select id="getNoticeList"
             parameterType="Map"
             resultMap="NoticeBoardMap">
-     SELECT NOTICE_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, SIGNAL, HIT
-         , EMP_NO, EMP_NAME
-         , ATTACH_COUNT
-       FROM (SELECT ROW_NUMBER() OVER (ORDER BY NOTICE_NO ${sort}) AS RN
-                 , NO.NOTICE_NO, NO.BOARD_TITLE, NO.BOARD_CONTENTS, NO.BOARD_CREATE_DT, NO.BOARD_MODIFY_DT
-                 , NO.SIGNAL, NO.HIT
-                 , EMP.EMP_NO, EMP.EMP_NAME
-                 , (SELECT COUNT(*)
-                      FROM NOTICE_ATTACH ATC
-                     WHERE NO.NOTICE_NO = ATC.NOTICE_NO) AS ATTACH_COUNT
-              FROM EMPLOYEE EMP INNER JOIN NOTICE_BOARD NO
-                ON EMP.EMP_NO = NO.EMP_NO)
-     WHERE RN BETWEEN #{begin} AND #{end}
+      SELECT NOTICE_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, SIGNAL, HIT
+           , EMP_NO, EMP_NAME
+           , ATTACH_COUNT
+    FROM ( SELECT ROW_NUMBER() OVER (ORDER BY 
+                                      CASE WHEN NO.SIGNAL = 1 THEN 0 ELSE 1 END, 
+                                      NOTICE_NO ${sort}) AS RN
+             , NO.NOTICE_NO, NO.BOARD_TITLE, NO.BOARD_CONTENTS, NO.BOARD_CREATE_DT, NO.BOARD_MODIFY_DT
+             , NO.SIGNAL, NO.HIT
+             , EMP.EMP_NO, EMP.EMP_NAME
+             , (SELECT COUNT(*)
+                FROM NOTICE_ATTACH ATC
+                WHERE NO.NOTICE_NO = ATC.NOTICE_NO) AS ATTACH_COUNT
+        FROM EMPLOYEE EMP INNER JOIN NOTICE_BOARD NO
+            ON EMP.EMP_NO = NO.EMP_NO
+    )
+    WHERE RN BETWEEN #{begin} AND #{end}
     </select>
     
     <select id="getNoticeByNo"
@@ -116,6 +119,7 @@
           SET BOARD_TITLE = #{boardTitle}
             , BOARD_CONTENTS = #{boardContents}
             , BOARD_MODIFY_DT = CURRENT_TIMESTAMP
+            , SIGNAL = ${signal}
         WHERE NOTICE_NO = #{noticeNo}
     </update>
     
