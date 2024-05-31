@@ -223,7 +223,7 @@
                         </div>
                         <div class="flex-grow-1">
                           <span class="fw-semibold d-block">${loginEmployee.empName}</span>
-                          <small class="text-muted">${loginEmployee.posNo}</small>
+                          <small class="text-muted">${loginEmployee.posName}</small>
                         </div>
                       </div>
                     </a>

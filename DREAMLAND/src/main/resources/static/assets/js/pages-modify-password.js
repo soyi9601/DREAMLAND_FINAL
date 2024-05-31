@@ -90,14 +90,6 @@ const fnModifyPassword = () =>{
 
 }
 
-// 에러메시지 반환
-const fnInsertResult = () => {
-  const msg = '${msg}';
-  if(msg !== '') {
-    alert(msg);
-  }
-}
-
 /************************** 함수 호출 **************************/
 document.getElementById('new-password').addEventListener('blur', fnCheckPassword);
 document.getElementById('new-password2').addEventListener('blur', fnConfirmPassword);
