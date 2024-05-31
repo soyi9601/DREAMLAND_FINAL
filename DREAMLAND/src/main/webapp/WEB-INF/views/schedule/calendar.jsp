@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
-<%-- <%session.setAttribute("empNo", 1);%>     --%>       
-<%-- <%session.setAttribute("deptNo", 6000);%>   --%>        
+<%session.setAttribute("empNo", 3);%>            
+<%session.setAttribute("deptNo", 2000);%>
 
 <jsp:include page="../layout/header.jsp" />
 <!-- FullCalendar CDN -->
@@ -83,7 +83,7 @@
 	                    </div>
 	                    <div class="row d-flex justify-content-center mt-100">
 	                        <div class="col-md-6">
-	                            <select id="deptNo" name="deptNo" multiple>
+	                            <select id="deptNo" name="deptNo" multiple onchange="selectNum()">
 	                             <option value="1000">인사</option>
 	                             <option value="2000">경영지원</option>
 	                             <option value="3000">안전관리</option>
@@ -110,12 +110,12 @@
 	                        <textarea class="form-control" id="contents" name="contents" style="width: 100%;" rows="3"></textarea> 
 	                    </div>
 	                    <!-- 세션 정보 -->
-	          <%--           <input type="hidden" name="empNo" value="${sessionScope.employee.empNo}"> --%>
-	                             <input type="hidden" name="empNo" value="1">
+	                    <input type="hidden" name="empNo" value="${sessionScope.empNo}"> 
+	                    <input type="hidden" name="empNo" value="2">  
 	              
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	                    <button type="submit" class="btn btn-primary" id="btn-save">저장</button>
+	                    <button type="button" class="btn btn-primary" id="btn-save">저장</button>
 	                </div>   
 	                </div>
 	            </div>
@@ -186,7 +186,7 @@
 	                </div>
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	                    <button type="button" class="btn btn-primary" id="btn-modify-skd">저장</button>
+	                    <button type="submit" class="btn btn-primary" id="btn-modify-skd">저장</button>
 	                </div>
 	          </div>
 	      </div>
@@ -205,15 +205,16 @@
                 <div class="modal-body">
                     <h5 id="detail-title"></h5>
                     <p>일정기간: <span id="detail-time"></span></p>
+                    <p>작성자: <span id="detail-writer"></span></p>
                     <p>카테고리: <span id="detail-category"></span></p>
                     <p>공유부서: <span id="detail-deptNo"></span></p>
                     <p>내용: <span id="detail-contents"></span></p>
                 </div>
                 <div class="modal-footer">
                     <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button> -->
-                    <button type="button" class="btn btn-primary" id="btn-edit">수정</button>
-                    <button type="button" class="btn btn-danger" id="btn-remove">삭제</button>
-                    <input type="hidden" id="skdNo" name="skdNo" value="${skd.skdNo}">
+	                    <button type="button" class="btn btn-primary" id="btn-edit">수정</button>
+	                    <button type="button" class="btn btn-danger" id="btn-remove">삭제</button>
+	                    <input type="hidden" id="skdNo" name="skdNo" value="${skd.skdNo}">
                 </div>
             </div>
         </div>
@@ -226,24 +227,39 @@
  document.addEventListener('DOMContentLoaded', function() {
 	    // 전체 일정 데이터
 	    var eventArray = [];
+	    var empNo = '${sessionScope.empNo}'; 
+	    var deptNo = '${sessionScope.deptNo}'; 
+	    console.log("사원번호 :" + empNo);
+	    console.log("부서번호 :" + deptNo);
+	    
 	    <c:forEach var='skd' items='${skdList}'>
-	        eventArray.push({
-	            id: '${skd.skdNo}',  // 일정 ID 추가
-	            title: '${skd.skdTitle}',
-	            start: '${skd.skdStart}',
-	            end: '${skd.skdEnd}',
-	            backgroundColor: '${skd.skdColor}',
-	            extendedProps: {
-	                contents: '${skd.skdContents}',
-	                category: '${skd.skdCategory}',
-	                empName: '${skd.employee.empName}',
-	                sharedDepts: '<c:forEach var="dept" items="${skd.shrDept}">${dept.deptNo} </c:forEach>'
-	            }
-	        });
-	    </c:forEach>
+	      // 공유부서 배열에 저장
+	    	var sharedDeptNos = '<c:forEach var="dept" items="${skd.shrDept}">${dept.deptNo} </c:forEach>'.trim().split(' ');
+	    	
+    	   // 공유 부서 텍스트를 가져오기 위해 부서 번호를 텍스트로 변환
+        var sharedDeptTexts = sharedDeptNos.map(function(deptNo) {
+            return $("#modify-deptNo option[value='" + deptNo.trim() + "']").text();
+        }).join(', ');
+	    	
+        eventArray.push({
+            id: '${skd.skdNo}',  // 일정 ID 추가
+            title: '${skd.skdTitle}',
+            start: '${skd.skdStart}',
+            end: '${skd.skdEnd}',
+            backgroundColor: '${skd.skdColor}',
+            extendedProps: {
+                contents: '${skd.skdContents}',
+                category: '${skd.skdCategory}',
+                writer: '${skd.employee.empName}',
+                empNo: '${skd.employee.empNo}',
+                sharedDepts: sharedDeptTexts
+                //sharedDepts: '${skd.shrDept}'
+            }
+        });
+    </c:forEach>
+    
 	    
 	    // 전체 일정 데이터 확인용 (개발완료 후 삭제!!)
-	    
 	    console.log("전체일정 :" , eventArray);
 	    
 	    var calendarEl = document.getElementById('calendar');
@@ -266,20 +282,35 @@
 	              $('#deptNo').val('');
 	              $('#insertModal').modal('show'); 
 	          },
-	          eventClick: function(info) {
-	              var sharedDeptTexts = info.event.extendedProps.sharedDepts.split(' ').map(function(deptNo) {
-	                  return $("#modify-deptNo option[value='" + deptNo.trim() + "']").text();
-	              }).join(', ');
+	          
+          /**************** 일정 상세보기 ****************/
+          eventClick: function(info) {
+        	  /*  var sharedDeptTexts = info.event.extendedProps.sharedDepts.split(' ').map(function(deptNo) {
+                    return $("#modify-deptNo option[value='" + deptNo.trim() + "']").text();
+                }).join(', ');
+*/               
 
-	              var categoryText = $("#modify-category option[value='" + info.event.extendedProps.category + "']").text();
-	              $('#detail-title').text(info.event.title);
-	              $('#detail-time').text(moment(info.event.start).format('YYYY-MM-DD HH:mm') + ' ~ ' + moment(info.event.end).format('YYYY-MM-DD HH:mm'));
-	              $('#detail-category').text(categoryText);
-	              $('#detail-deptNo').text(sharedDeptTexts);
-	              $('#detail-contents').text(info.event.extendedProps.contents);
-	              $('#skdNo').val(info.event.id);
-	              $('#detailModal').modal('show');
-	          }
+							var categoryText = $("#modify-category option[value='" + info.event.extendedProps.category + "']").text();
+							
+							$('#detail-title').text(info.event.title);
+							$('#detail-time').text(moment(info.event.start).format('YYYY-MM-DD HH:mm') + ' ~ ' + moment(info.event.end).format('YYYY-MM-DD HH:mm'));
+							$('#detail-writer').text(info.event.extendedProps.writer);
+							$('#detail-category').text(categoryText);
+							$('#detail-deptNo').text(info.event.extendedProps.sharedDepts);
+							$('#detail-contents').text(info.event.extendedProps.contents);
+							$('#skdNo').val(info.event.id);
+             
+              // 일정 작성자가 현재 로그인한 사원과 동일한 경우에만 수정/삭제 버튼 표시
+              if (info.event.extendedProps.empNo == empNo) {
+                  $('#btn-edit').show();
+                  $('#btn-remove').show();
+              } else {
+                  $('#btn-edit').hide();
+                  $('#btn-remove').hide();
+              } 
+              
+              $('#detailModal').modal('show');
+          }
 	      });
 
 	      calendar.render(); // 캘린더 랜더링
@@ -322,8 +353,8 @@
 			        dataType: "json",
 			        success: function(resData) {
 			            if (resData.insertSkdCount === 1) {
-			                // 모달 닫기
-			                $('#insertModal').modal('hide');
+			                $('#insertModal').modal('hide');   // 모달 닫기
+			                //location.reload();                 // 페이지 새로고침
 			                // 새로운 이벤트 추가
 			                var newEvent = {
 			                    title: $('#title').val(),
@@ -332,29 +363,25 @@
 			                    color: $('#color').val(),
 			                    extendedProps: {
 			                        category: $('#category option:selected').text(),
-			                        sharedDepts: selectedDepts.join(' '),
+			                        sharedDepts: selectedDepts.join(''),
 			                        contents: $('#contents').val()
 			                    }
 			                };
 			                calendar.addEvent(newEvent);
-			                // 입력 필드 초기화
+			                calendar.render();
+			                $('#frm-schedule').reset();  // 폼 초기화
+			                
+			              /*   // 입력 필드 초기화
 			                $('#title').val('');
 			                $('#start').val('');
 			                $('#end').val('');
 			                $('#category').val('work'); 
 			                $('#deptNo').val(''); 
 			                $('#color').val('gray'); 
-			                $('#contents').val('');
+			                $('#contents').val(''); */
 			            } else {
 			                alert('일정 등록 실패했습니다.');
-			                // 입력 필드 초기화
-			                $('#title').val('');
-			                $('#start').val('');
-			                $('#end').val('');
-			                $('#category').val('work'); 
-			                $('#deptNo').val('');
-			                $('#color').val('gray'); 
-			                $('#contents').val('');
+			                $('#frm-schedule').reset();
 			            }
 			        },
 			        error: function(jqXHR) {
@@ -364,6 +391,7 @@
 			});
 	      
         /**************** 일정 수정 ****************/
+        // 기존 일정 수정 버튼 클릭 시 모달창에 데이터 채우기
         $('#btn-edit').on('click', function() {
             var selectedSkdNo = $('#skdNo').val();
             var event = calendar.getEventById(selectedSkdNo);
@@ -382,7 +410,7 @@
 
               
            $('#btn-modify-skd').on('click', function() {
-        	   // formData 생성 및 부서공유 선택 추가
+             // formData 생성 및 부서공유 선택 추가
                var formData = $(this).serializeArray();
                  var selectedDepts = $('#modify-deptNo').val();
                  if (selectedDepts) {
@@ -393,7 +421,7 @@
                      });
                      formData.push({ name: 'shrDept', value: JSON.stringify(shrDeptList) }); // formData에 shrDept 필드 추가
                  }
-        	   
+             
             var formData = {
                 skdNo: parseInt($('#modify-skdNo').val()),
                 skdTitle: $('#modify-title').val(),
@@ -414,19 +442,22 @@
                 dataType: "json",
                 success: function(resData) {
                     if (resData.modifyCount === 1) {
-                        // 모달 닫기
-                        $('#modifyModal').modal('hide');
-
+                        
+                        $('#modifyModal').modal('hide');  // 모달 닫기
+                        //location.reload();                // 페이지 새로고침
                         // 업데이트된 이벤트 정보 설정
-                        var event = calendar.getEventById(formData.skdNo);
-                        event.setProp('title', formData.skdTitle);
-                        event.setStart(formData.skdStart);
-                        event.setEnd(formData.skdEnd);
-                        event.setProp('color', formData.skdColor);
-                        event.setExtendedProp('category', formData.skdCategory);
-                        event.setExtendedProp('sharedDepts', formData.shrDept.map(dept => dept.deptNo).join(' '));
-                        event.setExtendedProp('contents', formData.skdContents);
-                        console.log('수정 데이터 : ' , event);
+                        var event = calendar.getEventById(data.skdNo);
+                        event.setProp('title', data.skdTitle);
+                        event.setStart(data.skdStart);
+                        event.setEnd(data.skdEnd);
+                        event.setProp('color', data.skdColor);
+                        event.setExtendedProp('category', data.skdCategory);
+                        event.setExtendedProp('sharedDepts', selectedDepts.map(function(dept) {
+                            return $("#modify-deptNo option[value='" + dept + "']").text();
+                        }).join(', '));
+                        event.setExtendedProp('contents', data.skdContents);
+                        calendar.render();
+                        $('#frm-modify-schedule').reset();
                     } else {
                         alert('일정 수정 실패했습니다.');
                     }

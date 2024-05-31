@@ -15,6 +15,7 @@ import com.dreamland.prj.dto.SkdShrDeptDto;
 import com.dreamland.prj.mapper.ScheduleMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -42,7 +43,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     
     
     // 로그 출력
-    System.out.println("====== service ======");
+    System.out.println("============ service ===========");
     System.out.println("title: " + title);
     System.out.println("start: " + start);
     System.out.println("end: " + end);
@@ -50,6 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     System.out.println("color: " + color);
     System.out.println("contents: " + contents);
     System.out.println("empNo: " + empNo);
+    System.out.println("===============================");
     
     
     // EmployeeDto 객체 생성 
@@ -94,12 +96,32 @@ public class ScheduleServiceImpl implements ScheduleService {
   // 모든 일정 조회
   @Override
   public void loadSkdList(HttpServletRequest request, Model model) {
+//    세션 오류 발생용 
+//    Map<String, Object> map = new HashMap<>();
+//    
+//    List<ScheduleDto> skdList = scheduleMapper.getSkdList(map);
+//    System.out.println(skdList);
+//    model.addAttribute("skdList", skdList);
     
-   Map<String, Object> map = new HashMap<>();
-   
-   List<ScheduleDto> skdList = scheduleMapper.getSkdList(map);
-   System.out.println(skdList);
-   model.addAttribute("skdList", skdList);
+    HttpSession session = request.getSession();
+    // 세션 정보 저장 (사원번호 + 부서번호)
+    int empNo = (Integer) session.getAttribute("empNo");
+    int deptNo = (Integer) session.getAttribute("deptNo");
+    
+    Map<String, Object> map = new HashMap<>();
+    map.put("empNo", empNo);
+    map.put("deptNo", deptNo);
+
+    List<ScheduleDto> skdList = scheduleMapper.getSkdList(map);
+    
+    // 각 일정의 공유 부서 정보를 가져와서 설정
+    for (ScheduleDto skd : skdList) {
+        List<SkdShrDeptDto> sharedDeptNos = scheduleMapper.getShrDeptNo(skd.getSkdNo());
+        skd.setShrDept(sharedDeptNos);
+    }
+
+    System.out.println(skdList);
+    model.addAttribute("skdList", skdList);
   }
   
   @Override
@@ -132,7 +154,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     return result;
 }
   
-  // 일정 삭제
+  // 일정 삭제 
   @Override
   public int removeSkd(int skdNo) {
     return  scheduleMapper.deleteSkd(skdNo);
