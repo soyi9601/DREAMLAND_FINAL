@@ -14,6 +14,7 @@ public interface DepartMapper {
    
   void deleteDepart(DepartmentDto departmentDto);   // 부서 삭제
   void deleteEmployee(EmployeeDto employeeDto);     // 직원 삭제
+  int hasEmployees(int deptNo);
   
   DepartmentDto getDepartById(int deptNo);          // 노드 클릭 후 부서 조회
   EmployeeDto getEmployeeById(int empNo);           // 노드 클릭 후 직원 조회

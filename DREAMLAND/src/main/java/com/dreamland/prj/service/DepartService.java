@@ -13,6 +13,7 @@ public interface DepartService {
   public List<DepartmentDto> getDepartList();       // 조직도 조회
   void removeDepart(DepartmentDto departmentDto);   // 부서 삭제
   void removeEmployee(EmployeeDto employeetDto);    // 직원 삭제
+  boolean hasEmployees(int deptNo);
   
   DepartmentDto getDepartById(int deptNo);          // 노드 클릭 후 부서 조회
   EmployeeDto getEmployeeById(int empNo);           // 노드 클릭 후 직원 조회
