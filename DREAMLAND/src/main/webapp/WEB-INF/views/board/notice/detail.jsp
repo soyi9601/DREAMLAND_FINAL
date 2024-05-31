@@ -1,14 +1,10 @@
-<!-- Notice write.jsp -->
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
-<c:set var="loginEmployee"
-		value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }" />
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
 <jsp:include page="../../layout/header.jsp" />
 
@@ -91,14 +87,8 @@
 																</div>
 														</div>
 													
-														
-														
 												</form>
-												<form id="frm-btn" method="POST">  
-                          <input type="hidden" name="noticeNo" value="${notice.noticeNo}">
-                          <button type="button" id="btn-edit" class="btn btn-warning btn-sm">편집</button>
-                          <button type="button" id="btn-remove" class="btn btn-danger btn-sm">삭제</button>
-                        </form>
+												
 										</div>
 								</div>
 						</div>
