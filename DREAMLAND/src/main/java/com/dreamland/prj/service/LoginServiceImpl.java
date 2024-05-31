@@ -73,7 +73,7 @@ public class LoginServiceImpl implements LoginService {
   @Override
   public EmployeeDto getEmployeeByEmail(String email) {
     
-    EmployeeDto emp = employeeMapper.getEmployeeByMap(email);
+    EmployeeDto emp = employeeMapper.getEmployeeByEmail(email);
     return emp; 
   }
   
@@ -113,7 +113,7 @@ public class LoginServiceImpl implements LoginService {
     // 수정
     employeeMapper.updateUserInfo(emp);
     
-    EmployeeDto loginEmployee = employeeMapper.getEmployeeByMap(email);
+    EmployeeDto loginEmployee = employeeMapper.getEmployeeByEmail(email);
     PrincipalUser user = new PrincipalUser(loginEmployee);
     
     // 수정된 내용 세션 추가
@@ -130,7 +130,7 @@ public class LoginServiceImpl implements LoginService {
     String email = user.getEmployeeDto().getEmail();
     
     // 현재 로그인한 사용자의 비밀번호와 입력한 값이 일치하는지 확인
-    EmployeeDto emp = employeeMapper.getEmployeeByMap(email);
+    EmployeeDto emp = employeeMapper.getEmployeeByEmail(email);
     if(!passwordEncoder.matches(beforePw, emp.getPassword())) {
       System.out.println("해당 회원이 존재하지 않습니다");
       return 0;
@@ -145,7 +145,7 @@ public class LoginServiceImpl implements LoginService {
   public ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params) {
     String email = params.get("email") + "";
     // 있으면 true(1) 없으면 false(0)
-    boolean enableEmail = employeeMapper.getEmployeeByMap(email) != null;
+    boolean enableEmail = employeeMapper.getEmployeeByEmail(email) != null;
     return new ResponseEntity<>(Map.of("enableEmail", enableEmail), HttpStatus.OK);
   }
   

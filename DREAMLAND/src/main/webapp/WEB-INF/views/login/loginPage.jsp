@@ -191,6 +191,7 @@
       if(!regEmail.test(inpEmail.value)){
         emailResult.innerHTML = '이메일을 확인해주세요';
         emailResult.style.fontSize = '0.75rem';
+        emailResult.style.fontWeight = 'bold';
         emailResult.style.color = '#EE2B4B';
         return;
       } else {

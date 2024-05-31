@@ -15,10 +15,11 @@ public interface LoginService {
   
   EmployeeDto getEmployeeByEmail(String email);
   
+  // 마이페이지 수정
   void modifyUserInfo(MultipartFile profilePath
                     , MultipartFile signPath 
                     , HttpServletRequest request);
-  
+  // 비밀번호 수정
   int modifyPassword(HttpServletRequest request, PrincipalUser user);
   
   // 이메일 체크

@@ -104,7 +104,7 @@
                   <button class="btn btn-primary d-grid w-100" type="button" id="send-temp">임시 비밀번호 발급하기</button>
                 </div>
                 <div class="mb-3">
-                  <button class="btn btn-outline-secondary d-grid w-100" type="reset">취소</button>
+                  <button class="btn btn-outline-secondary d-grid w-100" type="button" id="move-login">취소</button>
                 </div>
               <p class="login-result">
               </p>

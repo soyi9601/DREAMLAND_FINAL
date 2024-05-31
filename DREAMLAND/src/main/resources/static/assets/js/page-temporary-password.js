@@ -38,11 +38,13 @@ const fnCheckEmail = () => {
   if(inpEmail.value.length === 0){
     emailCheck = false;
     msgEmail.innerHTML = '이메일은 공백일 수 없습니다';
+    msgEmail.style.fontWeight = 'bold';
     msgEmail.style.fontSize = '0.75rem';
     msgEmail.style.color = '#EE2B4B';
   } else if(!regEmail.test(inpEmail.value)){
     emailCheck = false;
     msgEmail.innerHTML = '이메일 양식을 확인해주세요';
+    msgEmail.style.fontWeight = 'bold';
     msgEmail.style.fontSize = '0.75rem';
     msgEmail.style.color = '#EE2B4B';
   } else {
@@ -100,7 +102,12 @@ const fnSendEmail = () => {
   
 }
 
+// 취소 버튼 함수
+const fnBack = () => {
+  location.href = '/login';
+}
+
 /************************** 함수 호출 **************************/
 document.getElementById('emp-email').addEventListener('blur', fnCheckEmail);
 document.getElementById('send-temp').addEventListener('click', fnSendEmail);
-
+document.getElementById('move-login').addEventListener('click', fnBack);

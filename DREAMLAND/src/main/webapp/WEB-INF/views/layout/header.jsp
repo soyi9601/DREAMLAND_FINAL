@@ -238,9 +238,9 @@
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="${contextPath}/user/message">
                       <i class="bx bx-cog me-2"></i>
-                      <span class="align-middle">Settings</span>
+                      <span class="align-middle">쪽지함</span>
                     </a>
                   </li>
                   <li>
