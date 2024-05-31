@@ -1,6 +1,7 @@
 package com.dreamland.prj.controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,6 @@ public class SalesController {
   
   @GetMapping("/Allsales.page")
   public String getSalesDetails(Model model) {
-  	
   	// 일간,월간,연간 매출
   	BigDecimal TodaySalesTotal        = salesService.findTodaySalesTotal();
   	BigDecimal CurrentWeekSalesTotal  = salesService.findCurrentWeekSalesTotal();
@@ -61,6 +61,9 @@ public class SalesController {
   	model.addAttribute("CurrentMonthSalesTotal", CurrentMonthSalesTotal);
   	model.addAttribute("CurrentYearSalesTotal", CurrentYearSalesTotal);
 		
+  	Map<String, Object> params = new HashMap<>();
+  	List<Map<String, Object>> getPartSales = salesService.getPartSales(params);
+  	model.addAttribute("getPartSales", getPartSales);
   	
   	return "sales/Allsales";
  

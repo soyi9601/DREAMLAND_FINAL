@@ -93,8 +93,49 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0" id="myTable">
-                        
+                    		<!-- <tr>
+                        		<td>11<input type="hidden" name="productSctCd" value="11"></td>
+                            <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>자유이용권(대)</strong>
+                                <input type="hidden" name="productNM" value="자유이용권대"></td>
+                            <td>57000<input type="hidden" name="price" value="57000"></td>
+                       			<td>5000<input type="hidden" name="deptNo" value="5000"></td>
+                        </tr>
                         <tr>
+                        		<td>12<input type="hidden" name="productSctCd" value="12"></td>
+                            <td><i class="fab fa-react fa-lg text me-3"></i> <strong>자유이용권(소)</strong>
+                                <input type="hidden" name="productNM" value="자유이용권소"></td>
+                            <td>47000<input type="hidden" name="price" value="47000"></td>
+                        		<td>5000<input type="hidden" name="deptNo" value="5000"></td>
+                        </tr>
+                        <tr>
+                        		<td>13<input type="hidden" name="productSctCd" value="13"></td>
+                            <td><i class="fab fa-vuejs fa-lg text me-3"></i> <strong>자유이용권(경로)</strong>
+                                <input type="hidden" name="productNM" value="자유이용권경로"></td>
+                            <td>47000<input type="hidden" name="price" value="47000"></td>
+                        		<td>5000<input type="hidden" name="deptNo" value="5000"></td>
+                        </tr>
+                        <tr>
+                        		<td>17<input type="hidden" name="productSctCd" value="17"></td>
+                            <td><i class="fab fa-bootstrap fa-lg text me-3"></i> <strong>야간이용권(대)</strong>
+                                <input type="hidden" name="productNM" value="야간이용권대"></td>
+                            <td>28000<input type="hidden" name="price" value="28000"></td>
+                        		<td>5000<input type="hidden" name="deptNo" value="5000"></td>
+                        </tr>
+                        <tr>
+                        		<td>18<input type="hidden" name="productSctCd" value="18"></td>
+                            <td><i class="fab fa-bootstrap fa-lg text me-3"></i> <strong>야간이용권(소)</strong>
+                                <input type="hidden" name="productNM" value="야간이용권소"></td>
+                            <td>18000<input type="hidden" name="price" value="18000"></td>
+                        		<td>5000<input type="hidden" name="deptNo" value="5000"></td>
+                        </tr>
+                        <tr>
+                       			<td>19<input type="hidden" name="productSctCd" value="19"></td>
+                            <td><i class="fab fa-bootstrap fa-lg text me-3"></i> <strong>야간이용권(경로)</strong>
+                                <input type="hidden" name="productNM" value="야간이용권경로"></td>
+                            <td>18000<input type="hidden" name="price" value="18000"></td>
+                        		<td>5000<input type="hidden" name="deptNo" value="5000"></td>
+                        </tr>
+                        <tr> 
                         		<td>21<input type="hidden" name="productSctCd" value="21"></td>
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>물</strong>
                                 <input type="hidden" name="productNM" value="물"></td>
@@ -129,7 +170,7 @@
                             <td>4000<input type="hidden" name="price" value="4000"></td>
                         		<td>5120<input type="hidden" name="deptNo" value="5120"></td>
                         </tr>
-                        <tr>
+                        <tr> 
                         		<td>21<input type="hidden" name="productSctCd" value="21"></td>
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>치킨</strong>
                                 <input type="hidden" name="productNM" value="치킨"></td>
@@ -247,7 +288,7 @@
                             <td><i class="fab fa-react fa-lg text me-3"></i> <strong>짬뽕</strong>
                                 <input type="hidden" name="productNM" value="짬뽕"></td>
                             <td>10000<input type="hidden" name="price" value="10000"></td>
-                            <td>5520<input type="hidden" name="deptNo" value="5520"></td>
+                       <td>5520<input type="hidden" name="deptNo" value="5520"></td>
                         </tr>
                         <tr>
                         		<td>23<input type="hidden" name="productSctCd" value="23"></td>
@@ -269,37 +310,37 @@
                                 <input type="hidden" name="productNM" value="냉면"></td>
                             <td>9000<input type="hidden" name="price" value="9000"></td>
                             <td>5520<input type="hidden" name="deptNo" value="5520"></td>
-                        </tr>
+                        </tr> -->
                         <tr>
-                        		<td>21<input type="hidden" name="productSctCd" value="31"></td>
+                        		<td>31<input type="hidden" name="productSctCd" value="31"></td>
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>판다인형</strong>
                                 <input type="hidden" name="productNM" value="판다인형"></td>
                             <td>21000<input type="hidden" name="price" value="21000"></td>
                             <td>5130<input type="hidden" name="deptNo" value="5130"></td>
                         </tr>
                         <tr>
-                        		<td>22<input type="hidden" name="productSctCd" value="32"></td>
+                        		<td>32<input type="hidden" name="productSctCd" value="32"></td>
                             <td><i class="fab fa-react fa-lg text me-3"></i> <strong>판다가방</strong>
                                 <input type="hidden" name="productNM" value="판다가방"></td>
                             <td>20000<input type="hidden" name="price" value="20000"></td>
                             <td>5130<input type="hidden" name="deptNo" value="5130"></td>
                         </tr>
                         <tr>
-                        		<td>23<input type="hidden" name="productSctCd" value="33"></td>
+                        		<td>33<input type="hidden" name="productSctCd" value="33"></td>
                             <td><i class="fab fa-vuejs fa-lg text me-3"></i> <strong>판다키링</strong>
                                 <input type="hidden" name="productNM" value="판다키링"></td>
                             <td>7000<input type="hidden" name="price" value="7000"></td>
                             <td>5130<input type="hidden" name="deptNo" value="5130"></td>
                         </tr>
                         <tr>
-                        		<td>24<input type="hidden" name="productSctCd" value="34"></td>
+                        		<td>34<input type="hidden" name="productSctCd" value="34"></td>
                             <td><i class="fab fa-bootstrap fa-lg text me-3"></i> <strong>판다모자</strong>
                                 <input type="hidden" name="productNM" value="판다모자"></td>
                             <td>11000<input type="hidden" name="price" value="11000"></td>
                             <td>5130<input type="hidden" name="deptNo" value="5130"></td>
                         </tr>
                         <tr>
-                        		<td>25<input type="hidden" name="productSctCd" value="35"></td>
+                        		<td>35<input type="hidden" name="productSctCd" value="35"></td>
                             <td><i class="fab fa-bootstrap fa-lg text me-3"></i> <strong>판다목걸이</strong>
                                 <input type="hidden" name="productNM" value="판다목걸이"></td>
                             <td>8000<input type="hidden" name="price" value="8000"></td>
@@ -415,36 +456,36 @@
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>라마인형</strong>
                                 <input type="hidden" name="productNM" value="라마인형"></td>
                             <td>13000<input type="hidden" name="price" value="13000"></td>
-                            <td>5430<input type="hidden" name="deptNo" value="5530"></td>
+                            <td>5530<input type="hidden" name="deptNo" value="5530"></td>
                         </tr>
                         <tr>
                         		<td>22<input type="hidden" name="productSctCd" value="32"></td>
                             <td><i class="fab fa-react fa-lg text me-3"></i> <strong>래서판다인형</strong>
                                 <input type="hidden" name="productNM" value="래서판다인형"></td>
                             <td>10000<input type="hidden" name="price" value="10000"></td>
-                            <td>5430<input type="hidden" name="deptNo" value="5530"></td>
+                            <td>5530<input type="hidden" name="deptNo" value="5530"></td>
                         </tr>
                         <tr>
                         		<td>23<input type="hidden" name="productSctCd" value="33"></td>
                             <td><i class="fab fa-vuejs fa-lg text me-3"></i> <strong>호랑이인형</strong>
                                 <input type="hidden" name="productNM" value="호랑이인형"></td>
                             <td>30000<input type="hidden" name="price" value="30000"></td>
-                            <td>5430<input type="hidden" name="deptNo" value="5530"></td>
+                            <td>5530<input type="hidden" name="deptNo" value="5530"></td>
                         </tr>
                         <tr>
                         		<td>24<input type="hidden" name="productSctCd" value="34"></td>
                             <td><i class="fab fa-bootstrap fa-lg text me-3"></i> <strong>펭권인형</strong>
                                 <input type="hidden" name="productNM" value="펭권인형"></td>
                             <td>13000<input type="hidden" name="price" value="13000"></td>
-                            <td>5430<input type="hidden" name="deptNo" value="5530"></td>
+                            <td>5530<input type="hidden" name="deptNo" value="5530"></td>
                         </tr>
                         <tr>
                         		<td>25<input type="hidden" name="productSctCd" value="35"></td>
                             <td><i class="fab fa-bootstrap fa-lg text me-3"></i> <strong>드림이인형</strong>
                                 <input type="hidden" name="productNM" value="드림이인형"></td>
                             <td>10000<input type="hidden" name="price" value="10000"></td>
-                            <td>5430<input type="hidden" name="deptNo" value="5530"></td>
-                        </tr>
+                            <td>5530<input type="hidden" name="deptNo" value="5530"></td>
+                        </tr> 
                     </tbody>
                 </table>
             </div>

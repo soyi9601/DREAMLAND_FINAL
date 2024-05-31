@@ -21,4 +21,6 @@ public interface SalesMapper {
   BigDecimal findCurrentMonthSalesTotal();
   BigDecimal findCurrentYearSalesTotal();
   BigDecimal findCurrentWeekSalesTotal();
+
+  List<Map<String, Object>> findPartSales(Map<String, Object> params);
 }

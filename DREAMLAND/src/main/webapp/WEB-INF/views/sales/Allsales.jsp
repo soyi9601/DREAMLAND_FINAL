@@ -69,8 +69,8 @@
 				<div class="row">
 			    <div class="col-6 col-md-4 col-xl-3 custom-col">
 			        <div class="card shadow-none bg-transparent border border-success mb-3">
-			            <div class="card-body">
-			                <h5 class="card-title">일간</h5>
+			            <div class="card-body">                              
+			                <h5 class="card-title">일간</h5 >
 			                <p class="card-text">매출:
 			                    <fmt:formatNumber value="${TodaySalesTotal}" type="currency" />
 			                </p>
@@ -108,5 +108,40 @@
 			        </div>
 			    </div>
 			</div>
+			</body>
+			
+			<body>
+			<!-- Hoverable Table rows -->
+              <div class="card">
+                <h5 class="card-header">Hoverable rows</h5>
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>번호</th>
+                        <th>이름</th>
+                        <th>일간</th>
+                        <th>주간</th>
+                        <th>월간</th>
+                        <th>연간</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                   		<c:forEach items="${getPartSales}" var="sale">
+                      	<tr>
+                      		<c:if test="${sale.deptNo ge 5100 && sale.deptNo le 5130 && sale.deptNo ne 5110}"> 
+                      			<td>${sale.deptNo}</td>
+                        		<td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${sale.deptName}</strong></td>
+                        		<td><fmt:formatNumber value="${sale.dailySales}" type="currency" /></td>
+                        		<td><fmt:formatNumber value="${sale.weeklySales}" type="currency" /></td>
+                        		<td><fmt:formatNumber value="${sale.monthlySales}" type="currency" /></td>
+                        		<td><fmt:formatNumber value="${sale.annualSales}" type="currency" /></td>
+                      		</c:if>
+                      	</tr>
+                      </c:forEach>	
+                    </tbody>
+                  </table>
+                </div>
+              </div>
 		</body>
 </html>

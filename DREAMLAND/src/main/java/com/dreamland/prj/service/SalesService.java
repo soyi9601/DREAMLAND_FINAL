@@ -21,4 +21,6 @@ public interface SalesService {
   BigDecimal findCurrentMonthSalesTotal();
   BigDecimal findCurrentYearSalesTotal();
   BigDecimal findCurrentWeekSalesTotal();
+  
+  List<Map<String, Object>> getPartSales(Map<String, Object> params);
 }

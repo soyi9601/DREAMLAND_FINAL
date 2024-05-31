@@ -74,7 +74,7 @@
     			id="frm-salesreg">
     			 
 				<label for="contentSelect">부서선택</label>
-    				<select id="pageSelect" onchange="showPage(this.value)" name="deptNo">
+    				<select id="pageSelect" onchange="showPage(this.value)">
         			<option value="5000">티켓</option>
         			<option value="5110">매점1</option>
         			<option value="5220">매점2</option>
@@ -109,17 +109,19 @@
                 <table class="table table-dark">
                     <thead>
                         <tr>
-                        		<th>번호</th>
+                        		<th>이름</th>
                             <th>상품</th>
                             <th>수량</th>
+                            <th>파트</th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
                         <c:forEach items="${product}" var="product">
                         		<tr>
-                        			<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productNo}</td>
-                            	<td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.goods}</strong>
-                            	<td><input type="text" name="qty"></td>
+                        			<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
+                            	<td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
+                            	<td><input type="text" name="qty" value=1></td>
+                            	<td><input type="hidden" name="deptNo" value="${product.department.deptNo}">${product.department.deptNo}</td>
                         		</tr>
                         </c:forEach>
                     </tbody>

@@ -36,6 +36,7 @@ public class SalesServiceImpl implements SalesService {
 			String[] productSctCdArray = request.getParameterValues("productSctCd");
 	    String[] priceArray = request.getParameterValues("price");
 	    String[] productNMArray = request.getParameterValues("productNM");
+	    String[] deptNoArray = request.getParameterValues("deptNo");
 	    
 	    // ProductDto 객체 생성
 	    List<ProductDto> products = new ArrayList<>();
@@ -43,11 +44,11 @@ public class SalesServiceImpl implements SalesService {
 	    for (int i = 0; i < productSctCdArray.length; i++) {
 	        int productSctCd = Integer.parseInt(productSctCdArray[i]);
 	        int price = Integer.parseInt(priceArray[i]);
+	        int deptNo = Integer.parseInt(deptNoArray[i]);
 	        String productNM = productNMArray[i];	   
-	        int sqldeptNo = Integer.parseInt(request.getParameter("deptNo"));
 	        
 	        DepartmentDto departmentDto = new DepartmentDto();
-	        departmentDto.setDeptNo(sqldeptNo);
+	        departmentDto.setDeptNo(deptNo);
 
 	        // ProductDto 객체 생성
 	        ProductDto product = ProductDto.builder()
@@ -74,6 +75,7 @@ public class SalesServiceImpl implements SalesService {
 		// 사용자가 입력한 qty
     String[] qtyArray = request.getParameterValues("qty");
     String[] productNoArray = request.getParameterValues("productNo");
+    String[] deptNoArray = request.getParameterValues("deptNo");
     String salesDate = request.getParameter("salesDate");
   	
     // 날짜 형식 지정
@@ -89,7 +91,7 @@ public class SalesServiceImpl implements SalesService {
     for (int i = 0; i < qtyArray.length; i++) {
         int qty = Integer.parseInt(qtyArray[i]);
         int productNo = Integer.parseInt(productNoArray[i]);
-        int deptNo = Integer.parseInt(request.getParameter("deptNo"));	        
+        int deptNo = Integer.parseInt(deptNoArray[i]);	        
 
         if (qty < 0) {
           throw new IllegalArgumentException("수량은 0 이상이어야 합니다.");
@@ -152,4 +154,10 @@ public class SalesServiceImpl implements SalesService {
 		return salesMapper.findCurrentYearSalesTotal();
 	}
 
+	@Override
+	public List<Map<String, Object>> getPartSales(Map<String, Object> params) {
+		return salesMapper.findPartSales(params);
+	}
+	
+	
 }

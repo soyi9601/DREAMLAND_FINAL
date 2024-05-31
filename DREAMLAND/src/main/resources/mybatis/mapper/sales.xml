@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatiS.org//DTD Mapper 3.0//EN"
+  "https://mybatiS.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.dreamland.prj.mapper.SalesMapper">
 
@@ -26,7 +26,17 @@
       <id property="deptNo" column="DEPT_NO"/>
     </association>
   </resultMap>
-
+  
+  <resultMap type="java.util.HashMap" id="PartSalesResultMap">
+ 		<result property="deptNo" column="DEPT_NO"/>
+ 		<result property="deptName" column="DEPT_NAME"/>
+ 		<result property="dailySales" column="DAILY_SALES"/>
+ 		<result property="weeklySales" column="WEEKLY_SALES"/>
+ 		<result property="monthlySales" column="MONTHLY_SALES"/>
+ 		<result property="annualSales" column="ANNUAL_SALES"/>
+ 	</resultMap>
+  
+ 
 	<!-- 매출 등록 -->
   <insert id="insertSales" parameterType="SalesDto">
     INSERT INTO SALES (
@@ -54,7 +64,7 @@
         PRICE
     ) VALUES (
     		PRODUCT_SEQ.NEXTVAL,
-        #{productSctCd},
+        #{product.productNo},
         #{department.deptNo},
         #{productNM},
         #{price}
@@ -64,8 +74,9 @@
   <!-- 모든 상품 목록 조회 -->
   <select id="findAllproduct"
   				resultMap="ProductMap">
-  	SELECT PRODUCT_NO, PRODUCT_SCT_CD, PRICE, DEPT_NO, PRODUCT_NM
+ 	 	SELECT PRODUCT_NO, PRODUCT_SCT_CD, PRICE, DEPT_NO, PRODUCT_NM
   		FROM PRODUCT
+  		ORDER BY DEPT_NO ASC
   </select>
  
 	<!-- 일간 매출 조회 -->
@@ -104,6 +115,48 @@
 		WHERE TO_CHAR(S.SALES_DATE, 'YYYY') =
 		TO_CHAR(SYSDATE, 'YYYY')
 	</select>
+	
+	<!-- 파트별 일간 주간 월간 연간 조회 -->
+	<select	id="findPartSales"
+					parameterType="java.util.Map"
+					resultMap="PartSalesResultMap">
+	SELECT
+    D.DEPT_NO,
+    D.DEPT_NAME,
+    COALESCE(
+        (SELECT SUM(P.PRICE * S.QTY)
+         FROM SALES S
+         JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+         WHERE D.DEPT_NO = S.DEPT_NO
+           AND TRUNC(S.SALES_DATE) = TRUNC(SYSDATE)), 
+        0) AS DAILY_SALES,
+    COALESCE(
+         (SELECT SUM(P.PRICE * S.QTY)
+     			FROM SALES S
+     			JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+    		  WHERE D.DEPT_NO = S.DEPT_NO
+       		AND S.SALES_DATE >= TRUNC(SYSDATE) - 7), 
+    		0) AS WEEKLY_SALES,
+    COALESCE(
+        (SELECT SUM(P.PRICE * S.QTY)
+         FROM SALES S
+         JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+         WHERE D.DEPT_NO = S.DEPT_NO
+           AND TO_CHAR(S.SALES_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')), 
+        0) AS MONTHLY_SALES,
+    COALESCE(
+        (SELECT SUM(P.PRICE * S.QTY)
+         FROM SALES S
+         JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+         WHERE D.DEPT_NO = S.DEPT_NO
+           AND TO_CHAR(S.SALES_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')), 
+        0) AS ANNUAL_SALES
+FROM DEPARTMENT D
+ORDER BY D.DEPT_NO
+	</select>
+	
+
+	
 </mapper>
 
 
