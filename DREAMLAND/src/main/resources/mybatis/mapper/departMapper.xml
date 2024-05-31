@@ -48,6 +48,12 @@
      WHERE EMP_NO = #{empNo}     
   </update>
   
+  <select id="hasEmployee" resultType="int">
+    SELECT COUNT(*) 
+      FROM EMPLOYEE 
+     WHERE DEPT_NO = #{deptNo} AND RESIGN_DATE IS NULL
+  </select>
+  
   
   <!-- 부서 및 직원 정보 조회 -->
   <select id="getDepartById" resultType="DepartmentDto">

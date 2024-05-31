@@ -10,7 +10,7 @@
   
 $(document).ready(function() {
   const departAdmin = () => {
-    fetch('/depart/depart_admin.do')
+    fetch('/depart/departAdmin.do')
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -63,7 +63,6 @@ $(document).ready(function() {
                     "delete": {
                       label: "삭제",
                       action: function (obj) {
-                        tree.delete_node($node);
                         deleteEmployeeNode($node.id);
                       }
                     }
@@ -73,7 +72,6 @@ $(document).ready(function() {
                     "delete": {
                       label: "삭제",
                       action: function (obj) {
-                        tree.delete_node($node);
                         deleteDepartNode($node.id);
                       }
                     }
@@ -113,14 +111,15 @@ $(document).ready(function() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({empNo})
-      }).then(response => {
-        if(response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Network 응답 실패');
-        }
-      }).then(data => {alert(data.message);})
-        .catch(error => console.error('Error deleting node:', error));
+      }).then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          if (data.message === "직원이 삭제되었습니다.") {
+            // 삭제가 실패한 경우 해당 노드를 jstree에서 수동으로 제거
+            $('#jsTree').jstree(true).delete_node(empNo);
+          }
+        }).catch(error => console.error('Error deleting node:', error));
+
     };
     
     const deleteDepartNode = (deptNo) => {
@@ -130,14 +129,15 @@ $(document).ready(function() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({deptNo})
-      }).then(response => {
-        if(response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Network 응답 실패');
-        }
-      }).then(data => {alert(data.message);})
-        .catch(error => console.error('Error deleting node:', error));
+      }).then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          if (data.message === "부서가 삭제되었습니다.") {
+            // 삭제가 실패한 경우 해당 노드를 jstree에서 수동으로 제거
+            $('#jsTree').jstree(true).delete_node(deptNo);
+          }
+        }).catch(error => console.error('Error deleting node:', error));
+
     }
   };    
 

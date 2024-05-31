@@ -29,13 +29,13 @@ public class DepartController {
   private final DepartService departService;
   
   // 관리자 - 조직도 페이지 이동
-  @GetMapping("/depart_admin.page")
+  @GetMapping("/departAdmin.page")
   public String depart() {
-    return "depart/depart_admin";
+    return "depart/departAdmin";
   }
   
   // 관리자 - 조직도 조회
-  @GetMapping(value="/depart_admin.do", produces="application/json")
+  @GetMapping(value="/departAdmin.do", produces="application/json")
   public ResponseEntity<List<DepartmentDto>> departAdmin() {
     List<DepartmentDto> departmentDto = departService.getDepartList();
     if (departmentDto != null && !departmentDto.isEmpty()) {
@@ -48,6 +48,10 @@ public class DepartController {
   // 부서 및 직원 삭제
   @PostMapping("/removeDepart")
   public ResponseEntity<?> deleteDepart(@RequestBody DepartmentDto departmentDto) {
+    int deptNo = departmentDto.getDeptNo();
+    if (departService.hasEmployee(deptNo)) {
+      return ResponseEntity.ok().body("{\"message\": \"부서에 직원이 있습니다. 다시 확인 부탁드립니다.\"}");
+    }
     departService.removeDepart(departmentDto);
     return ResponseEntity.ok().body("{\"message\": \"부서가 삭제되었습니다.\"}");
   }  
@@ -98,7 +102,7 @@ public class DepartController {
   // 유저 - 조직도 페이지 이동
   @GetMapping("/depart.page")
   public String departUser(Model model) {
-    return "depart/depart_user";
+    return "depart/departUser";
   }
   
   

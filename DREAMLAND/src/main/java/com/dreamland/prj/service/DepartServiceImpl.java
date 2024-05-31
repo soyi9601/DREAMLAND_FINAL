@@ -38,6 +38,10 @@ public class DepartServiceImpl implements DepartService {
   public void removeEmployee(EmployeeDto employeeDto) {
     departMapper.deleteEmployee(employeeDto); 
   }  
+  @Override
+  public boolean hasEmployee(int deptNo) {
+    return departMapper.hasEmployee(deptNo) > 0;
+  }
   
   // 부서 및 직원 정보 조회
   @Override
