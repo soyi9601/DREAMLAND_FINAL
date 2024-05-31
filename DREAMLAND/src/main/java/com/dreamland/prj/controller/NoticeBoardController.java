@@ -1,6 +1,6 @@
 package com.dreamland.prj.controller;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.core.io.Resource;
@@ -9,13 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.dreamland.prj.dto.NoticeAttachDto;
 import com.dreamland.prj.dto.NoticeBoardDto;
 import com.dreamland.prj.service.NoticeBoardService;
 
@@ -36,6 +35,13 @@ public class NoticeBoardController {
 	 	 System.out.println(model);
 	 	 return "board/notice/list";
 	}
+	
+	//삭제 후 비동기 목록갱신
+	@GetMapping("/listAjax")
+  public String listAjax(Model model) {
+      noticeBoardService.loadNoticeList(model);
+      return "board/notice/list :: .table-border-bottom-0";
+  }
 	
 	@GetMapping("/write.page")
 	public String writePage() {
@@ -99,7 +105,6 @@ public class NoticeBoardController {
   	    }
   	}
   	
-  	
   	// todo insAttachList를 split("|") 해서 attachNo를 insert하는 구문 작성
     redirectAttributes
       .addAttribute("noticeNo", notice.getNoticeNo())
@@ -132,6 +137,20 @@ public class NoticeBoardController {
     redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "삭제되었습니다." : "삭제를 하지 못했습니다.");
     return "redirect:/board/notice/list.do";
   }
+  
+  // 게시글 목록 삭제
+  @PostMapping("/removeNo.do")
+  @ResponseBody  
+  public String delete(@RequestParam List<Integer> no) {
+  		int deleteCount = 0;
+      for (int n : no) {
+          noticeBoardService.removeNotice(n);
+          deleteCount++;
+      }
+      return deleteCount > 0 ? "삭제되었습니다." : "삭제할 게시글이 없습니다.";
+  }
+  
+  
   
   @GetMapping("/updateHit.do")
   public String updateHit(@RequestParam int noticeNo) {

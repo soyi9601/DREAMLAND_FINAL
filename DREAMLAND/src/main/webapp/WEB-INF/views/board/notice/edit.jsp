@@ -3,7 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
-<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
+<c:set var="loginEmployee"
+    value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
 <jsp:include page="../../layout/header.jsp" />
 
@@ -13,63 +14,66 @@
 
 <!-- Content wrapper -->
 <div class="content-wrapper">
-	<!-- Content -->
-		<div class="container-xxl flex-grow-1 container-p-y">
-				<div class="sd-title sd-point">공지사항 작성</div>
+  <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="sd-title sd-point">공지사항 작성</div>
 
-				<!-- Basic Layout & Basic with Icons -->
-				<div class="row">
-						<!-- Basic Layout -->
-						<div class="col-xxl">
-								<div class="card mb-4">
+        <!-- Basic Layout & Basic with Icons -->
+        <div class="row">
+            <!-- Basic Layout -->
+            <div class="col-xxl">
+                <div class="card mb-4">
 
-										<div class="card-body">
-												<!-- Form 시작 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-											<form id="frm-notice-modify" 
-											      method="POST"
-														enctype="multipart/form-data"
-														action="${contextPath}/board/notice/modify.do">
-												<div class="row mb-3">
-													<input type="hidden" name="empNo"
-															value="${loginEmployee.empNo}"> <label
-															class="col-sm-2 col-form-label"
-															for="basic-default-name">제목</label>
-													<div class="col-sm-10">
-														<input type="text" class="form-control"
-																	id="basic-default-name" placeholder="제목을 입력해주세요."
-																	name="boardTitle" value="${notice.boardTitle}"/>
-													</div>
-												</div>
-												
-												<div class="row mb-3">
-													<label class="col-sm-2 col-form-label">체크</label>
-												</div>
-												<div class="row mb-3">
-													<label class="col-sm-2 col-form-label"
-															for="basic-default-name">작성자</label>
-													<div class="col-sm-10">
-															<input type="text" class="form-control"
-																	id="basic-default-name" name="empName"
-																	value="${loginEmployee.empName}" readonly />
-													</div>
-												</div>
+                    <div class="card-body">
+                        <!-- Form 시작 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                      <form id="frm-notice-modify" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            action="${contextPath}/board/notice/modify.do">
+                        <div class="row mb-3">
+                          <input type="hidden" name="empNo"
+                              value="${loginEmployee.empNo}"> <label
+                              class="col-sm-2 col-form-label"
+                              for="basic-default-name">제목</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control"
+                                  id="basic-default-name" placeholder="제목을 입력해주세요."
+                                  name="boardTitle" value="${notice.boardTitle}"/>
+                          </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label">체크</label>
+                          <div class="col-sm-10">
+                            <input type="checkbox" class="chksignal" name="signal" value="${notice.signal}" ${notice.signal eq 1 ? 'checked' : ''} />
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label"
+                              for="basic-default-name">작성자</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control"
+                                  id="basic-default-name" name="empName"
+                                  value="${loginEmployee.empName}" readonly />
+                          </div>
+                        </div>
 
-												<div class="row mb-3">
-													<label class="col-sm-2 col-form-label"
-															for="basic-default-message">답변</label>
-													<div class="col-sm-10">
-															<textarea id="basic-default-message"
-																	class="form-control" placeholder="내용"
-																	aria-label="Hi, Do you have a moment to talk Joe?"
-																	aria-describedby="basic-icon-default-message2"
-																	name="boardContents" >${notice.boardContents}</textarea>
-													</div>
-												</div>
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label"
+                              for="basic-default-message">답변</label>
+                          <div class="col-sm-10">
+                              <textarea id="basic-default-message"
+                                  class="form-control" placeholder="내용"
+                                  aria-label="Hi, Do you have a moment to talk Joe?"
+                                  aria-describedby="basic-icon-default-message2"
+                                  name="boardContents" >${notice.boardContents}</textarea>
+                          </div>
+                        </div>
 
 
-												<h3>현재 첨부 목록</h3>
-                      	<div id="attach-list" ></div>
-												<div class="row mb-3">
+                        <h3>현재 첨부 목록</h3>
+                        <div id="attach-list" ></div>
+                        <div class="row mb-3">
                           <label for="formFileMultiple"
                               class="col-sm-2 col-form-label"> 파일첨부
                                <span class="file-add-btn">추가버튼!!!</span>
@@ -82,17 +86,17 @@
                         </div>
 
                         <div>
-                        	<input type="hidden" name="delAttachList" id="delAttachList">
+                          <input type="hidden" name="delAttachList" id="delAttachList">
                           <input type="hidden" name="noticeNo" value="${notice.noticeNo}">
                           <button type="submit" id="btn-edit-submit">수정완료</button>
                         </div>
-											</form>
-										</div>
-								</div>
-						</div>
-				</div>
-		</div>
-		<!-- / Content -->	
+                      </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->  
 </div>
 <script>
 let insAttachList = [];
@@ -164,21 +168,21 @@ const fnAttachCheck = () => {
 
 
 //첨부파일 첨부 - 5개로 제한 , 2개 기본, 추가 누를시 파일input창 생기게... 없앨까? 
-		// 이거 하는중
-		
+    // 이거 하는중
+    
 const fnAttachAdd = () => {
   $(".file-add-btn").on('click', () => {
-  	
-  	//여기에
-  	// list목록 + input창 개수 
-  	let attachListNum = $('#attach-list').children('.attach').length;
-  	let inputNum = $('.file-input-div').length;
-  	
-  	let totalNum = attachListNum + inputNum;
-  	const totalMax = 5;
-  	
-  	
-  	if (totalNum < totalMax) {
+    
+    //여기에
+    // list목록 + input창 개수 
+    let attachListNum = $('#attach-list').children('.attach').length;
+    let inputNum = $('.file-input-div').length;
+    
+    let totalNum = attachListNum + inputNum;
+    const totalMax = 5;
+    
+    
+    if (totalNum < totalMax) {
       const fileInputContainer = document.getElementById('file-input-container');
       const fileInputDiv = document.createElement('div');
       fileInputDiv.className = 'file-input-div';
@@ -198,20 +202,22 @@ let globalFormData = new FormData();
 // 첨부 파일 추가 이벤트 설정
 
 const fnAddAttach = () => {
+  
+  //
   const fileInputContainer = document.getElementById('file-input-container');
   
   fileInputContainer.addEventListener('change', (event) => {
     if (event.target.type === 'file') {
-      let file = event.target.files[0];
-      console.log(file);
-
       
+      let file = event.target.files[0];
+      
+      console.log(file);
       
       if (file) {
-      	globalFormData = new FormData(); // 새 formData 객체 생성
+        globalFormData = new FormData(); // 새 formData 객체 생성
         globalFormData.append('files', file);
-       	globalFormData.append('noticeNo', '${notice.noticeNo}');
-       	
+        globalFormData.append('noticeNo', '${notice.noticeNo}');
+        
       }
     }
   });
@@ -224,7 +230,7 @@ const fnAddAttach = () => {
 //첨부파일 input창 삭제
 const fnAttachDel = () => {
   $(document).on('click', '.del-btn', (e) => {
-  	
+    
     const inputArea = $(e.target).closest('.file-input-div');
     
     inputArea.remove();
@@ -273,8 +279,8 @@ const fnAddAttachGo = () => {
 
           // ※ attachNo가 파일명에 붙어있는게 아니라 x버튼에 붙어있음
           let parentElement = $(evt.target).parent();
-					let children = parentElement.children();
-					parentElement.remove();
+          let children = parentElement.children();
+          parentElement.remove();
           
           //debugger;
           $("#delAttachList").val($("#delAttachList").val()+"|"+attachNo);
@@ -286,7 +292,7 @@ const fnAddAttachGo = () => {
        
         
 const fnRemoveAttachGo = (attachNo) => {
-	console.log(attachNo);
+  console.log(attachNo);
     fetch('${contextPath}/board/notice/removeAttach.do', {
         method: 'POST',
         headers: {
@@ -298,9 +304,9 @@ const fnRemoveAttachGo = (attachNo) => {
     })
     .then(response => response.json())
     .then(resData => {
-    	console.log(resData)
-    	console.log("못찾음")
-    	
+      console.log(resData)
+      console.log("못찾음")
+      
         if (resData.deleteCount === 1) {
            // alert('첨부 파일이 삭제되었습니다.');
             fnAttachList();
@@ -321,6 +327,7 @@ const fnModifyUpload = () => {
     if (document.getElementById('basic-default-name').value === '') {
       alert('제목은 필수입니다.');
       evt.preventDefault();
+      console.log($('input[name="signal"]').val());
       return;
     }
     evt.preventDefault(); // 폼 제출 중지
@@ -330,11 +337,26 @@ const fnModifyUpload = () => {
   });
 }
 
+//체크박스 선택시 value값 1로 넘긱기
+const fnChkSig = () => {
+  
+  //$('input[name="signal"]').val(0);
+  
+  $(document).on('click', '.chksignal', (e) => {
+      if ($(e.target).prop('checked')) {
+        $('input[name="signal"]').val(1);
+      } else {
+         $('input[name="signal"]').val(0); 
+      }
+  });
+}
+
 fnAttachList();
 fnAddAttach();
 fnModifyUpload();
 fnRemoveAttach();
 fnAttachCheck();
+fnChkSig();
 </script>
 
 <%@ include file="../../layout/footer.jsp"%>
