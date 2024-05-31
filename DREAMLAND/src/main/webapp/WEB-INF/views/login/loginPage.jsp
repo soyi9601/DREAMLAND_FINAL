@@ -76,13 +76,13 @@
               <div class="app-brand justify-content-center">
                 <a href="${contextPath}/" class="app-brand-link gap-2">
                   <span class="app-brand-text demo text-body fw-bolder">
-	                  <img
-	                  src="../assets/img/logo/logo1.png"
-	                  alt="user-avatar"
-	                  width="350px"
-	                  class="d-block rounded"
-	                  id="uploadedAvatar"
-	                 /></span>
+                    <img
+                    src="../assets/img/logo/logo1.png"
+                    alt="user-avatar"
+                    width="350px"
+                    class="d-block rounded"
+                    id="uploadedAvatar"
+                   /></span>
                 </a>
               </div>
               <!-- /Logo -->
@@ -185,17 +185,17 @@
     
     // 이메일 체크 함수
     const fnEmailCheck = () => {
-   	  let inpEmail = document.getElementById('username');
-   	  let regEmail = /^[A-Za-z0-9-_]{2,}@[A-Za-z0-9]+(\.[A-Za-z]{2,6}){1,2}$/;
-   	  let emailResult = document.getElementById('email-result');
-   	  if(!regEmail.test(inpEmail.value)){
-   	    emailResult.innerHTML = '이메일을 확인해주세요';
-   	    emailResult.style.fontSize = '0.75rem';
-   	    emailResult.style.color = '#EE2B4B';
-   	    return;
-   	  } else {
-   		  emailResult.innerHTML = '';
-   	  }
+      let inpEmail = document.getElementById('username');
+      let regEmail = /^[A-Za-z0-9-_]{2,}@[A-Za-z0-9]+(\.[A-Za-z]{2,6}){1,2}$/;
+      let emailResult = document.getElementById('email-result');
+      if(!regEmail.test(inpEmail.value)){
+        emailResult.innerHTML = '이메일을 확인해주세요';
+        emailResult.style.fontSize = '0.75rem';
+        emailResult.style.color = '#EE2B4B';
+        return;
+      } else {
+        emailResult.innerHTML = '';
+      }
     }
     
     document.getElementById('username').addEventListener('blur', fnEmailCheck);
