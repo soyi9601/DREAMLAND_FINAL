@@ -1,6 +1,7 @@
 package com.dreamland.prj.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
@@ -23,6 +24,7 @@ public interface DepartService {
     
   void addDepartment(HttpServletRequest request, HttpServletResponse response); // 부서 추가
   
+  List<Map<String, Object>> getOrgChartData();
   
   
 }
