@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.dreamland.prj.dto.AppleaveDto;
 import com.dreamland.prj.dto.AppletterDto;
 import com.dreamland.prj.dto.ApprovalDto;
+import com.dreamland.prj.dto.ApvAttachDto;
 import com.dreamland.prj.dto.ApvRefDto;
 import com.dreamland.prj.dto.ApvWriterDto;
 import com.dreamland.prj.dto.FaqBoardDto;
@@ -20,6 +21,7 @@ public interface ApprovalMapper {
 	 List<String> getApprover(int apvNo);
 	
 	 int insertApproval(ApprovalDto appdto);
+	 int insertApvAttach(ApvAttachDto appdto);
 	 int insertApvLetter(AppletterDto appLetterdto );
 	 int insertApvLeave(AppleaveDto appLeaveto );
 	 int insertApvWriter(ApvWriterDto appwridto);
@@ -34,6 +36,7 @@ public interface ApprovalMapper {
 	 int getMyWaitApvCount(String empNo);
 	 int getMyCompleApvCount(String empNo);
 	 int getMyRejectApvCount(String empNo);
+	 int getMyTempApvCount(String empNo);
 	
 	 int getMyReferApvCount(String empNo);
 	 int getMyReferWaitApvCount(String empNo);
@@ -49,6 +52,7 @@ public interface ApprovalMapper {
 	 List<ApprovalDto> getMyWaitApvList(Map<String, Object> map);
 	 List<ApprovalDto> getMyCompleteApvList(Map<String, Object> map);
 	 List<ApprovalDto> getMyRejectedApvList(Map<String, Object> map);
+	 List<ApprovalDto> getMyTempApvList(Map<String, Object> map);
 	 
 	 List<ApprovalDto> getMyReferApvList(Map<String, Object> map);	 
 	 List<ApprovalDto> getMyReferWaitApvList(Map<String, Object> map);
@@ -58,8 +62,11 @@ public interface ApprovalMapper {
 	 ApprovalDto getApvDetailByNo(int apvNo);
 	 AppleaveDto getApvLeaveDetailByNo(int apvNo);
 	 AppletterDto getApvAppDetailByNo(int apvNo);
+	 List<ApvAttachDto> getAttachList(int apvNo);
+	 ApvAttachDto getAttachByNo(int attachNo);
 	 int updateApprover(int apvNo, String empNo, String returnReason);
 	 int updateApproval(int apvNo, int state);
+	 int updateApvLeave(int apvNo);
 	 List<String> getApprovers(int apvNo);
 	 ApvWriterDto getReturnApprover(int apvNo);
 	 

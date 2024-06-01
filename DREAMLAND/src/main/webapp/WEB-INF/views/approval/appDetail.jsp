@@ -79,6 +79,24 @@
                 </table>
             </div>
                 </c:if>
+                
+      		<div class="row mb-3">
+																<label for="formFileMultiple"
+																		class="col-sm-2 col-form-label"> 파일첨부 </label>
+																<div class="col-sm-10 notice-input-area">
+																		<c:forEach items="${attachList}" var="attach">
+																		  <div class="attach"   data-attach-no="${attach.attachNo}">
+																		    ${attach.originalFilename} <i class='bx bx-download'></i>
+																		  </div>
+																		</c:forEach>
+																	  <div>
+																	  	<c:if test="${empty attachList}">
+																		    <div>첨부 없음</div>
+																		  </c:if>
+											
+																    </div>
+																</div>
+														</div>
             
             
             <div class="footer">
@@ -97,6 +115,10 @@
               <button class="button button-primary" id="rejected">반려하기</button>
             </div>
             </c:if>
+            
+               <c:if test="${reject == 2}">
+               	  <button class="button button-primary"  id="write">작성하기</button>
+               </c:if>
             </div>
  
         </div>
@@ -122,7 +144,7 @@
         <div class="container">
             <div class="title">휴가신청서</div>
                             <div class="section-title">제목</div>
-                                       	<div>${title}</div>
+                                       	<div id="title">${title}</div>
 
         
              <div class="section-title">결재자</div>
@@ -134,17 +156,17 @@
                     <td>대표이사</td>
                 </tr>
                 <tr>
-                    <td><div>${appovers.writer}</div></td>
-                    <td><div>${appovers.approver1}</div></td>
-                    <td><div>${appovers.approver2}</div></td>
-                    <td><div>${appovers.approver3}</div></td>
+                    <td><div id="writer">${appovers.writer}</div></td>
+                    <td><div id="approver1">${appovers.approver1}</div></td>
+                    <td><div id="approver2">${appovers.approver2}</div></td>
+                    <td><div id="approver3">${appovers.approver3}</div></td>
                 </tr>
             </table>
             <div class="section">
                 <div class="section-title">참조</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:100%;" name="referrer"></input></td>
+                   <td>	<input type="text" style="width:100%;" name="referrer" id="referrer"></input></td>
                     </tr>           
                 </table>
             </div>
@@ -155,7 +177,7 @@
                     <td>휴가 종류</td>
                     <td colspan="2">
                         	${approval.leaveClassify}
-                        </td>
+                     </td>
                                    
                 </tr>
                 <tr>
@@ -170,7 +192,7 @@
                 <tr>
                     <td>사유</td>
                                   <td colspan="2">
-                        	${approval.detail}
+                        ${approval.detail}
                         </td>
                 </tr>
             </table>
@@ -197,6 +219,25 @@
                 </table>
             </div>
                 </c:if>
+                
+                
+                														<div class="row mb-3">
+																<label for="formFileMultiple"
+																		class="col-sm-2 col-form-label"> 파일첨부 </label>
+																<div class="col-sm-10 notice-input-area">
+																		<c:forEach items="${attachList}" var="attach">
+																		  <div class="attach"  data-attach-no="${attach.attachNo}">
+																		    ${attach.originalFilename} <i class='bx bx-download'></i>
+																		  </div>
+																		</c:forEach>
+																	  <div>
+																	  	<c:if test="${empty attachList}">
+																		    <div>첨부 없음</div>
+																		  </c:if>
+
+																    </div>
+																</div>
+														</div>
             <div class="footer">
    
                 위와 같은 사유로 휴가를 신청하오니 허가하여 주시기 바랍니다.<br>
@@ -214,6 +255,10 @@
               <button class="button button-primary" id="rejected">반려하기</button>
             </div>
             </c:if>
+                        
+               <c:if test="${reject == 2}">
+               	  <button class="button button-primary"  id="write">작성하기</button>
+               </c:if>
         </div>
     </div>
     </div>
@@ -227,6 +272,27 @@
 const apvNo = ${approval.apvNo};
 const empNo = ${loginEmployee.empNo};
 
+const fnDownload = () => {
+	  $('.bx-download').on('click', (evt) => {
+	    if (confirm('해당 첨부 파일을 다운로드 할까요?')) {
+	      const attachNo = $(evt.currentTarget).parent().data('attach-no');
+	      // alert(attachNo);
+	      location.href = '${contextPath}/approval/download.do?attachNo='+attachNo;
+	    }
+	  });
+	};
+	
+fnDownload();
+
+
+const fnReWrite = () => {
+	  $('#write').on('click', (evt) => {
+	      location.href = '${contextPath}/approval/appWrite?apvNo=' + apvNo; 
+	    
+	  });
+	};
+	fnReWrite();
+
 function sendGetRequest(queryParams) {
 	 window.location.href = '${contextPath}/approval/approve.do?'+ new URLSearchParams(queryParams).toString();
 }
@@ -235,6 +301,7 @@ function handlePopupFormSubmission(inputText) {
     const queryParams = { apvNo: apvNo, empNo:empNo, rejectedReason: inputText };
     sendGetRequest(queryParams);
 }
+
 
 document.getElementById('approve').addEventListener('click', function() {
     const queryParams = { apvNo: apvNo, empNo:empNo, rejectedReason:'0' };
@@ -248,6 +315,9 @@ document.getElementById('rejected').addEventListener('click', function() {
 function openPopupAndSendRequest() {
      window.open('popup', '', 'width=400,height=300');
 }
+
+
+
 
 
 

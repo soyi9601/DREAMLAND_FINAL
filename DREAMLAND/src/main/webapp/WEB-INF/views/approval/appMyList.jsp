@@ -20,6 +20,7 @@
                   <button class="status-btn" data-kind="wait">진행 중</button>
                   <button class="status-btn" data-kind="complete">승인</button>
                   <button class="status-btn" data-kind="rejected">반려</button>
+                  <button class="status-btn" data-kind="temp">임시저장</button>
                 </div>
 
             <div id="post-list-body">

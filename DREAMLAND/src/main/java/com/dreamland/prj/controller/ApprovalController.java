@@ -2,12 +2,15 @@ package com.dreamland.prj.controller;
 
 import java.util.Map;
 
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.dreamland.prj.service.ApprovalService;
 
@@ -22,7 +25,10 @@ public class ApprovalController {
 	private final ApprovalService approvalService;
 	
 	@GetMapping("/appWrite")
-	public String appWrite() {
+	public String appWrite(HttpServletRequest request, Model model) {
+		if(!(request.getParameter("apvNo").equals("000"))) {
+			approvalService.loadTempApp(request, model);
+		}
 		return "approval/appWrite";
 	}
 	
@@ -94,7 +100,10 @@ public class ApprovalController {
 	public ResponseEntity<Map<String, Object>> rejectedMyList(HttpServletRequest request) {
 		return approvalService.loadrejectedMyAppList(request);
 	}
-	
+	@GetMapping(value="/tempMyList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> tempMyList(HttpServletRequest request) {
+		return approvalService.loadtempMyAppList(request);
+	}
 	
 	
 	
@@ -118,6 +127,8 @@ public class ApprovalController {
 		return approvalService.loadrejectedMyReferAppList(request);
 	}
 	
+
+	
 	
 	
 	
@@ -128,15 +139,15 @@ public class ApprovalController {
 	}
 	
 	
-	@GetMapping("/approval.do")
-	public String approval(HttpServletRequest request) {
-		approvalService.registerAppletter(request);
+	@PostMapping("/approval.do")
+	public String approval(MultipartHttpServletRequest multipartRequest) {
+		approvalService.registerAppletter(multipartRequest);
 		return "approval/appList";
 	}
 	
-	@GetMapping("/leave.do")
-	public String leave(HttpServletRequest request) {
-		approvalService.registerAppLeave(request);
+	@PostMapping("/leave.do")
+	public String leave(MultipartHttpServletRequest multipartRequest) {
+		approvalService.registerAppLeave(multipartRequest);
 		return "approval/appList";
 	}
 	
@@ -146,6 +157,11 @@ public class ApprovalController {
 		return "approval/appList";
 	}
 	
+	@GetMapping("/download.do")
+	  public ResponseEntity<Resource> download(HttpServletRequest request) {
+			return approvalService.download(request);
+	  }
+		
 
 
 }

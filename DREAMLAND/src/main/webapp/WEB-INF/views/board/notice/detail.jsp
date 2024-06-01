@@ -64,7 +64,7 @@
 																<div class="col-sm-10 notice-input-area">
 																		<c:forEach items="${attachList}" var="attach">
 																		  <div class="attach"   data-attach-no="${attach.attachNo}">
-																		    ${attach.originalFilename} <i class='bx bx-download'></i>
+																		    ${attach.originalFilename} <i class='bx-download'></i>
 																		  </div>
 																		</c:forEach>
 																	  <div>
