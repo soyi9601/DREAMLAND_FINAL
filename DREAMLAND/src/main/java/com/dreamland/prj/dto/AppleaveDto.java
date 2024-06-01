@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 public class AppleaveDto {
 	
-	private int leaveNo, apvNo;
+	private int leaveNo, apvNo, empNo;
 	private String leaveClassify, detail, leaveStatus, leaveEmergencycall, leaveStart, leaveEnd;;
 
 }
