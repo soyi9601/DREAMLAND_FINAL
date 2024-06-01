@@ -17,13 +17,11 @@
               <div class="post-list-container">
    						  <div>
        				    <button class="status-btn" data-kind="total">전체</button>
-                  <button class="status-btn" data-kind="wait">처리 대기</button>
-                  <button class="status-btn" data-kind="confirm">처리 완료</button>
+                  <button class="status-btn" data-kind="wait">진행 중</button>
                   <button class="status-btn" data-kind="complete">승인</button>
+                  <button class="status-btn" data-kind="rejected">반려</button>
                 </div>
-
             <div id="post-list-body">
-  
             </div>
         <div class="footer">
             문서 수 : <span id="document-count">0</span>
@@ -32,8 +30,6 @@
             </div>
         </div>
     </div>
- 
-            
              </div>
          </div>
        </div>
@@ -61,7 +57,7 @@
  	   $.ajax({
 		     // 요청
 		     type: 'GET',
-		     url: '${contextPath}/approval/'+ kind +'List.do?page='+page +'&sort='+ sort+ '&display=' +display +'&empNo=' + id,
+		     url: '${contextPath}/approval/'+ kind +'MyReferList.do?page='+page +'&sort='+ sort+ '&display=' +display +'&empNo=' + id,
 		     // 응답
 		     dataType: 'json',
 		     success: (resData) => { 
@@ -87,7 +83,7 @@
 			        clickableElements2 = document.querySelectorAll('.approval');
 					  clickableElements2.forEach(element => {
 					    element.addEventListener('click', evt => {
-					      window.location.href = '${contextPath}/approval/detail.do?apvNo='+ evt.target.dataset.apvNo + '&kind=' + kind;
+					      window.location.href = '${contextPath}/approval/detail.do?apvNo='+ evt.target.dataset.apvNo+'&kind=' + kind ;
 					    });
 					  });
 
