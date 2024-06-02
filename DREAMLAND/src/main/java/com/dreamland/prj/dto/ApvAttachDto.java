@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 public class ApvAttachDto {
 	
-	private int AttachNo, apvNo;
+	private int attachNo, apvNo;
 	private String uploadPath, filesystemName, originalFilename;
 
 }
