@@ -92,36 +92,44 @@ public class DepartServiceImpl implements DepartService {
     
     for (DepartmentDto depart : allDepart) {
       Map<String, Object> deptData = new HashMap<>();
-      deptData.put("id", depart.getDeptNo());
+      deptData.put("id", Integer.toString(depart.getDeptNo()));
       deptData.put("name", depart.getDeptName());
       
       // 대표이사인 경우 parentId를 null로 설정하여 최상위 부서로 간주합니다.
-      String parentId = (depart.getParentId() == null || depart.getParentId().isEmpty()) ? null : depart.getParentId();
-      deptData.put("parentId", parentId);
+      String pid = (depart.getParentId() == null || depart.getParentId().isEmpty() || "#".equals(depart.getParentId())) ? null : depart.getParentId();
+      deptData.put("pid", pid);
+      deptData.put("children", new ArrayList<Map<String, Object>>());
+      deptData.put("employees", new ArrayList<Map<String, Object>>());
       
-      deptData.put("depth", depart.getDepth());
-      deptData.put("treeText", depart.getTreeText());
-      if (depart.getEmployee() != null) {
-          deptData.put("employeeId", depart.getEmployee().getEmpNo());
-          deptData.put("employeeName", depart.getEmployee().getEmpName());
-          deptData.put("employeeEmail", depart.getEmployee().getEmail());
-      }
       departMap.put(depart.getDeptNo(), deptData);
-  }
+    }
+    
+    for(DepartmentDto depart : allDepart) {
+      if(depart.getEmployee() != null) {
+        Map<String, Object> employeeData = new HashMap<>();
+        employeeData.put("pid", Integer.toString(depart.getDeptNo()));
+        employeeData.put("id", depart.getEmployee().getEmpNo());
+        employeeData.put("name", depart.getEmployee().getEmpName() + depart.getEmployee().getPosName());
+        employeeData.put("email", depart.getEmployee().getEmail());
+        
+        Map<String, Object> deptData = departMap.get(depart.getDeptNo());
+        List<Map<String, Object>> employees = (List<Map<String, Object>>) deptData.get("employees");
+        employees.add(employeeData);
+      }
+    }
     
     List<Map<String, Object>> topDepart = new ArrayList<>();
     
     for(Map<String, Object> deptData : departMap.values()) {
-      String parentId = (String) deptData.get("parentId");
-      if(parentId == null || parentId.isEmpty() || parentId.equals("#")) {
+      String pid = (String) deptData.get("pid");
+      if(pid == null) {
         topDepart.add(deptData);
       } else {
-        int parentDeptNo = Integer.parseInt(parentId);
+        Integer parentDeptNo = Integer.parseInt(pid);
         Map<String, Object> parentDept = departMap.get(parentDeptNo);
         if(parentDept != null) {
           List<Map<String, Object>> children = (List<Map<String, Object>>) parentDept.getOrDefault("children", new ArrayList<>());
           children.add(deptData);
-          parentDept.put("children", children);
         }
       }
     }

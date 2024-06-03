@@ -17,25 +17,25 @@
 
 
 <script>
-var orgChartData = JSON.parse('${orgChartData}');
-
-console.log(orgChartData);
-
-var chart = new OrgChart(document.getElementById('tree'), {
-	template: 'ula',    
-  mouseScrool: OrgChart.none,
-  layout: OrgChart.mixed,
-  enableSearch: false,
-  enableDragDrop: false,
-  nodeBinding: {
-	  field_0: "name",
-	  field_1: "title"
-  }
-});
+var orgChartData = ${orgChartData};
 
 
 
-chart.load(orgChartData);
+	console.log(orgChartData);
+	
+	var chart = new OrgChart(document.getElementById('tree'), {
+	  template: 'ula',    
+	  mouseScroll: OrgChart.none,
+	  layout: OrgChart.mixed,
+	  enableSearch: false,
+	  enableDragDrop: false,
+	  nodeBinding: {
+	    field_0: 'name',
+	  },
+	  nodes: orgChartData
+	});
+
+	chart.load(orgChartData); 
 </script>
 
 <%@ include file="../layout/footer.jsp" %>    

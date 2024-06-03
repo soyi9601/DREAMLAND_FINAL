@@ -105,6 +105,8 @@ public class DepartController {
   @GetMapping("/depart.page")
   public String departUser(Model model) {
     List<Map<String, Object>> orgChartData = departService.getOrgChartData();
+    System.out.println(orgChartData);  // 데이터 확인을 위한 로그 출력
+    
     try {
       ObjectMapper objectMapper = new ObjectMapper();
       String orgChartDataJson = objectMapper.writeValueAsString(orgChartData);
@@ -112,6 +114,7 @@ public class DepartController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
     return "depart/departUser";
   }
   
