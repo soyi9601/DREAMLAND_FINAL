@@ -1,12 +1,15 @@
 /**
  * 작성자 : 이소이
- * 기능   : 로그인한 정보, 출석, 날씨 API
+ * 기능   : 로그인 정보, 출퇴근 체크, 날씨 API, 캘린더 조회
  * 이력   :
  *    1) 240527
- *        - 로그인한 정보, 출석, 날씨 API
+ *        - 로그인 정보, 날씨 API
+ *    2) 240603
+ *        - 캘린더 조회, 출퇴근 체크
  */
-  
-/* 날씨 API */
+ 
+ 
+/* *********** 날씨 API *********** */
 const weatherIconImg = document.getElementById('weather-icon');
 const currentTemp = document.getElementById('current-temp');
 const tempMin = document.getElementById('temp-min');
@@ -38,8 +41,7 @@ const fnWeather = () => {
 };
 
 
-
-/* 현재 시간 및 날짜 */
+/* *********** 현재 시간 및 날짜 *********** */
 const today = document.querySelector('.today');
 const time = document.querySelector('.time');
 const dayName = document.querySelector('.day-name');
@@ -59,12 +61,12 @@ function fnGetDate() {
 function fnGetTime() {
   let now = new Date();
   let hours = now.getHours();
+  hours = String(hours).padStart(2, "0");
   let minutes = String(now.getMinutes()).padStart(2, "0");
   let seconds = String(now.getSeconds()).padStart(2, "0");
   let ampm = '';
   if(hours > 12) {    // 13시부터는 12시를 빼주고 앞에 0 붙여주기
-    hours -= 12;
-    hours = String(hours).padStart(2, "0");
+    hours -= 12;    
     ampm = 'PM';
   } else {
     ampm = 'AM';
@@ -73,10 +75,81 @@ function fnGetTime() {
 }
 
 
+/* *********** 캘린더 *********** */
+function fnCalendar() {
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('cal');
+    var indexCalendar = new FullCalendar.Calendar(calendarEl, {
+      height: 500,
+      initialView: 'dayGridMonth',
+      locale: 'ko', // 한국어 설정
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'today'
+      },
+      events: {display: 'background',
+      id: 'a',
+      title: 'my event',
+      start: '2024-06-02'},
+      customButtons: {          
+        customToday: { // 오늘 날짜로 이동
+          text: '오늘',
+          click: function() {
+            indexCalendar.today();
+          }
+        },          
+      }          
+    });
+    indexCalendar.render();
+  });
+}
+
+
+/* *********** 출퇴근 *********** */
+/* *********** 출근 *********** */
+const empNo = document.getElementById('empNo').value;
+const fnWorkIn = () => {
+  document.getElementById('btn-work-in').addEventListener('click', function() {
+    fetch('/workIn?empNo=' + empNo, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}) 
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);      
+      this.disabled = true;
+    });
+  })  
+}
+
+/* *********** 퇴근 *********** */
+const fnWorkOut = () => {
+  document.getElementById('btn-work-out').addEventListener('click', function() {
+    fetch('/workOut?empNo=' + empNo, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}) 
+    })
+    .then(response => response.json())
+    .then(data => {alert(data.message);});
+  })  
+}
 
 
 /* ********************** 함수 호출 ********************** */
 fnWeather();
 fnGetDate();
-fnGetTime();
-setInterval(fnGetTime, 1000);
+fnGetTime(); 
+setInterval(fnGetTime, 1000); 
+fnCalendar(); 
+fnWorkIn();
+fnWorkOut();
+/* ********************** ********* ********************** */
+
+

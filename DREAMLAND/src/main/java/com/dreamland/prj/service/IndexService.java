@@ -6,4 +6,7 @@ public interface IndexService {
 
   EmployeeDto loadUser(String email);
   
+  void workIn(int empNo);
+  void workOut(int empNo);
+  
 }

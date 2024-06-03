@@ -11,6 +11,9 @@ nav .avatar i {font-size: 3rem}
 .temt-wrap div .tit {margin-right: 10px;}
 .main-news-wrap .btn {display: block;}
 
+/* 캘린더 */
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {display: none;}
+
 
 /* 조직도 */
 #empForm, #deptForm {display: none;}

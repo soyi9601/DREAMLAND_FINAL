@@ -13,6 +13,32 @@
      WHERE EMAIL = #{email}
   </select>
 
+  <insert id="insertWork" parameterType="WorkDto">
+    INSERT INTO WORK (
+        WORK_NO
+      , WORK_DATE
+      , WORK_IN
+      , WORK_OUT
+      , WORK_TOTAL_TIME
+      , WORK_STATE
+      , LATE_YN
+      , EMP_NO
+    ) VALUES (
+        WORK_SEQ.NEXTVAL
+      , TO_DATE(TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+      , TO_DATE(TO_CHAR(CURRENT_TIMESTAMP, 'HH24:MI:SS'), 'HH24:MI:SS')
+      , NULL
+      , NULL
+      , NULL
+      , NULL
+      , #{empNo}      
+    )
+  </insert>
   
+  <update id="updateWorkOut" parameterType="WorkDto">
+    UPDATE WORK
+       SET WORK_OUT = TO_DATE(TO_CHAR(CURRENT_TIMESTAMP, 'HH24:MI:SS'), 'HH24:MI:SS')
+     WHERE EMP_NO = #{empNo}     
+  </update>
 
 </mapper> 

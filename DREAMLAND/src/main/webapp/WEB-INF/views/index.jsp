@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:include page="./layout/header.jsp" />  
+
 <!-- Content wrapper -->
 <div class="content-wrapper">
  <!-- Content -->
@@ -22,10 +23,11 @@
 	            </c:when>
 	            <c:when test="${emp.role == 'ROLE_USER'}">
 	              <div class="button-wrapper text-end">
-		              <button type="submit" class="btn btn-primary mb-4">
+                  <input id="empNo" type="hidden" name="empNo" value="${emp.empNo}">
+		              <button type="button" class="btn btn-primary mb-4" id="btn-work-in">
 		                <span class="d-none d-sm-block">출근</span>
 		              </button>
-		              <button type="submit" class="btn btn-danger mb-4">
+		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out">
 		                <span class="d-none d-sm-block">퇴근</span>
 		              </button>
 		            </div>
@@ -138,7 +140,7 @@
 	      </h4> 
         <div class="row">
           <div class="col-md-8">
-            <div class="card">캘린더</div>
+            <div class="card" id="cal"></div>
           </div>
           <div class="col-md-4">
             <div class="main-news-wrap">
@@ -153,7 +155,9 @@
 	</div>
   <!-- / Content -->            
  
-	
+ 
 
+<!-- ----------- script ----------- -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
 <script src="../assets/js/pages-index.js"></script>
 <%@ include file="./layout/footer.jsp" %>

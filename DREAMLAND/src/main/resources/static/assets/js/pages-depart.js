@@ -40,45 +40,45 @@ $(document).ready(function() {
         $('#jsTree').jstree({
           plugins: ['search', 'types', 'themes', 'contextmenu'],
           core: {
-               data: nodes,    //데이터 연결   
-               check_callback : true, 
+            data: nodes,    //데이터 연결   
+            check_callback : true, 
           },
-            types: {
-              'default': {
-                'icon': 'jstree-folder'
-               },
-              'file': {
-                'icon': 'jstree-file',
-               }
+          types: {
+            'default': {
+              'icon': 'jstree-folder'
             },
-            search : {
-              'show_only_matches' : true,
-              'show_only_matches_children' : true,
-            },         
-            contextmenu: { 
-              items: function($node) {
-                var tree = $('#jsTree').jstree(true);
-                if($node.type === 'file') {
-                  return {
-                    "delete": {
-                      label: "삭제",
-                      action: function (obj) {
-                        deleteEmployeeNode($node.id);
-                      }
+            'file': {
+              'icon': 'jstree-file',
+            }
+          },
+          search : {
+            'show_only_matches' : true,
+            'show_only_matches_children' : true,
+          },         
+          contextmenu: { 
+            items: function($node) {
+              var tree = $('#jsTree').jstree(true);
+              if($node.type === 'file') {
+                return {
+                  "delete": {
+                    label: "삭제",
+                    action: function (obj) {
+                      deleteEmployeeNode($node.id);
                     }
-                  };
-                } else {
-                  return {
-                    "delete": {
-                      label: "삭제",
-                      action: function (obj) {
-                        deleteDepartNode($node.id);
-                      }
+                  }
+                };
+              } else {
+                return {
+                  "delete": {
+                    label: "삭제",
+                    action: function (obj) {
+                      deleteDepartNode($node.id);
                     }
-                  };                  
-                }
+                  }
+                };                  
               }
             }
+          }
         });
         /*
         $('#jsTree').on('delete_node.jstree', function(e, data) {
@@ -141,47 +141,49 @@ $(document).ready(function() {
     }
   };    
 
-departAdmin();
+  departAdmin();
 
-// 부서 및 직원 검색 키 이벤트 바인딩
-$('#departSearch').keyup(function() {
-  var searchString = $(this).val();
-  $('#jsTree').jstree('search', searchString);
-});
+  // 부서 및 직원 검색 키 이벤트 바인딩
+  $('#departSearch').keyup(function() {
+    var searchString = $(this).val();
+    $('#jsTree').jstree('search', searchString);
+  });
 
-// 노드 클릭 이벤트
-$('#jsTree').on('select_node.jstree', function(e, data) {
-  var node = data.node;
-  console.log(node);
-  if(node.type === 'file') {
-    fetch('/depart/getEmployeeInfo?empNo=' + node.id, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => response.json())
-    .then(empData => {
-      $('#empForm').show();
-      $('#deptForm').hide();
-      $('#emp-no').val(empData.empNo);
-      $('#emp-name').val(empData.empName);
-      $('#birth').val(empData.birth);
-      $('#empPw').val(empData.empPw);
-      $('#emp-mobile').val(empData.mobile);
-      $('#emp-email').val(empData.email);
-      $('#emp-dept-no').val(empData.deptNo);
-      $('#pos-no').val(empData.posNo);
-      $('#enterDate').val(empData.enterDate);
-      $('#role').val(empData.role);
-    })
-    .catch(error => console.error('Error fetching employee info:', error));
+  // 노드 클릭 이벤트
+  $('#jsTree').on('select_node.jstree', function(e, data) {
+    var node = data.node;
+    console.log(node);
+    if(node.type === 'file') {
+      fetch('/depart/getEmployeeInfo?empNo=' + node.id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(empData => {
+        $('#empForm').show();
+        $('#deptForm').hide();
+        $('#emp-no').val(empData.empNo);
+        $('#emp-name').val(empData.empName);
+        $('#birth').val(empData.birth);
+        $('#empPw').val(empData.empPw);
+        $('#emp-mobile').val(empData.mobile);
+        $('#emp-email').val(empData.email);
+        $('#emp-dept-no').val(empData.deptNo);
+        $('#pos-no').val(empData.posNo);
+        $('#enterDate').val(empData.enterDate);
+        $('#role').val(empData.role);
+      })
+      .catch(error => console.error('Error fetching employee info:', error));
     } else {
       fetch('/depart/getDepartInfo?deptNo=' + node.id, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },
-      }).then(response => response.json())
+      })
+      .then(response => response.json())
       .then(deptData => {
          $('#empForm').hide();
          $('#deptForm').show();
