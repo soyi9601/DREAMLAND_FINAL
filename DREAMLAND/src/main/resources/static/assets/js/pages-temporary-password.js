@@ -17,14 +17,9 @@ var emailCheck = false;
 // contextPath
 const fnGetContextPath = ()=>{
   const host = location.host;  /* localhost:8080 */
-  console.log(host);
   const url = location.href;   /* http://localhost:8080/mvc/getDate.do */
-  console.log(url);
   const begin = url.indexOf(host) + host.length;
-  console.log(begin);
   const end = url.indexOf('/', begin + 1);
-  console.log(end);
-  console.log(url.substring(begin, end));
   return url.substring(begin, end);
 }
 
