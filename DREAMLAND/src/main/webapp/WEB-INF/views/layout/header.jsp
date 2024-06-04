@@ -163,11 +163,14 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/approval/appWrite" class="menu-link">
+                <a href="${contextPath}/approval/appWrite?apvNo=000" class="menu-link">
                   <div>기안서 작성</div>
                 </a>
                 <a href="${contextPath}/approval/appList" class="menu-link">
-                  <div>진행 중인 문서</div>
+                  <div>결재 문서</div>
+                </a>
+                <a href="${contextPath}/approval/appReferList" class="menu-link">
+                  <div>참조 문서</div>
                 </a>
                 <a href="${contextPath}/approval/appMyList" class="menu-link">
                   <div>내 문서</div>
