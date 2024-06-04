@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dreamland.prj.config.CustomAuthenticationProvider;
 import com.dreamland.prj.config.DBConnectionProvider;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.PrincipalUser;
@@ -23,18 +24,20 @@ import com.dreamland.prj.utils.MyJavaMailUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @Transactional
 @Service
-public class LoginServiceImpl implements LoginService {
 
+public class LoginServiceImpl implements LoginService {
+  
   private final EmployeeMapper employeeMapper;
   private final MyFileUtils myFileUtils;
   private final MyJavaMailUtils myJavaMailUtils;
   private final BCryptPasswordEncoder passwordEncoder;
-  
-  public LoginServiceImpl(EmployeeMapper employeeMapper, MyFileUtils myFileUtils
-                        , MyJavaMailUtils myJavaMailUtils, BCryptPasswordEncoder passwordEncoder) {
+
+  public LoginServiceImpl(EmployeeMapper employeeMapper, MyFileUtils myFileUtils, MyJavaMailUtils myJavaMailUtils,
+      BCryptPasswordEncoder passwordEncoder) {
     super();
     this.employeeMapper = employeeMapper;
     this.myFileUtils = myFileUtils;
@@ -117,6 +120,7 @@ public class LoginServiceImpl implements LoginService {
     PrincipalUser user = new PrincipalUser(loginEmployee);
     
     // 수정된 내용 세션 추가
+    // Authentication auth = new CustomAuthenticationProvider(this).authenticate(new UsernamePasswordAuthenticationToken(user, "updateData", user.getAuthorities()));
     Authentication auth = new DBConnectionProvider(this).authenticate(new UsernamePasswordAuthenticationToken(user, "updateData", user.getAuthorities()));
     SecurityContextHolder.getContext().setAuthentication(auth);
   }

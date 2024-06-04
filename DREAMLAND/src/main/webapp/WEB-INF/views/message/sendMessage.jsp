@@ -6,6 +6,7 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 <jsp:include page="../layout/message-header.jsp" /> 
+<link rel="stylesheet" href="/resources/assets/css/message.css" />
 
             <!-- Content -->
 
@@ -15,20 +16,22 @@
               
               <div class="row">
                 <div class="card">
-                  <h5 class="card-header">쪽지보내기</h5>
+                  <h5 class="card-header">쪽지보내기(최대 10명까지 가능)</h5>
                     <div class="card-body">
-                    <div >
+                    <div>
                       <button type="submit" class="btn btn-primary" id="btn-send-message">보내기</button>
                       <button type="reset" class='btn btn-secondary' id="btn-reset">초기화</button>
                       <button type="button" class='btn btn-secondary' id="btn-cancel">취소</button>
                     </div>
-                      <div class="mb-3">
+                      <div class="mb-3" >
                         <label for="receiver" class="form-label">받는사람</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="receiver"
-                        />
+                        <div id="receiver-container" class="input-container">
+	                        <input
+	                          type="text"
+	                          class="form-control"
+	                          id="receiver"
+	                        />
+                        </div>
                         <div id="auto-complete"></div>
                       </div>
                       <div>
