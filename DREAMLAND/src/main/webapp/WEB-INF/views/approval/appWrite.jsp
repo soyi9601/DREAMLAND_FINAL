@@ -10,8 +10,6 @@
 <div class="col-6 mb-4" style="width:100%; height:100%">
 
 
-
-
   <c:if test="${not empty title}">
 
 <c:if test="${kind ==0 }">
@@ -47,6 +45,7 @@
                 <div class="section-title">제목</div>
                         	<input type="text" style="width:750px;" name="title"  value="${title}"></input>
     <input type="hidden" name="temp" value="0">
+    <input type="hidden" name="apvNo" value="${approval.apvNo}">
             </div>
              <div class="section-title">결재자</div>
             <table class="approval-table">
@@ -67,7 +66,7 @@
                 <div class="section-title">참조</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:750px;" name="referrer"></input></td>
+                   <td>	<input type="text" style="width:750px;" name="referrer"  value="${referrer}"></input></td>
                     </tr>           
                 </table>
             </div>
@@ -88,6 +87,7 @@
                 20<span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;</span>년&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;일<br>
                 작성자: <span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> (인)
             </div>
+            <br>
             <div class="button-container">
 														<div class="row mb-3">
 																<div class="col-sm-10 notice-input-area">
@@ -97,17 +97,14 @@
 																		  </div>
 																		</c:forEach>
 																	  <div>
+																	    	<c:if test="${not empty title}">
 																	  	<c:if test="${empty attachList}">
 																		    <div>첨부 없음</div>
 																		  </c:if>
-											
+																		    	</c:if>
 																    </div>
 																</div>
-																<label for="formFileMultiple"
-																		class="col-sm-2 col-form-label"> 
-																	파일첨부
-																	<span class="file-add-btn">추가</span>
-																</label>
+
 																<div class="col-sm-10 notice-inputs-area">
 																		<div class="notice-input-area">
 																			<input class="form-control" type="file" name="files"/>
@@ -133,7 +130,7 @@
                             <div class="section-title">제목</div>
                         	<input type="text" style="width:750px;" name="title" value="${title}"></input>
          <input type="hidden" name="temp" value="0">
-        
+            <input type="hidden" name="apvNo" value="${approval.apvNo}">
              <div class="section-title">결재자</div>
             <table class="approval-table">
                 <tr>
@@ -153,7 +150,7 @@
                 <div class="section-title">참조</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:750px;" name="referrer"></input></td>
+                   <td>	<input type="text" style="width:750px;" name="referrer" value="${referrer}"></input></td>
                     </tr>           
                 </table>
             </div>
@@ -189,7 +186,7 @@
                 <tr>
                     <td>휴가 기간</td>
                        <c:if test="${kind ==1 }">
-                    <td><input type="date" name="leavestart" value="<fmt:formatDate value='${approval.leaveStart}' pattern='yyyy-MM-dd'/>" > ~ <input type="date" name="leaveend" value="<fmt:formatDate value='${approval.leaveEnd}' pattern='yyyy-MM-dd'/>"></td>
+                    <td><input type="date" name="leavestart" value="${approval.leaveStart}"> ~ <input type="date" name="leaveend" value="${approval.leaveEnd}"></td>
                					</c:if>
                					 <c:if test="${empty title}">
                					<td><input type="date" name="leavestart" > ~ <input type="date" name="leaveend"  ></td>
@@ -208,13 +205,23 @@
                 20<span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;</span>년&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;일<br>
                 작성자: <span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> (인)
             </div>
+               <br>
         <div class="button-container">
-    														<div class="row mb-3">
-																<label for="formFileMultiple"
-																		class="col-sm-2 col-form-label"> 
-																	파일첨부
-																	<span class="file-add-btn">추가</span>
-																</label>
+   														<div class="row mb-3">
+																<div class="col-sm-10 notice-input-area">
+																		<c:forEach items="${attachList}" var="attach">
+																		  <div class="attach"   data-attach-no="${attach.attachNo}">
+																		    ${attach.originalFilename} <i class='bx bx-download'></i>
+																		  </div>
+																		</c:forEach>
+																	  <div>
+																	    	<c:if test="${not empty title}">
+																	  	<c:if test="${empty attachList}">
+																		    <div>첨부 없음</div>
+																		  </c:if>
+																		    	</c:if>
+																    </div>
+																</div>
 																<div class="col-sm-10 notice-inputs-area">
 																		<div class="notice-input-area">
 																			<input class="form-control" type="file" name="files"/>
@@ -227,8 +234,6 @@
             </div>
         </div>
         </form>
-    </div>
-</div>
     </div>
 </div>
 

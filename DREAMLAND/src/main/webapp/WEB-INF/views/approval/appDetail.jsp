@@ -41,7 +41,7 @@
                 <div class="section-title">참조</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:100%;" name="referrer"></input></td>
+                   <td>	<div> ${referrer}</div></td>
                     </tr>           
                 </table>
             </div>
@@ -166,7 +166,7 @@
                 <div class="section-title">참조</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:100%;" name="referrer" id="referrer"></input></td>
+                   <td><div> ${referrer}</div></td>
                     </tr>           
                 </table>
             </div>

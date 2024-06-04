@@ -38,6 +38,13 @@
 	 	  FROM APV_WRITER	
 	 	 WHERE APV_NO = #{apvNo} 
 	 </select>
+	 
+	 <select id="getReferrer">
+	 SELECT EMP_NO 
+	   FROM APV_REF
+	  WHERE APV_NO = #{apvNo} 
+	 </select>
+	 
 
 
    <insert id="insertApproval"
@@ -157,9 +164,12 @@
   
   <select id="getApvCount">
     SELECT COUNT(*)
-      FROM (SELECT APV_NO 
+      FROM APPROVAL
+     WHERE APV_NO IN (SELECT APV_NO 
               FROM APV_WRITER 
-             WHERE EMP_NO = #{empNo} )
+             WHERE EMP_NO = #{empNo}
+       AND NOT APV_CHECK = 3 )
+      
       
   </select>
   
@@ -173,6 +183,7 @@
                                   WHERE APV_STATE = 100 )
                                  WHERE rn = 1
                                    AND EMP_NO = #{empNo})
+          AND NOT B.APV_CHECK = 3 
   </select>
   
   
@@ -208,6 +219,7 @@
       SELECT COUNT(*)
         FROM approval
        WHERE EMP_NO = #{empNo}
+         AND NOT APV_CHECK = 3
   </select>
   
    <select id="getMyWaitApvCount">
@@ -250,6 +262,7 @@
        WHERE APV_NO IN (SELECT APV_NO
        										FROM APV_REF
        									 WHERE EMP_NO = #{empNo})
+       	AND NOT APV_CHECK = 3
   </select>
   
    <select id="getMyReferWaitApvCount">
@@ -539,6 +552,48 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
   
   </update>
   
+      <update id="modifyApproval"
+      				parameterType="ApprovalDto">
+    UPDATE APPROVAL
+       SET APV_CHECK = #{apvCheck}
+         , APV_KINDS = #{apvKinds}
+         , APV_TITLE = #{apvTitle}
+     WHERE APV_NO = #{apvNo}
+    </update>
+    
+  <delete id="deleteApvRef">
+  DELETE FROM APV_REF
+				WHERE APV_NO = #{apvNo}
+  
+  </delete>
+  
+  <update id="modifyApvWriter">
+  	 UPDATE APV_WRITER
+       SET EMP_NO = #{empNo}
+     WHERE APV_NO = #{apvNo}
+       AND WRITER_LIST = #{i}
+  
+  </update>
+   
+   <update id="modifyApvLetter">
+   	 UPDATE APV_LETTER
+       SET DETAIL = #{detail}
+     WHERE APV_NO = #{apvNo}
+    
+   
+   </update>
+   
+     <update id="modifyApvLeave"
+             parameterType="AppleaveDto" >
+   	 UPDATE APV_LEAVE
+       SET LEAVE_CLASSIFY = #{leaveClassify}
+          , LEAVE_START =#{leaveStart}
+          , LEAVE_END = #{leaveEnd}
+          , DETAIL = #{detail}
+     WHERE APV_NO = #{apvNo}
+    
+   
+   </update>
     
     <select id="getApprovers"
             parameterType="Int"
