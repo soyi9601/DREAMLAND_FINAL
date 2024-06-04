@@ -47,6 +47,7 @@ public class DepartController {
     }
   }
     
+  
   // 부서 및 직원 삭제
   @PostMapping("/removeDepart")
   public ResponseEntity<?> deleteDepart(@RequestBody DepartmentDto departmentDto) {
@@ -57,11 +58,13 @@ public class DepartController {
     departService.removeDepart(departmentDto);
     return ResponseEntity.ok().body("{\"message\": \"부서가 삭제되었습니다.\"}");
   }  
+  
   @PostMapping("/removeEmployee")
   public ResponseEntity<?> deleteEmployee(@RequestBody EmployeeDto employeeDto) {
     departService.removeEmployee(employeeDto);
     return ResponseEntity.ok().body("{\"message\": \"직원이 삭제되었습니다.\"}");
   }
+  
   
   // 노드 클릭 후 부서 및 직원 조회
   @GetMapping("/getDepartInfo")
@@ -69,23 +72,27 @@ public class DepartController {
     DepartmentDto department = departService.getDepartById(deptNo);
     return ResponseEntity.ok().body(department);
   }  
+  
   @GetMapping("/getEmployeeInfo")
   public ResponseEntity<EmployeeDto> getEmployeeInfo(@RequestParam("empNo") int empNo) {
     EmployeeDto employee = departService.getEmployeeById(empNo);
     return ResponseEntity.ok().body(employee);
   }  
 
+  
   // 부서 및 직원 정보 수정
   @PostMapping(value="/editDepart.do", produces="application/json")
   public ResponseEntity<?> updateDepart(@RequestBody DepartmentDto departmentDto) {
     departService.updateDepart(departmentDto);
     return ResponseEntity.ok().body("{\"message\": \"부서정보가 수정되었습니다.\"}");
-  }      
+  }     
+  
   @PostMapping(value="/editEmployee.do", produces="application/json")
   public ResponseEntity<?> updateEmployee(@RequestBody EmployeeDto employeeDto) {
     departService.updateEmployee(employeeDto);
     return ResponseEntity.ok().body("{\"message\": \"직원정보가 수정되었습니다.\"}");
   }   
+  
     
   // 부서 등록 페이지 이동
   @GetMapping("/addDepart.page")

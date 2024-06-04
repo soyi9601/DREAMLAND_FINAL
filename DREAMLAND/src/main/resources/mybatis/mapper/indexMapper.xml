@@ -5,6 +5,7 @@
   
 <mapper namespace="com.dreamland.prj.mapper.IndexMapper">
 	
+	<!-- 부서 + 직원 전체 리스트 조회 -->
   <select id="getUser" resultType="EmployeeDto">
     SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.EMAIL, E.MOBILE, E.ROLE, E.PROFILE_PATH, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
       FROM EMPLOYEE E
@@ -13,6 +14,8 @@
      WHERE EMAIL = #{email}
   </select>
 
+
+  <!-- 근태관리 -->
   <insert id="insertWork" parameterType="WorkDto">
     INSERT INTO WORK (
         WORK_NO

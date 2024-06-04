@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface DepartService {
 
-  List<DepartmentDto> getDepartList();       // 조직도 조회
+  List<DepartmentDto> getDepartList();              // 조직도 조회
   void removeDepart(DepartmentDto departmentDto);   // 부서 삭제
   void removeEmployee(EmployeeDto employeetDto);    // 직원 삭제
   boolean hasEmployee(int deptNo);

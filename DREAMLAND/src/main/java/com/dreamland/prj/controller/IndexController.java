@@ -22,6 +22,7 @@ public class IndexController {
 
   private final IndexService indexService;
   
+  // 직원 조회
   @GetMapping("/")
   public String index(Model model, Authentication authentication) {
     String email = authentication.getName();
@@ -30,13 +31,15 @@ public class IndexController {
     return "index";
   }
   
+  
+  // 근태관리
   @PostMapping(value="/workIn", produces="application/json")
   public ResponseEntity<Map<String, Object>> workIn(@RequestParam int empNo) {
     indexService.workIn(empNo);
     Map<String, Object> response = new HashMap<>();
     response.put("message", "출근 완료했습니다");
     return ResponseEntity.ok(response);
-  }
+  }  
   
   @PostMapping(value="/workOut", produces="application/json")
   public ResponseEntity<Map<String, Object>> workOut(@RequestParam int empNo) {

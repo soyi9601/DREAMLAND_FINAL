@@ -61,7 +61,6 @@ function fnGetDate() {
 function fnGetTime() {
   let now = new Date();
   let hours = now.getHours();
-  hours = String(hours).padStart(2, "0");
   let minutes = String(now.getMinutes()).padStart(2, "0");
   let seconds = String(now.getSeconds()).padStart(2, "0");
   let ampm = '';
@@ -71,7 +70,8 @@ function fnGetTime() {
   } else {
     ampm = 'AM';
   }
-  time.innerText = ampm + hours + ' : ' + minutes + ' : ' + seconds;
+  hours = String(hours).padStart(2, "0");
+  time.innerHTML = ampm + '&nbsp;' + hours + ' : ' + minutes + ' : ' + seconds;
 }
 
 
