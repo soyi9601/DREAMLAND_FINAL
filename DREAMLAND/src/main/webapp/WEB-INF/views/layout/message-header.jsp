@@ -34,6 +34,7 @@
   <!-- Page CSS -->
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js" integrity="sha256-J8ay84czFazJ9wcTuSDLpPmwpMXOm573OUtZHPQqpEU=" crossorigin="anonymous"></script>
   <!-- Helpers -->
   <script src="/resources/assets/vendor/js/helpers.js"></script>
 
@@ -66,6 +67,19 @@
         <ul class="menu-inner py-1">
           <!-- Layouts -->
           <li class="menu-item">
+            <div class="row mx-5">
+              <!-- Button trigger modal -->
+              <button
+                type="button"
+                class="btn btn-primary justify-content-sm-center"
+                id="btn-send-message"
+              >
+                쪽지보내기
+              </button>
+
+              <!-- Modal -->
+          </li>
+          <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-layout"></i>
               <div>인사관리</div>
@@ -79,6 +93,34 @@
               <li class="menu-item">
                 <a href="layouts-without-navbar.html" class="menu-link">
                   <div>근태1</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>쪽지함</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="${contextPath}/user/receiveBox" class="menu-link">
+                  <div>받은쪽지함</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/user/sendBox" class="menu-link">
+                  <div>보낸쪽지함</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/user/saveBox" class="menu-link">
+                  <div>중요보관함</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/user/removeBox" class="menu-link">
+                  <div>휴지통</div>
                 </a>
               </li>
             </ul>
@@ -243,7 +285,7 @@
                   <li>
                     <a class="dropdown-item" href="${contextPath}/user/receiveBox">
                       <i class="bx bx-cog me-2"></i>
-                      <span class="align-middle">받은쪽지함</span>
+                      <span class="align-middle">쪽지함</span>
                     </a>
                   </li>
                   <li>
@@ -271,3 +313,16 @@
           </div>
         </nav>
         <!-- / Navbar -->
+        
+        <script>
+        const fnGetContextPath = ()=>{
+        	  const host = location.host;  /* localhost:8080 */
+        	  const url = location.href;   /* http://localhost:8080/mvc/getDate.do */
+        	  const begin = url.indexOf(host) + host.length;
+        	  const end = url.indexOf('/', begin + 1);
+        	  return url.substring(begin, end);
+        	}
+          document.getElementById('btn-send-message').addEventListener('click', ()=>{
+        	  location.href=fnGetContextPath()+"/sendMessage"
+          })
+        </script>
