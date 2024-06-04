@@ -1009,15 +1009,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    List<String> b = approvalMapper.getApprover(apvNo);
 	    
 	    String writer = approvalMapper.getEmployeeName(a.getEmpNo()+"");
-	    String approver1 =approvalMapper.getEmployeeName(b.get(0));
-	    String approver2 =approvalMapper.getEmployeeName(b.get(1));
-	    String approver3 = approvalMapper.getEmployeeName(b.get(2));
+		 
 	    
-		Map<String, Object> map = Map.of("writer", writer
-				, "approver1",approver1
-				, "approver2", approver2
-				, "approver3", approver3);
-		
+        Map<String, Object> map = new HashMap<>();
+        map.put("writer", writer);
+        
+		for(int i=0; i< b.size(); i++) {
+			map.put("approver" + (i+1), approvalMapper.getEmployeeName( b.get(i)));
+		}
 		if(Apvkind.equals("0")) {
 			 model.addAttribute("approval", approvalMapper.getApvAppDetailByNo(apvNo));
 		} else {
@@ -1158,6 +1157,25 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return 0;
 	}
 	
-}
+	@Override
+	public boolean  deleteAttach(HttpServletRequest request) {
+		String apvNo    = request.getParameter("apvNo");
+		String attachNo = request.getParameter("attachNo");
+		return approvalMapper.deleteAttach(apvNo, attachNo) > 0;
+	}
+
+	@Override
+	public int apvRevoke(HttpServletRequest request) {
+		String apvNo = request.getParameter("apvNo");
+		String apvKind = request.getParameter("apvKind");
+		approvalMapper.revokeApproval(apvNo);
+		
+		if(apvKind.equals("1")) {
+		approvalMapper.revokeApvLeave(apvNo);}
+		
+		return 0;
+	} 
 	
+	
+}
 	

@@ -14,7 +14,6 @@
      <result property="apvTitle"       column="APV_TITLE"/>
    </resultMap>
 
-
 	 <select id="getApvNo"
 	 				  resultType="int">
 	 	SELECT MAX(APV_NO) 
@@ -561,11 +560,6 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
      WHERE APV_NO = #{apvNo}
     </update>
     
-  <delete id="deleteApvRef">
-  DELETE FROM APV_REF
-				WHERE APV_NO = #{apvNo}
-  
-  </delete>
   
   <update id="modifyApvWriter">
   	 UPDATE APV_WRITER
@@ -594,6 +588,14 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
     
    
    </update>
+   
+   <delete id="deleteApvRef">
+  DELETE FROM APV_REF
+				WHERE APV_NO = #{apvNo}
+  
+  </delete>
+  
+  
     
     <select id="getApprovers"
             parameterType="Int"
@@ -629,5 +631,22 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
     </select>
     				
     				
+    <delete id="deleteAttach">
+  DELETE FROM APV_ATTACH
+				WHERE APV_NO = #{apvNo}
+				  AND ATTACH_NO = #{attachNo}
+    </delete>
+    
+   <update id="revokeApproval">
+    UPDATE APPROVAL
+       SET APV_CHECK = 3
+     WHERE APV_NO = #{apvNo}
+    </update>
+    				
+    <update id="revokeApvLeave">
+    UPDATE APV_LEAVE
+       SET LEAVE_STATUS = 0
+     WHERE APV_NO = #{apvNo}
+    </update>
   
 </mapper>

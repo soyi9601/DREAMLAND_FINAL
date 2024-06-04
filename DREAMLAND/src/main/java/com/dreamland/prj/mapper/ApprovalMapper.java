@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.http.ResponseEntity;
 
 import com.dreamland.prj.dto.AppleaveDto;
 import com.dreamland.prj.dto.AppletterDto;
@@ -72,7 +73,10 @@ public interface ApprovalMapper {
 	 int modifyApvWriter(int empNo, String apvNo, int i);
 	 int modifyApvLetter(String apvNo , String detail  );
 	 int modifyApvLeave( AppleaveDto leave);
+	 int revokeApproval(String apvNo );
+	 int revokeApvLeave(String apvNo );
 	 int  deleteApvRef(int apvNo);
+	 int  deleteAttach(String apvNo, String attachNo);
 	 List<String> getApprovers(int apvNo);
 	 ApvWriterDto getReturnApprover(int apvNo);
 	 

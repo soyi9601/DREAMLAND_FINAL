@@ -45,7 +45,7 @@
                 <div class="section-title">제목</div>
                         	<input type="text" style="width:750px;" name="title"  value="${title}"></input>
     <input type="hidden" name="temp" value="0">
-    <input type="hidden" name="apvNo" value="${approval.apvNo}">
+    <input type="hidden" name="apvNo" id="apvNo" value="${approval.apvNo}">
             </div>
              <div class="section-title">결재자</div>
             <table class="approval-table">
@@ -63,7 +63,7 @@
                 </tr>
             </table>
             <div class="section">
-                <div class="section-title">참조</div>
+                <div class="section-title">참조자</div>
                 <table class="input-table">
                     <tr>
                    <td>	<input type="text" style="width:750px;" name="referrer"  value="${referrer}"></input></td>
@@ -93,7 +93,7 @@
 																<div class="col-sm-10 notice-input-area">
 																		<c:forEach items="${attachList}" var="attach">
 																		  <div class="attach"   data-attach-no="${attach.attachNo}">
-																		    ${attach.originalFilename} <i class='bx bx-download'></i>
+																		    ${attach.originalFilename} <i class='bx bx-x' id ="attachDelete"></i>
 																		  </div>
 																		</c:forEach>
 																	  <div>
@@ -147,7 +147,7 @@
                  </tr>
             </table>
             <div class="section">
-                <div class="section-title">참조</div>
+                <div class="section-title">참조자</div>
                 <table class="input-table">
                     <tr>
                    <td>	<input type="text" style="width:750px;" name="referrer" value="${referrer}"></input></td>
@@ -211,7 +211,7 @@
 																<div class="col-sm-10 notice-input-area">
 																		<c:forEach items="${attachList}" var="attach">
 																		  <div class="attach"   data-attach-no="${attach.attachNo}">
-																		    ${attach.originalFilename} <i class='bx bx-download'></i>
+																		    ${attach.originalFilename} <i class='bx bx-x' id ="attachDelete"></i>
 																		  </div>
 																		</c:forEach>
 																	  <div>
@@ -348,13 +348,40 @@
        }
      });
    }
+   
+   
+   const fnAttachDelete = () => {
+       // attachDelete 태그 클릭 이벤트 핸들러
+       $(document).on("click", "#attachDelete", function() {
+           // 클릭된 태그의 부모 태그에서 attach-no 데이터 속성 값을 가져옴
+           var attachNo = $(this).parent().data("attach-no");
+           var apvNo =  $("#apvNo").val();
+           var parentElement = $(this).parent();
+           alert(attachNo);
+
+           // Ajax 요청
+           $.ajax({
+               url: '${contextPath}/approval/deleteAttach.do',
+               type: 'GET',
+               data: { attachNo: attachNo, apvNo: apvNo },
+               dataType: 'json',
+               success: (resData) => {
+                   console.log("삭제 성공:", resData);
+                   parentElement.remove();
+               },
+               error: (jqXHR) => {
+                   alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+               }
+           });
+       });
+   }
 
    // Initialize to show the first page
   showPage('approvalForm');
-  fnTempSave();
 	fnAttachAdd();
 	fnAttachCheck();
 	fnAttachDel();
+  fnAttachDelete();
 </script>
    
     
