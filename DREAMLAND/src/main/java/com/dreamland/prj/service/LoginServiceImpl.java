@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dreamland.prj.config.CustomAuthenticationProvider;
 import com.dreamland.prj.config.DBConnectionProvider;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.PrincipalUser;
@@ -24,7 +23,6 @@ import com.dreamland.prj.utils.MyJavaMailUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 
 @Transactional
 @Service
