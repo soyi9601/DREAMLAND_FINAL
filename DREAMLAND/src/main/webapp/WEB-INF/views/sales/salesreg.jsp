@@ -58,81 +58,260 @@
  		
  		<style>
  		.card {
-            display: none;
+        display: none;
         }
- 		.card.active {
-            display: block;
+    .card.active {
+        display: block;
         }
  		</style>
   </head>
   
 
 <body>
-	
-		<form method="POST" 
-    			action="${contextPath}/sales/salesreg.do" 
-    			id="frm-salesreg">
-    			 
-				<label for="contentSelect">부서선택</label>
-    				<select id="pageSelect" onchange="showPage(this.value)">
-        			<option value="5000">티켓</option>
-        			<option value="5110">매점1</option>
-        			<option value="5220">매점2</option>
-        			<option value="5320">매점3</option>
-        			<option value="5420">매점4</option>
-        			<option value="5520">매점5</option>
-        			<option value="5130">굿즈샵1</option>
-        			<option value="5230">굿즈샵2</option>
-        			<option value="5330">굿즈샵3</option>
-        			<option value="5430">굿즈샵4</option>
-        			<option value="5530">굿즈샵5</option>
-    				</select>
-  	</form>
 
-		<form method="POST" 
-    			action="${contextPath}/sales/salesreg.do" 
-    			id="frm-salesreg">    		
-    		<div id="content"></div>	
-    		
-        <!-- Bootstrap Dark Table -->
-        <div id="5000" class="card">
-        
-        <div>
-        	<button type="submit" id="regbtn" class="btn-reg">저장</button>
-        	<input type="date" name="salesDate">
-        </div>
-        
-            <h5 class="card-header">
-            	티켓
-            </h5>
-            <div class="table-responsive text-nowrap">
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                        		<th>이름</th>
-                            <th>상품</th>
-                            <th>수량</th>
-                            <th>파트</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                        <c:forEach items="${product}" var="product">
-                        		<tr>
-                        			<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
-                            	<td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
-                            	<td><input type="text" name="qty" value=1></td>
-                            	<td><input type="hidden" name="deptNo" value="${product.department.deptNo}">${product.department.deptNo}</td>
-                        		</tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-      </form>
+		<label for="pageSelect">파트 선택</label>
+			<select id="pageSelect" onchange="showPage(this.value)">
+    		<option value="tickets">티켓</option>
+    		<option value="Zootopia">주토피아</option>
+    		<option value="MagicLand">매직랜드</option>
+    		<option value="AmericanAdventure">아메리칸어드벤처</option>
+    		<option value="GloverFair">글로버페어</option>
+    		<option value="EuropeanAdventure">유로피언어드벤처</option>
+			</select>
+	
+
+   
+     <!-- Bootstrap Dark Table -->
+     <div id="tickets" class="card">
+			 <form method="POST" 
+	    			 action="${contextPath}/sales/salesreg.do" 
+	    			 id="frm-salesreg">    		
+	    		
+	       <div>
+	        <button type="submit" id="regbtn" class="btn-reg">저장</button>
+	        <input type="date" name="salesDate">
+	       </div>
+	       	<h5 class="card-header">티켓</h5>
+	        <div class="table-responsive text-nowrap">
+	        	<table class="table table-dark">
+	          	<thead>
+	            	<tr>
+	              	<th>상품번호</th>
+	                <th>상품</th>
+	                <th>수량</th>
+	                <th>파트번호</th>
+	              </tr>
+	            </thead>
+	            <tbody class="table-border-bottom-0">
+	            	<c:forEach items="${product}" var="product">
+	              	<tr>
+	              	<c:if test="${product.department.deptNo == 5000}"> 
+	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
+	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
+	                  <td><input type="text" name="qty" value=1></td>
+	                  <td><input type="hidden" name="deptNo" value="${product.department.deptNo}">${product.department.deptNo}</td>
+	                </tr>
+	               	</c:if>
+	              </c:forEach>
+	            </tbody>
+	          </table>
+	        </div>
+	     </form>
+	   </div>
+  
+   
+     <!-- Bootstrap Dark Table -->
+     <div id="Zootopia" class="card">
+			 <form method="POST" 
+	    			 action="${contextPath}/sales/salesreg.do" 
+	    			 id="frm-salesreg">    		
+	    		
+	       <div>
+	        <button type="submit" id="regbtn" class="btn-reg">저장</button>
+	        <input type="date" name="salesDate">
+	       </div>
+	       	<h5 class="card-header">주토피아</h5>
+	        <div class="table-responsive text-nowrap">
+	        	<table class="table table-dark">
+	          	<thead>
+	            	<tr>
+	              	<th>상품번호</th>
+	                <th>상품</th>
+	                <th>수량</th>
+	                <th>파트번호</th>
+	              </tr>
+	            </thead>
+	            <tbody class="table-border-bottom-0">
+	            	<c:forEach items="${product}" var="product">
+	              	<tr>
+	              	<c:if test="${product.department.deptNo ge 5120 && product.department.deptNo le 5130}"> 
+	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
+	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
+	                  <td><input type="text" name="qty" value=1></td>
+	                  <td><input type="hidden" name="deptNo" value="${product.department.deptNo}">${product.department.deptNo}</td>
+	                </tr>
+	               	</c:if>
+	              </c:forEach>
+	            </tbody>
+	          </table>
+	        </div>
+	     </form>
+	   </div>
+	   
+     <!-- Bootstrap Dark Table -->
+     <div id="MagicLand" class="card">
+			 <form method="POST" 
+	    			 action="${contextPath}/sales/salesreg.do" 
+	    			 id="frm-salesreg">    		
+	    		
+	       <div>
+	        <button type="submit" id="regbtn" class="btn-reg">저장</button>
+	        <input type="date" name="salesDate">
+	       </div>
+	       	<h5 class="card-header">매직랜드</h5>
+	        <div class="table-responsive text-nowrap">
+	        	<table class="table table-dark">
+	          	<thead>
+	            	<tr>
+	              	<th>상품번호</th>
+	                <th>상품</th>
+	                <th>수량</th>
+	                <th>파트번호</th>
+	              </tr>
+	            </thead>
+	            <tbody class="table-border-bottom-0">
+	            	<c:forEach items="${product}" var="product">
+	              	<tr>
+	              	<c:if test="${product.department.deptNo ge 5220 && product.department.deptNo le 5230}"> 
+	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
+	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
+	                  <td><input type="text" name="qty" value=1></td>
+	                  <td><input type="hidden" name="deptNo" value="${product.department.deptNo}">${product.department.deptNo}</td>
+	                </tr>
+	               	</c:if>
+	              </c:forEach>
+	            </tbody>
+	          </table>
+	        </div>
+	     </form>
+	   </div>
+	   
+     <!-- Bootstrap Dark Table -->
+     <div id="AmericanAdventure" class="card">
+			 <form method="POST" 
+	    			 action="${contextPath}/sales/salesreg.do" 
+	    			 id="frm-salesreg">    		
+	    		
+	       <div>
+	        <button type="submit" id="regbtn" class="btn-reg">저장</button>
+	        <input type="date" name="salesDate">
+	       </div>
+	       	<h5 class="card-header">아메리칸어드벤처</h5>
+	        <div class="table-responsive text-nowrap">
+	        	<table class="table table-dark">
+	          	<thead>
+	            	<tr>
+	              	<th>상품번호</th>
+	                <th>상품</th>
+	                <th>수량</th>
+	                <th>파트번호</th>
+	              </tr>
+	            </thead>
+	            <tbody class="table-border-bottom-0">
+	            	<c:forEach items="${product}" var="product">
+	              	<tr>
+	              	<c:if test="${product.department.deptNo ge 5320 && product.department.deptNo le 5330}"> 
+	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
+	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
+	                  <td><input type="text" name="qty" value=1></td>
+	                  <td><input type="hidden" name="deptNo" value="${product.department.deptNo}">${product.department.deptNo}</td>
+	                </tr>
+	               	</c:if>
+	              </c:forEach>
+	            </tbody>
+	          </table>
+	        </div>
+	     </form>
+	   </div>
+	   
+     <!-- Bootstrap Dark Table -->
+     <div id="GloverFair" class="card">
+			 <form method="POST" 
+	    			 action="${contextPath}/sales/salesreg.do" 
+	    			 id="frm-salesreg">    		
+	    		
+	       <div>
+	        <button type="submit" id="regbtn" class="btn-reg">저장</button>
+	        <input type="date" name="salesDate">
+	       </div>
+	       	<h5 class="card-header">글로버페어</h5>
+	        <div class="table-responsive text-nowrap">
+	        	<table class="table table-dark">
+	          	<thead>
+	            	<tr>
+	              	<th>상품번호</th>
+	                <th>상품</th>
+	                <th>수량</th>
+	                <th>파트번호</th>
+	              </tr>
+	            </thead>
+	            <tbody class="table-border-bottom-0">
+	            	<c:forEach items="${product}" var="product">
+	              	<tr>
+	              	<c:if test="${product.department.deptNo ge 5420 && product.department.deptNo le 5430}"> 
+	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
+	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
+	                  <td><input type="text" name="qty" value=1></td>
+	                  <td><input type="hidden" name="deptNo" value="${product.department.deptNo}">${product.department.deptNo}</td>
+	                </tr>
+	               	</c:if>
+	              </c:forEach>
+	            </tbody>
+	          </table>
+	        </div>
+	     </form>
+	   </div>
+	   
+     <!-- Bootstrap Dark Table -->
+     <div id="EuropeanAdventure" class="card">
+			 <form method="POST" 
+	    			 action="${contextPath}/sales/salesreg.do" 
+	    			 id="frm-salesreg">    		
+	    		
+	       <div>
+	        <button type="submit" id="regbtn" class="btn-reg">저장</button>
+	        <input type="date" name="salesDate">
+	       </div>
+	       	<h5 class="card-header">유로피언어드벤처</h5>
+	        <div class="table-responsive text-nowrap">
+	        	<table class="table table-dark">
+	          	<thead>
+	            	<tr>
+	              	<th>상품번호</th>
+	                <th>상품</th>
+	                <th>수량</th>
+	                <th>파트번호</th>
+	              </tr>
+	            </thead>
+	            <tbody class="table-border-bottom-0">
+	            	<c:forEach items="${product}" var="product">
+	              	<tr>
+	              	<c:if test="${product.department.deptNo ge 5520 && product.department.deptNo le 5530}"> 
+	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
+	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
+	                  <td><input type="text" name="qty" value=1></td>
+	                  <td><input type="hidden" name="deptNo" value="${product.department.deptNo}">${product.department.deptNo}</td>
+	                </tr>
+	               	</c:if>
+	              </c:forEach>
+	            </tbody>
+	          </table>
+	        </div>
+	     </form>
+	   </div>
  
       
 </body>
-</html>
 
 <script>
 function showPage(pageId) {
@@ -144,10 +323,11 @@ function showPage(pageId) {
 }
 
 // Initialize to show the first page
-showPage('5000');
+showPage('tickets');
 
 </script>
 
+</html>
 
 
 	

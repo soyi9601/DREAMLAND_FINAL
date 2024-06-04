@@ -35,9 +35,9 @@
  		<result property="monthlySales" column="MONTHLY_SALES"/>
  		<result property="annualSales" column="ANNUAL_SALES"/>
  	</resultMap>
-  
- 
-	<!-- 매출 등록 -->
+ 	
+ 	
+ 	<!-- 매출 등록 -->
   <insert id="insertSales" parameterType="SalesDto">
     INSERT INTO SALES (
         SALES_NO,
@@ -76,7 +76,7 @@
   				resultMap="ProductMap">
  	 	SELECT PRODUCT_NO, PRODUCT_SCT_CD, PRICE, DEPT_NO, PRODUCT_NM
   		FROM PRODUCT
-  		ORDER BY DEPT_NO ASC
+  		ORDER BY DEPT_NO ASC, PRODUCT_NO ASC
   </select>
  
 	<!-- 일간 매출 조회 -->
@@ -114,6 +114,31 @@
 		JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
 		WHERE TO_CHAR(S.SALES_DATE, 'YYYY') =
 		TO_CHAR(SYSDATE, 'YYYY')
+	</select>
+	
+	<!-- 이번 달 매일 조회 -->
+	<select id="findMonthlySalesTotals" resultType="java.util.Map">	
+		SELECT
+    TO_CHAR(S.SALES_DATE, 'YYYY-MM-DD') AS salesMonth,
+    SUM(P.PRICE * S.QTY) AS totalSales
+		FROM SALES S
+		JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+		WHERE TRUNC(S.SALES_DATE, 'MM') = TRUNC(SYSDATE, 'MM')
+		GROUP BY TO_CHAR(S.SALES_DATE, 'YYYY-MM-DD')
+		ORDER BY salesMonth
+	</select>
+	
+	<!-- 이번 년 매달 조회 -->
+	<select id="findyearlySalesTotals" resultType="java.util.Map">
+		SELECT
+    TO_CHAR(S.SALES_DATE, 'YYYY-MM') AS salesyear,
+    SUM(P.PRICE *
+    S.QTY) AS totalSales
+    FROM SALES S
+    JOIN PRODUCT P ON S.PRODUCT_NO =
+    P.PRODUCT_NO
+    GROUP BY TO_CHAR(S.SALES_DATE, 'YYYY-MM')
+    ORDER BY salesyear
 	</select>
 	
 	<!-- 파트별 일간 주간 월간 연간 조회 -->
@@ -155,10 +180,12 @@ FROM DEPARTMENT D
 ORDER BY D.DEPT_NO
 	</select>
 	
-
+  
+	
 	
 </mapper>
 
+	
 
 
 

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatiS.org//DTD Mapper 3.0//EN"
+  "https://mybatiS.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.dreamland.prj.mapper.SalesMapper">
+  
+   <resultMap type="java.util.HashMap" id="HunPartSalesMap">
+ 		<result property="Htds" column="HTDS"/>
+ 		<result property="Htws" column="HTWS"/>
+ 		<result property="Htms" column="HTMS"/>
+ 		<result property="Htas" column="HTAS"/>
+ 	</resultMap>
+  
+  <resultMap type="java.util.HashMap" id="THunPartSalesMap">
+ 		<result property="Htds" column="HTDS"/>
+ 		<result property="Htws" column="HTWS"/>
+ 		<result property="Htms" column="HTMS"/>
+ 		<result property="Htas" column="HTAS"/>
+ 	</resultMap>
+ 	
+  <resultMap type="java.util.HashMap" id="TrHunPartSalesMap">
+ 		<result property="Htds" column="HTDS"/>
+ 		<result property="Htws" column="HTWS"/>
+ 		<result property="Htms" column="HTMS"/>
+ 		<result property="Htas" column="HTAS"/>
+ 	</resultMap>
+ 	
+  <resultMap type="java.util.HashMap" id="FHunPartSalesMap">
+ 		<result property="Htds" column="HTDS"/>
+ 		<result property="Htws" column="HTWS"/>
+ 		<result property="Htms" column="HTMS"/>
+ 		<result property="Htas" column="HTAS"/>
+ 	</resultMap>
+ 	
+  <resultMap type="java.util.HashMap" id="FvHunPartSalesMap">
+ 		<result property="Htds" column="HTDS"/>
+ 		<result property="Htws" column="HTWS"/>
+ 		<result property="Htms" column="HTMS"/>
+ 		<result property="Htas" column="HTAS"/>
+ 	</resultMap>
+  
+  <!-- 5100대 파트 총 합계 -->
+	<select	id="findHunPartSales"
+					parameterType="java.util.Map"
+					resultMap="HunPartSalesMap">
+	WITH sales_summary AS (
+    SELECT
+        D.DEPT_NO,
+        D.DEPT_NAME,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TRUNC(S.SALES_DATE) = TRUNC(SYSDATE)), 
+            0) AS DAILY_SALES,
+        COALESCE(
+             (SELECT SUM(P.PRICE * S.QTY)
+              FROM SALES S
+              JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+              WHERE D.DEPT_NO = S.DEPT_NO
+                AND S.SALES_DATE >= TRUNC(SYSDATE) - 7), 
+             0) AS WEEKLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')), 
+            0) AS MONTHLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')), 
+            0) AS ANNUAL_SALES
+    FROM
+        DEPARTMENT D
+    WHERE
+        D.DEPT_NO BETWEEN 5100 AND 5130
+)
+SELECT
+    SUM(DAILY_SALES) AS HTDS,
+    SUM(WEEKLY_SALES) AS HTWS,
+    SUM(MONTHLY_SALES) AS HTMS,
+    SUM(ANNUAL_SALES) AS HTAS
+FROM
+    sales_summary
+	</select>
+	
+  <!-- 5200대 파트 총 합계 -->
+	<select	id="findTHunPartSales"
+					parameterType="java.util.Map"
+					resultMap="THunPartSalesMap">
+	WITH sales_summary AS (
+    SELECT
+        D.DEPT_NO,
+        D.DEPT_NAME,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TRUNC(S.SALES_DATE) = TRUNC(SYSDATE)), 
+            0) AS DAILY_SALES,
+        COALESCE(
+             (SELECT SUM(P.PRICE * S.QTY)
+              FROM SALES S
+              JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+              WHERE D.DEPT_NO = S.DEPT_NO
+                AND S.SALES_DATE >= TRUNC(SYSDATE) - 7), 
+             0) AS WEEKLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')), 
+            0) AS MONTHLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')), 
+            0) AS ANNUAL_SALES
+    FROM
+        DEPARTMENT D
+    WHERE
+        D.DEPT_NO BETWEEN 5200 AND 5230
+)
+SELECT
+    SUM(DAILY_SALES) AS HTDS,
+    SUM(WEEKLY_SALES) AS HTWS,
+    SUM(MONTHLY_SALES) AS HTMS,
+    SUM(ANNUAL_SALES) AS HTAS
+FROM
+    sales_summary
+	</select>
+	
+  <!-- 5300대 파트 총 합계 -->
+	<select	id="findTrHunPartSales"
+					parameterType="java.util.Map"
+					resultMap="TrHunPartSalesMap">
+	WITH sales_summary AS (
+    SELECT
+        D.DEPT_NO,
+        D.DEPT_NAME,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TRUNC(S.SALES_DATE) = TRUNC(SYSDATE)), 
+            0) AS DAILY_SALES,
+        COALESCE(
+             (SELECT SUM(P.PRICE * S.QTY)
+              FROM SALES S
+              JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+              WHERE D.DEPT_NO = S.DEPT_NO
+                AND S.SALES_DATE >= TRUNC(SYSDATE) - 7), 
+             0) AS WEEKLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')), 
+            0) AS MONTHLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')), 
+            0) AS ANNUAL_SALES
+    FROM
+        DEPARTMENT D
+    WHERE
+        D.DEPT_NO BETWEEN 5300 AND 5330
+)
+SELECT
+    SUM(DAILY_SALES) AS HTDS,
+    SUM(WEEKLY_SALES) AS HTWS,
+    SUM(MONTHLY_SALES) AS HTMS,
+    SUM(ANNUAL_SALES) AS HTAS
+FROM
+    sales_summary
+	</select>
+	
+  <!-- 5400대 파트 총 합계 -->
+	<select	id="findFHunPartSales"
+					parameterType="java.util.Map"
+					resultMap="FHunPartSalesMap">
+	WITH sales_summary AS (
+    SELECT
+        D.DEPT_NO,
+        D.DEPT_NAME,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TRUNC(S.SALES_DATE) = TRUNC(SYSDATE)), 
+            0) AS DAILY_SALES,
+        COALESCE(
+             (SELECT SUM(P.PRICE * S.QTY)
+              FROM SALES S
+              JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+              WHERE D.DEPT_NO = S.DEPT_NO
+                AND S.SALES_DATE >= TRUNC(SYSDATE) - 7), 
+             0) AS WEEKLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')), 
+            0) AS MONTHLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')), 
+            0) AS ANNUAL_SALES
+    FROM
+        DEPARTMENT D
+    WHERE
+        D.DEPT_NO BETWEEN 5400 AND 5430
+)
+SELECT
+    SUM(DAILY_SALES) AS HTDS,
+    SUM(WEEKLY_SALES) AS HTWS,
+    SUM(MONTHLY_SALES) AS HTMS,
+    SUM(ANNUAL_SALES) AS HTAS
+FROM
+    sales_summary
+	</select>
+
+  <!-- 5500대 파트 총 합계 -->
+	<select	id="findFvHunPartSales"
+					parameterType="java.util.Map"
+					resultMap="FvHunPartSalesMap">
+	WITH sales_summary AS (
+    SELECT
+        D.DEPT_NO,
+        D.DEPT_NAME,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TRUNC(S.SALES_DATE) = TRUNC(SYSDATE)), 
+            0) AS DAILY_SALES,
+        COALESCE(
+             (SELECT SUM(P.PRICE * S.QTY)
+              FROM SALES S
+              JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+              WHERE D.DEPT_NO = S.DEPT_NO
+                AND S.SALES_DATE >= TRUNC(SYSDATE) - 7), 
+             0) AS WEEKLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')), 
+            0) AS MONTHLY_SALES,
+        COALESCE(
+            (SELECT SUM(P.PRICE * S.QTY)
+             FROM SALES S
+             JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+             WHERE D.DEPT_NO = S.DEPT_NO
+               AND TO_CHAR(S.SALES_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')), 
+            0) AS ANNUAL_SALES
+    FROM
+        DEPARTMENT D
+    WHERE
+        D.DEPT_NO BETWEEN 5500 AND 5530
+)
+SELECT
+    SUM(DAILY_SALES) AS HTDS,
+    SUM(WEEKLY_SALES) AS HTWS,
+    SUM(MONTHLY_SALES) AS HTMS,
+    SUM(ANNUAL_SALES) AS HTAS
+FROM
+    sales_summary
+	</select>
+</mapper>

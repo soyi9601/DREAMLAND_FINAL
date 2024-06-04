@@ -62,8 +62,25 @@ public class SalesController {
   	model.addAttribute("CurrentYearSalesTotal", CurrentYearSalesTotal);
 		
   	Map<String, Object> params = new HashMap<>();
+  	
+  	List<Map<String, Object>> monthlySalesTotals = salesService.findMonthlySalesTotals();
+  	model.addAttribute("monthlySalesTotals", monthlySalesTotals);
+  	List<Map<String, Object>> yearlySalesTotals = salesService.findyearlySalesTotals();
+  	model.addAttribute("yearlySalesTotals", yearlySalesTotals);
+  	
   	List<Map<String, Object>> getPartSales = salesService.getPartSales(params);
   	model.addAttribute("getPartSales", getPartSales);
+  	
+  	List<Map<String, Object>>  getHunPartSales = salesService.getHunPartSales(params);
+  	List<Map<String, Object>>  getTHunPartSales = salesService.getTHunPartSales(params);
+  	List<Map<String, Object>>  getTrHunPartSales = salesService.getTrHunPartSales(params);
+  	List<Map<String, Object>>  getFHunPartSales = salesService.getFHunPartSales(params);
+  	List<Map<String, Object>>  getFvHunPartSales = salesService.getFvHunPartSales(params);
+  	model.addAttribute("getHunPartSales", getHunPartSales);
+  	model.addAttribute("getTHunPartSales", getTHunPartSales);
+  	model.addAttribute("getTrHunPartSales", getTrHunPartSales);
+  	model.addAttribute("getFHunPartSales", getFHunPartSales);
+  	model.addAttribute("getFvHunPartSales", getFvHunPartSales);
   	
   	return "sales/Allsales";
  

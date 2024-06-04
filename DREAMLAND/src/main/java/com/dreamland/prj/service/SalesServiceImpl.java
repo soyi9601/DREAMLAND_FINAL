@@ -159,5 +159,30 @@ public class SalesServiceImpl implements SalesService {
 		return salesMapper.findPartSales(params);
 	}
 	
+	@Override
+	public List<Map<String, Object>> findMonthlySalesTotals() {
+		return salesMapper.findMonthlySalesTotals();
+	}
+	@Override
+	public List<Map<String, Object>> findyearlySalesTotals() {
+		return salesMapper.findyearlySalesTotals();
+	}
 	
+	
+	
+	@Override
+	public List<Map<String, Object>> getHunPartSales(Map<String, Object> params) {
+		return salesMapper.findHunPartSales(params);}
+	@Override
+	public List<Map<String, Object>> getTHunPartSales(Map<String, Object> params) {
+		return salesMapper.findTHunPartSales(params);}
+	@Override
+	public List<Map<String, Object>> getTrHunPartSales(Map<String, Object> params) {
+		return salesMapper.findTrHunPartSales(params);}
+	@Override
+	public List<Map<String, Object>> getFHunPartSales(Map<String, Object> params) {
+		return salesMapper.findFHunPartSales(params);}
+	@Override
+	public List<Map<String, Object>> getFvHunPartSales(Map<String, Object> params) {
+		return salesMapper.findFvHunPartSales(params);}
 }

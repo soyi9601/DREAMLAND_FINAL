@@ -22,5 +22,14 @@ public interface SalesService {
   BigDecimal findCurrentYearSalesTotal();
   BigDecimal findCurrentWeekSalesTotal();
   
+  List<Map<String, Object>> findMonthlySalesTotals();
+  List<Map<String, Object>> findyearlySalesTotals();
+  
   List<Map<String, Object>> getPartSales(Map<String, Object> params);
+  
+  List<Map<String, Object>> getHunPartSales(Map<String, Object> params);
+  List<Map<String, Object>> getTHunPartSales(Map<String, Object> params);
+  List<Map<String, Object>> getTrHunPartSales(Map<String, Object> params);
+  List<Map<String, Object>> getFHunPartSales(Map<String, Object> params);
+  List<Map<String, Object>> getFvHunPartSales(Map<String, Object> params);
 }

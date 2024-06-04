@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatiS.org//DTD Mapper 3.0//EN"
+  "https://mybatiS.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.dreamland.prj.mapper.Facility">
+  
+  <resultMap type="FacilityDto" id="FacilityMap">
+  	<id property="FacilityNo" column="FACILITY_NO"/>
+  	<result property="facilityName" column="FACILITY_NAME"/>
+  	<result property="menagment" column="MANAGEMENT"/>
+  	<result property="facilityDate" column="FACILITY_DATE"/>
+  	<result property="remarks" column="REMARKS"/>
+  	<association property="department" javaType="DepartmentDto">
+  		<id property="deptNo" column="DEPT_NO"/>
+  	</association>
+  </resultMap>
+  
+  <resultMap type="FacilityAttachDto" id="FacilityAttachMap">
+  	<id property="attachNo" column="ATTACH_NO"/>
+  	<result property="uploadPath" column="UPLOAD_PATH"/>
+  	<result property="filesystemName" column="FILESYSTEM_NAME"/>
+  	<result property="originalFilename" column="ORIGINAL_FILENAME"/>
+  	<association property="Facility" javaType="FacilityDto">
+  		<id property="FacilityNo" column="FACILITY_NO"/>
+  	</association>
+  </resultMap>
+  
+  
+  
+  </mapper>
