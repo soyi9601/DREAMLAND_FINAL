@@ -1,26 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"/>
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto}" />  
+<%-- <%session.setAttribute("empNo", 2);%>  --%> 
+    
 <jsp:include page="../layout/header.jsp" />  
-
+  
+  <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="${contextPath}/work/status.do">근태관리</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="${contextPath}/work/dayoff.do">휴가관리</a>
+  </li>
+</ul>
+  
    <div class="container mt-4">
-     <h2 class="mb-3">올해 근무 정보</h2>
+     <h3 class="mb-3">올해 근무 정보</h3>
      
      <div class="row g-4 mb-5">
          <div class="col-md-6">
              <div class="p-3 border bg-light">
                  <h4>근태 현황</h4>
-                 <p id="late_count">지각 : <span id="lateCount">0</span>회</p>
-                 <p id="early_leave_count">조기퇴근 : <span id="earlyLeaveCount">0</span>회</p>
-                 <p id="absence_count">결근 : <span id="absenceCount">0</span>회</p>
+                 <p id="late_count">지각 : <span id="lateCount">${lateCount}</span>회</p>
+                 <p id="early_leave_count">조기퇴근 : <span id="earlyLeaveCount">${earlyLeaveCount}</span>회</p>
+                 <p id="absence_count">결근 : <span id="absenceCount">${absenceCount}</span>회</p>
              </div>
          </div>
          <div class="col-md-6">
              <div class="p-3 border bg-light">
                  <h4>근무 시간</h4>
-                 <p id="total_work_days">총 근무일수: <span id="totalWorkDays">0</span>일</p>
-                 <p id="total_work_hours">총 근무시간: <span id="totalWorkHours">0</span>시간</p>
-                 <p id="average_work_hours">평균 근무시간: <span id="averageWorkHours">0</span>시간</p>
+                 <p id="total_work_days">총 근무일수: <span id="totalWorkDays">${totalWorkDays}</span>일</p>
+                 <p id="total_work_hours">총 근무시간: <span id="totalWorkHours">${totalWorkHours}</span>시간</p>
+                 <p id="average_work_hours">평균 근무시간: <span id="averageWorkHours">${avgWorkHours}</span>시간</p>
              </div>
          </div>
      </div>
@@ -61,8 +75,8 @@
        </div>
    </div>
 
-   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+   <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
    <script>
        document.getElementById('searchButton').addEventListener('click', function() {
            var startDate = new Date(document.getElementById('startDate').value);

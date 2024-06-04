@@ -94,13 +94,13 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="pages-account-settings-account.html" class="menu-link">
-                  <div>근태22</div>
+                <a href="${contextPath}/work/status.do" class="menu-link">
+                  <div>근태관리</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="pages-account-settings-notifications.html" class="menu-link">
-                  <div>근태22</div>
+                <a href="${contextPath}/work/dayoff.do" class="menu-link">
+                  <div>휴가관리</div>
                 </a>
               </li>
             </ul>

@@ -1,7 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"/>
+<c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto}" />    
 
 <jsp:include page="../layout/header.jsp" />  
+
+  <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="${contextPath}/work/status.do">근태관리</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="${contextPath}/work/dayoff.do">휴가관리</a>
+  </li>
+</ul>
 
   <div class="container my-5 p-5 bg-white shadow rounded">
         <div class="row align-items-center mb-5">
@@ -9,7 +22,7 @@
                 <div class="avatar bg-secondary rounded-circle"></div>
             </div>
             <div class="col">
-                <h2>Employee Name</h2>
+                <h2>${loginEmployee.empName}</h2>
                 <span class="badge rounded-pill bg-secondary">HR Department</span>
             </div>
             <div class="col-auto">

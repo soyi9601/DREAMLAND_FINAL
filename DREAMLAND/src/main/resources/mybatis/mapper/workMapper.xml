@@ -4,6 +4,82 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
  <mapper namespace="com.dreamland.prj.mapper.WorkMapper">
-  
-
- </mapper>
+    
+    <!-- 결근리스트 조회 -->
+    <!-- <select id="getAbsenceList" resultType="WorkDto">
+        SELECT * FROM WORK
+        WHERE WORK_DATE = #{workDate}
+          AND WORK_IN IS NULL
+    </select> -->
+    
+    <update id="updateLate">
+      UPDATE WORK
+      SET LATE_YN = 'Y'
+      WHERE WORK_DATE = #{workDate}
+        AND WORK_IN > TO_DATE('09:00:00', 'HH24:MI:SS')
+        AND LATE_YN = 'N'
+    </update>
+    
+    <update id="updateAbsence">
+      UPDATE WORK
+      SET WORK_STATE = '결근'
+      WHERE WORK_DATE = #{workDate}
+        AND WORK_IN IS NULL
+        AND WORK_STATE IS NULL
+    </update>
+    
+    <select id="getLateCount" 
+            parameterType="map" resultType="int">
+      SELECT COUNT(*) 
+      FROM WORK 
+      WHERE EMP_NO = #{empNo} 
+        AND LATE_YN = 'Y'
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getEarlyLeaveCount" 
+            parameterType="map" resultType="int">
+      SELECT COUNT(*) 
+      FROM WORK 
+      WHERE EMP_NO = #{empNo} 
+        AND WORK_STATE = '20'
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getAbsenceCount" 
+            parameterType="map" resultType="int">
+      SELECT COUNT(*) 
+      FROM WORK 
+      WHERE EMP_NO = #{empNo} 
+        AND WORK_STATE = '50'
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getTotalWorkDays" 
+            parameterType="map" resultType="int">
+      SELECT COUNT(*) 
+      FROM WORK 
+      WHERE EMP_NO = #{empNo}
+        AND WORK_STATE IN ('10', '20') <!-- 정상출근, 조기퇴근 -->
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getTotalWorkHours" 
+            parameterType="map" resultType="int">
+      SELECT SUM(WORK_TOTAL_TIME)
+      FROM WORK 
+      WHERE EMP_NO = #{empNo}
+        AND WORK_STATE IN ('10', '20') 
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getAvgWorkHours" 
+            parameterType="map" resultType="double">
+      SELECT AVG(WORK_TOTAL_TIME)
+      FROM WORK 
+      WHERE EMP_NO = #{empNo}
+        AND WORK_STATE IN ('10', '20') <!-- 정상출근, 조기퇴근 -->
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+</mapper>
+ 
