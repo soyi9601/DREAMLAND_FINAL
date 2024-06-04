@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class LoginController {
   
 
-  private LoginService loginService;
+  private final LoginService loginService;
   
   // 로그인 실패 출력
   @GetMapping("/auth/login")
@@ -54,7 +54,6 @@ public class LoginController {
   // 비밀번호 변경
   @PostMapping("/user/modifyPassword.do")
   public String modifyPassword(@AuthenticationPrincipal PrincipalUser user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-    
     int result = loginService.modifyPassword(request, user);
     if(result == 0) {
       redirectAttributes.addFlashAttribute("msg", "현재 비밀번호를 다시 확인해주세요");

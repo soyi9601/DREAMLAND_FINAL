@@ -40,9 +40,10 @@ public class SecurityConfig {
             .requestCache(requestCache))
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/loginPage").permitAll()
-            .requestMatchers("/resources/**").permitAll() // "/WEB-INF/views/**" 경로에 대한 모든 사용자 허용
-            .requestMatchers(req->CorsUtils.isPreFlightRequest(req)).permitAll()
+            .requestMatchers("/resources/**").permitAll() // "/resources/**" 경로에 대한 모든 사용자 허용
+            .requestMatchers("/login/**").permitAll()
             .requestMatchers("/WEB-INF/views/**").permitAll() // "/WEB-INF/views/**" 경로에 대한 모든 사용자 허용
+            .requestMatchers(req->CorsUtils.isPreFlightRequest(req)).permitAll()
             .requestMatchers("/user/**").authenticated()  // 인증만 되면 들어갈 수 있는 주소
             .requestMatchers("/manager/**", "/").hasAnyRole("ADMIN", "USER")
             .requestMatchers("/employee/**").hasRole("ADMIN")
