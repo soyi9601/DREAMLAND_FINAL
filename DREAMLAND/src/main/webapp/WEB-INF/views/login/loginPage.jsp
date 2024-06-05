@@ -102,7 +102,7 @@
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
                     <label class="form-label" for="password">비밀번호</label>
-                    <a href="auth-forgot-password-basic.html">
+                    <a href="/login/tempPassword">
                       <small>임시 비밀번호 발급하기</small>
                     </a>
                   </div>
@@ -191,6 +191,7 @@
       if(!regEmail.test(inpEmail.value)){
         emailResult.innerHTML = '이메일을 확인해주세요';
         emailResult.style.fontSize = '0.75rem';
+        emailResult.style.fontWeight = 'bold';
         emailResult.style.color = '#EE2B4B';
         return;
       } else {

@@ -1,7 +1,5 @@
 package com.dreamland.prj.mapper;
 
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Mapper;
 
 import com.dreamland.prj.dto.EmployeeDto;
@@ -9,11 +7,10 @@ import com.dreamland.prj.dto.EmployeeDto;
 @Mapper
 public interface EmployeeMapper {
   int insertEmployee(EmployeeDto emp);
-  EmployeeDto getEmployeeByMap(String email);
+  EmployeeDto getEmployeeByEmail(String email);
   String getDeptNameByDeptNo(int deptNo);
   String getPosNameByPosNo(int posNo);
   int updateUserInfo(EmployeeDto emp);
-
   int updatePassword(String email, String changePw);
 //  int deleteUser(int userNo);
 //  int insertAccessHistory(Map<String, Object> map);

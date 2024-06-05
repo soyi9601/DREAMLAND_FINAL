@@ -1,6 +1,9 @@
 package com.dreamland.prj.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -38,6 +41,10 @@ public class DepartServiceImpl implements DepartService {
   public void removeEmployee(EmployeeDto employeeDto) {
     departMapper.deleteEmployee(employeeDto); 
   }  
+  @Override
+  public boolean hasEmployee(int deptNo) {
+    return departMapper.hasEmployee(deptNo) > 0;
+  }
   
   // 부서 및 직원 정보 조회
   @Override
@@ -75,5 +82,51 @@ public class DepartServiceImpl implements DepartService {
     
   }
   
+  // 유저 - 조직도
+  @Override
+  public List<Map<String, Object>> getOrgChartData() {
+    // 전체 부서와 사원 조회
+    List<DepartmentDto> allDepart = departMapper.getDepartList();
+    
+    Map<Integer, Map<String, Object>> departMap = new HashMap<>();
+    
+    for (DepartmentDto depart : allDepart) {
+      Map<String, Object> deptData = new HashMap<>();
+      deptData.put("id", depart.getDeptNo());
+      deptData.put("name", depart.getDeptName());
+      
+      // 대표이사인 경우 parentId를 null로 설정하여 최상위 부서로 간주합니다.
+      String parentId = (depart.getParentId() == null || depart.getParentId().isEmpty()) ? null : depart.getParentId();
+      deptData.put("parentId", parentId);
+      
+      deptData.put("depth", depart.getDepth());
+      deptData.put("treeText", depart.getTreeText());
+      if (depart.getEmployee() != null) {
+          deptData.put("employeeId", depart.getEmployee().getEmpNo());
+          deptData.put("employeeName", depart.getEmployee().getEmpName());
+          deptData.put("employeeEmail", depart.getEmployee().getEmail());
+      }
+      departMap.put(depart.getDeptNo(), deptData);
+  }
+    
+    List<Map<String, Object>> topDepart = new ArrayList<>();
+    
+    for(Map<String, Object> deptData : departMap.values()) {
+      String parentId = (String) deptData.get("parentId");
+      if(parentId == null || parentId.isEmpty() || parentId.equals("#")) {
+        topDepart.add(deptData);
+      } else {
+        int parentDeptNo = Integer.parseInt(parentId);
+        Map<String, Object> parentDept = departMap.get(parentDeptNo);
+        if(parentDept != null) {
+          List<Map<String, Object>> children = (List<Map<String, Object>>) parentDept.getOrDefault("children", new ArrayList<>());
+          children.add(deptData);
+          parentDept.put("children", children);
+        }
+      }
+    }
+    
+    return topDepart;
+  }
 
 }
