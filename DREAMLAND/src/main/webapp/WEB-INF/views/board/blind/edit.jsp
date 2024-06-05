@@ -108,6 +108,7 @@
 
 	const fnModifyBlind = () => {
 		document.getElementById('frm-blind-modify').addEventListener('submit', (evt) => {
+			
 			const passwordField = document.getElementById('password');
       const oldPasswordField = document.getElementById('oldPassword');
 
@@ -115,6 +116,7 @@
       if (passwordField.value === '') {
         passwordField.value = oldPasswordField.value;
       }
+      
 		})
 	}
 

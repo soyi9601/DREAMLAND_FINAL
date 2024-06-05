@@ -453,7 +453,7 @@ document.getElementById('commentPasswordForm').addEventListener('submit', (e) =>
 function submitPw() {
   
   const password = document.getElementById('comment-modal-pw').value;
-  //const commentNo = document.querySelector('[name="commentNo"]').value;
+  // const commentNo = document.querySelector('[name="commentNo"]').value;
   
   alert('확인중 '+ password +' 확인중'+ commentNo)
   if (password) {

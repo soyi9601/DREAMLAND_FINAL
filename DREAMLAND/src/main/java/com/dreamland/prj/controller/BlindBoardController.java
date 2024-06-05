@@ -94,6 +94,8 @@ public class BlindBoardController {
 	
 	@PostMapping("/modify.do")
 	public String modify(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		
+		
 		int modifyCount = blindBoardService.modifyBlind(request);
 		redirectAttributes
 				.addAttribute("blindNo", request.getParameter("blindNo"))

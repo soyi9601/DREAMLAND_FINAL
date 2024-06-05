@@ -199,7 +199,6 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	public boolean validatePassword(int blindNo, String password) {
 		String hashedPassword = MySecurityUtils.getSha256(password);
     String storedPassword = blindMapper.getPasswordByBlindNo(blindNo);
-    
     return hashedPassword.equals(storedPassword);
 	}
 	
