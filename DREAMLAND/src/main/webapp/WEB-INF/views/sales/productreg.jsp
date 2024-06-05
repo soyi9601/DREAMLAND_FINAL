@@ -93,7 +93,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0" id="myTable">
-                    		<!-- <tr>
+                    		<tr>
                         		<td>11<input type="hidden" name="productSctCd" value="11"></td>
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>자유이용권(대)</strong>
                                 <input type="hidden" name="productNM" value="자유이용권대"></td>
@@ -310,7 +310,7 @@
                                 <input type="hidden" name="productNM" value="냉면"></td>
                             <td>9000<input type="hidden" name="price" value="9000"></td>
                             <td>5520<input type="hidden" name="deptNo" value="5520"></td>
-                        </tr> -->
+                        </tr> 
                         <tr>
                         		<td>31<input type="hidden" name="productSctCd" value="31"></td>
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>판다인형</strong>
