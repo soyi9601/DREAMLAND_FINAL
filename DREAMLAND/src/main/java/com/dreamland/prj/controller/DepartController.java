@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
-import com.dreamland.prj.dto.JsTreetDto;
+import com.dreamland.prj.dto.JsTreeDto;
 import com.dreamland.prj.service.DepartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -39,8 +39,8 @@ public class DepartController {
   
   // 관리자 - 조직도 조회
   @GetMapping(value="/departAdmin.do", produces="application/json")
-  public ResponseEntity<List<JsTreetDto>> departAdmin() {
-    List<JsTreetDto> depart = departService.getDepartList();
+  public ResponseEntity<List<JsTreeDto>> departAdmin() {
+    List<JsTreeDto> depart = departService.getDepartList();
     
     if (depart != null && !depart.isEmpty()) {
       return new ResponseEntity<>(depart, HttpStatus.OK);

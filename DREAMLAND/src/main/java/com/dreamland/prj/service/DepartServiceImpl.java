@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
-import com.dreamland.prj.dto.JsTreetDto;
+import com.dreamland.prj.dto.JsTreeDto;
 import com.dreamland.prj.dto.OrgChartDto;
 import com.dreamland.prj.mapper.DepartMapper;
 
@@ -32,11 +32,11 @@ public class DepartServiceImpl implements DepartService {
   
   // 부서 + 직원 전체 리스트 조회
   @Override
-  public List<JsTreetDto> getDepartList() {
-    List<JsTreetDto> allDepart = departMapper.getDepartList();
+  public List<JsTreeDto> getDepartList() {
+    List<JsTreeDto> allDepart = departMapper.getDepartList();
     
-    List<JsTreetDto> notNullDepart = new ArrayList<>();
-    for(JsTreetDto depart : allDepart) {
+    List<JsTreeDto> notNullDepart = new ArrayList<>();
+    for(JsTreeDto depart : allDepart) {
       if(depart.getEmployee() != null && !depart.getEmployee().isEmpty()) {
         notNullDepart.add(depart);
       }

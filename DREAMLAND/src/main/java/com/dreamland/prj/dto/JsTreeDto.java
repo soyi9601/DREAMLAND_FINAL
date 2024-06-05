@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 
-public class JsTreetDto {
+public class JsTreeDto {
 	
   private int deptNo, depth;
   private String deptName, parentId, treeText;

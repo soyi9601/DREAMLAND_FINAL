@@ -6,14 +6,14 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
-import com.dreamland.prj.dto.JsTreetDto;
+import com.dreamland.prj.dto.JsTreeDto;
 import com.dreamland.prj.dto.OrgChartDto;
 
 @Mapper
 public interface DepartMapper {
   
   // 관리자
-  List<JsTreetDto> getDepartList();                 // 조직도 조회
+  List<JsTreeDto> getDepartList();                 // 조직도 조회
    
   void deleteDepart(DepartmentDto departmentDto);   // 부서 삭제
   void deleteEmployee(EmployeeDto employeeDto);     // 직원 삭제
