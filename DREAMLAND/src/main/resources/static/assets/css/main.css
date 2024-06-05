@@ -4,15 +4,29 @@
 nav .avatar {width: 48px; height: 48px;}
 nav .avatar i {font-size: 3rem}
 
-/* 메인 */
+
+/* 메인 유저 정보 */
+.main-news-wrap .btn {display: block;}
+
+
+/* 메인 날씨 API */
 #current-temp {line-height: 2em;}
 .temt-wrap {overflow: hidden;}
 .temt-wrap div {float: left; width: 50%;}
 .temt-wrap div .tit {margin-right: 10px;}
-.main-news-wrap .btn {display: block;}
+
+
+/* 메인 공지사항 */
+.notice-important {color: #ee2b4b; padding: 3px 10px; margin-right: 10px; font-size: 13px; border: 1px solid #ee2b4b; border-radius: 25px;}
+
+
+/* 메인 캘린더 */
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {display: none;}
 
 
 /* 조직도 */
 #empForm, #deptForm {display: none;}
 .jstree-default .jstree-search {color: #0e8b00;}
 .jstree-default .jstree-icon.bxs-spreadsheet:before {color: #90b54c;}
+
+.boc-light {font-family: "Pretendard Variable", Pretendard!important};
