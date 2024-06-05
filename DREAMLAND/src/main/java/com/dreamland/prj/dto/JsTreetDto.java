@@ -1,5 +1,8 @@
 package com.dreamland.prj.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 
-public class DepartmentDto {
+public class JsTreetDto {
 	
   private int deptNo, depth;
   private String deptName, parentId, treeText;
-  private EmployeeDto employee;
+  
+  @Builder.Default
+  private List<EmployeeDto> employee = new ArrayList<>();
 }

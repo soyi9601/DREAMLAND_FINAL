@@ -15,7 +15,7 @@ $(document).ready(function() {
       .then(data => {
         console.log(data);
         var nodes = [];
-        data.forEach(item =>{
+        data.forEach(item => {
           var deptNode = {
             id: item.deptNo,
             parent: item.parentId === '#' ? '#':item.parentId,
@@ -23,19 +23,23 @@ $(document).ready(function() {
             icon: 'bx bxs-spreadsheet',
             type: 'default'
           };
-          nodes.push(deptNode);        
-          if(item.employee !== null && item.employee.resignDate === null) {
-            var empNode = {
-              id: item.employee.empNo,
-              parent: item.deptNo,
-              text: item.employee.empName,
-              icon: 'bx bxs-user-rectangle',
-              type: 'file'
-            };
-            nodes.push(empNode);
+          nodes.push(deptNode);     
+          if (item.employee !== null && item.employee.length > 0) {
+            item.employee.forEach(emp => {
+              if (emp.empNo !== 0 && emp.resignDate === null) {
+                var empNode = {
+                  id: emp.empNo,
+                  parent: item.deptNo,
+                  text: emp.empName,
+                  icon: 'bx bxs-user-rectangle',
+                  type: 'file'
+                };
+                nodes.push(empNode);
+              }
+            });             
           }
         });     
-        console.log(nodes);
+        console.log(nodes.empNode);
         // 트리 생성
         $('#jsTree').jstree({
           plugins: ['search', 'types', 'themes', 'contextmenu'],

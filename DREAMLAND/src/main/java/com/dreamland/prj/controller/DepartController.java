@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
+import com.dreamland.prj.dto.JsTreetDto;
 import com.dreamland.prj.service.DepartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,12 +39,13 @@ public class DepartController {
   
   // 관리자 - 조직도 조회
   @GetMapping(value="/departAdmin.do", produces="application/json")
-  public ResponseEntity<List<DepartmentDto>> departAdmin() {
-    List<DepartmentDto> departmentDto = departService.getDepartList();
-    if (departmentDto != null && !departmentDto.isEmpty()) {
-        return new ResponseEntity<>(departmentDto, HttpStatus.OK);
+  public ResponseEntity<List<JsTreetDto>> departAdmin() {
+    List<JsTreetDto> depart = departService.getDepartList();
+    
+    if (depart != null && !depart.isEmpty()) {
+      return new ResponseEntity<>(depart, HttpStatus.OK);
     } else {
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
   }
     
@@ -109,14 +111,13 @@ public class DepartController {
   
   
   // 유저 - 조직도 페이지 이동
+  
   @GetMapping("/depart.page")
   public String departUser(Model model) {
     List<Map<String, Object>> orgChartData = departService.getOrgChartData();
-    System.out.println(orgChartData);  // 데이터 확인을 위한 로그 출력
-    
     try {
       ObjectMapper objectMapper = new ObjectMapper();
-      String orgChartDataJson = objectMapper.writeValueAsString(orgChartData);
+      String orgChartDataJson = objectMapper.writeValueAsString(orgChartData);      
       model.addAttribute("orgChartData", orgChartDataJson);
     } catch (Exception e) {
       e.printStackTrace();
@@ -124,6 +125,9 @@ public class DepartController {
     
     return "depart/departUser";
   }
+  
+  
+  
   
   
   

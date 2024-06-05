@@ -1,6 +1,7 @@
 package com.dreamland.prj.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
+import com.dreamland.prj.dto.JsTreetDto;
+import com.dreamland.prj.dto.OrgChartDto;
 import com.dreamland.prj.mapper.DepartMapper;
 
+import io.jsonwebtoken.lang.Arrays;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -28,8 +32,17 @@ public class DepartServiceImpl implements DepartService {
   
   // 부서 + 직원 전체 리스트 조회
   @Override
-  public List<DepartmentDto> getDepartList() {
-    return departMapper.getDepartList();
+  public List<JsTreetDto> getDepartList() {
+    List<JsTreetDto> allDepart = departMapper.getDepartList();
+    
+    List<JsTreetDto> notNullDepart = new ArrayList<>();
+    for(JsTreetDto depart : allDepart) {
+      if(depart.getEmployee() != null && !depart.getEmployee().isEmpty()) {
+        notNullDepart.add(depart);
+      }
+    }
+    
+    return notNullDepart;
   }  
   
   // 부서 및 직원 삭제
@@ -86,55 +99,71 @@ public class DepartServiceImpl implements DepartService {
   @Override
   public List<Map<String, Object>> getOrgChartData() {
     // 전체 부서와 사원 조회
-    List<DepartmentDto> allDepart = departMapper.getDepartList();
+    List<OrgChartDto> allDepart = departMapper.getDepartListUser();
+    System.out.println("allDepart=>"+allDepart.size());
+    for(Object o : allDepart)
+         System.out.println(o);
     
+    // deptData 에 부서 데이터 추가
     Map<Integer, Map<String, Object>> departMap = new HashMap<>();
     
-    for (DepartmentDto depart : allDepart) {
+    for(OrgChartDto depart : allDepart) {
       Map<String, Object> deptData = new HashMap<>();
-      deptData.put("id", Integer.toString(depart.getDeptNo()));
+      deptData.put("id", depart.getDeptNo());
       deptData.put("name", depart.getDeptName());
-      
-      // 대표이사인 경우 parentId를 null로 설정하여 최상위 부서로 간주합니다.
-      String pid = (depart.getParentId() == null || depart.getParentId().isEmpty() || "#".equals(depart.getParentId())) ? null : depart.getParentId();
+      Integer pid = depart.getParentId() == null || depart.getParentId().isEmpty() || "#".equals(depart.getParentId()) ? null : Integer.parseInt(depart.getParentId());
       deptData.put("pid", pid);
-      deptData.put("children", new ArrayList<Map<String, Object>>());
-      deptData.put("employees", new ArrayList<Map<String, Object>>());
-      
       departMap.put(depart.getDeptNo(), deptData);
     }
     
-    for(DepartmentDto depart : allDepart) {
-      if(depart.getEmployee() != null) {
+    // employeeList 에 직원 데이터 추가
+    List<Map<String, Object>> employeeList = new ArrayList<>();
+    
+    for(OrgChartDto depart : allDepart) {
+      if(depart.getEmpNo() != 0) {
+//      if(depart.getEmployee() !=null) {
         Map<String, Object> employeeData = new HashMap<>();
-        employeeData.put("pid", Integer.toString(depart.getDeptNo()));
-        employeeData.put("id", depart.getEmployee().getEmpNo());
-        employeeData.put("name", depart.getEmployee().getEmpName() + depart.getEmployee().getPosName());
-        employeeData.put("email", depart.getEmployee().getEmail());
+        employeeData.put("id", depart.getEmpNo());
+        employeeData.put("name", depart.getEmpName());
+        employeeData.put("email", depart.getEmail());
+        employeeData.put("pid", depart.getDeptNo());
+        employeeData.put("tags", Arrays.asList(new String[]{"employees"})); // 직원 데이터에 tags 추가
+//        employeeData.put("id", depart.getEmployee().getEmpNo());
+//        employeeData.put("name", depart.getEmployee().getEmpName());
+//        employeeData.put("email", depart.getEmployee().getEmail());
+//        employeeData.put("pid", depart.getDeptNo());
+
+        employeeList.add(employeeData);        
+      }
+    }
+    
+    // 부서 데이터를 id 기준으로 정렬
+    List<Map<String, Object>> deptList = new ArrayList<>(departMap.values());
+    deptList.sort(Comparator.comparingInt(dept -> (Integer) dept.get("id")));
+    /*
+    System.out.println("deptList=>"+deptList.size());
+    for(Object o : deptList)
+         System.out.println(o);
+    
+    System.out.println("employeeList=>"+employeeList.size());
+    for(Object o : employeeList)
+         System.out.println(o);
+    */
+    // 직원 데이터를 id 기준으로 정렬
+    employeeList.sort(Comparator.comparingInt(emp -> (Integer) emp.get("id")));
+    
+    List<Map<String, Object>> orgChartData = new ArrayList<>();
         
-        Map<String, Object> deptData = departMap.get(depart.getDeptNo());
-        List<Map<String, Object>> employees = (List<Map<String, Object>>) deptData.get("employees");
-        employees.add(employeeData);
-      }
-    }
-    
-    List<Map<String, Object>> topDepart = new ArrayList<>();
-    
+    /*
     for(Map<String, Object> deptData : departMap.values()) {
-      String pid = (String) deptData.get("pid");
-      if(pid == null) {
-        topDepart.add(deptData);
-      } else {
-        Integer parentDeptNo = Integer.parseInt(pid);
-        Map<String, Object> parentDept = departMap.get(parentDeptNo);
-        if(parentDept != null) {
-          List<Map<String, Object>> children = (List<Map<String, Object>>) parentDept.getOrDefault("children", new ArrayList<>());
-          children.add(deptData);
-        }
-      }
+      orgChartData.add(deptData);
     }
+    */
     
-    return topDepart;
+    orgChartData.addAll(deptList);      // orgChartData에 deptData 추가
+    orgChartData.addAll(employeeList);  // orgChartData에 employeeList 추가
+        
+    return orgChartData;
   }
 
 }

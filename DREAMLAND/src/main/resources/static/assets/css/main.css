@@ -19,3 +19,5 @@ nav .avatar i {font-size: 3rem}
 #empForm, #deptForm {display: none;}
 .jstree-default .jstree-search {color: #0e8b00;}
 .jstree-default .jstree-icon.bxs-spreadsheet:before {color: #90b54c;}
+
+.boc-light {font-family: "Pretendard Variable", Pretendard!important};
