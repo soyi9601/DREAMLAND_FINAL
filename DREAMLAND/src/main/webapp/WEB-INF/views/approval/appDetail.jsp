@@ -38,10 +38,10 @@
                 </tr>
             </table>
             <div class="section">
-                <div class="section-title">참조</div>
+                <div class="section-title">참조자</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:100%;" name="referrer"></input></td>
+                   <td>	<div> ${referrer}</div></td>
                     </tr>           
                 </table>
             </div>
@@ -119,6 +119,12 @@
                <c:if test="${reject == 2}">
                	  <button class="button button-primary"  id="write">작성하기</button>
                </c:if>
+               
+               
+            <c:if test="${kind2 == 'total' &&  loginEmployee.empName == appovers.writer || kind2 == 'wait' &&  loginEmployee.empName ==appovers.writer || kind2 == 'complete' &&  loginEmployee.empName == appovers.writer}">
+            
+              	  <button class="button button-primary"  id="revoke">철회하기</button>
+            </c:if>
             </div>
  
         </div>
@@ -145,7 +151,6 @@
             <div class="title">휴가신청서</div>
                             <div class="section-title">제목</div>
                                        	<div id="title">${title}</div>
-
         
              <div class="section-title">결재자</div>
             <table class="approval-table">
@@ -163,10 +168,10 @@
                 </tr>
             </table>
             <div class="section">
-                <div class="section-title">참조</div>
+                <div class="section-title">참조자</div>
                 <table class="input-table">
                     <tr>
-                   <td>	<input type="text" style="width:100%;" name="referrer" id="referrer"></input></td>
+                   <td><div> ${referrer}</div></td>
                     </tr>           
                 </table>
             </div>
@@ -259,6 +264,11 @@
                <c:if test="${reject == 2}">
                	  <button class="button button-primary"  id="write">작성하기</button>
                </c:if>
+               
+                           <c:if test="${kind2 == 'total' &&  loginEmployee.empName == appovers.writer || kind2 == 'wait' &&  loginEmployee.empName ==appovers.writer || kind2 == 'complete' &&  loginEmployee.empName == appovers.writer}">
+            
+              	  <button class="button button-primary"  id="revoke">철회하기</button>
+            </c:if>
         </div>
     </div>
     </div>
@@ -270,6 +280,7 @@
 <script>
 
 const apvNo = ${approval.apvNo};
+const apvKind = ${kind};
 const empNo = ${loginEmployee.empNo};
 
 const fnDownload = () => {
@@ -292,6 +303,15 @@ const fnReWrite = () => {
 	  });
 	};
 	fnReWrite();
+	
+	const fnRevoke = () => {
+		  $('#revoke').on('click', (evt) => {
+			  if (confirm('정말 철회하시겠습니까? 철회문서는 임시저장함으로 이동합니다')) {
+		      location.href = '${contextPath}/approval/revoke.do?apvNo=' + apvNo +'&apvKind=' + apvKind; 
+			  }
+		  });
+		};
+		fnRevoke();
 
 function sendGetRequest(queryParams) {
 	 window.location.href = '${contextPath}/approval/approve.do?'+ new URLSearchParams(queryParams).toString();
