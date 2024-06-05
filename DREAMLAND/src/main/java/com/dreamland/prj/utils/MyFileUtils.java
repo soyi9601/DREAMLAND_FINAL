@@ -33,7 +33,7 @@ public class MyFileUtils {
   
   // 임시 파일 경로 반환
   public String getTempPath() {
-    return "c:/temporary";
+    return UP_DIR+"/temporary";
   }
   
   // 임시 파일 이름 반환 (확장자 제외)
@@ -43,12 +43,12 @@ public class MyFileUtils {
   
   // 블로그 작성시 사용된 이미지가 저장될 경로 반환하기
   public String getBlogImageUploadPath() {
-    return "c:/blog" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY);
+    return UP_DIR+"blog" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY);
   }
   
   // 블로그 이미지가 저장된 어제 경로를 반환
   public String getBlogImageUploadPathInYesterday() {
-    return "c:/blog" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY.minusDays(1));
+    return UP_DIR+"blog" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY.minusDays(1));
   }
   
 }
