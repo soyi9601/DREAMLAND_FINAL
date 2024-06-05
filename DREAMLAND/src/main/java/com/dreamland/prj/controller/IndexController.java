@@ -32,7 +32,7 @@ public class IndexController {
     return "index";
   }
   
-  
+  /*
   // 근태관리
   @PostMapping(value="/workIn", produces="application/json")
   public ResponseEntity<Map<String, Object>> workIn(@RequestParam int empNo) {
@@ -49,7 +49,7 @@ public class IndexController {
     response.put("message", "퇴근 완료했습니다");
     return ResponseEntity.ok(response);
   }
-  
+  */
   @GetMapping(value="/notice", produces="application/json")
   public ResponseEntity<Map<String, Object>> getNoticeList(HttpServletRequest request) {
     return indexService.getNoticeList(request);

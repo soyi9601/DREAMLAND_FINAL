@@ -22,7 +22,7 @@
      <result property="role"      column="ROLE"/>
    </association>
 </resultMap> -->
-<resultMap type="JsTreetDto" id="DepartmentMap">
+<!-- <resultMap type="JsTreetDto" id="DepartmentMap">
   <id property="deptNo" column="DEPT_NO" />
   <result property="deptName" column="DEPT_NAME"/>
   <result property="depth" column="DEPTH"/>
@@ -42,10 +42,10 @@
      <result property="deptName" column="DEPT_NAME"/>
      <result property="posName" column="POS_NAME"/>
    </collection>
-</resultMap>
+</resultMap> -->
 
   <!-- 부서 + 직원 전체 리스트 조회 -->
-  <select id="getDepartList"
+  <!-- <select id="getDepartList"
          resultMap="DepartmentMap">    
     SELECT D.DEPT_NO, D.DEPT_NAME, D.DEPTH, D.PARENT_ID, D.TREE_TEXT,
            E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.RESIGN_DATE, E.MOBILE, E.ROLE, E.POS_NO, LEVEL
@@ -53,7 +53,7 @@
       LEFT JOIN EMPLOYEE E ON D.DEPT_NO = E.DEPT_NO
      START WITH D.PARENT_ID = '#'
    CONNECT BY PRIOR CAST(D.DEPT_NO AS VARCHAR2(20)) = D.PARENT_ID
-  </select>
+  </select> -->
   
   <!-- 부서 + 직원 전체 리스트 조회 유저 -->
   <select id="getDepartListUser"
