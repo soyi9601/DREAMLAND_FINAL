@@ -76,6 +76,7 @@ public interface ApprovalMapper {
 	 int revokeApproval(String apvNo );
 	 int revokeApvLeave(String apvNo );
 	 int  deleteApvRef(int apvNo);
+	 int  deleteApvWriter(int apvNo);
 	 int  deleteAttach(String apvNo, String attachNo);
 	 List<String> getApprovers(int apvNo);
 	 ApvWriterDto getReturnApprover(int apvNo);

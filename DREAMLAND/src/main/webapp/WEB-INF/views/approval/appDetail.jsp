@@ -181,18 +181,43 @@
                 <tr>
                     <td>휴가 종류</td>
                     <td colspan="2">
-                        	${approval.leaveClassify}
+                        <c:if test="${approval.leaveClassify==1}">
+                        	반차
+                        </c:if>
+                        <c:if test="${approval.leaveClassify==0}">
+                        	연차
+                        </c:if>
                      </td>
                                    
                 </tr>
                 <tr>
                     <td>휴가 기간</td>
+                      <c:if test="${approval.leaveClassify==0}">
                                               <td>
                         	${approval.leaveStart}
                         </td>
                                                   <td>
                         	${approval.leaveEnd}
                         </td>
+                        </c:if>
+                    <c:if test="${approval.leaveClassify==1}">
+                        <td>
+                        	${approval.leaveStart}
+                        </td>
+                       <c:if test="${approval.halfday=='afternoon'}">
+                        <td>
+                        오후
+                        </td>
+                        </c:if>
+                       <c:if test="${approval.halfday=='morning'}">
+                            <td>
+                        	오전
+                      		  </td>
+                       	 </c:if>
+                     </c:if>
+                        
+                        
+                        
                 </tr>
                 <tr>
                     <td>사유</td>
@@ -306,7 +331,7 @@ const fnReWrite = () => {
 	
 	const fnRevoke = () => {
 		  $('#revoke').on('click', (evt) => {
-			  if (confirm('정말 철회하시겠습니까? 철회문서는 임시저장함으로 이동합니다')) {
+			  if (confirm('정말 철회하시겠습니까? 철회된 문서는 임시저장함으로 이동합니다')) {
 		      location.href = '${contextPath}/approval/revoke.do?apvNo=' + apvNo +'&apvKind=' + apvKind; 
 			  }
 		  });
