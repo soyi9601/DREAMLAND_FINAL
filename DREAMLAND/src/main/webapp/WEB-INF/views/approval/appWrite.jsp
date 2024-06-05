@@ -188,21 +188,22 @@
                     
                     
                        <c:if test="${kind ==1 }">
-                       <c:if test="${approva.leaveClassify ==0}">
-                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> ~ <input type="date" name="leaveend" value="${approval.leaveEnd}"></td>
-               					
-               					  <c:if test="${approva.halfday == 'morning'}">
-               					          <label><input type="radio" name="halfday" value="morning" checked> 오전</label>
+                       <c:if test="${approval.leaveClassify ==0}">
+                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> ~  <input type="date" name="leaveend" value="${approval.leaveEnd}"></td>
+               				
+
+               					</c:if>
+               					                       <c:if test="${approval.leaveClassify ==1}">
+                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}">
+                                   					  <c:if test="${approval.halfday == 'morning'}">
+               					          <label><input type="radio" name="halfday" value="morning" checked> 오전 </label>
                                  <label><input type="radio" name="halfday" value="afternoon"> 오후</label>
                            </c:if>
-               					  <c:if test="${approva.halfday == 'afternoon'}">
-               					          <label><input type="radio" name="halfday" value="morning"> 오전</label>
+               					  <c:if test="${approval.halfday == 'afternoon'}">
+               					          <label><input type="radio" name="halfday" value="morning"> 오전 </label>
                                  <label><input type="radio" name="halfday" value="afternoon" checked> 오후</label>
                					  
-               					  </c:if>
-               					</c:if>
-               					                       <c:if test="${approva.leaveClassify ==1}">
-                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> </td>
+               					  </c:if> </td>
                					
                					</c:if>
                					
