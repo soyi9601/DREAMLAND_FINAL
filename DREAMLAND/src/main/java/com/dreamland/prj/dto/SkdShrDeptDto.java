@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 
 public class SkdShrDeptDto {
 	
-  private int skdNo, empNo;
+  private int skdNo, deptNo;
   
 }
