@@ -1,8 +1,11 @@
 package com.dreamland.prj.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import com.dreamland.prj.dto.WorkDto;
 
 @Mapper
 public interface WorkMapper {
@@ -16,5 +19,6 @@ public interface WorkMapper {
   int getTotalWorkDays(Map<String, Object> map);   // 총 근무일수
   int getTotalWorkHours(Map<String, Object> map);  // 총 근무시간
   double getAvgWorkHours(Map<String, Object> map); // 평균 근무시간
+  List<WorkDto> getWorkListByPeriod(Map<String, Object> map); // 근무정보 기간조회 
   
 }

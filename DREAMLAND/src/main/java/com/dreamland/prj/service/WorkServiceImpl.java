@@ -1,13 +1,17 @@
 package com.dreamland.prj.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dreamland.prj.dto.EmployeeDto;
+import com.dreamland.prj.dto.WorkDto;
 import com.dreamland.prj.mapper.WorkMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -43,6 +47,7 @@ public class WorkServiceImpl implements WorkService {
   // 지각 + 조기퇴근 + 결근 횟수 + 근무시간 조회
   @Override
   public Map<String, Object> getWorkCountByEmail(String email) {
+    EmployeeDto employeeDto = loginService.getEmployeeByEmail(email);
     Integer empNo = loginService.getEmployeeByEmail(email).getEmpNo();
     int year = java.time.Year.now().getValue();
     
@@ -77,9 +82,32 @@ public class WorkServiceImpl implements WorkService {
     counts.put("totalWorkDays", totalWorkDays);
     counts.put("totalWorkHours", totalWorkHours);
     counts.put("avgWorkHours", avgWorkHours);
+    counts.put("employee", employeeDto); 
 
     return counts;
     
   }
+  
+  // 근무정보 리스트 (기간조회)
+  @Override
+  public Map<String, Object> getWorkListByPeriod(String email, String startDate, String endDate) {
+    Integer empNo = loginService.getEmployeeByEmail(email).getEmpNo();
+    
+    Map<String, Object> map = new HashMap<>();
+    map.put("empNo", empNo);
+    map.put("startDate", startDate);
+    map.put("endDate", endDate);
+   
+    List<WorkDto> workList = workMapper.getWorkListByPeriod(map);
 
+    if (workList == null || workList.isEmpty()) {
+        workList = new ArrayList<>(); // 값이 비어있을 때, 빈 리스트 반환
+    }
+    
+    Map<String, Object> result = new HashMap<>();
+    result.put("workList", workList);
+
+    return result;
+
+  }
 }
