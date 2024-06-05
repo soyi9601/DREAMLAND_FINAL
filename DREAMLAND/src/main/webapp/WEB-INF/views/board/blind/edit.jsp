@@ -44,11 +44,13 @@
 											</textarea>
 										</div>
 										<div>
-											<input type="password" name="password" value="password"> 
-											
+											<input type="password" id="password" name="password" value=""> 
+                      <input type="hidden" id="oldPassword" name="oldPassword" value="${blind.password}">
+										  
 											<button type="submit">작성완료</button>
 											<input type="hidden" name="blindNo" value="${blind.blindNo}">
 										</div>
+										${blind.password}
 									
 									</form>
 										
@@ -106,7 +108,13 @@
 
 	const fnModifyBlind = () => {
 		document.getElementById('frm-blind-modify').addEventListener('submit', (evt) => {
-			
+			const passwordField = document.getElementById('password');
+      const oldPasswordField = document.getElementById('oldPassword');
+
+      // 비밀번호 필드가 비어있으면 기존 비밀번호로 설정
+      if (passwordField.value === '') {
+        passwordField.value = oldPasswordField.value;
+      }
 		})
 	}
 
