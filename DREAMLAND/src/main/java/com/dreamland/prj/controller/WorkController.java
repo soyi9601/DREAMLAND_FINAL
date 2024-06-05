@@ -49,12 +49,6 @@ public class WorkController {
 	  return new ResponseEntity<>(workList, HttpStatus.OK);
 	}
 	
-	// 휴가관리 페이지이동
-  @GetMapping("/dayoff.do")
-  public String dayoffPage() {
-    return "work/dayoff";
-  }
-  
   private String getEmailFromSecurityContext() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     if (principal instanceof UserDetails) {

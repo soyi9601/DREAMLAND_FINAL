@@ -3,7 +3,6 @@ package com.dreamland.prj.service;
 import java.util.Map;
 
 public interface WorkService {
- 
   
   void checkLate();
   void checkAbsence();

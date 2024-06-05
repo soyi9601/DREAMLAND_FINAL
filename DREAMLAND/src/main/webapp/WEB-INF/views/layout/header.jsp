@@ -99,7 +99,7 @@
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/work/dayoff.do" class="menu-link">
+                <a href="${contextPath}/dayoff/info.do" class="menu-link">
                   <div>휴가관리</div>
                 </a>
               </li>
