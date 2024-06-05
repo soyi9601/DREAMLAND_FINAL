@@ -17,7 +17,7 @@
 						</h2>	    
 			    </div>
 			    
-			    <%-- <div class="col-6 mb-4 py-3">
+			    <div class="col-6 mb-4 py-3">
 			      <c:choose>
 	            <c:when test="${emp.role == 'ROLE_ADMIN'}">
 	              <input id="empNo" type="hidden" name="empNo" value="${emp.empNo}">
@@ -35,7 +35,7 @@
 		            </div>
 	            </c:when>                   
             </c:choose>			      
-	        </div>	 --%>
+	        </div>	
 	        	    
 		    </div>
 	    </div>
