@@ -16,15 +16,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.PrincipalUser;
+import com.dreamland.prj.service.LoginService;
 import com.dreamland.prj.service.LoginServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Controller
 public class LoginController {
   
-  @Autowired
-  private LoginServiceImpl loginService;
+
+  private final LoginService loginService;
   
   // 로그인 실패 출력
   @GetMapping("/auth/login")
@@ -51,7 +54,6 @@ public class LoginController {
   // 비밀번호 변경
   @PostMapping("/user/modifyPassword.do")
   public String modifyPassword(@AuthenticationPrincipal PrincipalUser user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-    
     int result = loginService.modifyPassword(request, user);
     if(result == 0) {
       redirectAttributes.addFlashAttribute("msg", "현재 비밀번호를 다시 확인해주세요");

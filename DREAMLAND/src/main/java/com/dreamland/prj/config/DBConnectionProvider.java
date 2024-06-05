@@ -24,20 +24,9 @@ import lombok.RequiredArgsConstructor;
 public class DBConnectionProvider implements UserDetailsService, AuthenticationProvider{
 
   private final LoginService loginService;
-  
+
   // 비밀번호 암호화 처리
   private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-  
-  // 시큐리티 session( Authentication(내부 UserDetails))
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    EmployeeDto emp = loginService.getEmployeeByEmail(username);
-    if(emp == null) {
-      throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
-    } else {
-      return new PrincipalUser(emp);
-    }
-  }
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -63,4 +52,17 @@ public class DBConnectionProvider implements UserDetailsService, AuthenticationP
     // TODO Auto-generated method stub
     return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
   }
+
+  
+  // 시큐리티 session( Authentication(내부 UserDetails))
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    EmployeeDto emp = loginService.getEmployeeByEmail(username);
+    if(emp == null) {
+      throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+    } else {
+      return new PrincipalUser(emp);
+    }
+  }
+
 }
