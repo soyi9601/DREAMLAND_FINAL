@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.dreamland.prj.mapper.DepartMapper">
-<resultMap type="DepartmentDto" id="DepartmentMap">
+<!-- <resultMap type="DepartmentDto" id="DepartmentMap">
   <id     property="deptNo"   column="DEPT_NO" />
   <result property="deptName" column="DEPT_NAME"/>
   <result property="depth"    column="DEPTH"/>
@@ -21,19 +21,50 @@
      <result property="posNo"     column="POS_NO"/>
      <result property="role"      column="ROLE"/>
    </association>
-</resultMap>
+</resultMap> -->
+<!-- <resultMap type="JsTreetDto" id="DepartmentMap">
+  <id property="deptNo" column="DEPT_NO" />
+  <result property="deptName" column="DEPT_NAME"/>
+  <result property="depth" column="DEPTH"/>
+  <result property="parentId" column="PARENT_ID"/>
+  <result property="treeText" column="TREE_TEXT"/>
+  <collection property="employee" ofType="EmployeeDto">
+     <id property="empNo" column="EMP_NO"/>
+     <result property="empName" column="EMP_NAME"/>
+     <result property="birth" column="BIRTH"/>
+     <result property="enterDate" column="ENTER_DATE"/>
+     <result property="resignDate" column="RESIGN_DATE"/>
+     <result property="email" column="EMAIL"/>
+     <result property="mobile" column="MOBILE"/>
+     <result property="posNo" column="POS_NO"/>
+     <result property="role" column="ROLE"/>
+     <result property="deptNo" column="DEPT_NO" />
+     <result property="deptName" column="DEPT_NAME"/>
+     <result property="posName" column="POS_NAME"/>
+   </collection>
+</resultMap> -->
 
   <!-- 부서 + 직원 전체 리스트 조회 -->
-  <select id="getDepartList"
-          resultMap="DepartmentMap">    
+  <!-- <select id="getDepartList"
+         resultMap="DepartmentMap">    
     SELECT D.DEPT_NO, D.DEPT_NAME, D.DEPTH, D.PARENT_ID, D.TREE_TEXT,
-	         E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.RESIGN_DATE, E.MOBILE, E.ROLE, E.POS_NO, LEVEL
-	    FROM DEPARTMENT D
+           E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.RESIGN_DATE, E.MOBILE, E.ROLE, E.POS_NO, LEVEL
+      FROM DEPARTMENT D
       LEFT JOIN EMPLOYEE E ON D.DEPT_NO = E.DEPT_NO
-	   START WITH D.PARENT_ID = '#'
-	 CONNECT BY PRIOR CAST(D.DEPT_NO AS VARCHAR2(20)) = D.PARENT_ID
+     START WITH D.PARENT_ID = '#'
+   CONNECT BY PRIOR CAST(D.DEPT_NO AS VARCHAR2(20)) = D.PARENT_ID
+  </select> -->
+  
+  <!-- 부서 + 직원 전체 리스트 조회 유저 -->
+  <select id="getDepartListUser"
+         resultType="OrgChartDto">    
+    SELECT D.DEPT_NO, D.DEPT_NAME, D.DEPTH, D.PARENT_ID, D.TREE_TEXT,
+           E.EMP_NO, E.EMP_NAME, E.BIRTH, E.ENTER_DATE, E.EMAIL, E.RESIGN_DATE, E.MOBILE, E.ROLE, E.POS_NO
+      FROM DEPARTMENT D
+      LEFT JOIN EMPLOYEE E ON D.DEPT_NO = E.DEPT_NO 
+     WHERE E.RESIGN_DATE IS NULL AND D.PARENT_ID IS NOT NULL
   </select>
-	
+  	
 	
 	<!-- 부서 및 직원 삭제 -->
 	<delete id="deleteDepart" parameterType="DepartmentDto">
