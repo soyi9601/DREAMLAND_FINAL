@@ -15,5 +15,4 @@ public class DepartmentDto {
   private int deptNo, depth;
   private String deptName, parentId, treeText;
   private EmployeeDto employee;
-  
 }

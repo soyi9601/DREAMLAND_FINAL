@@ -1,10 +1,13 @@
 /**
  * 작성자 : 고은정
  * 기능   : 쪽지 보내기
+ * 기능   : 받은편지함
  * 이력   :
  *    1) 240603
  *        - 쪽지 글자수 함수 추가
  *        - jQuery UI 활용해 자동완성 추가
+ *    2) 240604
+ *        - input 안에 button 추가
  */
 
 'use strict';
@@ -57,8 +60,8 @@ const fnEmployeeList = (evt)=>{
         response(
           $.map(resData.resultList, function(item){
             return {
-                label : item.empName  // 목록에 표시되는 값
-              , value : item.empName + '[' + item.email + ']'  // 선택 시 input 창에 표시되는 값
+                label : item.empName + '[' + item.deptName + '-' + item.posName + ']'  // 목록에 표시되는 값
+              , value : item.empName + '[' + item.deptName + '-' + item.posName + ']'  // 선택 시 input 창에 표시되는 값
               , idx : item.empNo
             };
           })
@@ -75,9 +78,23 @@ const fnEmployeeList = (evt)=>{
    ,delay: 100      // 딜레이 시간
    ,appendTo: '#auto-complete'  // div 에 항목 출력
    ,select: function(evt, ui){
-      // 아이템 선택시 실행 ui.item 이 선택된 항목을 나타내는 객체, label/value/idex 를 가짐
-    console.log(ui.item.label)
-    console.log(ui.item.idx)
+      evt.preventDefault(); // 기본 동작 막기
+      const receiverContainer = $('#receiver-container');
+
+        // 선택된 아이템으로 버튼 생성하여 input 필드 안에 추가
+        const button = $("<button type='button' class='btn btn-outline-secondary'></button>")
+          .text(ui.item.value)
+          .on('click', function() {
+            $(this).next('input[type="hidden"]').remove(); // 숨겨진 input 제거
+            $(this).remove(); // 버튼 클릭 시 제거
+          });
+
+        const hiddenInput = $("<input type='hidden' name='receiver'>").val(ui.item.idx);
+
+        $('#receiver').val(''); // 입력 필드 비우기
+        button.insertBefore('#receiver'); // 입력 필드 앞에 버튼 추가
+        hiddenInput.insertBefore('#receiver'); // 입력 필드 앞에 숨겨진 input 추가
+
    }
   }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<div class='autocomplete-item'></div>")

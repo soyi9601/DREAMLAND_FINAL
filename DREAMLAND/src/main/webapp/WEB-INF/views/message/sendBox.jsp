@@ -17,81 +17,22 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">보낸쪽지함</h5>
+	                <div id="send-count"></div>
 	                <div class="table-responsive text-nowrap">
 	                  <table class="table table-hover">
 	                    <thead>
 	                      <tr>
-	                        <th>번호</th>
-	                        <th>쪽지내용</th>
-	                        <th>보낸시간</th>
-	                        <th>받는사람</th>
+                          <th></th>
+                          <th>번호</th>
+                          <th>쪽지내용</th>
+                          <th>받은시간</th>
+                          <th>받는사람</th>
 	                      </tr>
 	                    </thead>
-	                    <tbody class="table-border-bottom-0">
-	                      <tr>
-	                        <td><strong>1</strong></td>
-	                        <td>메롱</td>
-	                        <td>20240531</td>
-	                        <td>관리자</td>
-	                        <td>
-	                          <div class="dropdown">
-	                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-	                              <i class="bx bx-dots-vertical-rounded"></i>
-	                            </button>
-	                            <div class="dropdown-menu">
-	                              <a class="dropdown-item" href="javascript:void(0);"
-	                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-	                              >
-	                              <a class="dropdown-item" href="javascript:void(0);"
-	                                ><i class="bx bx-trash me-1"></i> Delete</a
-	                              >
-	                            </div>
-	                          </div>
-	                        </td>
-	                      </tr>
-	                      <tr>
-	                        <td><strong>1</strong></td>
-	                        <td>메롱</td>
-	                        <td>20240531</td>
-	                        <td>관리자</td>
-	                        <td>
-	                          <div class="dropdown">
-	                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-	                              <i class="bx bx-dots-vertical-rounded"></i>
-	                            </button>
-	                            <div class="dropdown-menu">
-	                              <a class="dropdown-item" href="javascript:void(0);"
-	                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-	                              >
-	                              <a class="dropdown-item" href="javascript:void(0);"
-	                                ><i class="bx bx-trash me-1"></i> Delete</a
-	                              >
-	                            </div>
-	                          </div>
-	                        </td>
-	                      </tr>
-	                       <tr>
-	                        <td><strong>1</strong></td>
-	                        <td>메롱</td>
-	                        <td>20240531</td>
-	                        <td>관리자</td>
-	                        <td>
-	                          <div class="dropdown">
-	                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-	                              <i class="bx bx-dots-vertical-rounded"></i>
-	                            </button>
-	                            <div class="dropdown-menu">
-	                              <a class="dropdown-item" href="javascript:void(0);"
-	                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-	                              >
-	                              <a class="dropdown-item" href="javascript:void(0);"
-	                                ><i class="bx bx-trash me-1"></i> Delete</a
-	                              >
-	                            </div>
-	                          </div>
-	                        </td>
-	                      </tr>
+	                    <tbody class="table-border-bottom-0" id="send-list">
 	                    </tbody>
+	                    <tfoot id="send-page">
+                      </tfoot>
 	                  </table>
 				            <div class="tab-content">
                      <nav aria-label="Page navigation">
@@ -135,5 +76,6 @@
 
 
             <!-- / Content -->
-<!-- <script src="../assets/js/pages-account-mypage.js"></script> -->
+<script>var empNo = '${loginEmployee.empNo}';</script>
+<script src="/resources/assets/js/pages-sendbox.js"></script>
 <%@ include file="../layout/footer.jsp" %>

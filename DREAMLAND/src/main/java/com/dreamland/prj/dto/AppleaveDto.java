@@ -1,6 +1,5 @@
 package com.dreamland.prj.dto;
 
-import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class AppleaveDto {
 	
 	private int leaveNo, apvNo, empNo;
-	private String leaveClassify, detail, leaveStatus, leaveEmergencycall, leaveStart, leaveEnd;;
+	private String leaveClassify, detail, leaveStatus, halfday, leaveStart, leaveEnd;;
 
 }

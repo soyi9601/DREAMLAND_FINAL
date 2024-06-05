@@ -52,6 +52,7 @@ const fnCheckEmail = () => {
 const fnSendEmail = () => {
   let msgEmail = document.getElementById('result-email');
   let inpEmail = document.getElementById('emp-email');
+  
   fetch(fnGetContextPath() + '/user/checkEmail.do', {
     method: 'POST',
     headers : { 
