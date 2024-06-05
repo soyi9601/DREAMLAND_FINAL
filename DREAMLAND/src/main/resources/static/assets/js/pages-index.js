@@ -6,6 +6,8 @@
  *        - 로그인 정보, 날씨 API
  *    2) 240603
  *        - 캘린더 조회, 출퇴근 체크
+ *    3) 240605
+ *        - 공지사항 조회
  */
  
  
@@ -109,37 +111,79 @@ function fnCalendar() {
 /* *********** 출퇴근 *********** */
 /* *********** 출근 *********** */
 const empNo = document.getElementById('empNo').value;
+const btnWorkIn = document.getElementById('btn-work-in');
+const btnWorkOut = document.getElementById('btn-work-out');
+
 const fnWorkIn = () => {
-  document.getElementById('btn-work-in').addEventListener('click', function() {
-    fetch('/workIn?empNo=' + empNo, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}) 
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert(data.message);      
-      this.disabled = true;
-    });
-  })  
+  if(btnWorkIn) {
+    btnWorkIn.addEventListener('click', function() {
+      fetch('/workIn?empNo=' + empNo, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}) 
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);      
+        this.disabled = true;
+      });
+    })      
+  }
 }
 
 /* *********** 퇴근 *********** */
 const fnWorkOut = () => {
-  document.getElementById('btn-work-out').addEventListener('click', function() {
-    fetch('/workOut?empNo=' + empNo, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}) 
-    })
-    .then(response => response.json())
-    .then(data => {alert(data.message);});
+  if(btnWorkOut) {
+    btnWorkOut.addEventListener('click', function() {
+      fetch('/workOut?empNo=' + empNo, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}) 
+      })
+      .then(response => response.json())
+      .then(data => {alert(data.message);});
+    })      
+  }
+}
+
+
+/* *********** 공지사항 *********** */
+const fnGetNotice = () => {
+  const mainNotice = $('.notice-table');
+  $.ajax({
+    type: 'GET',
+    url: '/notice',
+    dataType: 'json',
+    success: (resData) => {
+      mainNotice.empty();
+      let noticeList = resData.noticeList;
+      if(noticeList.length === 0) {
+        let str = '<div class="no-data">등록된 게시물이 없습니다.</div> ;'
+        mainNotice.append(str);
+      } else {
+        $.each(noticeList, (i, notice) => {
+          let str = '<tr>';
+          str += '<td class="text-center" scope="col" style="width: 3%">' +  notice.noticeNo + '</td>';
+          if(notice.signal === 1) {
+            str += '<td scope="col" style="width: 77%"><span class="notice-important">중요</span>' 
+                + notice.boardTitle + '</td>';
+          } else {
+            str += '<td scope="col" style="width: 77%">' + notice.boardTitle + '</td>';            
+          }
+          str += '<td scope="col" style="width: 20%"><span class="">' + notice.boardModifyDt + '</span></td>';
+          str += '</tr>';
+          mainNotice.append(str);
+        })
+      }
+      console.log(resData);
+    }
   })  
 }
+
 
 
 /* ********************** 함수 호출 ********************** */
@@ -150,6 +194,7 @@ setInterval(fnGetTime, 1000);
 fnCalendar(); 
 fnWorkIn();
 fnWorkOut();
+fnGetNotice();
 /* ********************** ********* ********************** */
 
 

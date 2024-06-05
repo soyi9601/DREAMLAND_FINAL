@@ -43,5 +43,11 @@
        SET WORK_OUT = TO_DATE(TO_CHAR(CURRENT_TIMESTAMP, 'HH24:MI:SS'), 'HH24:MI:SS')
      WHERE EMP_NO = #{empNo}     
   </update>
+  
+  
+  <select id="getNoticeList" parameterType="NoticeBoardDto">
+    SELECT NOTICE_NO, BOARD_TITLE, SIGNAL, BOARD_MODIFY_DT
+      FROM NOTICE_BOARD
+  </select>
 
 </mapper> 

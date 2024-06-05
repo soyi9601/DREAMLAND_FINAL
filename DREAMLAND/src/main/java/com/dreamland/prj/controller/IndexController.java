@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.service.IndexService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -47,6 +48,11 @@ public class IndexController {
     Map<String, Object> response = new HashMap<>();
     response.put("message", "퇴근 완료했습니다");
     return ResponseEntity.ok(response);
+  }
+  
+  @GetMapping(value="/notice", produces="application/json")
+  public ResponseEntity<Map<String, Object>> getNoticeList(HttpServletRequest request) {
+    return indexService.getNoticeList(request);
   }
   
 }

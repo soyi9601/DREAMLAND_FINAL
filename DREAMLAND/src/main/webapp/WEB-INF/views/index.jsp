@@ -19,6 +19,7 @@
 			    <div class="col-6 mb-4 py-3">
 			      <c:choose>
 	            <c:when test="${emp.role == 'ROLE_ADMIN'}">
+	              <input id="empNo" type="hidden" name="empNo" value="${emp.empNo}">
 	              <div class="button-wrapper text-end"></div>
 	            </c:when>
 	            <c:when test="${emp.role == 'ROLE_USER'}">
@@ -104,24 +105,28 @@
                   </div>
                   <div class="table-responsive text-nowrap">
 								    <table class="table">
-								      <thead class="table-light">
+								      <thead class="table-light text-center">
 								        <tr>
-								          <th scope="col">공지번호</th>
-								          <th scope="col">내용</th>
+								          <th scope="col">번호</th>
+								          <th scope="col">제목</th>
+								          <th scope="col">작성일자</th>
 								        </tr>
 								      </thead>
-								      <tbody class="table-border-bottom-0">
+								      <tbody class="table-border-bottom-0 notice-table">
 								        <tr>
-								          <td scope="col"><span class="fw-medium">1</span></td>
+								          <td scope="col"><span class="fw-small">1</span></td>
 								          <td scope="col">Albert Cook</td>
+								          <td scope="col">2024-06-05</td>
 								        </tr>
 								        <tr>
-                          <td scope="col"><span class="fw-medium">2</span></td>
+                          <td scope="col"><span class="fw-small">1</span></td>
                           <td scope="col">Albert Cook</td>
+                          <td scope="col"><span class="fw-small">2024-06-05</span></td>
                         </tr>
-								        <tr>
-                          <td scope="col"><span class="fw-medium">3</span></td>
+                        <tr>
+                          <td scope="col"><span class="fw-small">1</span></td>
                           <td scope="col">Albert Cook</td>
+                          <td scope="col"><span class="fw-small">2024-06-05</span></td>
                         </tr>
 								      </tbody>
 								    </table>
