@@ -1,5 +1,6 @@
 package com.dreamland.prj.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.core.io.Resource;
@@ -100,6 +101,7 @@ public class ApprovalController {
 	public ResponseEntity<Map<String, Object>> rejectedMyList(HttpServletRequest request) {
 		return approvalService.loadrejectedMyAppList(request);
 	}
+	
 	@GetMapping(value="/tempMyList.do", produces="application/json")
 	public ResponseEntity<Map<String, Object>> tempMyList(HttpServletRequest request) {
 		return approvalService.loadtempMyAppList(request);
@@ -130,14 +132,11 @@ public class ApprovalController {
 
 	
 	
-	
-	
 	@GetMapping("/detail.do")
 	public String detail(HttpServletRequest request, Model model) {
 		approvalService.loadAppByNo(request, model);
 		return "approval/appDetail";
 	}
-	
 	
 	@PostMapping("/approval.do")
 	public String approval(MultipartHttpServletRequest multipartRequest) {
@@ -156,12 +155,30 @@ public class ApprovalController {
 		approvalService.apvApprove(request);
 		return "approval/appList";
 	}
+
+	@GetMapping("/revoke.do")
+	public String appRevoke(HttpServletRequest request) {
+		approvalService.apvRevoke(request);
+		return "approval/appMyList";
+	}
 	
 	@GetMapping("/download.do")
 	  public ResponseEntity<Resource> download(HttpServletRequest request) {
 			return approvalService.download(request);
-	  }
+	}
+	
 		
-
-
+	@GetMapping(value="/deleteAttach.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>>  deleteAttach(HttpServletRequest request) {
+		  boolean success = approvalService.deleteAttach(request);
+	        Map<String, Object> response = new HashMap<>();
+	        if (success) {
+	            response.put("success", true);
+	            response.put("message", "Attachment deleted successfully");
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "Failed to delete attachment");
+	        }
+	        return ResponseEntity.ok(response);
+	}
 }

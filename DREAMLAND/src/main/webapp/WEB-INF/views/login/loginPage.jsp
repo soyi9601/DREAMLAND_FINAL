@@ -19,7 +19,7 @@
   class="light-style customizer-hide"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="../assets/"
+  data-assets-path="/resources/assets/"
   data-template="vertical-menu-template-free"
 >
   <head>
@@ -42,25 +42,25 @@
     />
 
     <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="/resources/assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="/resources/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/resources/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/resources/assets/css/demo.css" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <!-- Page CSS -->
     <!-- Page -->
-    <link rel="stylesheet" href="../assets/vendor/css/pages/page-auth.css" />
+    <link rel="stylesheet" href="/resources/assets/vendor/css/pages/page-auth.css" />
     <!-- Helpers -->
-    <script src="../assets/vendor/js/helpers.js"></script>
+    <script src="/resources/assets/vendor/js/helpers.js"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="../assets/js/config.js"></script>
+    <script src="/resources/assets/js/config.js"></script>
   </head>
 
   <body>
@@ -77,7 +77,7 @@
                 <a href="${contextPath}/" class="app-brand-link gap-2">
                   <span class="app-brand-text demo text-body fw-bolder">
                     <img
-                    src="../assets/img/logo/logo1.png"
+                    src="/resources/assets/img/logo/logo1.png"
                     alt="user-avatar"
                     width="350px"
                     class="d-block rounded"
@@ -102,7 +102,7 @@
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
                     <label class="form-label" for="password">비밀번호</label>
-                    <a href="auth-forgot-password-basic.html">
+                    <a href="/login/tempPassword">
                       <small>임시 비밀번호 발급하기</small>
                     </a>
                   </div>
@@ -142,18 +142,18 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../assets/vendor/js/bootstrap.js"></script>
-    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="/resources/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="/resources/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/resources/assets/vendor/js/bootstrap.js"></script>
+    <script src="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="../assets/vendor/js/menu.js"></script>
+    <script src="/resources/assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="../assets/js/main.js"></script>
+    <script src="/resources/assets/js/main.js"></script>
 
     <!-- Page JS -->
     <script>
@@ -191,6 +191,7 @@
       if(!regEmail.test(inpEmail.value)){
         emailResult.innerHTML = '이메일을 확인해주세요';
         emailResult.style.fontSize = '0.75rem';
+        emailResult.style.fontWeight = 'bold';
         emailResult.style.color = '#EE2B4B';
         return;
       } else {
