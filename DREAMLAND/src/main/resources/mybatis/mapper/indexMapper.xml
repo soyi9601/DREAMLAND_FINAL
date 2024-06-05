@@ -5,6 +5,7 @@
   
 <mapper namespace="com.dreamland.prj.mapper.IndexMapper">
 	
+	<!-- 부서 + 직원 전체 리스트 조회 -->
   <select id="getUser" resultType="EmployeeDto">
     SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.EMAIL, E.MOBILE, E.ROLE, E.PROFILE_PATH, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
       FROM EMPLOYEE E
@@ -13,6 +14,41 @@
      WHERE EMAIL = #{email}
   </select>
 
+
+  <!-- 근태관리 -->
+  <!-- 
+  <insert id="insertWork" parameterType="WorkDto">
+    INSERT INTO WORK (
+        WORK_NO
+      , WORK_DATE
+      , WORK_IN
+      , WORK_OUT
+      , WORK_TOTAL_TIME
+      , WORK_STATE
+      , LATE_YN
+      , EMP_NO
+    ) VALUES (
+        WORK_SEQ.NEXTVAL
+      , TO_DATE(TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+      , TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
+      , NULL
+      , NULL
+      , NULL
+      , NULL
+      , #{empNo}      
+    )
+  </insert>
   
+  <update id="updateWorkOut" parameterType="WorkDto">
+    UPDATE WORK
+       SET WORK_OUT = TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
+     WHERE EMP_NO = #{empNo}     
+  </update>
+   -->
+  
+  <select id="getNoticeList" parameterType="NoticeBoardDto">
+    SELECT NOTICE_NO, BOARD_TITLE, SIGNAL, BOARD_MODIFY_DT
+      FROM NOTICE_BOARD
+  </select>
 
 </mapper> 

@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 
 public class WorkDto {
 	
-  private int workNo, workTotalTime;
+  private int workNo, workTotalTime, empNo;
   private Date workDate; 
   private Timestamp  workIn, workOut;
   private String workState, lateYn;
-  private EmployeeDto employee;
+ // private EmployeeDto employee;
   
 }
