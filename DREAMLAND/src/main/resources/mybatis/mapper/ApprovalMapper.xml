@@ -36,6 +36,7 @@
 	 	SELECT EMP_NO 
 	 	  FROM APV_WRITER	
 	 	 WHERE APV_NO = #{apvNo} 
+  ORDER BY WRITER_LIST
 	 </select>
 	 
 	 <select id="getReferrer">
@@ -137,7 +138,7 @@
       , LEAVE_END
       , DETAIL
       , LEAVE_STATUS
-      , LEAVE_EMERGENCY_CALL
+      , HALFDAY
       , EMP_NO
       
     ) VALUES (
@@ -148,7 +149,7 @@
       , #{leaveEnd}
       , #{detail}
       , 0
-      , 0
+      , #{halfday}
       , #{empNo}
     )
   </insert>
@@ -210,10 +211,6 @@
   </select>
   
   
-  
-  
-  
-  
  <select id="getMyApvCount">
       SELECT COUNT(*)
         FROM approval
@@ -248,11 +245,6 @@
        WHERE EMP_NO = #{empNo}
          AND APV_CHECK = 3
   </select>
-  
-
-
-
-
 
 
  <select id="getMyReferApvCount">
@@ -290,10 +282,6 @@
        									 WHERE EMP_NO = #{empNo})
          AND APV_CHECK = 2
   </select>
-    
-
-
-
 
 
   <select id="getApvList"
@@ -351,7 +339,6 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
   </select>
   
   
-  
     <select id="getCompleteApvList"
          parameterType="Map"
          resultMap="ApprovalMap">
@@ -369,10 +356,6 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
                      AND approver.EMP_NO = #{empNo})) 
        WHERE RN BETWEEN #{begin} AND #{end}
   </select>
-  
-  
-
-  
     
     
     <select id="getMyApvList"
@@ -434,11 +417,6 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
                  	 AND APV_CHECK = 3)
           WHERE RN BETWEEN #{begin} AND #{end}
     </select>
-    
-    
-    
-    
-    
     
     
        <select id="getMyReferApvList"
@@ -521,20 +499,17 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
     <select id="getApvLeaveDetailByNo"
          parameterType="Int"
          resultType="AppleaveDto">
-    SELECT LEAVE_NO, APV_NO, LEAVE_CLASSIFY, LEAVE_START, LEAVE_END, DETAIL, LEAVE_STATUS, LEAVE_EMERGENCY_CALL
+    SELECT LEAVE_NO, APV_NO, LEAVE_CLASSIFY, LEAVE_START, LEAVE_END, DETAIL, LEAVE_STATUS, HALFDAY
       FROM APV_LEAVE
      WHERE APV_NO = #{apvNo}
     </select>
     
-    
     <update id="updateApprover">
-    
     UPDATE APV_WRITER
        SET APV_STATE = 200,
            RETURN_REASON = #{returnReason}
      WHERE APV_NO = #{apvNo}
        AND EMP_NO = #{empNo}
-       
     </update>
     
     <update id="updateApproval">
@@ -544,11 +519,9 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
     </update>
     
       <update id="updateApvLeave">
-  
   	UPDATE APV_LEAVE
   	   SET LEAVE_STATUS = 1
   	 WHERE APV_NO = #{apvNo}
-  
   </update>
   
       <update id="modifyApproval"
@@ -561,20 +534,11 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
     </update>
     
   
-  <update id="modifyApvWriter">
-  	 UPDATE APV_WRITER
-       SET EMP_NO = #{empNo}
-     WHERE APV_NO = #{apvNo}
-       AND WRITER_LIST = #{i}
-  
-  </update>
    
    <update id="modifyApvLetter">
    	 UPDATE APV_LETTER
        SET DETAIL = #{detail}
      WHERE APV_NO = #{apvNo}
-    
-   
    </update>
    
      <update id="modifyApvLeave"
@@ -585,26 +549,18 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
           , LEAVE_END = #{leaveEnd}
           , DETAIL = #{detail}
      WHERE APV_NO = #{apvNo}
-    
-   
    </update>
+   
    
    <delete id="deleteApvRef">
   DELETE FROM APV_REF
 				WHERE APV_NO = #{apvNo}
-  
   </delete>
   
-  
-    
-    <select id="getApprovers"
-            parameterType="Int"
-            resultType="String">
-        SELECT APV_STATE
-          FROM APV_WRITER
-         WHERE APV_NO = #{apvNo}   
-    </select>
-    
+   <delete id="deleteApvWriter">
+  DELETE FROM APV_WRITER
+				WHERE APV_NO = #{apvNo}
+  </delete>
     
     <select id="getReturnApprover"
             parameterType="Int"
@@ -614,7 +570,6 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
         WHERE APV_NO = #{apvNo}
           AND NOT RETURN_REASON = '0'
     </select>
-    
     
     <select id="getAttachList"
           resultType="ApvAttachDto">
@@ -629,7 +584,6 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
         FROM APV_ATTACH
        WHERE ATTACH_NO = #{attachNo}
     </select>
-    				
     				
     <delete id="deleteAttach">
   DELETE FROM APV_ATTACH

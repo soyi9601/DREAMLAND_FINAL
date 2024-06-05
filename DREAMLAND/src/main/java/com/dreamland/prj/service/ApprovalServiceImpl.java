@@ -59,7 +59,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	@Override
  	public boolean registerAppletter(MultipartHttpServletRequest multipartRequest) {
-		System.out.println("실행은 됐는대");
 	    String apvNo2 = multipartRequest.getParameter("apvNo");
         int insertNoticeCount;
         int insertAttachCount;
@@ -70,10 +69,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    String contents =  multipartRequest.getParameter("contents");
 	    
 	    int temp  =  Integer.parseInt(multipartRequest.getParameter("temp"));
-	    String approver22 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver2") );
-	    String approver33 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver3") );
-	    String approver44 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver4") );
-	    String approver  =  approvalMapper.getEmployeeNo(  multipartRequest.getParameter("approver"));
+	    String approver22 = approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver2"));
+	    String approver33 = approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver3"));
+	    String approver44 = approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver4"));
+	    String approver  =  approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver"));
 	    String approver2 =  approver22 == null ? " " : approver22;
 	    String approver3 =  approver33 == null ? " " : approver33;
 	    String approver4 =  approver44 == null ? " " : approver44;
@@ -81,9 +80,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	    String referrer  =  multipartRequest.getParameter("referrer");
         String[] array = referrer.split(" ");
+        System.out.println(approvers);
         String[] array2 = approvers.split(" ");
 
-	    if(apvNo2.equals("") ) {
+	    if(apvNo2.equals("")) {
 	        ApprovalDto app = ApprovalDto.builder()
 					.empNo(Integer.parseInt(approver))
 					.apvTitle(title)
@@ -93,9 +93,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 	        insertNoticeCount = approvalMapper.insertApproval(app);
 	        int apvNo = approvalMapper.getApvNo();
 	        if(!(array[0].equals(""))) {
-	        for (String refer : array) {
-	        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), apvNo);
-	        }}
+	        	for (String refer : array) {
+	        		approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), apvNo);
+	        	}}
 	        
 		    for(int i=0; i<array2.length; i++) {
 			    ApvWriterDto appwriter = ApvWriterDto.builder()
@@ -146,20 +146,12 @@ public class ApprovalServiceImpl implements ApprovalService {
 																		.filesystemName(filesystemName)
 																		.originalFilename(originalFilename)
 																	.build();
-							
 							insertAttachCount += approvalMapper.insertApvAttach(attach);
-							
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
 					}  // if 코드
-				
-				} // for multipartFile코드
-	    	
-	    	
-	    	
-	    	
+				} // for multipartFile코드	
 	    } else {
 	    	
 	    	 ApprovalDto app2 = ApprovalDto.builder().apvNo(Integer.parseInt(apvNo2))
@@ -171,6 +163,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    	
 	        insertNoticeCount = approvalMapper.modifyApproval(app2);
 	        approvalMapper.deleteApvRef(Integer.parseInt(apvNo2));
+	        approvalMapper.deleteApvWriter(Integer.parseInt(apvNo2));
 	        
 	        if(!(array[0].equals(""))) {
 	        for (String refer : array) {
@@ -179,7 +172,12 @@ public class ApprovalServiceImpl implements ApprovalService {
 		    	    
 		
 		    for(int i=0; i<array2.length; i++) {
-			    approvalMapper.modifyApvWriter(Integer.parseInt(array2[i]), apvNo2, i);
+		    	ApvWriterDto a = ApvWriterDto.builder()
+   			         .apvNo(Integer.parseInt(apvNo2))
+   			         .writerList(i)
+   			         .empNo(Integer.parseInt(array2[i]))
+   			         .build();
+	    approvalMapper.insertApvWriter(a);
 		    	
 		    }
 
@@ -221,7 +219,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 																		.filesystemName(filesystemName)
 																		.originalFilename(originalFilename)
 																	.build();
-							
 							insertAttachCount += approvalMapper.insertApvAttach(attach);
 							
 						} catch (Exception e) {
@@ -235,8 +232,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	@Override
 	public boolean registerAppLeave(MultipartHttpServletRequest multipartRequest) {
-		 String apvNo2 = multipartRequest.getParameter("apvNo");
-		 System.out.println(apvNo2 + "이게 안나와?");
+		String apvNo2 = multipartRequest.getParameter("apvNo");
         int insertNoticeCount;
         int insertAttachCount;
         List<MultipartFile> files;
@@ -244,38 +240,52 @@ public class ApprovalServiceImpl implements ApprovalService {
 		String title =  multipartRequest.getParameter("title");
 		
 	    String contents =  multipartRequest.getParameter("contents");
-	    
 	    int temp  =  Integer.parseInt(multipartRequest.getParameter("temp"));
-	    int approver =  Integer.parseInt(approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver")));
-	    int approver2 =  Integer.parseInt(approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver2")));
-	    int approver3 =  Integer.parseInt(approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver3")));
-	    int approver4 =  Integer.parseInt(approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver4")));
+	    String approver22 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver2") );
+	    String approver33 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver3") );
+	    String approver44 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver4") );
+	    String approver  =  approvalMapper.getEmployeeNo(  multipartRequest.getParameter("approver"));
+	    String approver2 =  approver22 == null ? " " : approver22;
+	    String approver3 =  approver33 == null ? " " : approver33;
+	    String approver4 =  approver44 == null ? " " : approver44;
+	    String approvers = approver2 + " " + approver3 + " " + approver4;
 	    
-	    int [] approvers = {approver2, approver3, approver4};
 	    
 	    String referrer  =  multipartRequest.getParameter("referrer");
         String[] array = referrer.split(" ");
+        String[] array2 = approvers.split(" ");
         
-        
+        String leavestart ;
+        String leaveend ;
+        String halfday;
 	    // 뷰에서 전달된 userNo
 	    String leavekind = multipartRequest.getParameter("leavekind");
-	    String leavestart = multipartRequest.getParameter("leavestart");
-	    String leaveend = multipartRequest.getParameter("leaveend");
+	    if(leavekind.equals("0")) {
+	    	
+	    	 leavestart = multipartRequest.getParameter("leavestart");
+	    	 leaveend = multipartRequest.getParameter("leaveend");
+	    	 halfday = "0";
+	    	 
+	    } else {
+	    	 leavestart = multipartRequest.getParameter("leavestart");
+	    	 leaveend = leavestart;
+	         halfday = multipartRequest.getParameter("halfday");
+	    }
 	   
         
 	    ApprovalDto app = ApprovalDto.builder()
-				.empNo(approver)
+				.empNo(Integer.parseInt(approver))
 				.apvTitle(title)
 				.apvKinds("1")
 				.apvCheck(temp)
 				.build();
 		
-		System.out.println("실행1");
+
         if(apvNo2.equals("") ) {
 
 	    insertNoticeCount = approvalMapper.insertApproval(app);
 	   
-		System.out.println("실행2");
+
         int apvNo = approvalMapper.getApvNo();
         
         
@@ -286,31 +296,33 @@ public class ApprovalServiceImpl implements ApprovalService {
         
         
         
-        System.out.println("실행3");
-	    for(int i=0; i<approvers.length; i++) {
+	    for(int i=0; i<array2.length; i++) {
 	    	
 		    ApvWriterDto appwriter = ApvWriterDto.builder()
 					 .apvNo(apvNo)
 					 .writerList(i)
-					 .empNo(approvers[i])
+					 .empNo(Integer.parseInt(array2[i]))
 					  .build();
 		    approvalMapper.insertApvWriter(appwriter);
 	    	
-		    System.out.println("포문 " + i );
 	    }
 	    
-
+	    
+        
 	    AppleaveDto appleave = AppleaveDto.builder()
 	    		.apvNo(apvNo)
-	    		.empNo(approver)
+	    		.empNo(Integer.parseInt(approver))
 				.leaveClassify(leavekind)
 				.leaveStart(leavestart)
 				.leaveEnd(leaveend)
+				.halfday(halfday)
 				.detail(contents)
 				.build();
-	    approvalMapper.insertApvLeave(appleave);	
-	    System.out.println("실행5");
 	    
+        
+	    approvalMapper.insertApvLeave(appleave);	
+	    
+ 
 		 files = multipartRequest.getFiles("files");
 		
 		if(files.get(0).getSize() == 0) {
@@ -363,15 +375,21 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    	
 		   insertNoticeCount = approvalMapper.modifyApproval(app2);
 	        approvalMapper.deleteApvRef(Integer.parseInt(apvNo2));
-	 	   
+	        approvalMapper.deleteApvWriter(Integer.parseInt(apvNo2));
 	        if(!(array[0].equals(""))) {
 	        	
 	        for (String refer : array) {
 	        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), Integer.parseInt(apvNo2));
 	        }}
 		    	    
-		    for(int i=0; i<approvers.length; i++) {
-			    approvalMapper.modifyApvWriter(approvers[i], apvNo2, i);
+		    for(int i=0; i<array2.length; i++) {
+		    	
+		    	ApvWriterDto a = ApvWriterDto.builder()
+		    			         .apvNo(Integer.parseInt(apvNo2))
+		    			         .writerList(i)
+		    			         .empNo(Integer.parseInt(array2[i]))
+		    			         .build();
+			    approvalMapper.insertApvWriter(a);
 		    	
 		    }
 		    
@@ -380,6 +398,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 					.leaveClassify(leavekind)
 					.leaveStart(leavestart)
 					.leaveEnd(leaveend)
+					.halfday(halfday)
 					.detail(contents)
 					.build();
 		    	
@@ -1009,7 +1028,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    List<String> b = approvalMapper.getApprover(apvNo);
 	    
 	    String writer = approvalMapper.getEmployeeName(a.getEmpNo()+"");
-		 
 	    
         Map<String, Object> map = new HashMap<>();
         map.put("writer", writer);
@@ -1017,6 +1035,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		for(int i=0; i< b.size(); i++) {
 			map.put("approver" + (i+1), approvalMapper.getEmployeeName( b.get(i)));
 		}
+		
 		if(Apvkind.equals("0")) {
 			 model.addAttribute("approval", approvalMapper.getApvAppDetailByNo(apvNo));
 		} else {
@@ -1037,7 +1056,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 				
 				alev.setLeaveStart(formattedStartDate);
 				alev.setLeaveEnd(formattedEndDate);
-				 model.addAttribute("approval", alev);
+				model.addAttribute("approval", alev);
 		}
 		
 		 StringBuilder sb = new StringBuilder();
@@ -1047,9 +1066,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 			 sb.append(" ");
 		 }
 		
-		System.out.println("실행됐슘돠");
-	   System.out.println(approvalMapper.getAttachList(apvNo));
-		System.out.println("실행됐슘돠");
+	    System.out.println(approvalMapper.getAttachList(apvNo));
 		model.addAttribute("attachList", approvalMapper.getAttachList(apvNo));
 		model.addAttribute("title", title);
 		model.addAttribute("kind", Apvkind);
