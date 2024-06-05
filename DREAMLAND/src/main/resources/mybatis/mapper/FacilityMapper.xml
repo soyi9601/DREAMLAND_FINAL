@@ -58,7 +58,7 @@
   	, FILESYSTEM_NAME
   	, ORIGINAL_FILENAME
   ) VALUES (
-  		ATTACH_SEQ.NEXTVAL
+  		FACILITY_ATTACH_SEQ.NEXTVAL
   	, #{facilityNo}
   	, #{uploadPath}
   	, #{filesystemName}

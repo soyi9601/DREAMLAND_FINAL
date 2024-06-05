@@ -75,7 +75,7 @@
  
         <!-- Bootstrap Dark Table -->
         
-        <h5 class="card-header">티켓</h5>
+        <h5 class="card-header">상품등록</h5>
         
         <div>
         	<button type="submit" id="regbtn" class="btn-reg">저장</button>
@@ -90,10 +90,11 @@
                             <th>상품</th>
                             <th>가격</th>
                             <th>파트번호</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0" id="myTable">
-                    		<tr>
+                    <!--<tr>
                         		<td>11<input type="hidden" name="productSctCd" value="11"></td>
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>자유이용권(대)</strong>
                                 <input type="hidden" name="productNM" value="자유이용권대"></td>
@@ -485,7 +486,7 @@
                                 <input type="hidden" name="productNM" value="드림이인형"></td>
                             <td>10000<input type="hidden" name="price" value="10000"></td>
                             <td>5530<input type="hidden" name="deptNo" value="5530"></td>
-                        </tr> 
+                        </tr> --> 
                     </tbody>
                 </table>
             </div>
@@ -496,7 +497,7 @@
 
 <script>
 function myFunction() {
-		var addRowIndex =6;
+		var addRowIndex = 0;
 	  var table = document.getElementById("myTable");
 	  var row = table.insertRow(addRowIndex);
 	  var cell1 = row.insertCell(0);
