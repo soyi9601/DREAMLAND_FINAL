@@ -15,13 +15,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
   
   @Override
   public void addViewControllers(ViewControllerRegistry registry){
-    registry.addViewController("/").setViewName("index");
     registry.addViewController("/index").setViewName("index");
+    registry.addViewController("/").setViewName("index");
     registry.addViewController("/admin").setViewName("admin");
+    
     registry.addViewController("/user/mypage").setViewName("user/mypage");
     registry.addViewController("/user/modifyPassword").setViewName("user/modifyPassword");
+    registry.addViewController("/user/receiveBox").setViewName("message/receiveBox");
+    registry.addViewController("/user/sendBox").setViewName("message/sendBox");
+    registry.addViewController("/user/saveBox").setViewName("message/saveBox");
+    registry.addViewController("/user/removeBox").setViewName("message/removeBox");
+    registry.addViewController("/user/sendMessage").setViewName("message/sendMessage");
+    
     registry.addViewController("/manager").setViewName("manager");
-    registry.addViewController("/login").setViewName("login/loginPage");
+    registry.addViewController("/auth/error").setViewName("error/errorPage");
+    registry.addViewController("/loginPage").setViewName("login/loginPage");
+    registry.addViewController("/login/tempPassword").setViewName("login/temporaryPassword");
     registry.addViewController("/employee/add").setViewName("employee/addEmployee");
   }
 

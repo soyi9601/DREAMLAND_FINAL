@@ -158,11 +158,13 @@ const fnCheckName = () => {
       nameCheck = false;
       msgName.innerHTML = '이름은 20 바이트를 초과할 수 없습니다.';
       msgName.style.fontSize = '0.75rem';
+      msgName.style.fontWeight = 'bold';
       msgName.style.color = '#EE2B4B';
   } else if(!regName.test(name)) {
       nameCheck = false;
       msgName.innerHTML = '이름은 숫자와 특수문자가 포함될 수 없습니다.';
       msgName.style.fontSize = '0.75rem';
+      msgName.style.fontWeight = 'bold';
       msgName.style.color = '#EE2B4B';
   } else {
     nameCheck = true;
@@ -181,11 +183,13 @@ const fnCheckMobile = () => {
     mobileCheck = false;
     msgMobile.innerHTML = '휴대전화는 공백일 수 없습니다';
     msgMobile.style.fontSize = '0.75rem';
+    msgMobile.style.fontWeight = 'bold';
     msgMobile.style.color = '#EE2B4B';
   } else if(!regMobile.test(inpMobile.value)){
     mobileCheck = false;
     msgMobile.innerHTML = '전화번호 양식을 확인해주세요';
     msgMobile.style.fontSize = '0.75rem';
+    msgMobile.style.fontWeight = 'bold';
     msgMobile.style.color = '#EE2B4B';
   } else {
     mobileCheck = true;

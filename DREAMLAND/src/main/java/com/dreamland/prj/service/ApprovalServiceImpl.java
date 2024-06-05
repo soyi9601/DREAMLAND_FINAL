@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +44,7 @@ import com.dreamland.prj.utils.MyFileUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
 
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -51,127 +56,193 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private final MyAppPageUtils myPageUtils;
 	private final MyFileUtils myFileUtils;
 	
-
+	
 	@Override
  	public boolean registerAppletter(MultipartHttpServletRequest multipartRequest) {
-		
-		System.out.println("실행은 됐는데");
-		
-		// 사용자가 입력한 contents
+		System.out.println("실행은 됐는대");
+	    String apvNo2 = multipartRequest.getParameter("apvNo");
+        int insertNoticeCount;
+        int insertAttachCount;
+        List<MultipartFile> files;
+        
+    	// 사용자가 입력한 contents
 		String title =  multipartRequest.getParameter("title");
 	    String contents =  multipartRequest.getParameter("contents");
 	    
-	    System.out.println("밑에께");
 	    int temp  =  Integer.parseInt(multipartRequest.getParameter("temp"));
-	    System.out.println("위에께?");
-	    int approver  =  Integer.parseInt(approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver")));
-	    int approver2 =  Integer.parseInt(approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver2")));
-	    int approver3 =  Integer.parseInt(approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver3")));
-	    int approver4 =  Integer.parseInt(approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver4")));
-	    
-	    System.out.println(temp + "이게 안나온다고?");
-	    int [] approvers = {approver2, approver3, approver4};
-	    
+	    String approver22 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver2") );
+	    String approver33 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver3") );
+	    String approver44 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver4") );
+	    String approver  =  approvalMapper.getEmployeeNo(  multipartRequest.getParameter("approver"));
+	    String approver2 =  approver22 == null ? " " : approver22;
+	    String approver3 =  approver33 == null ? " " : approver33;
+	    String approver4 =  approver44 == null ? " " : approver44;
+	    String approvers = approver2 + " " + approver3 + " " + approver4;
+
 	    String referrer  =  multipartRequest.getParameter("referrer");
-
         String[] array = referrer.split(" ");
-        
-        ApprovalDto app = ApprovalDto.builder()
-				.empNo(approver)
-				.apvTitle(title)
-				.apvKinds("0")
-				.apvCheck(temp)
-				.build();
+        String[] array2 = approvers.split(" ");
 
-        int insertNoticeCount = approvalMapper.insertApproval(app);
-
-        int apvNo = approvalMapper.getApvNo();
-        // 배열 출력
-        if(!(array[0].equals(""))) {
-        for (String refer : array) {
-        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), apvNo);
-        }}
-	    	    
-	    // 뷰에서 전달된 userNo
-  
-	
-	   
-	    
-	    for(int i=0; i<approvers.length; i++) {
-	    	
-		    ApvWriterDto appwriter = ApvWriterDto.builder()
-					 .apvNo(apvNo)
-					 .writerList(i)
-					 .empNo(approvers[i])
-					  .build();
-		    approvalMapper.insertApvWriter(appwriter);
-		    
-	    	
-	    }
-
-		    AppletterDto appletter = AppletterDto.builder()
-		    		.apvNo(apvNo)
-                    .detail(contents)
-                  .build();
-		  approvalMapper.insertApvLetter(appletter);
-		
-		    // 첨부파일 처리하기
-			List<MultipartFile> files = multipartRequest.getFiles("files");
-			
-			int insertAttachCount;
-			if(files.get(0).getSize() == 0) {
-				insertAttachCount = 1; 
-			} else {
-				insertAttachCount = 0;
-			}
-			
-			for(MultipartFile multipartFile : files) {
+	    if(apvNo2.equals("") ) {
+	        ApprovalDto app = ApprovalDto.builder()
+					.empNo(Integer.parseInt(approver))
+					.apvTitle(title)
+					.apvKinds("0")
+					.apvCheck(temp)
+					.build();
+	        insertNoticeCount = approvalMapper.insertApproval(app);
+	        int apvNo = approvalMapper.getApvNo();
+	        if(!(array[0].equals(""))) {
+	        for (String refer : array) {
+	        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), apvNo);
+	        }}
+	        
+		    for(int i=0; i<array2.length; i++) {
+			    ApvWriterDto appwriter = ApvWriterDto.builder()
+						 .apvNo(apvNo)
+						 .writerList(i)
+						 .empNo(Integer.parseInt(array2[i]))
+						  .build();
+			    approvalMapper.insertApvWriter(appwriter);
+		    }
+			    AppletterDto appletter = AppletterDto.builder()
+			    		.apvNo(apvNo)
+	                    .detail(contents)
+	                  .build();
+			  approvalMapper.insertApvLetter(appletter);
+			    // 첨부파일 처리하기
+			   files = multipartRequest.getFiles("files");
 				
-				if(multipartFile != null && !multipartFile.isEmpty()) {
+				if(files.get(0).getSize() == 0) {
+					insertAttachCount = 1; 
+				} else {
+					insertAttachCount = 0;
+				}
+				
+				for(MultipartFile multipartFile : files) {
 					
-					String uploadPath = myFileUtils.getUploadPath();
-					File dir = new File(uploadPath);
-					System.out.println("====="+dir.getAbsolutePath());
-					
-					if(!dir.exists()) {
-						dir.mkdirs();
-					} 
-					
-					String originalFilename = multipartFile.getOriginalFilename();
-					String filesystemName = myFileUtils.getFilesystemName(originalFilename);
-					File file = new File(dir, filesystemName);
-					
-					try {
-						multipartFile.transferTo(file);
+					if(multipartFile != null && !multipartFile.isEmpty()) {
 						
-						// 썸네일 굳이 만들지 않을 것, 필요 없을듯
+						String uploadPath = myFileUtils.getUploadPath();
+						File dir = new File(uploadPath);
+						System.out.println("====="+dir.getAbsolutePath());
 						
-						ApvAttachDto attach = ApvAttachDto.builder()
-								                                    .apvNo(apvNo)
-																	.uploadPath(uploadPath)
-																	.filesystemName(filesystemName)
-																	.originalFilename(originalFilename)
-																.build();
+						if(!dir.exists()) {
+							dir.mkdirs();
+						} 
 						
-						insertAttachCount += approvalMapper.insertApvAttach(attach);
+						String originalFilename = multipartFile.getOriginalFilename();
+						String filesystemName = myFileUtils.getFilesystemName(originalFilename);
+						File file = new File(dir, filesystemName);
 						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+						try {
+							multipartFile.transferTo(file);
+							
+							// 썸네일 굳이 만들지 않을 것, 필요 없을듯
+							
+							ApvAttachDto attach = ApvAttachDto.builder()
+									                                    .apvNo(apvNo)
+																		.uploadPath(uploadPath)
+																		.filesystemName(filesystemName)
+																		.originalFilename(originalFilename)
+																	.build();
+							
+							insertAttachCount += approvalMapper.insertApvAttach(attach);
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+					}  // if 코드
+				
+				} // for multipartFile코드
+	    	
+	    	
+	    	
+	    	
+	    } else {
+	    	
+	    	 ApprovalDto app2 = ApprovalDto.builder().apvNo(Integer.parseInt(apvNo2))
+	    			 .apvCheck(temp)
+	    			 .apvTitle(title)
+	    			 .apvKinds("0")
+	    			 .build();
+	    	
+	    	
+	        insertNoticeCount = approvalMapper.modifyApproval(app2);
+	        approvalMapper.deleteApvRef(Integer.parseInt(apvNo2));
+	        
+	        if(!(array[0].equals(""))) {
+	        for (String refer : array) {
+	        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), Integer.parseInt(apvNo2));
+	        }}
+		    	    
+		
+		    for(int i=0; i<array2.length; i++) {
+			    approvalMapper.modifyApvWriter(Integer.parseInt(array2[i]), apvNo2, i);
+		    	
+		    }
+
+			  approvalMapper.modifyApvLetter(apvNo2,contents );
+			  System.out.println("실행4"); 
+			    // 첨부파일 처리하기
+			   files = multipartRequest.getFiles("files");
+				
+				
+				if(files.get(0).getSize() == 0) {
+					insertAttachCount = 1; 
+				} else {
+					insertAttachCount = 0;
+				}
+				
+				for(MultipartFile multipartFile : files) {
 					
-				}  // if 코드
-			
-			} // for multipartFile코드
+					if(multipartFile != null && !multipartFile.isEmpty()) {
+						
+						String uploadPath = myFileUtils.getUploadPath();
+						File dir = new File(uploadPath);
+						System.out.println("====="+dir.getAbsolutePath());
+						
+						if(!dir.exists()) {
+							dir.mkdirs();
+						} 
+						
+						String originalFilename = multipartFile.getOriginalFilename();
+						String filesystemName = myFileUtils.getFilesystemName(originalFilename);
+						File file = new File(dir, filesystemName);
+						
+						try {
+							multipartFile.transferTo(file);
+							
+							
+							ApvAttachDto attach = ApvAttachDto.builder()
+									                                    .apvNo(Integer.parseInt(apvNo2))
+																		.uploadPath(uploadPath)
+																		.filesystemName(filesystemName)
+																		.originalFilename(originalFilename)
+																	.build();
+							
+							insertAttachCount += approvalMapper.insertApvAttach(attach);
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}  
+				} 
+	    }
 			return (insertNoticeCount == 1) && (insertAttachCount == files.size());
 	}
 	
 	@Override
 	public boolean registerAppLeave(MultipartHttpServletRequest multipartRequest) {
-		
-		// 사용자가 입력한 contents
+		 String apvNo2 = multipartRequest.getParameter("apvNo");
+		 System.out.println(apvNo2 + "이게 안나와?");
+        int insertNoticeCount;
+        int insertAttachCount;
+        List<MultipartFile> files;
+        
 		String title =  multipartRequest.getParameter("title");
 		
-		// 사용자가 입력한 contents
 	    String contents =  multipartRequest.getParameter("contents");
 	    
 	    int temp  =  Integer.parseInt(multipartRequest.getParameter("temp"));
@@ -183,8 +254,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    int [] approvers = {approver2, approver3, approver4};
 	    
 	    String referrer  =  multipartRequest.getParameter("referrer");
-	    
         String[] array = referrer.split(" ");
+        
+        
+	    // 뷰에서 전달된 userNo
+	    String leavekind = multipartRequest.getParameter("leavekind");
+	    String leavestart = multipartRequest.getParameter("leavestart");
+	    String leaveend = multipartRequest.getParameter("leaveend");
+	   
         
 	    ApprovalDto app = ApprovalDto.builder()
 				.empNo(approver)
@@ -192,26 +269,24 @@ public class ApprovalServiceImpl implements ApprovalService {
 				.apvKinds("1")
 				.apvCheck(temp)
 				.build();
-	    System.out.println(1231241);
-	    int insertNoticeCount = approvalMapper.insertApproval(app);
-	   
+		
+		System.out.println("실행1");
+        if(apvNo2.equals("") ) {
 
+	    insertNoticeCount = approvalMapper.insertApproval(app);
+	   
+		System.out.println("실행2");
         int apvNo = approvalMapper.getApvNo();
-        // 배열 출력
+        
+        
+        if(!(array[0].equals(""))) {
         for (String refer : array) {
-        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer),apvNo);
-        }
-	    
-	    
-	    // 뷰에서 전달된 userNo
-	    String leavekind = multipartRequest.getParameter("leavekind");
-	    String leavestart = multipartRequest.getParameter("leavestart");
-	    String leaveend = multipartRequest.getParameter("leaveend");
-	   
-	    
-	    
-
-	    
+        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), apvNo);
+        }}
+        
+        
+        
+        System.out.println("실행3");
 	    for(int i=0; i<approvers.length; i++) {
 	    	
 		    ApvWriterDto appwriter = ApvWriterDto.builder()
@@ -221,9 +296,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 					  .build();
 		    approvalMapper.insertApvWriter(appwriter);
 	    	
+		    System.out.println("포문 " + i );
 	    }
-
 	    
+
 	    AppleaveDto appleave = AppleaveDto.builder()
 	    		.apvNo(apvNo)
 	    		.empNo(approver)
@@ -232,13 +308,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 				.leaveEnd(leaveend)
 				.detail(contents)
 				.build();
-	    	
 	    approvalMapper.insertApvLeave(appleave);	
+	    System.out.println("실행5");
 	    
-		// 첨부파일 처리하기
-		List<MultipartFile> files = multipartRequest.getFiles("files");
+		 files = multipartRequest.getFiles("files");
 		
-		int insertAttachCount;
 		if(files.get(0).getSize() == 0) {
 			insertAttachCount = 1; 
 		} else {
@@ -264,8 +338,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 				try {
 					multipartFile.transferTo(file);
 					
-					// 썸네일 굳이 만들지 않을 것, 필요 없을듯
-					
 					ApvAttachDto attach = ApvAttachDto.builder()
 							                                    .apvNo(apvNo)
 																.uploadPath(uploadPath)
@@ -279,9 +351,81 @@ public class ApprovalServiceImpl implements ApprovalService {
 					e.printStackTrace();
 				}
 				
-			}  // if 코드
-		
-		} // for multipartFile
+			}  
+		}
+		} else {
+			 ApprovalDto app2 = ApprovalDto.builder().apvNo(Integer.parseInt(apvNo2))
+	    			 .apvCheck(temp)
+	    			 .apvTitle(title)
+	    			 .apvKinds("1")
+	    			 .build();
+	    	
+	    	
+		   insertNoticeCount = approvalMapper.modifyApproval(app2);
+	        approvalMapper.deleteApvRef(Integer.parseInt(apvNo2));
+	 	   
+	        if(!(array[0].equals(""))) {
+	        	
+	        for (String refer : array) {
+	        	approvalMapper.insertApvRef(approvalMapper.getEmployeeNo(refer), Integer.parseInt(apvNo2));
+	        }}
+		    	    
+		    for(int i=0; i<approvers.length; i++) {
+			    approvalMapper.modifyApvWriter(approvers[i], apvNo2, i);
+		    	
+		    }
+		    
+		    AppleaveDto appleave = AppleaveDto.builder()
+		    		.apvNo(Integer.parseInt(apvNo2))
+					.leaveClassify(leavekind)
+					.leaveStart(leavestart)
+					.leaveEnd(leaveend)
+					.detail(contents)
+					.build();
+		    	
+		    approvalMapper.modifyApvLeave(appleave);	
+		    
+			// 첨부파일 처리하기
+			 files = multipartRequest.getFiles("files");
+			
+			if(files.get(0).getSize() == 0) {
+				insertAttachCount = 1; 
+			} else {
+				insertAttachCount = 0;
+			}
+			
+			for(MultipartFile multipartFile : files) {
+				
+				if(multipartFile != null && !multipartFile.isEmpty()) {
+					
+					String uploadPath = myFileUtils.getUploadPath();
+					File dir = new File(uploadPath);
+					System.out.println("====="+dir.getAbsolutePath());
+					
+					if(!dir.exists()) {
+						dir.mkdirs();
+					} 
+					String originalFilename = multipartFile.getOriginalFilename();
+					String filesystemName = myFileUtils.getFilesystemName(originalFilename);
+					File file = new File(dir, filesystemName);
+					
+					try {
+						multipartFile.transferTo(file);
+						ApvAttachDto attach = ApvAttachDto.builder()
+								                                    .apvNo(Integer.parseInt(apvNo2))
+																	.uploadPath(uploadPath)
+																	.filesystemName(filesystemName)
+																	.originalFilename(originalFilename)
+																.build();
+						
+						insertAttachCount += approvalMapper.insertApvAttach(attach);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 		return (insertNoticeCount == 1) && (insertAttachCount == files.size());
 	}
 
@@ -459,77 +603,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 	}
     
-	public void loadAppByNo(HttpServletRequest request, Model model) {
-	    
-		int apvNo = Integer.parseInt(request.getParameter("apvNo"));
-		String Apvstate = request.getParameter("kind");
-	    ApprovalDto a = approvalMapper.getApvDetailByNo(apvNo);
-	    String title = a.getApvTitle();
-	    String Apvkind = a.getApvKinds();
-	    int ApvCheck = a.getApvCheck();
-	    List<String> b = approvalMapper.getApprover(apvNo);
-	    
-	    String writer = approvalMapper.getEmployeeName(a.getEmpNo()+"");
-	    String approver1 =approvalMapper.getEmployeeName(b.get(0));
-	    String approver2 =approvalMapper.getEmployeeName(b.get(1));
-	    String approver3 = approvalMapper.getEmployeeName(b.get(2));
-	    
-		Map<String, Object> map = Map.of("writer", writer
-				, "approver1",approver1
-				, "approver2", approver2
-				, "approver3", approver3);
-		if(ApvCheck == 2) {
-			 ApvWriterDto RempNo = approvalMapper.getReturnApprover(apvNo);
-			 model.addAttribute("reject", 1);
-			 model.addAttribute("returner", approvalMapper.getEmployeeName(RempNo.getEmpNo()+""));
-			 model.addAttribute("returnReason", RempNo.getReturnReason());
-		} else if(ApvCheck == 3) {
-			 model.addAttribute("reject", 2);
-			 
-		} else {
-			 model.addAttribute("reject", 0);
-		}
-		
-		if(Apvkind.equals("0")) {
-			 model.addAttribute("approval", approvalMapper.getApvAppDetailByNo(apvNo));
-		} else {
-			 model.addAttribute("approval", approvalMapper.getApvLeaveDetailByNo(apvNo));
-		}
-		System.out.println("실행됐슘돠");
-	   System.out.println(approvalMapper.getAttachList(apvNo));
-		System.out.println("실행됐슘돠");
-		model.addAttribute("attachList", approvalMapper.getAttachList(apvNo));
-		model.addAttribute("title", title);
-		model.addAttribute("kind", Apvkind);
-		model.addAttribute("kind2", Apvstate);
-	    model.addAttribute("appovers", map);
-	    
-	}
-
-	@Override
-	public int apvApprove(HttpServletRequest request) {
-		int apvNo = Integer.parseInt(request.getParameter("apvNo"));
-		int flag = 0;
-		String empNo = request.getParameter("empNo");
-		String returnReason = request.getParameter("rejectedReason");
-		approvalMapper.updateApprover(apvNo,empNo,returnReason);
-		
-
-		if(returnReason.equals("0")) {
-			List<String> b = approvalMapper.getApprovers(apvNo);
-		 	for(int i=0; i< b.size(); i++) {
-		 		if (b.get(i).equals("100")) {flag ++;}
-		    }
-		 	if(flag == 0) {
-		 		approvalMapper.updateApproval(apvNo,1);
-			    approvalMapper.updateApvLeave(apvNo);
-		 	}
-		
-		} else {
-		    approvalMapper.updateApproval(apvNo, 2);
-		}
-		return 0;
-	}
 	
 	@Override
 	public ResponseEntity<Map<String, Object>> loadtotalMyAppList(HttpServletRequest request) {
@@ -724,6 +797,7 @@ public class ApprovalServiceImpl implements ApprovalService {
               , "page", page), HttpStatus.OK);
 	}
 	
+
 	@Override
 	public ResponseEntity<Map<String, Object>> loadtotalMyReferAppList(HttpServletRequest request) {
 		
@@ -881,6 +955,7 @@ public class ApprovalServiceImpl implements ApprovalService {
              , "page", page), HttpStatus.OK);
 	}
 
+
 	@Override
 	public ResponseEntity<Resource> download(HttpServletRequest request) {
 
@@ -934,20 +1009,43 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    List<String> b = approvalMapper.getApprover(apvNo);
 	    
 	    String writer = approvalMapper.getEmployeeName(a.getEmpNo()+"");
-	    String approver1 =approvalMapper.getEmployeeName(b.get(0));
-	    String approver2 =approvalMapper.getEmployeeName(b.get(1));
-	    String approver3 = approvalMapper.getEmployeeName(b.get(2));
+		 
 	    
-		Map<String, Object> map = Map.of("writer", writer
-				, "approver1",approver1
-				, "approver2", approver2
-				, "approver3", approver3);
-		
+        Map<String, Object> map = new HashMap<>();
+        map.put("writer", writer);
+        
+		for(int i=0; i< b.size(); i++) {
+			map.put("approver" + (i+1), approvalMapper.getEmployeeName( b.get(i)));
+		}
 		if(Apvkind.equals("0")) {
 			 model.addAttribute("approval", approvalMapper.getApvAppDetailByNo(apvNo));
 		} else {
-			 model.addAttribute("approval", approvalMapper.getApvLeaveDetailByNo(apvNo));
+
+				DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+				AppleaveDto alev = approvalMapper.getApvLeaveDetailByNo(apvNo);
+				String LeaveStart = alev.getLeaveStart();
+				String LeaveEnd = alev.getLeaveEnd();
+				
+				LocalDateTime RLeaveStart = LocalDateTime.parse(LeaveStart, inputFormatter);
+				LocalDateTime RLeaveEnd = LocalDateTime.parse(LeaveEnd, inputFormatter);
+				LocalDate Startdate = RLeaveStart.toLocalDate();
+				LocalDate Enddate = RLeaveEnd.toLocalDate();
+				String formattedStartDate = Startdate.format(outputFormatter);
+				String formattedEndDate = Enddate.format(outputFormatter);
+				
+				alev.setLeaveStart(formattedStartDate);
+				alev.setLeaveEnd(formattedEndDate);
+				 model.addAttribute("approval", alev);
 		}
+		
+		 StringBuilder sb = new StringBuilder();
+		 List<String> referrer = approvalMapper.getReferrer(apvNo);
+		 for(String refer : referrer) {
+			 sb.append(approvalMapper.getEmployeeName(refer));
+			 sb.append(" ");
+		 }
 		
 		System.out.println("실행됐슘돠");
 	   System.out.println(approvalMapper.getAttachList(apvNo));
@@ -956,11 +1054,128 @@ public class ApprovalServiceImpl implements ApprovalService {
 		model.addAttribute("title", title);
 		model.addAttribute("kind", Apvkind);
 		model.addAttribute("kind2", Apvstate);
+		model.addAttribute("referrer", sb.toString());
 	    model.addAttribute("appovers", map);
     	
     }
 
+    public void loadAppByNo(HttpServletRequest request, Model model) {
+	    
+		int apvNo = Integer.parseInt(request.getParameter("apvNo"));
+		String Apvstate = request.getParameter("kind");
+	    ApprovalDto a = approvalMapper.getApvDetailByNo(apvNo);
+	    String title = a.getApvTitle();
+	    String Apvkind = a.getApvKinds();
+	    int ApvCheck = a.getApvCheck();
+	    List<String> b = approvalMapper.getApprover(apvNo);
+
+		
+		 
+	    String writer = approvalMapper.getEmployeeName(a.getEmpNo()+"");
+	    
+        Map<String, Object> map = new HashMap<>();
+        map.put("writer", writer);
+        
+		for(int i=0; i< b.size(); i++) {
+			map.put("approver" + (i+1), approvalMapper.getEmployeeName( b.get(i)));
+		}
+		
+		if(ApvCheck == 2) {
+			 ApvWriterDto RempNo = approvalMapper.getReturnApprover(apvNo);
+			 model.addAttribute("reject", 1);
+			 model.addAttribute("returner", approvalMapper.getEmployeeName(RempNo.getEmpNo()+""));
+			 model.addAttribute("returnReason", RempNo.getReturnReason());
+		} else if(ApvCheck == 3) {
+			 model.addAttribute("reject", 2);
+			 
+		} else {
+			 model.addAttribute("reject", 0);
+		}
+		
+		
+		if(Apvkind.equals("0")) {
+			 model.addAttribute("approval", approvalMapper.getApvAppDetailByNo(apvNo));
+		} else {
+			DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+			AppleaveDto alev = approvalMapper.getApvLeaveDetailByNo(apvNo);
+			String LeaveStart = alev.getLeaveStart();
+			String LeaveEnd = alev.getLeaveEnd();
+			
+			LocalDateTime RLeaveStart = LocalDateTime.parse(LeaveStart, inputFormatter);
+			LocalDateTime RLeaveEnd = LocalDateTime.parse(LeaveEnd, inputFormatter);
+			LocalDate Startdate = RLeaveStart.toLocalDate();
+			LocalDate Enddate = RLeaveEnd.toLocalDate();
+			String formattedStartDate = Startdate.format(outputFormatter);
+			String formattedEndDate = Enddate.format(outputFormatter);
+			
+			alev.setLeaveStart(formattedStartDate);
+			alev.setLeaveEnd(formattedEndDate);
+			 model.addAttribute("approval", alev);
+		}
+		
+
+		 StringBuilder sb = new StringBuilder();
+		 List<String> referrer = approvalMapper.getReferrer(apvNo);
+		 for(String refer : referrer) {
+			 sb.append(approvalMapper.getEmployeeName(refer));
+			 sb.append(" ");
+		 }
+	    System.out.println(approvalMapper.getAttachList(apvNo));
+		model.addAttribute("attachList", approvalMapper.getAttachList(apvNo));
+		model.addAttribute("title", title);
+		model.addAttribute("kind", Apvkind);
+		model.addAttribute("kind2", Apvstate);
+		model.addAttribute("referrer", sb.toString());
+	    model.addAttribute("appovers", map);
+	    
+	}
+
+	@Override
+	public int apvApprove(HttpServletRequest request) {
+		int apvNo = Integer.parseInt(request.getParameter("apvNo"));
+		int flag = 0;
+		String empNo = request.getParameter("empNo");
+		String returnReason = request.getParameter("rejectedReason");
+		approvalMapper.updateApprover(apvNo,empNo,returnReason);
+		
+
+		if(returnReason.equals("0")) {
+			List<String> b = approvalMapper.getApprovers(apvNo);
+		 	for(int i=0; i< b.size(); i++) {
+		 		if (b.get(i).equals("100")) {flag ++;}
+		    }
+		 	if(flag == 0) {
+		 		approvalMapper.updateApproval(apvNo,1);
+			    approvalMapper.updateApvLeave(apvNo);
+		 	}
+		
+		} else {
+		    approvalMapper.updateApproval(apvNo, 2);
+		}
+		return 0;
+	}
+	
+	@Override
+	public boolean  deleteAttach(HttpServletRequest request) {
+		String apvNo    = request.getParameter("apvNo");
+		String attachNo = request.getParameter("attachNo");
+		return approvalMapper.deleteAttach(apvNo, attachNo) > 0;
+	}
+
+	@Override
+	public int apvRevoke(HttpServletRequest request) {
+		String apvNo = request.getParameter("apvNo");
+		String apvKind = request.getParameter("apvKind");
+		approvalMapper.revokeApproval(apvNo);
+		
+		if(apvKind.equals("1")) {
+		approvalMapper.revokeApvLeave(apvNo);}
+		
+		return 0;
+	} 
+	
 	
 }
-	
 	

@@ -33,10 +33,12 @@ const fnCheckPassword = () => {
   if(!passwordCheck){
     msgPw.innerHTML = '비밀번호 4~12자, 영문/숫자/특수문자 중 2개 이상 포함';
     msgPw.style.fontSize = '0.75rem';
+    msgPw.style.fontWeight = 'bold';
     msgPw.style.color = '#EE2B4B';
   } else {
     msgPw.innerHTML = '사용 가능한 비밀번호입니다.';
     msgPw.style.fontSize = '0.75rem';
+    msgPw.style.fontWeight = 'bold';
     msgPw.style.color = '#BDBDBD';
   }
 }
@@ -52,6 +54,7 @@ const fnConfirmPassword = () => {
   if(!passwordConfirm) {
     msgPw2.innerHTML = '새로운 비밀번호와 일치하지 않습니다.';
     msgPw2.style.fontSize = '0.75rem';
+    msgPw2.style.fontWeight = 'bold';
     msgPw2.style.color = '#EE2B4B';
   } else {
     msgPw2.innerHTML = '';
@@ -88,14 +91,6 @@ const fnModifyPassword = () =>{
     
   });
 
-}
-
-// 에러메시지 반환
-const fnInsertResult = () => {
-  const msg = '${msg}';
-  if(msg !== '') {
-    alert(msg);
-  }
 }
 
 /************************** 함수 호출 **************************/
