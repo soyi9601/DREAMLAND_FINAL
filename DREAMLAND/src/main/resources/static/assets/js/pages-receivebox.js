@@ -49,7 +49,7 @@ const fnGetReceiveMessage = () => {
         receiveList.empty();
       }
       if (resData.messageList.length === 0) {
-        receiveList.append('<tr><td>받은 쪽지함이 없습니다</td></tr>');
+        receiveList.append('<tr><td>받은 쪽지가 없습니다</td></tr>');
       } else {
         $.each(resData.messageList, (i, msg) => {         
           let str = '<tr><td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1" /></td>';
