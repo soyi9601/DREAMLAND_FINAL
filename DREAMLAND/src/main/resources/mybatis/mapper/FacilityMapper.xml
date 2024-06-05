@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatiS.org//DTD Mapper 3.0//EN"
+  "https://mybatiS.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.dreamland.prj.mapper.FacilityMapper">
+  
+  <resultMap type="FacilityDto" id="FacilityMap">
+  	<id property="facilityNo" column="FACILITY_NO"/>
+  	<result property="facilityName" column="FACILITY_NAME"/>
+  	<result property="management" column="MANAGEMENT"/>
+  	<result property="facilityDate" column="FACILITY_DATE"/>
+  	<result property="remarks" column="REMARKS"/>
+  	<association property="department" javaType="DepartmentDto">
+  		<id property="deptNo" column="DEPT_NO"/>
+  	</association>
+  </resultMap>
+  
+  <resultMap type="FacilityAttachDto" id="FacilityAttachMap">
+  	<id property="attachNo" column="ATTACH_NO"/>
+  	<result property="uploadPath" column="UPLOAD_PATH"/>
+  	<result property="filesystemName" column="FILESYSTEM_NAME"/>
+  	<result property="originalFilename" column="ORIGINAL_FILENAME"/>
+  	<association property="Facility" javaType="FacilityDto">
+  		<id property="FacilityNo" column="FACILITY_NO"/>
+  	</association>
+  </resultMap>
+  
+  <insert id="insertFacility"
+  				parameterType="FacilityDto">
+  	<selectKey order="BEFORE" keyProperty="facilityNo" resultType="int">
+  		SELECT FACILITY_SEQ.NEXTVAL
+  		  FROM DUAL
+  	</selectKey>
+  	INSERT INTO FACILITY(
+  		FACILITY_NO
+  	, DEPT_NO
+  	, FACILITY_NAME
+  	, MANAGEMENT
+  	, FACILITY_DATE
+  	, REMARKS
+  	) VALUES (
+  		#{facilityNo}
+  	, #{department.deptNo}
+  	, #{facilityName}
+  	, 0
+  	, CURRENT_DATE
+  	, #{remarks}
+  	)
+  </insert>
+  
+  <insert id="insertFacilityAttach"
+  				parameterType="FacilityAttachDto">
+  	INSERT INTO FACILITY_ATTACH (
+  		ATTACH_NO
+  	, FACILITY_NO
+  	, UPLOAD_PATH
+  	, FILESYSTEM_NAME
+  	, ORIGINAL_FILENAME
+  ) VALUES (
+  		ATTACH_SEQ.NEXTVAL
+  	, #{facilityNo}
+  	, #{uploadPath}
+  	, #{filesystemName}
+  	, #{originalFilename}
+  	)			
+  </insert>
+  
+  <select id="getFacilityCount">
+  	SELECT COUNT(*)
+  		FROM FACILITY
+  </select>
+  
+  <select id="getFacilityList"
+  				parameterType="Map"
+  				resultMap="FacilityMap">
+  	SELECT FACILITY_NO, FACILITY_NAME, MANAGEMENT, FACILITY_DATE, REMARKS
+  	  	 , DEPT_NO, DEPT_NAME
+  	  	 , ATTACH_COUNT
+    FROM (SELECT ROW_NUMBER() OVER (ORDER BY
+    															 CASE WHEN F.MANAGEMENT = 1 THEN 0 ELSE 1 END,
+    															 FACILITY_NO ${sort}) AS RN
+    				, F.FACILITY_NO, F.FACILITY_NAME, F.MANAGEMENT, F.FACILITY_DATE, F.REMARKS
+    				, D.DEPT_NO, D.DEPT_NAME
+    				, (SELECT COUNT(*)
+    					 FROM FACILITY_ATTACH ATC
+    					 WHERE F.FACILITY_NO = ATC.FACILITY_NO) AS ATTACH_COUNT	
+    	FROM DEPARTMENT D INNER JOIN FACILITY F
+    		ON D.DEPT_NO = F.DEPT_NO
+  )
+  WHERE RN BETWEEN #{begin} AND #{end}	
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </mapper>
