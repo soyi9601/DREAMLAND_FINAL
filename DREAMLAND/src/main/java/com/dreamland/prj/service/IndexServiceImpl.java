@@ -33,7 +33,7 @@ public class IndexServiceImpl implements IndexService {
     return indexMapper.getUser(email);
   }
   
-  /*
+  
   // 근태관리
   @Override
   public void workIn(int empNo) {
@@ -49,7 +49,7 @@ public class IndexServiceImpl implements IndexService {
                      .build();
     indexMapper.updateWorkOut(work);    
   }
-  */
+  
   
   @Override
   public ResponseEntity<Map<String, Object>> getNoticeList(HttpServletRequest request) {

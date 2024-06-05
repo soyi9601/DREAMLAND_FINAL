@@ -19,6 +19,6 @@ public class WorkDto {
   private Date workDate; 
   private Timestamp  workIn, workOut;
   private String workState, lateYn;
- // private EmployeeDto employee;
+  private EmployeeDto employee;
   
 }
