@@ -1,10 +1,12 @@
 package com.dreamland.prj.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.service.DepartService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -97,11 +100,25 @@ public class DepartController {
     return "depart/addDepart";
   }
   
-  //부서 등록 페이지 이동
-   @GetMapping("/addDepart.page")
-   public String addDepart() {
-     return "depart/addDepart";
-   }
+  // 유저 - 조직도 페이지 이동
+  
+  @GetMapping("/depart.page")
+  public String departUser(Model model) {
+    List<Map<String, Object>> orgChartData = departService.getOrgChartData();
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      String orgChartDataJson = objectMapper.writeValueAsString(orgChartData);      
+      model.addAttribute("orgChartData", orgChartDataJson);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+    return "depart/departUser";
+  }
+  
+  
+  
+  
   
   
   

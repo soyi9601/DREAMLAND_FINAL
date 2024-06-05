@@ -119,6 +119,7 @@ $(document).ready(function() {
             $('#jsTree').jstree(true).delete_node(empNo);
           }
         }).catch(error => console.error('Error deleting node:', error));
+
     };
     
     const deleteDepartNode = (deptNo) => {
@@ -136,6 +137,7 @@ $(document).ready(function() {
             $('#jsTree').jstree(true).delete_node(deptNo);
           }
         }).catch(error => console.error('Error deleting node:', error));
+
     }
   };    
 

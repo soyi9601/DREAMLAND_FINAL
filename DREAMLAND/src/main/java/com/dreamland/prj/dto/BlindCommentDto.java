@@ -1,6 +1,8 @@
 package com.dreamland.prj.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +15,6 @@ import lombok.NoArgsConstructor;
 
 public class BlindCommentDto {
 	private int commentNo, depth, groupNo, blindNo;
-	private String contents, delYn;
-	private Date createDt;
+	private String contents, delYn, commentPassword;
+	private Timestamp createDt;
 }

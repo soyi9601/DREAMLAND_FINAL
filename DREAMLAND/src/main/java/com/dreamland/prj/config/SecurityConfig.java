@@ -40,7 +40,7 @@ public class SecurityConfig {
             .requestMatchers("/login").permitAll()
             .requestMatchers("/user/**").authenticated()  // 인증만 되면 들어갈 수 있는 주소
             .requestMatchers("/manager/**", "/").hasAnyRole("ADMIN", "USER")
-            //.requestMatchers("/employee/**").hasRole("ADMIN")
+            .requestMatchers("/employee/**").hasRole("ADMIN")
             //.requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().permitAll()) 
         .formLogin(formLogin -> formLogin

@@ -48,7 +48,7 @@
      WHERE EMP_NO = #{empNo}     
   </update>
   
-  <select id="hasEmployees" resultType="int">
+  <select id="hasEmployee" resultType="int">
     SELECT COUNT(*) 
       FROM EMPLOYEE 
      WHERE DEPT_NO = #{deptNo} AND RESIGN_DATE IS NULL
@@ -101,5 +101,6 @@
       , #{deptName}
     ) 
   </insert>
+  
 
 </mapper> 

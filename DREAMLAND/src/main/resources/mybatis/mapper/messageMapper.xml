@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreamland.prj.mapper.MessageMapper">
+
+  <select id="getEmployeeList"
+          parameterType="map"
+          resultType="EmployeeDto">
+	SELECT E.EMP_NO, E.EMP_NAME, E.EMAIL, E.MOBILE, E.ROLE, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
+	  FROM EMPLOYEE E
+	  JOIN DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
+	  JOIN POSITION P ON E.POS_NO = P.POS_NO
+	 WHERE E.EMP_NAME LIKE '%' || #{value} || '%'
+  </select>
+
+  <insert id="sendMessage"
+          parameterType="MessageDto">
+    <selectKey order="BEFORE" keyProperty="msgNo" resultType="int">
+      SELECT MSG_SEQ.NEXTVAL
+        FROM DUAL
+    </selectKey>
+    INSERT INTO MESSAGE (
+        MSG_NO
+      , MSG_CONTENTS
+      , READ_YN
+      , DEL_YN
+      , STAR_YN
+      , MSG_CREATE_DT
+      , MSG_SENDER
+      , MSG_RECEIVER
+    ) VALUES (
+        #{msgNo}
+      , #{contents}
+      , 'N'
+      , 'N'
+      , 'N'
+      , CURRENT_DATE
+      , #{sendNo}
+      , #{recNo}
+    )  
+  </insert>
+  
+  <select id="getDeptNameByDeptNo"
+          parameterType="int"
+          resultType="String">
+    SELECT DEPT_NAME
+      FROM DEPARTMENT
+     WHERE DEPT_NO = #{deptNo}
+  </select>
+  
+  <select id="getPosNameByPosNo"
+          parameterType="int"
+          resultType="String">
+    SELECT POS_NAME
+      FROM POSITION
+     WHERE POS_NO = #{posNo}
+  </select>
+  
+  <update id="updateUserInfo"
+          parameterType="EmployeeDto">
+    UPDATE EMPLOYEE
+       SET EMP_NAME = #{empName}
+         , BIRTH = #{birth}
+         , MOBILE = #{mobile}
+         , POSTCODE = #{postcode}
+         , ADDRESS = #{address}
+         , DETAIL_ADDRESS = #{detailAddress}
+         , PROFILE_PATH = #{profilePath}
+         , SIGN_PATH = #{signPath}
+     WHERE EMAIL = #{email}
+  </update>
+
+
+  <update id="updatePassword"
+          parameterType="String">
+    UPDATE EMPLOYEE
+       SET PASSWORD = #{changePw}
+     WHERE EMAIL = #{email}
+  </update>
+
+</mapper>
