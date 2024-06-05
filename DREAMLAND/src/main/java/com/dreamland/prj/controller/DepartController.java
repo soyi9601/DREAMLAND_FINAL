@@ -51,7 +51,7 @@ public class DepartController {
   @PostMapping("/removeDepart")
   public ResponseEntity<?> deleteDepart(@RequestBody DepartmentDto departmentDto) {
     int deptNo = departmentDto.getDeptNo();
-    if(departService.hasEmployees(deptNo)) {
+    if(departService.hasEmployee(deptNo)) {
       return ResponseEntity.ok().body("{\"message\": \"부서에 직원이 있습니다. 다시 확인 부탁드립니다.\"}");
     }
     departService.removeDepart(departmentDto);
