@@ -5,7 +5,7 @@
 
 <mapper namespace="com.dreamland.prj.mapper.EmployeeMapper">
 
-  <select id="getEmployeeByMap"
+  <select id="getEmployeeByEmail"
           parameterType="String"
           resultType="EmployeeDto">
     SELECT EMP_NO, EMP_NAME, BIRTH, ENTER_DATE, EMAIL, RESIGN_DATE, MOBILE

@@ -13,8 +13,9 @@ import lombok.NoArgsConstructor;
 
 public class FacilityDto {
 	
-	private int    facilityNo, deptNo, menagement;
+	private int    facilityNo, management;
 	private String facilityName, remarks;
 	private Date 	 facilityDate;
+	private DepartmentDto department; 
 	
 }

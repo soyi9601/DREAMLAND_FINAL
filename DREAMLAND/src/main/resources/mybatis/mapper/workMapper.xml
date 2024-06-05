@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.dreamland.prj.mapper.WorkMapper">
+        
+    <resultMap id="worMap" type="WorkDto">
+      <id property="workNo" column="WORK_NO"/>
+      <result property="workDate" column="WORK_DATE"/>
+      <result property="workIn" column="WORK_IN"/>
+      <result property="workOut" column="WORK_OUT"/>
+      <result property="workTotalTime" column="WORK_TOTAL_TIME"/>
+      <result property="workState" column="WORK_STATE"/>
+      <result property="lateYn" column="LATE_YN"/>
+      <association property="employee" javaType="EmployeeDto">
+        <id property="empNo" column="EMP_NO"/>
+        <result property="empName" column="EMP_NAME"/>
+        <result property="enterDate" column="ENTER_DATE"/>
+      </association>
+    </resultMap>
+    
+    <!-- 결근리스트 조회 -->
+    <!-- <select id="getAbsenceList" resultType="WorkDto">
+        SELECT * FROM WORK
+        WHERE WORK_DATE = #{workDate}
+          AND WORK_IN IS NULL
+    </select> -->
+    
+    <update id="updateLate">
+      UPDATE WORK
+      SET LATE_YN = 'Y'
+      WHERE WORK_DATE = #{workDate}
+        AND WORK_IN > TO_DATE('09:00:00', 'HH24:MI:SS')
+        AND LATE_YN = 'N'
+    </update>
+    
+    <update id="updateAbsence">
+      UPDATE WORK
+      SET WORK_STATE = '결근'
+      WHERE WORK_DATE = #{workDate}
+        AND WORK_IN IS NULL
+        AND WORK_STATE IS NULL
+    </update>
+            
+    <select id="getLateCount" 
+            parameterType="map" 
+            resultType="int">
+      SELECT COUNT(*) 
+      FROM WORK 
+      WHERE EMP_NO = #{empNo} 
+        AND LATE_YN = 'Y'
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getEarlyLeaveCount" 
+            parameterType="map" 
+            resultType="int">
+      SELECT COUNT(*) 
+      FROM WORK 
+      WHERE EMP_NO = #{empNo} 
+        AND WORK_STATE = '20'
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getAbsenceCount" 
+            parameterType="map" 
+            resultType="int">
+      SELECT COUNT(*) 
+      FROM WORK 
+      WHERE EMP_NO = #{empNo} 
+        AND WORK_STATE = '50'
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getTotalWorkDays" 
+            parameterType="map" 
+            resultType="int">
+      SELECT COUNT(*) 
+      FROM WORK 
+      WHERE EMP_NO = #{empNo}
+        AND WORK_STATE IN ('10', '20') <!-- 정상출근, 조기퇴근 -->
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getTotalWorkHours" 
+            parameterType="map" 
+            resultType="int">
+      SELECT SUM(WORK_TOTAL_TIME)
+      FROM WORK 
+      WHERE EMP_NO = #{empNo}
+        AND WORK_STATE IN ('10', '20') 
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getAvgWorkHours" 
+            parameterType="map" 
+            resultType="double">
+      SELECT AVG(WORK_TOTAL_TIME)
+      FROM WORK 
+      WHERE EMP_NO = #{empNo}
+        AND WORK_STATE IN ('10', '20') <!-- 정상출근, 조기퇴근 -->
+        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
+    </select>
+    
+    <select id="getWorkListByPeriod"
+            parameterType="map"
+            resultMap="worMap">
+	    SELECT W.WORK_NO, W.WORK_DATE, W.WORK_IN, W.WORK_OUT, W.WORK_TOTAL_TIME, W.WORK_STATE, W.LATE_YN,
+	           E.EMP_NO, E.EMP_NAME, E.ENTER_DATE
+	      FROM WORK W
+	      JOIN EMPLOYEE E ON W.EMP_NO = E.EMP_NO
+	     WHERE W.EMP_NO = #{empNo}
+	       AND W.WORK_DATE BETWEEN #{startDate} AND #{endDate}
+	     ORDER BY W.WORK_DATE     
+    </select>
+    
+</mapper>
+ 

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatiS.org//DTD Mapper 3.0//EN"
+  "https://mybatiS.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.dreamland.prj.mapper.SalesMapper">
+
+  <resultMap type="SalesDto" id="SalesMap">
+    <id property="salesNo" column="SALES_NO"/>
+    <result property="sales_date" column="SALES_DATE"/>
+    <result property="qty" column="QTY"/>
+    <association property="department" javaType="DepartmentDto">
+      <id property="deptNo" column="DEPT_NO"/>
+    </association>
+    <association property="product" javaType="ProductDto">
+      <id property="productNo" column="PRODUCT_NO"/>
+    </association>
+  </resultMap>
+
+  <resultMap type="ProductDto" id="ProductMap">
+    <id property="productNo" column="PRODUCT_NO"/>
+    <result property="productSctCd" column="PRODUCT_SCT_CD"/>
+    <result property="productNM" column="PRODUCT_NM"/>
+    <result property="price" column="PRICE"/>
+    <association property="department" javaType="DepartmentDto">
+      <id property="deptNo" column="DEPT_NO"/>
+    </association>
+  </resultMap>
+  
+  <resultMap type="java.util.HashMap" id="PartSalesResultMap">
+ 		<result property="deptNo" column="DEPT_NO"/>
+ 		<result property="deptName" column="DEPT_NAME"/>
+ 		<result property="dailySales" column="DAILY_SALES"/>
+ 		<result property="weeklySales" column="WEEKLY_SALES"/>
+ 		<result property="monthlySales" column="MONTHLY_SALES"/>
+ 		<result property="annualSales" column="ANNUAL_SALES"/>
+ 	</resultMap>
+ 	
+ 	
+ 	<!-- 매출 등록 -->
+  <insert id="insertSales" parameterType="SalesDto">
+    INSERT INTO SALES (
+        SALES_NO,
+        PRODUCT_NO,
+        DEPT_NO,
+        SALES_DATE,
+        QTY
+    ) VALUES (
+        SALES_SEQ.NEXTVAL,
+        #{product.productNo},
+        #{department.deptNo},
+        #{salesDate},
+        #{qty}
+    )
+  </insert>
+	
+	<!-- 상품 등록 -->
+  <insert id="insertProduct" parameterType="ProductDto">
+    INSERT INTO PRODUCT (
+        PRODUCT_NO,
+        PRODUCT_SCT_CD,
+        DEPT_NO,
+        PRODUCT_NM,
+        PRICE
+    ) VALUES (
+    		PRODUCT_SEQ.NEXTVAL,
+        #{product.productNo},
+        #{department.deptNo},
+        #{productNM},
+        #{price}
+    )
+  </insert>
+  
+  <!-- 모든 상품 목록 조회 -->
+  <select id="findAllproduct"
+  				resultMap="ProductMap">
+ 	 	SELECT PRODUCT_NO, PRODUCT_SCT_CD, PRICE, DEPT_NO, PRODUCT_NM
+  		FROM PRODUCT
+  		ORDER BY DEPT_NO ASC, PRODUCT_NO ASC
+  </select>
+ 
+	<!-- 일간 매출 조회 -->
+  <select id="findTodaySalesTotal"
+  				resultType="java.math.BigDecimal">
+  	SELECT COALESCE(SUM(P.PRICE * S.QTY), 0)
+      FROM SALES S
+      JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+      WHERE TO_CHAR(S.SALES_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+  </select>
+  
+  <select id="findCurrentWeekSalesTotal"
+  				resultType="java.math.BigDecimal">
+  	SELECT COALESCE(SUM(P.PRICE * S.QTY), 0)
+			FROM SALES S
+			JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+		 WHERE TO_CHAR(S.SALES_DATE, 'IYYY-IW') = TO_CHAR(SYSDATE, 'IYYY-IW')
+  </select>
+  
+  <!-- 월간 매출 조회 -->
+  <select id="findCurrentMonthSalesTotal"
+  				resultType="java.math.BigDecimal">
+  	SELECT SUM(P.PRICE * S.QTY)
+		FROM SALES S
+		JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+		WHERE TO_CHAR(S.SALES_DATE, 'YYYY-MM') =
+		TO_CHAR(SYSDATE, 'YYYY-MM')
+  </select>
+  
+  <!-- 연간 매출액 조회 -->
+	<select id="findCurrentYearSalesTotal"
+		resultType="java.math.BigDecimal">
+		SELECT SUM(P.PRICE * S.QTY)
+		FROM SALES S
+		JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+		WHERE TO_CHAR(S.SALES_DATE, 'YYYY') =
+		TO_CHAR(SYSDATE, 'YYYY')
+	</select>
+	
+	<!-- 이번 달 매일 조회 -->
+	<select id="findMonthlySalesTotals" resultType="java.util.Map">	
+		SELECT
+    TO_CHAR(S.SALES_DATE, 'YYYY-MM-DD') AS salesMonth,
+    SUM(P.PRICE * S.QTY) AS totalSales
+		FROM SALES S
+		JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+		WHERE TRUNC(S.SALES_DATE, 'MM') = TRUNC(SYSDATE, 'MM')
+		GROUP BY TO_CHAR(S.SALES_DATE, 'YYYY-MM-DD')
+		ORDER BY salesMonth
+	</select>
+	
+	<!-- 이번 년 매달 조회 -->
+	<select id="findyearlySalesTotals" resultType="java.util.Map">
+		SELECT
+    TO_CHAR(S.SALES_DATE, 'YYYY-MM') AS salesyear,
+    SUM(P.PRICE *
+    S.QTY) AS totalSales
+    FROM SALES S
+    JOIN PRODUCT P ON S.PRODUCT_NO =
+    P.PRODUCT_NO
+    GROUP BY TO_CHAR(S.SALES_DATE, 'YYYY-MM')
+    ORDER BY salesyear
+	</select>
+	
+	<!-- 파트별 일간 주간 월간 연간 조회 -->
+	<select	id="findPartSales"
+					parameterType="java.util.Map"
+					resultMap="PartSalesResultMap">
+	SELECT
+    D.DEPT_NO,
+    D.DEPT_NAME,
+    COALESCE(
+        (SELECT SUM(P.PRICE * S.QTY)
+         FROM SALES S
+         JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+         WHERE D.DEPT_NO = S.DEPT_NO
+           AND TRUNC(S.SALES_DATE) = TRUNC(SYSDATE)), 
+        0) AS DAILY_SALES,
+    COALESCE(
+         (SELECT SUM(P.PRICE * S.QTY)
+     			FROM SALES S
+     			JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+    		  WHERE D.DEPT_NO = S.DEPT_NO
+       		AND S.SALES_DATE >= TRUNC(SYSDATE) - 7), 
+    		0) AS WEEKLY_SALES,
+    COALESCE(
+        (SELECT SUM(P.PRICE * S.QTY)
+         FROM SALES S
+         JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+         WHERE D.DEPT_NO = S.DEPT_NO
+           AND TO_CHAR(S.SALES_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')), 
+        0) AS MONTHLY_SALES,
+    COALESCE(
+        (SELECT SUM(P.PRICE * S.QTY)
+         FROM SALES S
+         JOIN PRODUCT P ON S.PRODUCT_NO = P.PRODUCT_NO
+         WHERE D.DEPT_NO = S.DEPT_NO
+           AND TO_CHAR(S.SALES_DATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')), 
+        0) AS ANNUAL_SALES
+FROM DEPARTMENT D
+ORDER BY D.DEPT_NO
+	</select>
+	
+  
+	
+	
+</mapper>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

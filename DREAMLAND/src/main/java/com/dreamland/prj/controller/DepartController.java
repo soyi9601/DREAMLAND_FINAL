@@ -1,10 +1,12 @@
 package com.dreamland.prj.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.service.DepartService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,13 +31,13 @@ public class DepartController {
   private final DepartService departService;
   
   // 관리자 - 조직도 페이지 이동
-  @GetMapping("/depart_admin.page")
+  @GetMapping("/departAdmin.page")
   public String depart() {
-    return "depart/depart_admin";
+    return "depart/departAdmin";
   }
   
   // 관리자 - 조직도 조회
-  @GetMapping(value="/depart_admin.do", produces="application/json")
+  @GetMapping(value="/departAdmin.do", produces="application/json")
   public ResponseEntity<List<DepartmentDto>> departAdmin() {
     List<DepartmentDto> departmentDto = departService.getDepartList();
     if (departmentDto != null && !departmentDto.isEmpty()) {
@@ -47,6 +50,10 @@ public class DepartController {
   // 부서 및 직원 삭제
   @PostMapping("/removeDepart")
   public ResponseEntity<?> deleteDepart(@RequestBody DepartmentDto departmentDto) {
+    int deptNo = departmentDto.getDeptNo();
+    if (departService.hasEmployee(deptNo)) {
+      return ResponseEntity.ok().body("{\"message\": \"부서에 직원이 있습니다. 다시 확인 부탁드립니다.\"}");
+    }
     departService.removeDepart(departmentDto);
     return ResponseEntity.ok().body("{\"message\": \"부서가 삭제되었습니다.\"}");
   }  
@@ -92,6 +99,22 @@ public class DepartController {
     departService.addDepartment(request, response);
     return "depart/addDepart";
   }
+  
+  
+  // 유저 - 조직도 페이지 이동
+  @GetMapping("/depart.page")
+  public String departUser(Model model) {
+    List<Map<String, Object>> orgChartData = departService.getOrgChartData();
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      String orgChartDataJson = objectMapper.writeValueAsString(orgChartData);
+      model.addAttribute("orgChartData", orgChartDataJson);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return "depart/departUser";
+  }
+  
   
   
   

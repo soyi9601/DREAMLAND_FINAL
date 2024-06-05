@@ -10,10 +10,12 @@ import com.dreamland.prj.dto.EmployeeDto;
 @Mapper
 public interface DepartMapper {
   
+  // 관리자
   List<DepartmentDto> getDepartList();              // 조직도 조회
    
   void deleteDepart(DepartmentDto departmentDto);   // 부서 삭제
   void deleteEmployee(EmployeeDto employeeDto);     // 직원 삭제
+  int hasEmployee(int deptNo);
   
   DepartmentDto getDepartById(int deptNo);          // 노드 클릭 후 부서 조회
   EmployeeDto getEmployeeById(int empNo);           // 노드 클릭 후 직원 조회
@@ -22,4 +24,9 @@ public interface DepartMapper {
   void updateEmployee(EmployeeDto employeeDto);     // 직원 정보 수정
   
   void insertDepart(DepartmentDto departmentDto);   // 부서 추가
+  
+  
+  // 유저
+  
+  
 }

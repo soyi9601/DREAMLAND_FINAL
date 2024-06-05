@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+/* 받는사람 버튼 넣기 */
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  align-items: center;
+}
+
+.input-container input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0;
+  min-width: 50px;
+}
+
+.input-container button {
+  margin: 2px;
+  white-space: nowrap;
+}
+
+.input-container button:hover {
+  cursor: pointer;
+}
+
+.input-container button.btn-outline-secondary {
+  border-color: #ced4da;
+  color: #495057;
+}
+
+.ui-autocomplete {
+  max-height: 200px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+  height: auto;
+}
+.ui-menu-item div.ui-state-hover,
+.ui-menu-item div.ui-state-active {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #90B54C;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  background-image: none;
+  border:none;
+}
