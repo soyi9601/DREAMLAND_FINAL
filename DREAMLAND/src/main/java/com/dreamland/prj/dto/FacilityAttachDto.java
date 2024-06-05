@@ -14,5 +14,4 @@ public class FacilityAttachDto {
 	
 	private int attachNo, facilityNo;
 	private String uploadPath, filesystemName, originalFilename;
-	
 }
