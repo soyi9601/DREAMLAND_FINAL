@@ -226,7 +226,7 @@
                         </div>
                         <div class="flex-grow-1">
                           <span class="fw-semibold d-block">${loginEmployee.empName}</span>
-                          <small class="text-muted">${loginEmployee.posNo}</small>
+                          <small class="text-muted">${loginEmployee.posName}</small>
                         </div>
                       </div>
                     </a>
@@ -241,9 +241,9 @@
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="${contextPath}/user/receiveBox">
                       <i class="bx bx-cog me-2"></i>
-                      <span class="align-middle">Settings</span>
+                      <span class="align-middle">받은쪽지함</span>
                     </a>
                   </li>
                   <li>

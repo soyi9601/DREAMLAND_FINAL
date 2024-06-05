@@ -14,6 +14,7 @@ public interface ApprovalService {
 	boolean registerAppletter(MultipartHttpServletRequest multipartRequest);
 	boolean registerAppLeave(MultipartHttpServletRequest multipartRequest);
 	int apvApprove(HttpServletRequest request);
+	int apvRevoke(HttpServletRequest request);
 	ResponseEntity<Map<String, Object>> loadAppList(Model model);
 	ResponseEntity<Map<String, Object>> loadWaitAppList(Model model);
 	ResponseEntity<Map<String, Object>> loadConfirmAppList(Model model);
@@ -32,6 +33,7 @@ public interface ApprovalService {
 	public void loadTempApp(HttpServletRequest request, Model model);
 	public void loadAppByNo(HttpServletRequest request, Model model);
 	ResponseEntity<Resource> download(HttpServletRequest request);
+	boolean  deleteAttach(HttpServletRequest request);
 		
 
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class MessageDto {
 	
   private int msgNo, msgSender, msgReceiver;
-  private String msgContents, readYn, delYn, starYn;
+  private String msgContents, readYn, delYn, starYn, senderName, receiverName;
   private Date msgCreateDt;
   
 }
