@@ -16,7 +16,6 @@
 
 
   <!-- 근태관리 -->
-  <!-- 
   <insert id="insertWork" parameterType="WorkDto">
     INSERT INTO WORK (
         WORK_NO
@@ -44,7 +43,6 @@
        SET WORK_OUT = TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
      WHERE EMP_NO = #{empNo}     
   </update>
-   -->
   
   <select id="getNoticeList" parameterType="NoticeBoardDto">
     SELECT NOTICE_NO, BOARD_TITLE, SIGNAL, BOARD_MODIFY_DT
