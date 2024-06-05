@@ -1,6 +1,7 @@
 /**
  * 작성자 : 고은정
  * 기능   : 쪽지 보내기
+ * 기능   : 받은편지함
  * 이력   :
  *    1) 240603
  *        - 쪽지 글자수 함수 추가
@@ -88,7 +89,7 @@ const fnEmployeeList = (evt)=>{
             $(this).remove(); // 버튼 클릭 시 제거
           });
 
-        const hiddenInput = $("<input type='hidden' name='receiver[]'>").val(ui.item.idx);
+        const hiddenInput = $("<input type='hidden' name='receiver'>").val(ui.item.idx);
 
         $('#receiver').val(''); // 입력 필드 비우기
         button.insertBefore('#receiver'); // 입력 필드 앞에 버튼 추가

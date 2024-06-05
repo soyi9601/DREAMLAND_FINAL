@@ -16,7 +16,7 @@
   </select>
 
   <insert id="sendMessage"
-          parameterType="MessageDto">
+          parameterType="map">
     <selectKey order="BEFORE" keyProperty="msgNo" resultType="int">
       SELECT MSG_SEQ.NEXTVAL
         FROM DUAL
@@ -37,17 +37,39 @@
       , 'N'
       , 'N'
       , CURRENT_DATE
-      , #{sendNo}
-      , #{recNo}
+      , #{sender}
+      , #{receiver}
     )  
   </insert>
   
-  <select id="getDeptNameByDeptNo"
+  <select id="getMessageCountByReceiver">
+		SELECT COUNT(*)
+		  FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+		 WHERE M.MSG_RECEIVER = ${empNo}
+  </select>
+
+  <select id="getMessageByReceiver"
           parameterType="int"
-          resultType="String">
-    SELECT DEPT_NAME
-      FROM DEPARTMENT
-     WHERE DEPT_NO = #{deptNo}
+          resultType="MessageDto">
+		SELECT M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
+		     , ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
+		  FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+		 WHERE M.MSG_RECEIVER = #{empNo}
+  </select>
+  
+  <select id="getMessageCountBySender">
+    SELECT COUNT(*)
+      FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+     WHERE M.MSG_SENDER = #{empNo}
+  </select>
+  
+  <select id="getMessageBySender"
+          parameterType="int"
+          resultType="MessageDto">
+    SELECT M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
+         , ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
+      FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+     WHERE M.MSG_SENDER = #{empNo}
   </select>
   
   <select id="getPosNameByPosNo"
@@ -71,7 +93,6 @@
          , SIGN_PATH = #{signPath}
      WHERE EMAIL = #{email}
   </update>
-
 
   <update id="updatePassword"
           parameterType="String">

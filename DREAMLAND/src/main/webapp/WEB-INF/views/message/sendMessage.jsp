@@ -16,7 +16,8 @@
               
               <div class="row">
                 <div class="card">
-                  <h5 class="card-header">쪽지보내기(최대 10명까지 가능)</h5>
+                  <h5 class="card-header">쪽지보내기</h5>
+                  <form id="frm-modify-info" method="POST" action="${contextPath}/message/send.do">
                     <div class="card-body">
                     <div>
                       <button type="submit" class="btn btn-primary" id="btn-send-message">보내기</button>
@@ -24,6 +25,7 @@
                       <button type="button" class='btn btn-secondary' id="btn-cancel">취소</button>
                     </div>
                       <div class="mb-3" >
+                        <input type="hidden" id="sender" name="sender" value="${loginEmployee.empNo}">
                         <label for="receiver" class="form-label">받는사람</label>
                         <div id="receiver-container" class="input-container">
 	                        <input
@@ -36,12 +38,13 @@
                       </div>
                       <div>
                         <label for="contents" class="form-label">내용</label>
-                        <textarea class="form-control" id="contents" rows="10"></textarea>
+                        <textarea class="form-control" id="contents" name="contents" rows="10"></textarea>
                       </div>
                       <div>
                         <sup><span id="nowByte">0</span>/4000byte</sup>
                       </div>
                     </div>
+                    </form>
                   </div>
                 </div>
                 </div>
