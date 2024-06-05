@@ -185,12 +185,38 @@
                 </tr>
                 <tr>
                     <td>휴가 기간</td>
+                    
+                    
                        <c:if test="${kind ==1 }">
-                    <td><input type="date" name="leavestart" value="${approval.leaveStart}"> ~ <input type="date" name="leaveend" value="${approval.leaveEnd}"></td>
+                       <c:if test="${approva.leaveClassify ==0}">
+                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> ~ <input type="date" name="leaveend" value="${approval.leaveEnd}"></td>
+               					
+               					  <c:if test="${approva.halfday == 'morning'}">
+               					          <label><input type="radio" name="halfday" value="morning" checked> 오전</label>
+                                 <label><input type="radio" name="halfday" value="afternoon"> 오후</label>
+                           </c:if>
+               					  <c:if test="${approva.halfday == 'afternoon'}">
+               					          <label><input type="radio" name="halfday" value="morning"> 오전</label>
+                                 <label><input type="radio" name="halfday" value="afternoon" checked> 오후</label>
+               					  
+               					  </c:if>
                					</c:if>
+               					                       <c:if test="${approva.leaveClassify ==1}">
+                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> </td>
+               					
+               					</c:if>
+               					
+               					
+               					</c:if>
+               					
+               					
                					 <c:if test="${empty title}">
-               					<td><input type="date" name="leavestart" > ~ <input type="date" name="leaveend"  ></td>
+               					<td id="leave-details"><input type="date" name="leavestart" > ~ <input type="date" name="leaveend"  ></td>
                          </c:if>
+                         
+                         
+                         
+                         
                	 </tr>
                 <tr>
                     <td>사유</td>
@@ -259,12 +285,31 @@
    });
    */
    
+   function updateLeaveForm() {
+	   
+	    $(document).on("change", "#leave-type", (e) => {
+       var leaveType = document.getElementById("leave-type").value;
+       var leaveDetails = document.getElementById("leave-details");
+
+       if (leaveType == "1") { // 반차 selected
+           leaveDetails.innerHTML   = '<input type="date" name="leavestart"> '; 
+           leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday" value="morning"> 오전</label>';
+           leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday" value="afternoon"> 오후</label>';
+          
+       } else { // 연차 selected
+           leaveDetails.innerHTML = '<input type="date" name="leavestart"> ~'; 
+           leaveDetails.innerHTML  +=' <input type="date" name="leaveend">';
+       }})
+   }
+   
+   
    $(document).ready(function() {
        $('#submitBtn1').click(function(event) {
            event.preventDefault(); // 기본 제출 동작을 막음
            $('input[name="temp"]').val('3');
            $('#myForm').submit(); // 폼 제출
        });
+       
 
        $('#submitBtn2').click(function(event) {
            event.preventDefault(); // 기본 제출 동작을 막음
@@ -378,6 +423,7 @@
 
    // Initialize to show the first page
   showPage('approvalForm');
+  updateLeaveForm()
 	fnAttachAdd();
 	fnAttachCheck();
 	fnAttachDel();

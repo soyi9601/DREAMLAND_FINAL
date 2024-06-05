@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 
 public class EmployeeDto {
 	
-	private int empNo, dayOff, deptNo, posNo;
+	private int empNo, dayOff, deptNo, posNo, usedDayOff;
 	private String empName, email, address, detailAddress, password, profilePath, signPath, mobile, role, postcode, deptName, posName;
 	private Date birth, enterDate, resignDate;
 
