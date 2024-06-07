@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 public class BlindBoardDto {
 	
-	private int blindNo, hit;
+	private int blindNo, hit, commentCount;
 	private String boardTitle, boardContents, delYn, password;
 	private Date boardCreateDt, boardModifyDt;
 	
