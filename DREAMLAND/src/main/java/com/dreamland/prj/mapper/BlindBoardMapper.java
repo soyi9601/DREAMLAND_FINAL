@@ -34,6 +34,8 @@ public interface BlindBoardMapper {
 	List<BlindCommentDto> getCommentList(Map<String, Object> map);
 	int insertReply(BlindCommentDto comment);
 	int deleteComment(int commentNo);
+	int updateComment(Map<String, Object> map);
+	
 	
 	//비밀번호
 	String getPasswordByCommentNo(int commentNo);
