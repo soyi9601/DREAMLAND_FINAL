@@ -3,6 +3,7 @@
 /* 게시판 공통 */
 .sd-point{color:#90b54c;text-align:Center;}
 .sd-point-bg{background:#90b54c;}
+.sd-danger-bg{background:#ee2b4b}
 .sd-board .title{font-size:32px;margin-bottom:0px;}
 .sd-board .board-detail{margin-top:30px;}
 .sd-table-wrapper{/*margin-top:40px;*/}
@@ -12,7 +13,18 @@
 /* 게시판 공통 타이틀 */
 
 /* 게시판 공통 버튼*/
+
+.btn-reset{border:none;}
+.sd-btn{width:70px;height:36px;border-radius:4px;text-align:Center;}
+.sd-btn a{display:inline-block;line-height:36px;
+          color:#fff;font-size:16px;width:100%;height:100%;}
+.sd-btn-write{width:70px;height:36px;background:#90b54c;}
+.sd-btn-write a{display:inline-block;line-height:36px;
+                color:#fff;font-size:16px;width:100%;height:100%;}
 .sd-btn-none{border:none}
+
+
+
 
 /* ==========================================================
   FAQ게시판(/board/faq)
@@ -78,9 +90,7 @@
 }
 
 .sd-btn-write-area{display:flex;margin-top:20px;justify-content: flex-end}
-.sd-btn-write{width:80px;height:40px;background:#90b54c;border-radius:6px;text-align:Center;}
-.sd-btn-write a{display:inline-block;line-height:40px;
-                color:#fff;font-size:18px;width:100%;height:100%;}
+
                   
   
   
@@ -96,6 +106,7 @@
 ===========================*/
 
 /*테이블공통*/
+.sd-table-wrapper{margin-top:40px;}
 .table > :not(caption) > * > * {padding:10px 0}
 /*테이블 헤더(thead)*/
 .sd-table th{font-size:13px;}
@@ -105,7 +116,7 @@
 .noticeTitle{cursor:pointer;}
 
 
-.sd-btn{width:80px;height:40px;border-radius:6px;text-align:Center;}
+
 
 /*테이블 tbody*/
 .sd-notice-write .form-control{margin-bottom:12px;}
@@ -149,6 +160,14 @@
     익명게시판(/board/blind) 
       └ list.jsp  ※ 목록
   ===========================*/
+
+#blind-board .sd-btn{position:fixed;z-index:99999999px;bottom:20px;right:20px;}
+#blind-list-table tbody td:first-child{padding-left:14px;}
+
+#blind-list-table tr{text-align:center;}
+
+#blind-list-table .blindTitle1{text-align:left; padding-left:20px;}
+#blind-list-table .blindTitle{cursor:pointer;text-align:left;padding-left:20px;}
   
   /* ========================
     익명게시판(/board/blind)
@@ -171,13 +190,18 @@
 #blind-board-detail  #frm-comment .notice{font-size:14px;line-height:1.2}
 #blind-board-detail  #frm-comment .notice .a{padding-left:30px;}
  #comment-password{display:inline-block !important;width:40% !important;}
-#blind-board-detail  .frm-comment-top{border-bottom:1px dashed #d9dee3;padding-bottom:10px;margin-bottom:20px;}
+#blind-board-detail  .frm-comment-top{border-bottom:1px dashed #d9dee3;padding-bottom:10px;margin-bottom:20px;color:#c6c6c6}
+#blind-board-detail  .frm-comment-top .comment-count{color:#90b54c }
+
+
+#blind-board-detail  #frm-comment #btn-comment-registrer{color:#fff;}
+#blind-board-detail  #frm-comment #btn-comment-registrer:hover{color:#90b54c;background:#fff;border:1px solid #90b54c}
 
   
-  
 /*댓글*/  
-#blind-board-detail .comment-area{padding:20px 0;border-top:1px solid #d9dee3;border-bottom:1px solid #d9dee3;
-                                  } 
+#blind-board-detail .comment-area{padding:20px 0;border-top:1px solid #d9dee3;} 
+#blind-board-detail .comment-div:first-child .comment-area{border-top:none}
+
 
 #blind-board-detail .comment-area .comment{padding-left:10px;padding:10px 0;}
 #blind-board-detail .comment-area .comment-bottom{display:flex;justify-content: space-between}
@@ -185,6 +209,7 @@
 #blind-board-detail .comment-area .comment-btns-area{width:80px;cursor:pointer;position:relative;text-align:center;}
 
 #blind-board-detail .comment-btns-area .comment-btns{position:absolute;top:100%;left:0}
+#blind-board-detail .comment-btns-area .comment-btns button{color:#fff;line-height:36px;margin-top:4px;}
 
 .blind{display:none;}
 .div-frm-reply {padding:20px;}
@@ -192,10 +217,16 @@
 
 
 
-.comment-reply-div{background:#f8f8f8;padding-left:16px;}
-
+.comment-reply-div{background:#f8f8f8;padding-left:16px;border-top:1px dashed #d9dee3}
 .comment-reply-div .comment-area{border:none !important}
 
+
+
+
+
+#blind-board-detail .deleted-comment{padding:30px 0;color:#929292}
+
+#blind-board-detail .list-btn{margin:0 auto}
 
 
 
