@@ -233,6 +233,21 @@ function validateRemove(blindNo, password) {
 // 댓글등록
 const fnRegisterComment = () => {
  $('#btn-comment-registrer').on('click', (e) => {
+	 
+	 const commentContents = $('#comment-contents').val();
+	 const commentPassword = $('#comment-password').val();
+	 
+   if (!commentContents) {
+     alert('댓글 내용을 입력해주세요.');
+     return;
+   }
+
+	 
+   if (!commentPassword) {
+       alert('비밀번호를 입력해주세요.');
+       return;
+   }
+	 
    $.ajax({
      type:'POST',
      url:'${contextPath}/board/blind/regitserComment.do',
@@ -273,8 +288,12 @@ const fnCommentList = () => {
         commentList.empty();
         //paging.empty();
         if(resData.commentList.length == 0) {
-          commentList.append('<div>첫 번째 댓글의 주인공이 되어 보세요</div>');
+          commentList.append('<div></div>');
           //paging.empty();
+          
+         $('.comment-count').text(resData.commentList.length);
+         $('#comment-count').text(resData.commentList.length);
+          
           return;
         }
         let commentCount = 0; // 댓글 수 초기화
@@ -328,7 +347,7 @@ const fnCommentList = () => {
             
             str += '      <input type="password" id="comment-password" class="form-control" name="commentPassword" placeholder="password">'
             
-            str += '    <button type="button" class="btn btn-warning btn-register-reply">작성완료</button>';
+            str += '    <button type="button" class="btn-reset sd-btn sd-point-bg btn-register-reply">등록</button>';
             str += '  </form>';
             str += '</div>';
             str += '</div>'
@@ -384,7 +403,20 @@ const fnShowBtns = () => {
 // ---------------------------------------- 답글(Reply)등록
 const fnRegisterReply = () => {
  $(document).on('click', '.btn-register-reply', (evt)=>{
-   //alert('!')
+   
+   const replyContents = $(evt.target).closest('.frm-reply').find('.reply-contents').val();
+   const replyPassword = $(evt.target).closest('.frm-reply').find('input[name="commentPassword"]').val();
+
+   if (!replyContents) {
+       alert('답글 내용을 입력해주세요.');
+       return;
+   }
+
+   if (!replyPassword) {
+       alert('비밀번호를 입력해주세요.');
+       return;
+   }
+	 
    $.ajax({
      type:'POST',
      url:'${contextPath}/board/blind/comment/registerReply.do',

@@ -25,7 +25,7 @@
 
 
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board" id="blind-write">
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y sd-notice-write sd-blind">
@@ -57,14 +57,14 @@
                         <div class="col-sm-10">
                           <input type="password" class="form-control" id="board-pw"  name="password">
                         </div>
-                        <p> *추후 편집, 삭제를 위한 비밀번호를 입력해주세요.<br>
+                        <p> <span style="color:red">*</span> 추후 편집, 삭제를 위한 비밀번호를 입력해주세요.<br>
                             비밀번호를 잊어버린다면, 추후 편집, 삭제가 불가능합니다.
                         </p>
                       </div>
-                      <div>
-                      
-                        <button type="submit" class="btn btn-primary">작성</button>
+                      <div class="btn-area">
+                        <button type="submit" class="btn-reset sd-btn sd-point-bg">작성</button>
                       </div>
+                      
                   
                     </form>
                     
@@ -79,7 +79,7 @@
   <script>
   const fnSummernoteEditor = () => {
     $('#contents').summernote({
-      width: 900,
+     
       height: 500,
       lang: 'ko-KR',
       toolbar: [
