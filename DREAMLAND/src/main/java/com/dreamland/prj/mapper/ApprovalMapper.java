@@ -68,6 +68,7 @@ public interface ApprovalMapper {
 	 ApvAttachDto getAttachByNo(int attachNo);
 	 int updateApprover(int apvNo, String empNo, String returnReason);
 	 int updateApproval(int apvNo, int state);
+	 int updateEmployee(String empNo, float useDay);
 	 int updateApvLeave(int apvNo);
 	 int modifyApproval(ApprovalDto apvNo);
 	 int modifyApvWriter(int empNo, String apvNo, int i);

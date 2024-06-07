@@ -24,6 +24,8 @@
 
 <div class="container">
     <div class="title">기안서 작성하기</div>
+         <div id="container">
+
     <c:if test="${empty title}">
   <div class="select-container">
         <select id="pageSelector" onchange="showPage(this.value)">
@@ -48,18 +50,30 @@
     <input type="hidden" name="apvNo" id="apvNo" value="${approval.apvNo}">
             </div>
              <div class="section-title">결재자</div>
-            <table class="approval-table">
+                  담당
+                  
+
+     <button id="openOrgChartBtn" type="button">조직도 열기</button>
+
+    <div id="orgChartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="orgChart"></div>
+        </div>
+    </div>
+
+
+   
+    
+                <table class="approval-table">
                 <tr>
                     <td>담당</td>
                     <td>팀장</td>
                     <td>본부장</td>
                     <td>대표이사</td>
                 </tr>
-                <tr>
+                <tr id="selectedEmployeesRow">
                     <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
-                    <td><input type="text" name="approver2" value="${appovers.approver1}"></input></td>
-                    <td><input type="text" name="approver3" value="${appovers.approver2}"></input></td>
-                    <td><input type="text" name="approver4" value="${appovers.approver3}"></input></td>
                 </tr>
             </table>
             <div class="section">
@@ -263,28 +277,61 @@
         </form>
     </div>
 </div>
+    </div>
+</div>
 
 <script>
-/**
-   document.getElementById('addButton').addEventListener('click', function() {
-       var newButton = '<button class="button button">결재자</button>'
-       document.getElementById('buttonContainer').innerHTML += newButton;
-   });
-   document.getElementById('addButton2').addEventListener('click', function() {
-       var newButton = '<button class="button button">참조자</button>'
-       document.getElementById('buttonContainer2').innerHTML += newButton;
-   });
-   document.getElementById('addButton3').addEventListener('click', function() {
-       var selectedForm = document.getElementById('formSelect').value;
-       var formContainer = document.getElementById('formContainer');
-       
-       if (selectedForm === 'expense') {
-    	   formContainer.innerHTML = '<p>지출품의서</p>';
-       } else if (selectedForm === 'leave') {
-           formContainer.innerHTML = '<p>휴가신청서</p>';
-       }
-   });
-   */
+
+$(document).ready(function() {
+    const openOrgChartBtn = document.getElementById("openOrgChartBtn");
+    const orgChartModal = document.getElementById("orgChartModal");
+    const closeBtn = document.getElementsByClassName("close")[0];
+    const selectedEmployeesRow = document.getElementById("selectedEmployeesRow");
+    let selectedCount = 2;
+
+    const data = [
+        { "id": "1", "text": "맹구" },
+        { "id": "2", "text": "유리" },
+        { "id": "3", "text": "철수" },
+
+    ];
+
+    $('#orgChart').jstree({
+        'core': {
+            'data': data
+        }
+    });
+
+    openOrgChartBtn.onclick = function() {
+        orgChartModal.style.display = "block";
+    };
+
+    closeBtn.onclick = function() {
+        orgChartModal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+        if (event.target == orgChartModal) {
+            orgChartModal.style.display = "none";
+        }
+    };
+    $('#orgChart').on("select_node.jstree", function (e, data) {
+        if (selectedCount < 5) {
+            const name = data.node.text;
+            const newCell = selectedEmployeesRow.insertCell();
+            newCell.innerHTML = '<input type="text" name="approver' + selectedCount+ '" value="'+name+'" ></input>'; // HTML 추가
+            selectedCount++;
+            if (selectedCount >= 5) {
+                openOrgChartBtn.style.display = "none";
+            } else {
+                openOrgChartBtn.style.display = "inline-block";
+            }
+            orgChartModal.style.display = "none";
+        }
+    });
+});
+
+   
    
    function updateLeaveForm() {
 	   

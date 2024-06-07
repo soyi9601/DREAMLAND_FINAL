@@ -349,7 +349,7 @@ function handlePopupFormSubmission(inputText) {
 
 
 document.getElementById('approve').addEventListener('click', function() {
-    const queryParams = { apvNo: apvNo, empNo:empNo, rejectedReason:'0' };
+    const queryParams = { apvNo: apvNo, empNo:empNo, rejectedReason:'0' , apvKind : apvKind};
     sendGetRequest(queryParams);
 });
 
