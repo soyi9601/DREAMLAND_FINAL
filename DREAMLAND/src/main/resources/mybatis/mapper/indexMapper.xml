@@ -33,7 +33,7 @@
       , NULL
       , NULL
       , NULL
-      , NULL
+      , N
       , #{empNo}      
     )
   </insert>
@@ -45,7 +45,9 @@
   </update>
   
   <select id="getNoticeList" parameterType="NoticeBoardDto">
-    SELECT NOTICE_NO, BOARD_TITLE, SIGNAL, BOARD_MODIFY_DT
+    SELECT ROW_NUMBER() OVER(ORDER BY 
+      CASE WHEN SIGNAL = 1 THEN 0 ELSE 1 END, NOTICE_NO DESC)
+         , NOTICE_NO, BOARD_TITLE, SIGNAL, BOARD_MODIFY_DT
       FROM NOTICE_BOARD
   </select>
 

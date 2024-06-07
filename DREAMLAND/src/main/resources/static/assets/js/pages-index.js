@@ -162,17 +162,17 @@ const fnGetNotice = () => {
       mainNotice.empty();
       let noticeList = resData.noticeList;
       if(noticeList.length === 0) {
-        let str = '<div class="no-data">등록된 게시물이 없습니다.</div> ;'
+        let str = '<tr><td rowspan="3" colspan="3"><div class="no-data text-center" style="padding-top: 40px;">등록된 공지사항이 없습니다.</div></td></tr> '
         mainNotice.append(str);
       } else {
-        $.each(noticeList, (i, notice) => {
+        $.each(noticeList.slice(0, 3), (i, notice) => {
           let str = '<tr>';
-          str += '<td class="text-center" scope="col" style="width: 3%">' +  notice.noticeNo + '</td>';
+          str += '<td class="text-center" scope="col" style="width: 3%"">' +  notice.noticeNo + '</td>';
           if(notice.signal === 1) {
-            str += '<td scope="col" style="width: 77%"><span class="notice-important">중요</span>' 
+            str += '<td  class="notice-list" scope="col" style="width: 77%" data-notice-no="' + notice.noticeNo + '"><span class="notice-important">중요</span>' 
                 + notice.boardTitle + '</td>';
           } else {
-            str += '<td scope="col" style="width: 77%">' + notice.boardTitle + '</td>';            
+            str += '<td class="notice-list" scope="col" style="width: 77%" data-notice-no="' + notice.noticeNo + '">' + notice.boardTitle + '</td>';            
           }
           str += '<td scope="col" style="width: 20%"><span class="">' + notice.boardModifyDt + '</span></td>';
           str += '</tr>';
@@ -180,8 +180,16 @@ const fnGetNotice = () => {
         })
       }
       console.log(resData);
+      fnNoticeDetail();
     }
   })  
+}
+
+const fnNoticeDetail = () => {
+  $('.notice-list').on('click', (evt) => {
+    const noticeNo = evt.target.dataset.noticeNo;
+    location.href = '/board/notice/detail.do?noticeNo=' + noticeNo;
+  })
 }
 
 
@@ -195,6 +203,7 @@ fnCalendar();
 fnWorkIn();
 fnWorkOut();
 fnGetNotice();
+
 /* ********************** ********* ********************** */
 
 

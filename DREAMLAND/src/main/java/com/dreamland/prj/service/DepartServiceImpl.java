@@ -81,6 +81,12 @@ public class DepartServiceImpl implements DepartService {
   
   // 부서 추가
   @Override
+  public List<DepartmentDto> getAllDepart() {
+    List<DepartmentDto> a = departMapper.getAllDepart();
+    System.out.println(a);
+    return a;
+  }
+  @Override
   public void addDepartment(HttpServletRequest request, HttpServletResponse response) {
     String deptName = request.getParameter("deptName");
     int deptNo = Integer.parseInt(request.getParameter("deptNo"));

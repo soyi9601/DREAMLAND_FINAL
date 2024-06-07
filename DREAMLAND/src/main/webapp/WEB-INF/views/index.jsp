@@ -99,11 +99,11 @@
         </div>
 	      <div class="row">
 	        <div class="col-12 mb-4">
-	          <div class="card h-100">
+	          <div class="card h-100 noti-card">
 	            <div class="card-body">
 	              <div class="gap-3">
                   <div class="card-title">
-                    <h5 class="text-nowrap mb-2">공지사항</h5>
+                    <h5 class="text-nowrap mb-2 text-primary">공지사항</h5>
                   </div>
                   <div class="table-responsive text-nowrap">
 								    <table class="table">
@@ -115,21 +115,7 @@
 								        </tr>
 								      </thead>
 								      <tbody class="table-border-bottom-0 notice-table">
-								        <tr>
-								          <td scope="col"><span class="fw-small">1</span></td>
-								          <td scope="col">Albert Cook</td>
-								          <td scope="col">2024-06-05</td>
-								        </tr>
-								        <tr>
-                          <td scope="col"><span class="fw-small">1</span></td>
-                          <td scope="col">Albert Cook</td>
-                          <td scope="col"><span class="fw-small">2024-06-05</span></td>
-                        </tr>
-                        <tr>
-                          <td scope="col"><span class="fw-small">1</span></td>
-                          <td scope="col">Albert Cook</td>
-                          <td scope="col"><span class="fw-small">2024-06-05</span></td>
-                        </tr>
+								        
 								      </tbody>
 								    </table>
 							    </div>
