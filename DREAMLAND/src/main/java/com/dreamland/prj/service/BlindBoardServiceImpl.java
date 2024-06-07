@@ -2,9 +2,12 @@ package com.dreamland.prj.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.management.RuntimeErrorException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,6 +23,7 @@ import com.dreamland.prj.dto.BlindBoardDto;
 import com.dreamland.prj.dto.BlindCommentDto;
 import com.dreamland.prj.dto.BlindImageDto;
 import com.dreamland.prj.mapper.BlindBoardMapper;
+import com.dreamland.prj.utils.AESUtils;
 import com.dreamland.prj.utils.MyFileUtils;
 import com.dreamland.prj.utils.MyPageUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
@@ -72,8 +76,15 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 		// 요청 파라미터 
 		String boardTitle = request.getParameter("boardTitle");
 		String boardContents = request.getParameter("boardContents");
-		String password =MySecurityUtils.getSha256(request.getParameter("password"));
-	
+		String password;
+		
+		try {
+			password = AESUtils.encrypt(request.getParameter("password"));
+		} catch (Exception e) {
+			throw new RuntimeException("암호화오류", e);
+		}
+		
+		
 		BlindBoardDto blind = BlindBoardDto.builder()
 														.boardTitle(MySecurityUtils.getPreventXss(boardTitle))
 														.boardContents(MySecurityUtils.getPreventXss(boardContents))
@@ -148,58 +159,70 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	@Override
 	public int modifyBlind(HttpServletRequest request) {
 
-		String boardTitle = request.getParameter("boardTitle");
-		String boardContents = request.getParameter("boardContents");
-		String password =MySecurityUtils.getSha256(request.getParameter("password"));
-		int blindNo = Integer.parseInt(request.getParameter("blindNo"));
-		
-		List<BlindImageDto> blindImageDtoList = blindMapper.getBlindImageList(blindNo);
-		List<String> blindImageList = blindImageDtoList.stream()
-																			.map(blindImageDto -> blindImageDto.getFilesystemName())
-																			.collect(Collectors.toList());
+    String boardTitle = request.getParameter("boardTitle");
+    String boardContents = request.getParameter("boardContents");
+    String password = request.getParameter("password");
+/*
+    try {
+        password = AESUtils.encrypt(request.getParameter("password")); // AES로 복호화
+    } catch (Exception e) {
+        // 복호화 실패 처리
+    	throw new RuntimeException("암호화오류", e);
+    }
+    */
+    int blindNo = Integer.parseInt(request.getParameter("blindNo"));
 
-		List<String> editorImageList = getEditorImageList(boardContents);
-		
-		editorImageList.stream()	
-			.filter(editorImage -> !blindImageList.contains(editorImage))
-			.map(editorImage -> BlindImageDto.builder()
-													.blindNo(blindNo)
-													.uploadPath(myFileUtils.getBlogImageUploadPath())
-													.filesystemName(editorImage)
-													.build())
-			.forEach(blindImageDto -> blindMapper.insertBlindImage(blindImageDto));
-		
-		List<BlindImageDto> removeList = blindImageDtoList.stream()
-																				.filter(blindImageDto -> !editorImageList.contains(blindImageDto.getFilesystemName()))
-																				.collect(Collectors.toList());
-		
-		for(BlindImageDto blindImageDto : removeList) {
-			blindMapper.deleteBlindImage(blindImageDto.getFilesystemName());
-			File file = new File(blindImageDto.getUploadPath(), blindImageDto.getFilesystemName());
-			if(file.exists()) {
-				file.delete();
-			}
-		}
-		
-		BlindBoardDto blind = BlindBoardDto.builder()
-														.boardTitle(boardTitle)
-														.boardContents(boardContents)
-														.password(password)
-														.blindNo(blindNo)
-														.build();
-		
-		int modifyResult = blindMapper.updateBlind(blind);
-														
-		return modifyResult;
+    List<BlindImageDto> blindImageDtoList = blindMapper.getBlindImageList(blindNo);
+    List<String> blindImageList = blindImageDtoList.stream()
+                                                .map(blindImageDto -> blindImageDto.getFilesystemName())
+                                                .collect(Collectors.toList());
+
+    List<String> editorImageList = getEditorImageList(boardContents);
+
+    editorImageList.stream()
+        .filter(editorImage -> !blindImageList.contains(editorImage))
+        .map(editorImage -> BlindImageDto.builder()
+                                            .blindNo(blindNo)
+                                            .uploadPath(myFileUtils.getBlogImageUploadPath())
+                                            .filesystemName(editorImage)
+                                            .build())
+        .forEach(blindImageDto -> blindMapper.insertBlindImage(blindImageDto));
+
+    List<BlindImageDto> removeList = blindImageDtoList.stream()
+                                                    .filter(blindImageDto -> !editorImageList.contains(blindImageDto.getFilesystemName()))
+                                                    .collect(Collectors.toList());
+
+    for (BlindImageDto blindImageDto : removeList) {
+        blindMapper.deleteBlindImage(blindImageDto.getFilesystemName());
+        File file = new File(blindImageDto.getUploadPath(), blindImageDto.getFilesystemName());
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    BlindBoardDto blind = BlindBoardDto.builder()
+                                        .boardTitle(boardTitle)
+                                        .boardContents(boardContents)
+                                        .password(password) 
+                                        .blindNo(blindNo)
+                                        .build();
+
+    int modifyResult = blindMapper.updateBlind(blind);
+
+    return modifyResult;
 	}
 	
 	
 	//비밀번호
 	@Override
 	public boolean validatePassword(int blindNo, String password) {
-		String hashedPassword = MySecurityUtils.getSha256(password);
-    String storedPassword = blindMapper.getPasswordByBlindNo(blindNo);
-    return hashedPassword.equals(storedPassword);
+    String encryptedPassword = blindMapper.getPasswordByBlindNo(blindNo);
+    try {
+        String decryptedPassword = AESUtils.decrypt(encryptedPassword);
+        return decryptedPassword.equals(password);
+    } catch (Exception e) {
+        throw new RuntimeException("복호화 오류", e);
+    }
 	}
 	
 	
@@ -234,15 +257,28 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 		int blindNo = Integer.parseInt(request.getParameter("blindNo"));
 		String commentPassword =MySecurityUtils.getSha256(request.getParameter("commentPassword"));
 		
-		
-		
 		BlindCommentDto comment = BlindCommentDto.builder()
 																	.contents(contents)
 																	.blindNo(blindNo)
 																	.commentPassword(commentPassword)
 																.build();
 		
-		return blindMapper.insertComment(comment);
+    // 댓글 등록
+    int insertCount = blindMapper.insertComment(comment);
+
+    // 등록된 댓글이 있을 경우에만 댓글 수 업데이트
+    if (insertCount > 0) {
+        // 해당 게시물의 댓글 수를 가져옴
+        int commentCount = blindMapper.getCommentCount(blindNo);
+        
+        // 댓글 수를 업데이트
+        Map<String, Object> map = new HashMap<>();
+        map.put("blindNo", blindNo);
+        map.put("commentCount", commentCount);
+        blindMapper.updateComment(map);
+    }
+
+    return insertCount;
 	}
 	
 	
@@ -251,20 +287,21 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	public Map<String, Object> getCommentList(HttpServletRequest request) {
 
 		int blindNo = Integer.parseInt(request.getParameter("blindNo"));
-		int page = Integer.parseInt(request.getParameter("page"));
+		//int page = Integer.parseInt(request.getParameter("page"));
 		
-		int total = blindMapper.getCommentCount(blindNo);
+		//int total = blindMapper.getCommentCount(blindNo);
 		
-		int display = 10;
+		//int display = 10;
 		
-		myPageUtils.setPaging(total, display, page);
+		//myPageUtils.setPaging(total, display, page);
 		
-		Map<String, Object> map = Map.of("blindNo", blindNo
-																	 , "begin", myPageUtils.getBegin()
-																	 , "end", myPageUtils.getEnd());
+		Map<String, Object> map = Map.of("blindNo", blindNo);
+																	 //, "begin", myPageUtils.getBegin()
+																	 //, "end", myPageUtils.getEnd());
 				
-		return Map.of("commentList", blindMapper.getCommentList(map)
-								, "paging", myPageUtils.getAsyncPaging());
+		return Map.of("commentList", blindMapper.getCommentList(map));
+			//					, "paging", myPageUtils.getAsyncPaging());
+		
 		
 	}
 	
