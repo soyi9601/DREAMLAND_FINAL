@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-		pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
 <c:set var="loginEmployee"
-		value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
+    value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
 
 <jsp:include page="../../layout/header.jsp" />
@@ -16,70 +16,72 @@
 
 <!-- Content wrapper -->
 <div class="content-wrapper sd-board" id="blind-board">
-		<!-- Content -->
+    
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y sd-notice-write">
+        <div class="title sd-point">익명게시판</div>
+          
+          <div class="card sd-table-wrapper">
+            <div class="table-responsive text-nowrap">
+              <table class="table table-hover sd-table" id="blind-list-table">
+                <thead>
+                  <tr>
+                    <th style="width:8%">번호</th>
+                    <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+                      <th style="width:8%">선택</th>
+                    </c:if>
+                    <th style="width:45%" class="blindTitle1">제목</th>
+                    <th style="width:15%">작성일자</th>
+                    <th style="width:10%">댓글</th>
+                    <th style="width:10%">조회수</th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0" id="blind-list">
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+    </div>
+    <!-- / Content -->
+    <!-- 작성 버튼 화면 하단에 띄움 -->
+    <c:if test="${not empty loginEmployee}">
+      <p class="sd-btn sd-point-bg">
+        <a href="${contextPath}/board/blind/write.page">작성</a>
+      </p>
+    </c:if>
+    
+</div>
+  <script>
 
-		<div class="container-xxl flex-grow-1 container-p-y sd-notice-write">
-				<div class="title sd-point">익명게시판</div>
-					<c:if test="${not empty loginEmployee}">
-						<p class="sd-btn-write">
-	            <a href="${contextPath}/board/blind/write.page">작성</a>
-	          </p>
-	        </c:if>
-					<div class="card sd-table-wrapper">
-        		<div class="table-responsive text-nowrap">
-		          <table class="table table-hover sd-table">
-		            <thead>
-		              <tr>
-		                <th>번호</th>
-		                <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-		                  <th>선택</th>
-		                </c:if>
-		                <th>제목</th>
-		                <th>작성일자</th>
-		                <th>댓글</th>
-		                <th>조회수</th>
-		              </tr>
-		            </thead>
-		            <tbody class="table-border-bottom-0" id="blind-list">
-		              
-		            </tbody>
-          		</table>
-        		</div>
-      		</div>
-				
-		</div>
-		<!-- / Content -->
-
-	<script>
-
-	let page = 1;
-	let totalPage = 0;
-	let totalItems = 0;  // 전체 항목 수
-	
-	userRole = '${loginEmployee.role}';
-	
-	const fnGetBlindList = () =>{
-		$.ajax({
-			type:'GET',
-			url:'${contextPath}/board/blind/getBlindList.do',
-			data:'page='+page,
-			dataType:'json',
-			success:(resData) =>{
-				
-				totalPage = resData.totalPage;
-				totalItems = resData.totalItems;  // 전체 항목 수를 서버에서 받아
-				
-				console.log("Total Items: " + totalItems)
-			// 최신 글의 전체 개수를 기반으로 인덱스 부여
-				let startIndex = totalItems - (page - 1) * resData.pageSize;  
-				console.log("Start Index: " + startIndex);
-				//totalPage = resData.totalPage;
-				
-				//let lastIndex = resData.blindList.length - 1; // 최신 글의 인덱스
-				
-				//console.log("lastIndex:" + lastIndex)
+  let page = 1;
+  let totalPage = 0;
+  let totalItems = 0;  // 전체 항목 수
+  
+  userRole = '${loginEmployee.role}';
+  
+  const fnGetBlindList = () =>{
+    $.ajax({
+      type:'GET',
+      url:'${contextPath}/board/blind/getBlindList.do',
+      data:'page='+page,
+      dataType:'json',
+      success:(resData) =>{
+        
+        totalPage = resData.totalPage;
+        totalItems = resData.totalItems;  // 전체 항목 수를 서버에서 받아
+        
+        console.log("Total Items: " + totalItems)
+      // 최신 글의 전체 개수를 기반으로 인덱스 부여
+        let startIndex = totalItems - (page - 1) * resData.pageSize;  
+        console.log("Start Index: " + startIndex);
+        //totalPage = resData.totalPage;
+        
+        //let lastIndex = resData.blindList.length - 1; // 최신 글의 인덱스
+        
+        //console.log("lastIndex:" + lastIndex)
         $.each(resData.blindList, (i, blind) => {
-        		
+            
             let reversedIndex = startIndex - i; // 역순으로 된 인덱스
             //console.log("reversedIndex"+reversedIndex)
             let str = '<tr><td>' + reversedIndex + '</td>'; // 역순으로 된 인덱스 사용
@@ -91,23 +93,23 @@
             //str += '<td><a class="blindTitle" href="${contextPath}/board/blind/updateHit.do?blindNo='+blind.blindNo+'">' +  blind.boardTitle + '</a></td>';
            //${contextPath}/board/blind/updateHit.do?blindNo='+evt.target.dataset.blindNo 
            str += '<td>'+blind.boardCreateDt+'</td>';
-            str += '<td></td>';
+            str += '<td>'+blind.commentCount+'</td>';
             str += '<td>'+blind.hit+'</td></tr>'
 
             $('#blind-list').append(str);
         });
     },
-			error:(jqXHR) => {
-				alert(jqXHR.statusText+'('+jqXHR.status+')');
-			}
-		});
-	}
-	
-	fnGetBlindList();
-	
-	
-	// 조회수 쿠키
-	// 쿠키 설정 함수
+      error:(jqXHR) => {
+        alert(jqXHR.statusText+'('+jqXHR.status+')');
+      }
+    });
+  }
+  
+  fnGetBlindList();
+  
+  
+  // 조회수 쿠키
+  // 쿠키 설정 함수
 // 쿠키 설정 함수
 function setCookie(name, value, days) {
     let expires = "";
@@ -203,4 +205,4 @@ const fnRemoveResult = () => {
 fnRemoveResult();
   </script>
 
-		<%@ include file="../../layout/footer.jsp"%>
+    <%@ include file="../../layout/footer.jsp"%>
