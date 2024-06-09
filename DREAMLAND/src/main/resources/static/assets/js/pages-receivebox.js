@@ -31,55 +31,28 @@ $(document).ready(function() {
     });
 })
 
-// 받은 쪽지함 리스트
-const fnGetReceiveMessage = () => {
-  $.ajax({
-    // 요청
-    type: 'GET',
-    url: '/message/getReceiveMessage.do',
-    data: 'empNo=' + empNo + '&page=' + page,
-    // 응답
-    dataType: 'json',
-    success: (resData) => {
-      console.log(resData);
-      totalPage = resData.totalPage;
-      const receiveList = $('#receive-list');
-      const receivePage = $('#receive-page');
-      if (page === 1) {
-        receiveList.empty();
-      }
-      if (resData.messageList.length === 0) {
-        receiveList.append('<tr><td>받은 쪽지가 없습니다</td></tr>');
-      } else {
-        $.each(resData.messageList, (i, msg) => {         
-          let str = '<tr><td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1" /></td>';
-          str += '<td>' + (i + 1) + '</td>';
-          str += '<td>' + msg.msgContents + '</td>';
-          str += '<td>' + msg.msgCreateDt + '</td>';
-          str += '<td>' + msg.senderName + '</td>';
-          str += '<td>';
-          str += '  <div class="dropdown">';
-          str += '    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">';
-          str += '      <i class="bx bx-dots-vertical-rounded"></i>'
-          str += '    </button>';
-          str += '    <div class="dropdown-menu">'
-          str += '      <a class="dropdown-item" href=""><i class="bx bx-edit-alt me-1"></i>답장하기</a>';
-          str += '<a class="dropdown-item" href=""><i class="bx bx-trash me-1"></i>삭제하기</a>';
-          str += '</div></div></td>'
-          str += '</tr>';
-
-          receiveList.append(str);
+// 상세보기 링크
+document.addEventListener("DOMContentLoaded", () => {
+    const rows = document.querySelectorAll(".clickable-row");
+    rows.forEach(row => {
+        row.addEventListener("click", () => {
+            window.location.href = row.dataset.href;
         });
-        receivePage.append(resData.paging);
-      }
-    },
-    error: (jqXHR) => {
-      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-    }
-  });
-}
+    });
+});
+
+// 중요보관함 이동
+document.getElementById("btn-save").addEventListener("click", function() {
+    document.getElementById("receive-form").action = "/user/saveMsg.do";
+    document.getElementById("receive-form").submit();
+});
+
+// 삭제 이동
+document.getElementById("btn-delete").addEventListener("click", function() {
+    document.getElementById("receive-form").action = "/user/deleteMsg.do";
+    document.getElementById("receive-form").submit();
+});
+
 
 /************************** 함수 호출 **************************/
-/*document.getElementById('contents').addEventListener('keyup', fnCheckByte);
-fnEmployeeList();*/
-fnGetReceiveMessage();
+

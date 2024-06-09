@@ -36,7 +36,7 @@
       , 'N'
       , 'N'
       , 'N'
-      , CURRENT_DATE
+      , SYSDATE
       , #{sender}
       , #{receiver}
     )  
@@ -47,14 +47,25 @@
 		  FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
 		 WHERE M.MSG_RECEIVER = ${empNo}
   </select>
+  
+  <select id="getMessageCountByRecStar">
+		SELECT COUNT(*)
+		  FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+		 WHERE M.MSG_RECEIVER = ${empNo} AND M.STAR_YN = 'N'
+  </select>
 
   <select id="getMessageByReceiver"
           parameterType="int"
           resultType="MessageDto">
-		SELECT M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
-		     , ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
-		  FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
-		 WHERE M.MSG_RECEIVER = #{empNo}
+   SELECT RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN
+        , M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER,
+          ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
+     FROM (SELECT ROW_NUMBER() OVER (ORDER BY M.MSG_CREATE_DT DESC) AS RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
+             FROM MESSAGE M
+            WHERE M.MSG_RECEIVER = #{empNo} AND M.STAR_YN = 'N') M
+     JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO
+     JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+    WHERE M.RN BETWEEN #{begin} AND #{end}
   </select>
   
   <select id="getMessageCountBySender">
@@ -66,10 +77,15 @@
   <select id="getMessageBySender"
           parameterType="int"
           resultType="MessageDto">
-    SELECT M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
-         , ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
-      FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
-     WHERE M.MSG_SENDER = #{empNo}
+   SELECT RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN
+        , M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER,
+          ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
+     FROM (SELECT ROW_NUMBER() OVER (ORDER BY M.MSG_CREATE_DT DESC) AS RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
+             FROM MESSAGE M
+            WHERE M.MSG_SENDER = #{empNo}) M
+     JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO
+     JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+    WHERE M.RN BETWEEN #{begin} AND #{end}
   </select>
   
   <select id="getPosNameByPosNo"
@@ -80,25 +96,45 @@
      WHERE POS_NO = #{posNo}
   </select>
   
-  <update id="updateUserInfo"
-          parameterType="EmployeeDto">
-    UPDATE EMPLOYEE
-       SET EMP_NAME = #{empName}
-         , BIRTH = #{birth}
-         , MOBILE = #{mobile}
-         , POSTCODE = #{postcode}
-         , ADDRESS = #{address}
-         , DETAIL_ADDRESS = #{detailAddress}
-         , PROFILE_PATH = #{profilePath}
-         , SIGN_PATH = #{signPath}
-     WHERE EMAIL = #{email}
+    <select id="getMessageDetail"
+          parameterType="int"
+          resultType="MessageDto">
+  SELECT M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
+       , ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
+    FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+   WHERE M.MSG_NO = #{msgNo}
+  </select>
+  
+  <update id="updateMsgRead">
+    UPDATE MESSAGE
+       SET READ_YN = 'Y'
+     WHERE MSG_NO = #{msgNo}
   </update>
-
-  <update id="updatePassword"
-          parameterType="String">
-    UPDATE EMPLOYEE
-       SET PASSWORD = #{changePw}
-     WHERE EMAIL = #{email}
+  
+  <update id="updateMsgStar">
+    UPDATE MESSAGE
+       SET STAR_YN = 'Y'
+     WHERE MSG_NO = #{msgNo}
   </update>
+  
+  <select id="getMessageCountByStar">
+    SELECT COUNT(*)
+      FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+     WHERE M.MSG_SENDER = #{empNo} AND M.STAR_YN = 'Y'
+  </select>
+  
+  <select id="getMessageByStar"
+          parameterType="int"
+          resultType="MessageDto">
+   SELECT RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN
+        , M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER,
+          ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
+     FROM (SELECT ROW_NUMBER() OVER (ORDER BY M.MSG_CREATE_DT DESC) AS RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
+             FROM MESSAGE M
+            WHERE M.MSG_RECEIVER = #{empNo} AND M.STAR_YN = 'Y') M
+     JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO
+     JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+    WHERE M.RN BETWEEN #{begin} AND #{end}
+  </select>
 
 </mapper>

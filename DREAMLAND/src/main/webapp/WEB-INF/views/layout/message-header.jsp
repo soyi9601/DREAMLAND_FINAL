@@ -104,22 +104,22 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/user/receiveBox" class="menu-link">
+                <a href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}" class="menu-link">
                   <div>받은쪽지함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/sendBox" class="menu-link">
+                <a href="${contextPath}/user/sendBox?empNo=${loginEmployee.empNo}" class="menu-link">
                   <div>보낸쪽지함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/saveBox" class="menu-link">
+                <a href="${contextPath}/user/saveBox?empNo=${loginEmployee.empNo}" class="menu-link">
                   <div>중요보관함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/removeBox" class="menu-link">
+                <a href="${contextPath}/user/removeBox?empNo=${loginEmployee.empNo}" class="menu-link">
                   <div>휴지통</div>
                 </a>
               </li>

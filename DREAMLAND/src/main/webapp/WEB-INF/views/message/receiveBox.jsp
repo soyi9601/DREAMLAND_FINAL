@@ -12,11 +12,15 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">쪽지함 /</span> 받은쪽지함</h4>
 
-              
               <div class="row">
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">받은편지함 <small><a href="">안읽은 쪽지</a></small></h5>
+	                  <form id="receive-form" method="POST">
+	                  <div>
+	                    <button type="button" id="btn-save">보관하기</button>
+	                    <button type="button" id="btn-delete">삭제하기</button>
+	                  </div>
 	                <div id="receive-count"></div>
 	                <div class="table-responsive text-nowrap">
 	                  <table class="table table-hover">
@@ -29,52 +33,37 @@
 	                        <th>보낸사람</th>
 	                      </tr>
 	                    </thead>
-	                    <tbody class="table-border-bottom-0" id="receive-list">
 
-	                    </tbody>
-	                    <tfoot id="receive-page">
-	                    </tfoot>
-	                  </table>
-				            <div class="tab-content">
+												<tbody class="table-border-bottom-0" id="receive-list">
+											    <c:if test="${empty receiveList}">
+										        <tr>
+									            <td colspan="5">받은 쪽지함이 없습니다</td>
+										        </tr>
+											    </c:if>
+											    <c:if test="${not empty receiveList}">
+										        <c:forEach items="${receiveList}" var="receive" varStatus="vs">
+									            <tr>
+								                <td><input class="form-check-input" type="checkbox" value="${receive.msgNo}" id="star-no" name="starYn"/></td>
+								                <td>${beginNo - vs.index}</td>
+								                <td><a href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}</a></td>
+								                <td>${receive.msgCreateDt}</td>
+								                <td>${receive.senderName}</td>
+									            </tr>
+										        </c:forEach>
+											    </c:if>
+										    </tbody>
+                    </table>
+                    </div>
+										</form>
+                    <div class="tab-content">
                      <nav aria-label="Page navigation">
-                         <ul class="pagination justify-content-center">
-                           <li class="page-item prev">
-                             <a class="page-link" href="javascript:void(0);"
-                               ><i class="tf-icon bx bx-chevrons-left"></i
-                             ></a>
-                           </li>
-                           <li class="page-item">
-                             <a class="page-link" href="javascript:void(0);">1</a>
-                           </li>
-                           <li class="page-item">
-                             <a class="page-link" href="javascript:void(0);">2</a>
-                           </li>
-                           <li class="page-item active">
-                             <a class="page-link" href="javascript:void(0);">3</a>
-                           </li>
-                           <li class="page-item">
-                             <a class="page-link" href="javascript:void(0);">4</a>
-                           </li>
-                           <li class="page-item">
-                             <a class="page-link" href="javascript:void(0);">5</a>
-                           </li>
-                           <li class="page-item next">
-                             <a class="page-link" href="javascript:void(0);"
-                               ><i class="tf-icon bx bx-chevrons-right"></i
-                             ></a>
-                           </li>
-                         </ul>
+                         <ul class="pagination justify-content-center">${paging}</ul>
                        </nav>
                        </div>
-			                </div>
-			              </div>
-					              <!--/ Hoverable Table rows -->
+                      </div>
+                    </div>
+                        <!--/ Hoverable Table rows -->
                    </div>
-                                           
-                 </div>
-               
-
-
 
             <!-- / Content -->
 <script>var empNo = '${loginEmployee.empNo}';</script>

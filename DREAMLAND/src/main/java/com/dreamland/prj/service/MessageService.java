@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 
 import com.dreamland.prj.dto.EmployeeDto;
 
@@ -14,10 +15,20 @@ public interface MessageService {
   List<EmployeeDto> getEmployeeList(Map<String, Object> param);
   int insertMessage(HttpServletRequest request);
   
+  // 받은쪽지함
   int getReceiveCount(int empNo);
-  ResponseEntity<Map<String, Object>> getReceiveMessage(HttpServletRequest request);
+  void getReceiveMessage(Model model);
   
+  // 보낸쪽지함
   int getSendCount(int empNo);
-  ResponseEntity<Map<String, Object>> getSendMessage(HttpServletRequest request);
-
+  void getSendMessage(Model model);
+  
+  // 상세보기
+  void getMessageDetailByReceive(Model model);
+  void getMessageDetailBySend(Model model);
+  
+  // 중요보관함
+  int saveMessage(HttpServletRequest request);
+  void getStarMessage(Model model);
+  
 }
