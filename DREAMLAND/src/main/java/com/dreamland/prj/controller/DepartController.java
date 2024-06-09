@@ -33,7 +33,9 @@ public class DepartController {
   
   // 관리자 - 조직도 페이지 이동
   @GetMapping("/departAdmin.page")
-  public String depart() {
+  public String depart(Model model) {
+    List<DepartmentDto> depart = departService.getAllDepart();
+    model.addAttribute("depart", depart);
     return "depart/departAdmin";
   }
   

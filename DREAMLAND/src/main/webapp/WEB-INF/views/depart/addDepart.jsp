@@ -36,7 +36,7 @@
 	                <select id="parent-id" name="parentId" class="select2 form-select">
 	                  <option value="">선택하세요</option>
 	                  <c:forEach var="depart" items="${depart}">
-	                     <option value="${depart.deptNo}">${depart.deptName}</option>
+	                    <option value="${depart.deptNo}">${depart.deptName}</option>
 	                  </c:forEach>
 	                </select>
 	              </div>

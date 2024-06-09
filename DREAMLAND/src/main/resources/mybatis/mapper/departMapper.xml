@@ -75,7 +75,7 @@
 		
 	<update id="deleteEmployee" parameterType="EmployeeDto">
     UPDATE EMPLOYEE
-       SET RESIGN_DATE = CURRENT_DATE
+       SET RESIGN_DATE = CURRENT_DATE, DEPT_NO = 4000
      WHERE EMP_NO = #{empNo}     
   </update>
   

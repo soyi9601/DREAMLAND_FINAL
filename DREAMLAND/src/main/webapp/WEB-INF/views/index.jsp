@@ -114,9 +114,7 @@
 								          <th scope="col">작성일자</th>
 								        </tr>
 								      </thead>
-								      <tbody class="table-border-bottom-0 notice-table">
-								        
-								      </tbody>
+								      <tbody class="table-border-bottom-0 notice-table"> </tbody>
 								    </table>
 							    </div>
 	              </div>
