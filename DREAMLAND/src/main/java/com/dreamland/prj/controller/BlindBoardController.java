@@ -94,11 +94,13 @@ public class BlindBoardController {
 	
 	@PostMapping("/modify.do")
 	public String modify(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		
 		int modifyCount = blindBoardService.modifyBlind(request);
 		redirectAttributes
 				.addAttribute("blindNo", request.getParameter("blindNo"))
 				.addFlashAttribute("modifyResult",modifyCount == 1 ? "수정되었습니다.": "수정되지 않았습니다.");
 		return "redirect:/board/blind/detail.do?blindNo={blindNo}";
+		
 	}
 	
 	
