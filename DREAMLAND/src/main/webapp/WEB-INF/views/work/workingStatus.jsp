@@ -98,7 +98,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <!-- 결과 데이터는 AJAX로 추가 -->
+                      <!-- 근무 리스트는 AJAX로 추가 -->
                   </tbody>
               </table>
           </div>
@@ -150,11 +150,11 @@
                              $.each(resData.workList, (i, work) => {
                             	 let str = '';
                                  str += '<tr>';
-                                 str += '<td>' + moment(work.workDate).format('YYYY-MM-DD') + '</td>';
-                                 str += '<td>' + (work.workIn ? moment(work.workIn).format('HH:mm:ss') : '') + '</td>';
-                                 str += '<td>' + (work.workOut ? moment(work.workOut).format('HH:mm:ss') : '') + '</td>';
-                                 str += '<td>' + work.workTotalTime + '시간</td>';
-                                 str += '<td>' + getWorkState(work.workState) + '</td>';
+	                                 str += '<td>' + moment(work.workDate).format('YYYY-MM-DD') + '</td>';
+	                                 str += '<td>' + (work.workIn ? moment(work.workIn).format('HH:mm:ss') : '') + '</td>';
+	                                 str += '<td>' + (work.workOut ? moment(work.workOut).format('HH:mm:ss') : '') + '</td>';
+	                                 str += '<td>' + work.workTotalTime + '시간</td>';
+	                                 str += '<td>' + getWorkState(work.workState) + '</td>';
                                  str += '</tr>';
                                  workList.append(str);
                                  console.log(work.workIn);
