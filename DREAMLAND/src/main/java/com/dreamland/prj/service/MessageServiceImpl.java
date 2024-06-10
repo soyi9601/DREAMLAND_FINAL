@@ -10,10 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.mapper.MessageMapper;
-import com.dreamland.prj.utils.MyPageUtils;
+import com.dreamland.prj.utils.MyMessagePageUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class MessageServiceImpl implements MessageService {
   
   private final MessageMapper messageMapper;
-  private final MyPageUtils myPageUtils;
+  private final MyMessagePageUtils myPageUtils;
 
   
   @Override
@@ -55,34 +56,43 @@ public class MessageServiceImpl implements MessageService {
   }
   
   @Override
-  public int getReceiveCount(int empNo) {
-    return messageMapper.getMessageCountByReceiver(empNo);
+  public Map<String, Object> getReceiveCount(int empNo) {
+    Map<String, Object> total = new HashMap<>();
+    total.put("notReadCount", messageMapper.getMessageCountByRecRead(empNo));
+    total.put("total", messageMapper.getMessageCountByReceiver(empNo));
+    return total;
   }
   
   @Override
-  public ResponseEntity<Map<String, Object>> getReceiveMessage(HttpServletRequest request) {
+  public void getReceiveMessage(Model model) {
     
-    // 메시지 개수, 페이지번호, 한페이지당 보여지는 메시지 개수
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
     int empNo = Integer.parseInt(request.getParameter("empNo"));
     int total = messageMapper.getMessageCountByReceiver(empNo);
+    int nonStar = messageMapper.getMessageCountByRecStar(empNo);
     
-    int display = 5;
+    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+    int display = Integer.parseInt(optDisplay.orElse("5"));
     
-    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
-    int page = Integer.parseInt(opt.orElse("1"));
+    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(optPage.orElse("1"));
     
-    // 페이징처리
-    myPageUtils.setPaging(total, display, page);
+    myPageUtils.setPaging(nonStar, display, page);
     
-    String sort = "DESC";
+    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+    String sort = optSort.orElse("DESC");
     
-    // 목록 가져올 때 전달 할 Map 생성
-    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
+    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", nonStar);
+
+    model.addAttribute("beginNo", nonStar - (page - 1) * display);
+    model.addAttribute("receiveList", messageMapper.getMessageByReceiver(map));
+    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/receiveBox?empNo=" + empNo, sort, display));
+    model.addAttribute("display", display);
+    model.addAttribute("sort", sort);
+    model.addAttribute("page", page);
     
-    return new ResponseEntity<>(Map.of("messageList", messageMapper.getMessageByReceiver(empNo)
-                                     , "totalPage", myPageUtils.getTotalPage()
-                                     , "paging", myPageUtils.getPaging(request.getContextPath() + "/message/getReceiveMessage.do", sort, display))
-                                , HttpStatus.OK);
   }
   
   @Override
@@ -91,36 +101,115 @@ public class MessageServiceImpl implements MessageService {
   }
   
   @Override
-  public ResponseEntity<Map<String, Object>> getSendMessage(HttpServletRequest request) {
-    // 메시지 개수, 페이지번호, 한페이지당 보여지는 메시지 개수
+  public void getSendMessage(Model model) {
+    
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
     int empNo = Integer.parseInt(request.getParameter("empNo"));
     int total = messageMapper.getMessageCountBySender(empNo);
     
-    int display = 5;
+    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+    int display = Integer.parseInt(optDisplay.orElse("5"));
     
-    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
-    int page = Integer.parseInt(opt.orElse("1"));
+    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(optPage.orElse("1"));
     
-    // 페이징처리
     myPageUtils.setPaging(total, display, page);
     
-    String sort = "DESC";
+    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+    String sort = optSort.orElse("DESC");
     
-    // 목록 가져올 때 전달 할 Map 생성
     Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
+
+    model.addAttribute("beginNo", total - (page - 1) * display);
+    model.addAttribute("sendList", messageMapper.getMessageBySender(map));
+    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/sendBox?empNo=" + empNo, sort, display));
+    model.addAttribute("display", display);
+    model.addAttribute("sort", sort);
+    model.addAttribute("page", page);
+
+  }
+
+  @Override
+  public void getMessageDetailByReceive(Model model) {
     
-    return new ResponseEntity<>(Map.of("messageList", messageMapper.getMessageBySender(empNo)
-                                     , "totalPage", myPageUtils.getTotalPage()
-                                     , "paging", myPageUtils.getPaging(request.getContextPath() + "/message/getSendMessage.do", sort, display))
-                                , HttpStatus.OK);
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
+    int msgNo = Integer.parseInt(request.getParameter("msgNo"));
+    int updateReadYN = messageMapper.updateMsgRead(msgNo);
+    
+    model.addAttribute("msgDetail", messageMapper.getMessageDetail(msgNo));
+    
   }
   
+  @Override
+  public void getMessageDetailBySend(Model model) {
+    
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
+    int msgNo = Integer.parseInt(request.getParameter("msgNo"));
+    
+    model.addAttribute("msgDetail", messageMapper.getMessageDetail(msgNo));
+    
+  }
+  
+  @Override
+  public int saveMessage(HttpServletRequest request) {
+    
+    String[] saveList = request.getParameterValues("starYn");
+    
+    int count = 0;
+    // 문자열 배열을 int 배열로 변환
+    int[] msgNoList = new int[saveList.length];
+    for (int i = 0; i < saveList.length; i++) {
+      msgNoList[i] = Integer.parseInt(saveList[i]);
+      messageMapper.updateMsgStar(msgNoList[i]);
+      count++;
+    }
+    
+    return count;
+  }
+  
+  @Override
+  public void getStarMessage(Model model) {
+    
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
+    int total = messageMapper.getMessageCountByStar(empNo);
+    
+    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+    int display = Integer.parseInt(optDisplay.orElse("5"));
+    
+    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(optPage.orElse("1"));
+    
+    myPageUtils.setPaging(total, display, page);
+    
+    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+    String sort = optSort.orElse("DESC");
+    
+    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
 
-//  public ResponseEntity<Map<String, Object>> getEmployeeList(Map<String, Object> param) {
-//    Map<String, Object> map = new HashMap<>();
-//    List<EmployeeDto> employeeList = messageMapper.getEmployeeList(param);
-//    map.put("employeeList", employeeList);
-//    
-//    return new ResponseEntity<>(map, HttpStatus.OK);
-//  }
+    model.addAttribute("beginNo", total - (page - 1) * display);
+    model.addAttribute("saveList", messageMapper.getMessageByStar(map));
+    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/saveBox?empNo=" + empNo, sort, display));
+    model.addAttribute("display", display);
+    model.addAttribute("sort", sort);
+    model.addAttribute("page", page);
+    
+  }
+  
+  @Override
+  public Map<String, Object> getStarCount(int empNo) {
+    Map<String, Object> total = new HashMap<>();
+    total.put("notReadCount", messageMapper.getMessageCountByStarRead(empNo));
+    total.put("total", messageMapper.getMessageCountByStar(empNo));
+    return total;
+  }
+  
 }

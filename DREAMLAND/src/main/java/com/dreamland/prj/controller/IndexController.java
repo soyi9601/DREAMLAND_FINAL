@@ -55,4 +55,10 @@ public class IndexController {
     return indexService.getNoticeList(request);
   }
   
+  @GetMapping(value="/receiveCount", produces="application/json")
+  public ResponseEntity<Integer> getReceiveCount(@RequestParam int empNo){
+    int receiveCount = indexService.getReceiveCount(empNo);
+    return ResponseEntity.ok(receiveCount);
+  }
+  
 }
