@@ -250,18 +250,23 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 	    String contents =  multipartRequest.getParameter("contents");
 	    int temp  =  Integer.parseInt(multipartRequest.getParameter("temp"));
-	    String approver22 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver2") );
-	    String approver33 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver3") );
-	    String approver44 = approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver4") );
-	    String approver  =  approvalMapper.getEmployeeNo(  multipartRequest.getParameter("approver"));
-	    String approver2 =  approver22 == null ? " " : approver22;
-	    String approver3 =  approver33 == null ? " " : approver33;
-	    String approver4 =  approver44 == null ? " " : approver44;
+	    
+		
+	    String approver =  approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver"));
+	    Optional<String> approver22 = Optional.ofNullable(multipartRequest.getParameter("approver2"));
+	    String approver2 =  approvalMapper.getEmployeeNo(approver22.orElse(" ")) ;
+	    Optional<String> approver33 = Optional.ofNullable(multipartRequest.getParameter("approver3"));
+	    String approver3 =  approvalMapper.getEmployeeNo(approver33.orElse(" "));
+	    Optional<String> approver44 = Optional.ofNullable(multipartRequest.getParameter("approver4"));
+	    String approver4 =  approvalMapper.getEmployeeNo(approver44.orElse(" "));
+	    approver2 = approver2 != null ? approver2 : " ";
+	    approver3 = approver3 != null ? approver3 : " ";
+	    approver4 = approver4 != null ? approver4 : " ";
 	    String approvers = approver2 + " " + approver3 + " " + approver4;
-	    
-	    
+
 	    String referrer  =  multipartRequest.getParameter("referrer");
         String[] array = referrer.split(" ");
+        System.out.println(approvers);
         String[] array2 = approvers.split(" ");
         
         String leavestart ;
