@@ -32,7 +32,7 @@
       , TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
       , NULL
       , NULL
-      , NULL
+      , 10
       , N
       , #{empNo}      
     )

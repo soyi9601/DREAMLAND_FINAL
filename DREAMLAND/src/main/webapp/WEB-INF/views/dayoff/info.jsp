@@ -23,7 +23,7 @@
             </div>
             <div class="col">
                 <h2>${loginEmployee.empName}</h2>
-                <span class="badge rounded-pill bg-secondary">HR Department</span>
+                <span class="badge rounded-pill bg-secondary">${loginEmployee.deptName}</span>
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-primary">연차신청</button>
