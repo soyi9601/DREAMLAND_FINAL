@@ -12,7 +12,7 @@
     <a class="nav-link active" aria-current="page" href="${contextPath}/work/status.do">근태관리</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="${contextPath}/work/dayoff.do">휴가관리</a>
+    <a class="nav-link" href="${contextPath}/dayoff/info.do">휴가관리</a>
   </li>
 </ul>
 
