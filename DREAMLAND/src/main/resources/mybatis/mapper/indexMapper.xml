@@ -33,7 +33,7 @@
       , NULL
       , NULL
       , NULL
-      , NULL
+      , N
       , #{empNo}      
     )
   </insert>
