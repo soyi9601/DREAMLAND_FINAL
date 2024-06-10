@@ -16,53 +16,47 @@
               <div class="row">
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
-	                <h5 class="card-header">보낸쪽지함</h5>
-	                <div id="send-count"></div>
+	                <h5 class="card-header">보낸쪽지함 <small id="send-count"></small></h5>
 	                <div class="table-responsive text-nowrap">
 	                  <table class="table table-hover">
 	                    <thead>
 	                      <tr>
                           <th></th>
-                          <th>번호</th>
+                          <th>받는사람</th>
                           <th>쪽지내용</th>
                           <th>받은시간</th>
-                          <th>받는사람</th>
+                          <th>읽음여부</th>
 	                      </tr>
 	                    </thead>
-	                    <tbody class="table-border-bottom-0" id="send-list">
-	                    </tbody>
-	                    <tfoot id="send-page">
-                      </tfoot>
+                        <tbody class="table-border-bottom-0" id="send-list">
+                          <c:if test="${empty sendList}">
+                            <tr>
+                              <td colspan="4">보낸 쪽지함이 없습니다</td>
+                            </tr>
+                          </c:if>
+                          <c:if test="${not empty sendList}">
+                            <c:forEach items="${sendList}" var="send" varStatus="vs">
+                              <tr class="clickable-row" data-href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">
+                                <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1" /></td>
+                                <td>${send.receiverName}</td>
+                                <td><a href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">${send.msgContents}</a></td>
+                                <td>${send.msgCreateDt}</td>
+                                <td>
+															    <c:if test="${send.readYn == 'Y'}">
+														        읽음
+															    </c:if>
+															    <c:if test="${send.readYn == 'N'}">
+														        안읽음
+															    </c:if>
+																</td>
+                              </tr>
+                            </c:forEach>
+                          </c:if>
+                        </tbody>
 	                  </table>
 				            <div class="tab-content">
                      <nav aria-label="Page navigation">
-                         <ul class="pagination justify-content-center">
-                           <li class="page-item prev">
-                             <a class="page-link" href="javascript:void(0);"
-                               ><i class="tf-icon bx bx-chevrons-left"></i
-                             ></a>
-                           </li>
-                           <li class="page-item">
-                             <a class="page-link" href="javascript:void(0);">1</a>
-                           </li>
-                           <li class="page-item">
-                             <a class="page-link" href="javascript:void(0);">2</a>
-                           </li>
-                           <li class="page-item active">
-                             <a class="page-link" href="javascript:void(0);">3</a>
-                           </li>
-                           <li class="page-item">
-                             <a class="page-link" href="javascript:void(0);">4</a>
-                           </li>
-                           <li class="page-item">
-                             <a class="page-link" href="javascript:void(0);">5</a>
-                           </li>
-                           <li class="page-item next">
-                             <a class="page-link" href="javascript:void(0);"
-                               ><i class="tf-icon bx bx-chevrons-right"></i
-                             ></a>
-                           </li>
-                         </ul>
+                         <ul class="pagination justify-content-center">${paging}</ul>
                        </nav>
                        </div>
 			                </div>
