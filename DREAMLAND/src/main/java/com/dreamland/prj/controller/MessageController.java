@@ -40,9 +40,9 @@ public class MessageController {
   
   // 받은 쪽지함 개수
   @GetMapping("/message/receiveCount.do")
-  public ResponseEntity<Integer> getReceiveCount(@RequestParam int empNo){
-    int receiveCount = messageService.getReceiveCount(empNo);
-    return ResponseEntity.ok(receiveCount);
+  public ResponseEntity<Map<String, Object>> getReceiveCount(@RequestParam int empNo){
+    Map<String, Object> total = messageService.getReceiveCount(empNo);
+    return ResponseEntity.ok(total);
   }
   
   // 받은 쪽지함 리스트
@@ -87,8 +87,9 @@ public class MessageController {
   // 중요보관함 저장하기
   @PostMapping("/user/saveMsg.do")
   public String msgSave(HttpServletRequest request) {
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
     messageService.saveMessage(request);
-    return "redirect:/user/receiveBox";
+    return "redirect:/user/receiveBox?empNo=" + empNo;
   }
   
   // 중요보관함 리스트
@@ -97,6 +98,13 @@ public class MessageController {
     model.addAttribute("request", request);
     messageService.getStarMessage(model);
     return "message/saveBox";
+  }
+  
+  // 받은 쪽지함 개수
+  @GetMapping("/message/starCount.do")
+  public ResponseEntity<Map<String, Object>> getStarCount(@RequestParam int empNo){
+    Map<String, Object> total = messageService.getStarCount(empNo);
+    return ResponseEntity.ok(total);
   }
 
 

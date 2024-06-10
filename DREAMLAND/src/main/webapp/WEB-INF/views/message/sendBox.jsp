@@ -16,34 +16,31 @@
               <div class="row">
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
-	                <h5 class="card-header">보낸쪽지함</h5>
-	                <div id="send-count"></div>
+	                <h5 class="card-header">보낸쪽지함 <small id="send-count"></small></h5>
 	                <div class="table-responsive text-nowrap">
 	                  <table class="table table-hover">
 	                    <thead>
 	                      <tr>
                           <th></th>
-                          <th>번호</th>
+                          <th>받는사람</th>
                           <th>쪽지내용</th>
                           <th>받은시간</th>
-                          <th>받는사람</th>
                           <th>읽음여부</th>
 	                      </tr>
 	                    </thead>
                         <tbody class="table-border-bottom-0" id="send-list">
                           <c:if test="${empty sendList}">
                             <tr>
-                              <td colspan="5">보낸 쪽지함이 없습니다</td>
+                              <td colspan="4">보낸 쪽지함이 없습니다</td>
                             </tr>
                           </c:if>
                           <c:if test="${not empty sendList}">
                             <c:forEach items="${sendList}" var="send" varStatus="vs">
                               <tr class="clickable-row" data-href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">
                                 <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1" /></td>
-                                <td>${beginNo - vs.index}</td>
-                                <td>${send.msgContents}</td>
-                                <td>${send.msgCreateDt}</td>
                                 <td>${send.receiverName}</td>
+                                <td><a href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">${send.msgContents}</a></td>
+                                <td>${send.msgCreateDt}</td>
                                 <td>
 															    <c:if test="${send.readYn == 'Y'}">
 														        읽음

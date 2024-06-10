@@ -16,7 +16,7 @@ public interface MessageService {
   int insertMessage(HttpServletRequest request);
   
   // 받은쪽지함
-  int getReceiveCount(int empNo);
+  Map<String, Object> getReceiveCount(int empNo);
   void getReceiveMessage(Model model);
   
   // 보낸쪽지함
@@ -30,5 +30,6 @@ public interface MessageService {
   // 중요보관함
   int saveMessage(HttpServletRequest request);
   void getStarMessage(Model model);
+  Map<String, Object> getStarCount(int empNo);
   
 }

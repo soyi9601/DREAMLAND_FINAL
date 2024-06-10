@@ -1,5 +1,6 @@
 package com.dreamland.prj.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,11 @@ public class MessageServiceImpl implements MessageService {
   }
   
   @Override
-  public int getReceiveCount(int empNo) {
-    return messageMapper.getMessageCountByReceiver(empNo);
+  public Map<String, Object> getReceiveCount(int empNo) {
+    Map<String, Object> total = new HashMap<>();
+    total.put("notReadCount", messageMapper.getMessageCountByRecRead(empNo));
+    total.put("total", messageMapper.getMessageCountByReceiver(empNo));
+    return total;
   }
   
   @Override
@@ -193,11 +197,19 @@ public class MessageServiceImpl implements MessageService {
 
     model.addAttribute("beginNo", total - (page - 1) * display);
     model.addAttribute("saveList", messageMapper.getMessageByStar(map));
-    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/receiveBox?empNo=" + empNo, sort, display));
+    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/saveBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
     model.addAttribute("page", page);
     
+  }
+  
+  @Override
+  public Map<String, Object> getStarCount(int empNo) {
+    Map<String, Object> total = new HashMap<>();
+    total.put("notReadCount", messageMapper.getMessageCountByStarRead(empNo));
+    total.put("total", messageMapper.getMessageCountByStar(empNo));
+    return total;
   }
   
 }

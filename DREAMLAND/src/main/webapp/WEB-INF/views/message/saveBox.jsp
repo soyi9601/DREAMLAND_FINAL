@@ -16,33 +16,31 @@
               <div class="row">
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
-	                <h5 class="card-header">중요보관함</h5>
+	                <h5 class="card-header">중요보관함 <small id="save-count"></small></h5>
                   <div class="table-responsive text-nowrap">
                     <table class="table table-hover">
                       <thead>
                         <tr>
                           <th></th>
-                          <th>번호</th>
+                          <th>보낸사람</th>
                           <th>쪽지내용</th>
                           <th>받은시간</th>
-                          <th>보낸사람</th>
                         </tr>
                       </thead>
 
                         <tbody class="table-border-bottom-0" id="receive-list">
                           <c:if test="${empty saveList}">
                             <tr>
-                              <td colspan="5">받은 쪽지함이 없습니다</td>
+                              <td colspan="5">보관함이 비었습니다</td>
                             </tr>
                           </c:if>
                           <c:if test="${not empty saveList}">
                             <c:forEach items="${saveList}" var="save" varStatus="vs">
                               <tr>
                                 <td><input class="form-check-input" type="checkbox" value="${save.msgNo}" id="star-no" name="starYn"/></td>
-                                <td>${beginNo - vs.index}</td>
+                                <td>${save.senderName}</td>
                                 <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">${save.msgContents}</a></td>
                                 <td>${save.msgCreateDt}</td>
-                                <td>${save.senderName}</td>
                               </tr>
                             </c:forEach>
                           </c:if>
@@ -64,5 +62,6 @@
 
 
             <!-- / Content -->
-<!-- <script src="../assets/js/pages-account-mypage.js"></script> -->
+<script>var empNo = '${loginEmployee.empNo}';</script>
+<script src="/resources/assets/js/pages-savebox.js"></script>
 <%@ include file="../layout/footer.jsp" %>

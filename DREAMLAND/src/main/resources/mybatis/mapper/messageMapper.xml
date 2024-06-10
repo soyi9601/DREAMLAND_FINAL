@@ -5,6 +5,7 @@
 
 <mapper namespace="com.dreamland.prj.mapper.MessageMapper">
 
+  <!-- 자동완성을 위한 직원 리스트 -->
   <select id="getEmployeeList"
           parameterType="map"
           resultType="EmployeeDto">
@@ -14,7 +15,8 @@
 	  JOIN POSITION P ON E.POS_NO = P.POS_NO
 	 WHERE E.EMP_NAME LIKE '%' || #{value} || '%' OR D.DEPT_NAME LIKE '%' || #{value} || '%'
   </select>
-
+  
+  <!-- 메시지 보내기 -->
   <insert id="sendMessage"
           parameterType="map">
     <selectKey order="BEFORE" keyProperty="msgNo" resultType="int">
@@ -42,18 +44,28 @@
     )  
   </insert>
   
+  <!-- 받은 쪽지 개수 - 중요보관 아님  -->
   <select id="getMessageCountByReceiver">
 		SELECT COUNT(*)
 		  FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
-		 WHERE M.MSG_RECEIVER = ${empNo}
+		 WHERE M.MSG_RECEIVER = ${empNo} AND M.STAR_YN = 'N' AND M.DEL_YN = 'N'
   </select>
   
+  <!-- 받은 쪽지 개수 - 안읽음/중요보관 아님  -->
+  <select id="getMessageCountByRecRead">
+		SELECT COUNT(*)
+		  FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+		 WHERE M.MSG_RECEIVER = ${empNo} AND M.STAR_YN = 'N' AND M.READ_YN = 'N' AND M.DEL_YN = 'N'
+  </select>
+  
+  <!-- 중요보관함  -->
   <select id="getMessageCountByRecStar">
 		SELECT COUNT(*)
 		  FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
-		 WHERE M.MSG_RECEIVER = ${empNo} AND M.STAR_YN = 'N'
+		 WHERE M.MSG_RECEIVER = ${empNo} AND M.STAR_YN = 'N' AND M.DEL_YN = 'N'
   </select>
 
+  <!-- 받은쪽지 리스트  -->
   <select id="getMessageByReceiver"
           parameterType="int"
           resultType="MessageDto">
@@ -62,18 +74,20 @@
           ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
      FROM (SELECT ROW_NUMBER() OVER (ORDER BY M.MSG_CREATE_DT DESC) AS RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
              FROM MESSAGE M
-            WHERE M.MSG_RECEIVER = #{empNo} AND M.STAR_YN = 'N') M
+            WHERE M.MSG_RECEIVER = #{empNo} AND M.STAR_YN = 'N' AND M.DEL_YN = 'N') M
      JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO
      JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
     WHERE M.RN BETWEEN #{begin} AND #{end}
   </select>
   
+  <!-- 보낸 쪽지 개수 -->
   <select id="getMessageCountBySender">
     SELECT COUNT(*)
       FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
-     WHERE M.MSG_SENDER = #{empNo}
+     WHERE M.MSG_SENDER = #{empNo} AND M.DEL_YN = 'N'
   </select>
   
+  <!-- 보낸쪽지 리스트 -->
   <select id="getMessageBySender"
           parameterType="int"
           resultType="MessageDto">
@@ -82,21 +96,14 @@
           ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
      FROM (SELECT ROW_NUMBER() OVER (ORDER BY M.MSG_CREATE_DT DESC) AS RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
              FROM MESSAGE M
-            WHERE M.MSG_SENDER = #{empNo}) M
+            WHERE M.MSG_SENDER = #{empNo} AND M.DEL_YN = 'N') M
      JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO
      JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
     WHERE M.RN BETWEEN #{begin} AND #{end}
   </select>
-  
-  <select id="getPosNameByPosNo"
-          parameterType="int"
-          resultType="String">
-    SELECT POS_NAME
-      FROM POSITION
-     WHERE POS_NO = #{posNo}
-  </select>
-  
-    <select id="getMessageDetail"
+
+  <!-- 쪽지 상세보기  -->
+  <select id="getMessageDetail"
           parameterType="int"
           resultType="MessageDto">
   SELECT M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
@@ -105,24 +112,35 @@
    WHERE M.MSG_NO = #{msgNo}
   </select>
   
+  <!-- 읽음 표시 -->
   <update id="updateMsgRead">
     UPDATE MESSAGE
        SET READ_YN = 'Y'
      WHERE MSG_NO = #{msgNo}
   </update>
   
+  <!-- 중요 표시 -->
   <update id="updateMsgStar">
     UPDATE MESSAGE
        SET STAR_YN = 'Y'
      WHERE MSG_NO = #{msgNo}
   </update>
   
+  <!-- 중요보관함 개수 - 전체 -->
   <select id="getMessageCountByStar">
     SELECT COUNT(*)
       FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
-     WHERE M.MSG_SENDER = #{empNo} AND M.STAR_YN = 'Y'
+     WHERE M.MSG_RECEIVER = #{empNo} AND M.STAR_YN = 'Y' AND M.DEL_YN = 'N'
   </select>
   
+  <!-- 중요보관함 개수 - 읽지 않은 쪽지 -->
+  <select id="getMessageCountByStarRead">
+    SELECT COUNT(*)
+      FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+     WHERE M.MSG_RECEIVER = #{empNo} AND M.STAR_YN = 'Y' AND M.READ_YN = 'N' AND M.DEL_YN = 'N'
+  </select>
+  
+  <!-- 중요보관함 리스트 -->
   <select id="getMessageByStar"
           parameterType="int"
           resultType="MessageDto">
@@ -131,7 +149,7 @@
           ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
      FROM (SELECT ROW_NUMBER() OVER (ORDER BY M.MSG_CREATE_DT DESC) AS RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
              FROM MESSAGE M
-            WHERE M.MSG_RECEIVER = #{empNo} AND M.STAR_YN = 'Y') M
+            WHERE M.MSG_RECEIVER = #{empNo} AND M.STAR_YN = 'Y' AND M.DEL_YN = 'N') M
      JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO
      JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
     WHERE M.RN BETWEEN #{begin} AND #{end}

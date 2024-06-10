@@ -21,9 +21,11 @@ public interface MessageMapper {
   
   // 메시지 갯수
   int getMessageCountByReceiver(int empNo);
+  int getMessageCountByRecRead(int empNo);
+  int getMessageCountByRecStar(int empNo);
   int getMessageCountBySender(int empNo);
   int getMessageCountByStar(int empNo);
-  int getMessageCountByRecStar(int empNo);
+  int getMessageCountByStarRead(int empNo);
   
   // 메시지 디테일
   MessageDto getMessageDetail(int msgNo);
