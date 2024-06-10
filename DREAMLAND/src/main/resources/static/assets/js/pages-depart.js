@@ -8,6 +8,7 @@
  *        - 노드 클릭 시 폼 입력
  */
   
+/* *********** jstree 기능 구현 *********** */
 $(document).ready(function() {
   const departAdmin = () => {
     fetch('/depart/departAdmin.do')
@@ -84,27 +85,6 @@ $(document).ready(function() {
             }
           }
         });
-        /*
-        $('#jsTree').on('delete_node.jstree', function(e, data) {
-          var isDepart = data.node.type === 'default';
-          var deleteNo = isDepart ? {deptNo: data.node.id} : {empNo: data.node.id};
-          var url = isDepart ? '/depart/removeDepart' : '/depart/removeEmployee';
-          fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(deleteNo)
-          }).then(response => {
-              if (response.ok) {
-                return response.json(); // JSON 응답을 파싱하여 반환
-              } else {
-                throw new Error('Network 응답 실패');
-              }
-          }).then(data => {alert(data.message);})
-            .catch(error => console.error('Error deleting node:', error));
-        });
-        */
       })
       .catch(error => console.log('Error node:', error)); 
       
