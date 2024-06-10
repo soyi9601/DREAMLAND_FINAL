@@ -15,5 +15,7 @@ public interface IndexService {
   void workIn(int empNo);               // 출근
   void workOut(int empNo);              // 퇴근
   
-  ResponseEntity<Map<String, Object>> getNoticeList(HttpServletRequest request);
+  ResponseEntity<Map<String, Object>> getNoticeList(HttpServletRequest request);  // 공지사항 조회
+  
+  int getReceiveCount(int empNo); // 쪽지 건수 확인
 }
