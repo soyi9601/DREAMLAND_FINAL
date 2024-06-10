@@ -31,16 +31,6 @@ $(document).ready(function() {
     });
 })
 
-// 상세보기 링크
-document.addEventListener("DOMContentLoaded", () => {
-    const rows = document.querySelectorAll(".clickable-row");
-    rows.forEach(row => {
-        row.addEventListener("click", () => {
-            window.location.href = row.dataset.href;
-        });
-    });
-});
-
 /************************** 함수 호출 **************************/
 /*document.getElementById('contents').addEventListener('keyup', fnCheckByte);
 fnEmployeeList();*/

@@ -32,4 +32,9 @@ public interface MessageService {
   void getStarMessage(Model model);
   Map<String, Object> getStarCount(int empNo);
   
+  // 삭제
+  int deleteMessage(HttpServletRequest request);
+  void getDeleteMessage(Model model);
+  Map<String, Object> getDeleteCount(int empNo);
+  
 }

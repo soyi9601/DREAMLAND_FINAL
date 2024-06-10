@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<jsp:include page="../layout/message-header.jsp" /> 
+<jsp:include page="../layout/header.jsp" /> 
 
             <!-- Content -->
 
@@ -18,8 +18,8 @@
 	                <h5 class="card-header">받은쪽지함 <small id="receive-count"></small></h5>
 	                  <form id="receive-form" method="POST">
 	                  <div>
-	                    <button type="button" id="btn-save">보관하기</button>
-	                    <button type="button" id="btn-delete">삭제하기</button>
+	                    <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
+	                    <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
 	                  </div>
 	                <div class="table-responsive text-nowrap">
 	                  <table class="table table-hover">
@@ -35,22 +35,31 @@
 												<tbody class="table-border-bottom-0" id="receive-list">
 											    <c:if test="${empty receiveList}">
 										        <tr>
-									            <td colspan="4">받은 쪽지함이 없습니다</td>
+									            <td colspan="5">받은 쪽지함이 없습니다</td>
 										        </tr>
 											    </c:if>
 											    <c:if test="${not empty receiveList}">
 										        <c:forEach items="${receiveList}" var="receive" varStatus="vs">
 									            <tr>
-								                <td><input class="form-check-input" type="checkbox" value="${receive.msgNo}" id="star-no" name="starYn"/></td>
-								                <td>${receive.senderName}</td>
-								                <td><a href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}</a></td>
-								                <td>${receive.msgCreateDt}</td>
+								                <td><input class="form-check-input" type="checkbox" value="${receive.msgNo}" id="star-no" name="checkYn"/></td>
+											            <c:choose>
+											                <c:when test="${receive.readYn == 'Y'}">
+											                    <td style="color: lightgray;">${receive.senderName}</td>
+											                    <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}</a></td>
+											                    <td style="color: lightgray;">${receive.msgCreateDt}</td>
+											                </c:when>
+											                <c:otherwise>
+											                    <td>${receive.senderName}</td>
+											                    <td><a href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}</a></td>
+											                    <td>${receive.msgCreateDt}</td>
+											                </c:otherwise>
+											            </c:choose>
 									            </tr>
 										        </c:forEach>
 											    </c:if>
-											    <input class="form-emp-no" type="text" value="${loginEmployee.empNo}" id="empNo" name="empNo" hidden/>  
 										    </tbody>
                     </table>
+										<input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/>  
                     </div>
 										</form>
                     <div class="tab-content">

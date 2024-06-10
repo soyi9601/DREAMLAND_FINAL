@@ -100,10 +100,33 @@ public class MessageController {
     return "message/saveBox";
   }
   
-  // 받은 쪽지함 개수
+  // 중요 쪽지 개수
   @GetMapping("/message/starCount.do")
   public ResponseEntity<Map<String, Object>> getStarCount(@RequestParam int empNo){
     Map<String, Object> total = messageService.getStarCount(empNo);
+    return ResponseEntity.ok(total);
+  }
+  
+  // 휴지통 이동하기
+  @PostMapping("/user/deleteMsg.do")
+  public String msgRemove(HttpServletRequest request) {
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
+    messageService.deleteMessage(request);
+    return "redirect:/user/receiveBox?empNo=" + empNo;
+  }
+  
+  // 삭제 리스트
+  @GetMapping("/user/removeBox")
+  public String deleteList(HttpServletRequest request, Model model) {
+    model.addAttribute("request", request);
+    messageService.getDeleteMessage(model);
+    return "message/removeBox";
+  }
+  
+  // 삭제 쪽지 개수
+  @GetMapping("/message/deleteCount.do")
+  public ResponseEntity<Map<String, Object>> getRemoveCount(@RequestParam int empNo){
+    Map<String, Object> total = messageService.getDeleteCount(empNo);
     return ResponseEntity.ok(total);
   }
 

@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<jsp:include page="../layout/message-header.jsp" /> 
+<jsp:include page="../layout/header.jsp" /> 
 <link rel="stylesheet" href="/resources/assets/css/message.css" />
 
             <!-- Content -->
@@ -19,6 +19,8 @@
                     <div class="card-body">
                     <div>
                       <button type="button" class="btn btn-primary" id="btn-send-message">답장하기</button>
+                      <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
+                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
                     </div>
                       <div class="mb-3" >
                         <label for="sender" class="form-label">보낸사람</label>

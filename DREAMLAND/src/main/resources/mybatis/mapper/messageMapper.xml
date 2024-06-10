@@ -32,6 +32,7 @@
       , MSG_CREATE_DT
       , MSG_SENDER
       , MSG_RECEIVER
+      , MSG_DELETE_DT
     ) VALUES (
         #{msgNo}
       , #{contents}
@@ -41,6 +42,7 @@
       , SYSDATE
       , #{sender}
       , #{receiver}
+      , NULL
     )  
   </insert>
   
@@ -122,7 +124,16 @@
   <!-- 중요 표시 -->
   <update id="updateMsgStar">
     UPDATE MESSAGE
-       SET STAR_YN = 'Y'
+       SET STAR_YN = 'Y',
+           
+     WHERE MSG_NO = #{msgNo}
+  </update>
+  
+  <!-- 삭제 표시 -->
+  <update id="updateMsgDelete">
+    UPDATE MESSAGE
+       SET DEL_YN = 'Y'
+         , MSG_DELETE_DT = SYSDATE
      WHERE MSG_NO = #{msgNo}
   </update>
   
@@ -154,5 +165,42 @@
      JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
     WHERE M.RN BETWEEN #{begin} AND #{end}
   </select>
+  
+  <!-- 삭제 개수 - 전체 -->
+  <select id="getMessageCountByDelete">
+    SELECT COUNT(*)
+      FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+     WHERE M.MSG_RECEIVER = #{empNo} AND M.DEL_YN = 'Y'
+  </select>
+  
+  <!-- 삭제 개수 - 읽지 않은 쪽지 -->
+  <select id="getMessageCountByDeleteRead">
+    SELECT COUNT(*)
+      FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+     WHERE M.MSG_RECEIVER = #{empNo} AND M.READ_YN = 'N' AND M.DEL_YN = 'Y'
+  </select>
+  
+  <!-- 휴지통 리스트 -->
+  <select id="getMessageByDelete"
+          parameterType="int"
+          resultType="MessageDto">
+   SELECT RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN
+        , M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER,
+          ES.EMP_NAME AS SENDER_NAME, ER.EMP_NAME AS RECEIVER_NAME
+     FROM (SELECT ROW_NUMBER() OVER (ORDER BY M.MSG_CREATE_DT DESC) AS RN, M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.DEL_YN, M.STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
+             FROM MESSAGE M
+            WHERE M.MSG_RECEIVER = #{empNo} AND M.DEL_YN = 'Y') M
+     JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO
+     JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+    WHERE M.RN BETWEEN #{begin} AND #{end}
+  </select>
+  
+  <delete id="deleteOldMessages">
+    DELETE FROM MESSAGE
+     WHERE MSG_DELETE_DT IS NOT NULL
+       AND DEL_YN = 'Y'
+       AND (TO_DATE(TO_CHAR(MSG_DELETE_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD') &lt; TRUNC(SYSDATE) - 30 
+       <!-- AND (MSG_DELETE_DT &lt; SYSDATE - INTERVAL '1' DAY OR MSG_DELETE_DT = TRUNC(SYSDATE)) -->
+  </delete>
 
 </mapper>

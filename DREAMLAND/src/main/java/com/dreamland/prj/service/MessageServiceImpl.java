@@ -1,13 +1,10 @@
 package com.dreamland.prj.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -159,7 +156,7 @@ public class MessageServiceImpl implements MessageService {
   @Override
   public int saveMessage(HttpServletRequest request) {
     
-    String[] saveList = request.getParameterValues("starYn");
+    String[] saveList = request.getParameterValues("checkYn");
     
     int count = 0;
     // 문자열 배열을 int 배열로 변환
@@ -209,6 +206,63 @@ public class MessageServiceImpl implements MessageService {
     Map<String, Object> total = new HashMap<>();
     total.put("notReadCount", messageMapper.getMessageCountByStarRead(empNo));
     total.put("total", messageMapper.getMessageCountByStar(empNo));
+    return total;
+  }
+  
+  @Override
+  public int deleteMessage(HttpServletRequest request) {
+    
+    String[] saveList = request.getParameterValues("checkYn");
+    
+    int count = 0;
+    // 문자열 배열을 int 배열로 변환
+    int[] msgNoList = new int[saveList.length];
+    for (int i = 0; i < saveList.length; i++) {
+      msgNoList[i] = Integer.parseInt(saveList[i]);
+      messageMapper.updateMsgDelete(msgNoList[i]);
+      count++;
+    }
+    
+    return count;
+  }
+  
+  @Override
+  public void getDeleteMessage(Model model) {
+    
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
+    int total = messageMapper.getMessageCountByDelete(empNo);
+    
+    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+    int display = Integer.parseInt(optDisplay.orElse("5"));
+    
+    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(optPage.orElse("1"));
+    
+    myPageUtils.setPaging(total, display, page);
+    
+    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+    String sort = optSort.orElse("DESC");
+    
+    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
+    
+    model.addAttribute("beginNo", total - (page - 1) * display);
+    model.addAttribute("deleteList", messageMapper.getMessageByDelete(map));
+    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/removeBox?empNo=" + empNo, sort, display));
+    model.addAttribute("display", display);
+    model.addAttribute("sort", sort);
+    model.addAttribute("page", page);
+    
+  }
+  
+  @Override
+  public Map<String, Object> getDeleteCount(int empNo) {
+    Map<String, Object> total = new HashMap<>();
+    total.put("notReadCount", messageMapper.getMessageCountByDeleteRead(empNo));
+    total.put("total", messageMapper.getMessageCountByDelete(empNo));
+    System.out.println(total.toString());
     return total;
   }
   

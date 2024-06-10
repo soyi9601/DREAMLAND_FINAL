@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<jsp:include page="../layout/message-header.jsp" /> 
+<jsp:include page="../layout/header.jsp" /> 
 
             <!-- Content -->
 
@@ -17,6 +17,10 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">중요보관함 <small id="save-count"></small></h5>
+	                  <form id="save-form" method="POST">
+                    <div>
+                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
+                    </div>
                   <div class="table-responsive text-nowrap">
                     <table class="table table-hover">
                       <thead>
@@ -37,10 +41,19 @@
                           <c:if test="${not empty saveList}">
                             <c:forEach items="${saveList}" var="save" varStatus="vs">
                               <tr>
-                                <td><input class="form-check-input" type="checkbox" value="${save.msgNo}" id="star-no" name="starYn"/></td>
-                                <td>${save.senderName}</td>
-                                <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">${save.msgContents}</a></td>
-                                <td>${save.msgCreateDt}</td>
+                                <td><input class="form-check-input" type="checkbox" value="${save.msgNo}" id="check-no" name="checkYn"/></td>
+                                  <c:choose>
+                                      <c:when test="${save.readYn == 'Y'}">
+                                          <td style="color: lightgray;">${save.senderName}</td>
+                                          <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">${save.msgContents}</a></td>
+                                          <td style="color: lightgray;">${save.msgCreateDt}</td>
+                                      </c:when>
+                                      <c:otherwise>
+                                          <td>${save.senderName}</td>
+                                          <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">${save.msgContents}</a></td>
+                                          <td>${save.msgCreateDt}</td>
+                                      </c:otherwise>
+                                  </c:choose>
                               </tr>
                             </c:forEach>
                           </c:if>
@@ -56,8 +69,8 @@
                       </div>
                     </div>
                         <!--/ Hoverable Table rows -->
+                   
                    </div>
-               
 
 
 

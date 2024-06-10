@@ -1,9 +1,11 @@
 package com.dreamland.prj.mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.MessageDto;
@@ -18,6 +20,7 @@ public interface MessageMapper {
   List<MessageDto> getMessageByReceiver(Map<String, Object> param);
   List<MessageDto> getMessageBySender(Map<String, Object> param);
   List<MessageDto> getMessageByStar(Map<String, Object> param);
+  List<MessageDto> getMessageByDelete(Map<String, Object> param);
   
   // 메시지 갯수
   int getMessageCountByReceiver(int empNo);
@@ -26,6 +29,8 @@ public interface MessageMapper {
   int getMessageCountBySender(int empNo);
   int getMessageCountByStar(int empNo);
   int getMessageCountByStarRead(int empNo);
+  int getMessageCountByDelete(int empNo);
+  int getMessageCountByDeleteRead(int empNo);
   
   // 메시지 디테일
   MessageDto getMessageDetail(int msgNo);
@@ -35,5 +40,11 @@ public interface MessageMapper {
   
   // 저장 여부 업데이트
   int updateMsgStar(int msgNo);
+  
+  // 삭제 여부 업데이트
+  int updateMsgDelete(int msgNo);
+  
+  // 스케줄러용 삭제
+  void deleteOldMessages();
 
 }

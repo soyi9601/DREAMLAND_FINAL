@@ -3,7 +3,7 @@
  * 기능   : 중요보관함
  * 이력   :
  *    1) 240610
- *        - 중요 쪽지 개수 가져오기
+ *        - 삭제 쪽지 가져오기
  */
 
 'use strict';
@@ -18,11 +18,11 @@ var page = 0;
 $(document).ready(function() {
     $.ajax({
         type: 'GET',
-        url: '/message/starCount.do',
+        url: '/message/deleteCount.do',
         data: 'empNo=' + empNo, 
         dataType: 'json',
         success: function(response) {
-            $('#save-count').text(response.notReadCount + ' / ' + response.total);
+            $('#delete-count').text(response.notReadCount + ' / ' + response.total);
             
         },
         error: function(jqXHR, textStatus, errorThrown) {

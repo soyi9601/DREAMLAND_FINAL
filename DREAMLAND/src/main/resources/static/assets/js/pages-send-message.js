@@ -23,7 +23,6 @@ const fnCheckByte = ()=>{
     const textVal = document.getElementById('contents').value; //입력한 문자
     const textLen = textVal.length //입력한 문자수
     
-    console.log(textLen);
     let totalByte=0;
     for(let i=0; i<textLen; i++){
       const eachChar = textVal.charAt(i);

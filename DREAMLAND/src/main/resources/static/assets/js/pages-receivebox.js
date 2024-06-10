@@ -34,16 +34,6 @@ $(document).ready(function() {
     });
 })
 
-// 상세보기 링크
-document.addEventListener("DOMContentLoaded", () => {
-    const rows = document.querySelectorAll(".clickable-row");
-    rows.forEach(row => {
-        row.addEventListener("click", () => {
-            window.location.href = row.dataset.href;
-        });
-    });
-});
-
 // 중요보관함 이동
 document.getElementById("btn-save").addEventListener("click", function() {
     document.getElementById("receive-form").action = "/user/saveMsg.do";
@@ -52,6 +42,7 @@ document.getElementById("btn-save").addEventListener("click", function() {
 
 // 삭제 이동
 document.getElementById("btn-delete").addEventListener("click", function() {
+  console.log("delete");
     document.getElementById("receive-form").action = "/user/deleteMsg.do";
     document.getElementById("receive-form").submit();
 });

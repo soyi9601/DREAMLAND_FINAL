@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<jsp:include page="../layout/message-header.jsp" /> 
+<jsp:include page="../layout/header.jsp" /> 
 
             <!-- Content -->
 
@@ -17,6 +17,10 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">보낸쪽지함 <small id="send-count"></small></h5>
+	                  <form id="send-form" method="POST">
+                    <div>
+                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
+                    </div>
 	                <div class="table-responsive text-nowrap">
 	                  <table class="table table-hover">
 	                    <thead>
