@@ -33,6 +33,36 @@
 .sd-btn-write a{display:inline-block;line-height:36px;
                 color:#fff;font-size:16px;width:100%;height:100%;}
 .sd-btn-none{border:none}
+.sd-btns-area{display:flex;justify-content: space-between;margin-top:20px;}
+
+
+/*게시판 공통write*/
+#basic-default-message{resize:none;height:180px;}
+
+
+/*게시판 공통 detail (공지사항, 익명게시판) */
+.board-detail .board-title-area{border-bottom:1px solid #d9dee3}
+.board-detail .board-title{font-size:18px;font-weight:bold;}
+.board-detail .board-title-etc-area{display:flex;justify-content: space-between}
+.board-detail .board-title-etc{display:flex;margin-top:10px;gap:26px;color:#c6c6c6;font-size:14px;}
+  
+.board-detail .board-contents{padding:20px 0 50px;}
+  
+.board-detail  #frm-comment{border-top:1px dashed #d9dee3;padding-top:30px;}
+.board-detail  #comment-contents{width:100%;height:80px;resize:none;margin-bottom:10px;}
+.board-detail  #frm-comment .notice{font-size:14px;line-height:1.2}
+.board-detail #frm-comment .notice .a{padding-left:30px;}
+ #comment-password{display:inline-block !important;width:40% !important;}
+.board-detail .frm-comment-top{border-bottom:1px dashed #d9dee3;padding-bottom:30px;margin-bottom:20px;color:#c6c6c6}
+.board-detail  .frm-comment-top .comment-count{color:#90b54c }
+
+
+.board-detail  #frm-comment #btn-comment-registrer{color:#fff;}
+
+
+
+
+
 
 /* 게시판 페이징 버튼 */
 .pg-btn-area{display:flex;justify-content:center;;}
@@ -44,9 +74,14 @@
 .pg-btn-area .dont-click:first-child{margin-right:12px;;}
 .pg-btn-area .dont-click:last-child{margin-left:12px;}
 
+/*
 .pg-btn-area .current-page{display:inline-block;width:24px;height:24px;background:#fff;text-align:center;line-height:24px;
-                          border-radius:4px;color:#999 }
+                          border-radius:4px;color:#999 }*/
 
+.pg-btn-area div:not(.dont-click){display:inline-block;width:24px;height:24px;background:#fff;text-align:center;line-height:24px;
+                          border-radius:4px;margin-right:5px; }
+.pg-btn-area div:not(.dont-click) a{color:#999;}
+.pg-btn-area .current-page {color:#90b54c !important}
 
 
 
@@ -134,8 +169,11 @@
 
 
 /*테이블 tbody*/
-.sd-notice-write .form-control{margin-bottom:12px;}
-.notice-important{color:#ee2b4b;padding:1px 3px;border:1px solid #ee2b4b;border-radius:25px;}
+/*.sd-notice-write .form-control{margin-bottom:12px;}*/
+.notice-important{color:#ee2b4b;padding:1px 3px;border:1px solid #ee2b4b;border-radius:25px;margin-right:6px;
+                  font-size:12px;}
+
+
 
 
 
@@ -143,9 +181,18 @@
   공지사항(/board/notice)
     └ write.jsp
 ===========================*/
-.sd-notice-write .notice-input-area{width:85%;display:flex;}
-.sd-notice-write .del-btn{cursor:pointer;padding-top:9px;padding-left:6px;}
+.sd-notice-write .notice-input-area{width:100%;display:flex;margin-bottom:10px;}
+.del-btn{cursor:pointer;padding-top:9px;padding-left:6px;}
+.del-btn i{font-size:20px;}
+.del-btn:hover{color:#ee2b4b;}
+.sd-notice-write .sd-btn{margin:40px auto}
+.sd-notice-write .file-area{border-top: 1px dashed #d9dee3;padding:20px 0}
+.sd-notice-write .file-area>p{padding-left:18%;color:#ee2b4b}
 
+
+
+.file-add-btn{display:inline-block;width:40px;height:26px;background:#90b54c;cursor:pointer;margin:0;
+                                text-align:center;color:#fff;line-height:26px;border-radius:2px;}
 
 
 /* ========================
@@ -154,19 +201,37 @@
 ===========================*/
 .sd-notice-detail .mb-3{border-bottom:1px solid #e3e3e3}
 .sd-notice-detail .col-sm-10{padding-top: calc(0.4375rem + 1px); padding-bottom: calc(0.4375rem + 1px); font-size:12px;}
-.bx-download{cursor:pointer;}
-.notice-list-btn{}
+/*.bx-download{cursor:pointer;}*/
+.sd-notice-detail .board-title span{font-size:13px;font-weight:normal;color:#ee2b4b;padding:0px 5px;display:inline-block;border-radius:50px;border:1px solid #ee2b4b}
+
+.attached-file-area{border-top:1px dashed #d9dee3;padding:20px;padding-bottom:10px;background:#f5f5f9;display:flex;margin-bottom:20px;}
+.attached-file-area>p{font-weight:bold;}
+.attached-file-area .bx-paperclip{transform:rotate(-45deg);}
+.attached-file-area .list{margin-left:20px;}
+.sd-notice-detail .attached-file-area .attach{cursor:pointer}
+.sd-notice-detail .attached-file-area .attach:hover{color:#90b54c;font-weight:bold;}
+.attached-file-area .all{margin-bottom:0;margin-top:12px;}
+.attached-file-area .all a:hover{font-weight:bold;color:#90b54c;}
+
+.sd-notice-detail .sd-btn{margin:0 auto}
 
 
 /* ========================
   공지사항(/board/notice)
     └ edit.jsp
 ===========================*/
-.file-input-div{display:flex;width:85%;}
+
+#attach-list{margin-left:20px;}
+.file-input-div{display:flex;width:100%;margin-bottom:10px;}
 .file-input-div .del-btn{cursor:pointer;padding-top:9px;padding-left:6px;}
-
-
+.sd-notice-edit .attach{display:flex;}
+.sd-notice-edit .attach a{line-height:1;display:inline-block;}
+.remove-attach span{font-size:18px;line-height:1;padding-top:4px;}
+.remove-attach span:hover{color:#ee2b4b;cursor:pointer}
                 
+.sd-notice-edit  #btn-edit-submit{margin:0 auto}
+
+
                 
 /* ==========================================================
   익명게시판(/board/blind) - 부트스트랩때문에 important 대량발생
@@ -176,7 +241,7 @@
       └ list.jsp  ※ 목록
   ===========================*/
 
-#blind-board .sd-btn{position:fixed;z-index:99999999px;bottom:20px;right:20px;}
+/*#blind-board .sd-btn{position:fixed;z-index:99999999;bottom:20px;right:20px;}*/
 #blind-list-table tbody td:first-child{padding-left:14px;}
 
 #blind-list-table tr{text-align:center;}
@@ -197,6 +262,7 @@
     익명게시판(/board/blind)
       └ detail.jsp  ※ 상세화면
   ===========================*/
+/*
 #blind-board-detail .board-title-area{border-bottom:1px solid #d9dee3}
 #blind-board-detail .board-title{font-size:18px;font-weight:bold;}
 #blind-board-detail .board-title-etc-area{display:flex;justify-content: space-between}
@@ -215,8 +281,11 @@
 
 #blind-board-detail  #frm-comment #btn-comment-registrer{color:#fff;}
 #blind-board-detail  #frm-comment #btn-comment-registrer:hover{color:#90b54c;background:#fff;border:1px solid #90b54c}
+*/
 
-  
+#blind-board .sd-table-wrapper{margin-top:0}
+#blind-board .sd-btn-write-area{margin:40px 0 10px;justify-content: space-between;}
+#blind-board .sd-btn-write-area .sd-btn{margin:0}
 /*댓글*/  
 #blind-board-detail .comment-area{padding:20px 0;border-top:1px solid #d9dee3;} 
 #blind-board-detail .comment-div:first-child .comment-area{border-top:none}
@@ -227,8 +296,29 @@
 #blind-board-detail .comment-area .date{color: #c6c6c6;font-size: 14px;}
 #blind-board-detail .comment-area .comment-btns-area{width:80px;cursor:pointer;position:relative;text-align:center;}
 
-#blind-board-detail .comment-btns-area .comment-btns{position:absolute;top:100%;left:0}
-#blind-board-detail .comment-btns-area .comment-btns button{color:#fff;line-height:36px;margin-top:4px;}
+#blind-board-detail .comment-btns-area .comment-btns{position:absolute;top:120%;left:0;background:#fff;border:1px solid #c6c6c6;
+                                                      width:100%;text-align:center;}
+#blind-board-detail .comment-btns-area .comment-btns .arrow{position: absolute;top:-10%;left:50%;transform:translateX(-50%);
+    display: inline-block;
+    width: 15px;
+    height: 12px;
+    overflow: hidden;
+    vertical-align: middle;
+    background:#fff;
+}
+#blind-board-detail .comment-btns-area .comment-btns .arrow:before{    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height:9px;
+    -webkit-transform: translate(-50%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
+    border-top: 1px solid #c6c6c6;
+    border-left: 1px solid #c6c6c6}    
+    
+
+#blind-board-detail .comment-btns button{display:block;width:100%;padding:3px 0;font-size:13px;margin-top:4px;background:transparent;color:#697a8d;}
 
 .blind{display:none;}
 .div-frm-reply {padding:20px;}
@@ -239,7 +329,7 @@
 .comment-reply-div{background:#f8f8f8;padding-left:16px;border-top:1px dashed #d9dee3}
 .comment-reply-div .comment-area{border:none !important}
 
-#blind-board-detail .deleted-comment{padding:30px 0;color:#929292}
+#blind-board-detail .deleted-comment{padding:30px 0;color:#929292;font-style:italic;border-top: 1px solid #d9dee3;}
 #blind-board-detail .list-btn{margin:0 auto}
 
 
@@ -255,14 +345,51 @@
 .sd-blind > *{font-family:var(--bs-font-sans-serif)}
 .sd-blind .sd-title{font-size:32px !important;}
 
-/*게시판 비밀번호 받는 모달창*/
-#boardPwModal{
-    width:50%;height:30%;background:#fff;
-    position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);
-    padding:30px 0;text-align:center}
 
-#boardPwModal label{display:block;margin-bottom:16px}    
-    
-    #commentModal{
-    width:50%;height:30%;background:grey;
-    position:fixed;top:50%;left:50%;transform:translate(-50%, -50%)}
+.attached-file-area{position:relative}
+.loading {position:absolute;top:0;left:0;width: 100%;height:100%;background:#f5f5f9;
+          display: flex;justify-content: center;align-items: center;}
+
+.loading span {display: inline-block;width: 10px;height: 10px;border-radius: 50%;animation: loading 1s linear infinite;background-color: #90b54c;}
+
+.loading span:nth-child(1) {animation-delay: 0s;}
+
+.loading span:nth-child(2) {animation-delay: 0.2s;margin: 0px 10px}
+
+.loading span:nth-child(3) {animation-delay: 0.4s;}
+
+@keyframes loading {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+
+
+
+
+
+
+/*게시판 비밀번호 받는 모달창*/
+
+.pop_bg{display:none;position:fixed;top:0;left:0;z-index:1;width:100%;height:100%;background:rgba(0,0,0,60%);}
+.pop{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:11;width:40%;height:25%;background:#fff;}
+.pop_x{width:34px;height:34px;position:absolute;right:0%;}
+.pop_x span{font-size:30px;color:#ee2b4b; cursor:pointer;}
+
+#boardPwModal{width:50%;height:100%;
+    position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);z-index:123;
+    padding:30px 0;text-align:center}
+.pop .align{display:flex;align-items: center;margin-top:20px;}
+.pop .sd-btn{margin-left:12px;}
+
+ 
+#commentModal{
+width:50%;height:100%;
+position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);z-index:123;
+padding:30px 0;text-align:center}

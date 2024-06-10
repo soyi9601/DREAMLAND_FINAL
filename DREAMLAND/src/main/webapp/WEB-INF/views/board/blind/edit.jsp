@@ -63,9 +63,9 @@
                       </div>
                       <div class="btn-area">
                       
-	                      <button type="submit" class="btn-reset sd-btn sd-point-bg">수정</button>
-	                      <input type="hidden" name="blindNo" value="${blind.blindNo}">
-	                    </div>
+                        <button type="submit" class="btn-reset sd-btn sd-point-bg">수정</button>
+                        <input type="hidden" name="blindNo" value="${blind.blindNo}">
+                      </div>
                     </div>
                     
                 

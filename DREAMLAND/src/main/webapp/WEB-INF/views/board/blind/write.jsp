@@ -139,8 +139,8 @@
       return;
     }
     
-    alert(passwordField)
-    alert(encryptPassword(passwordField))
+    //alert(passwordField)
+    //alert(encryptPassword(passwordField))
     
   })
   

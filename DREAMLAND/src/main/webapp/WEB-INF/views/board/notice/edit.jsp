@@ -10,13 +10,14 @@
 
 <!-- link -->
 <link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board">
   <!-- Content -->
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="sd-title sd-point">공지사항 작성</div>
+    <div class="container-xxl flex-grow-1 container-p-y sd-notice-edit">
+        <div class="title sd-point">공지사항 편집</div>
 
         <!-- Basic Layout & Basic with Icons -->
         <div class="row">
@@ -43,9 +44,9 @@
                         </div>
                         
                         <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label">체크</label>
+                          <label class="col-sm-2 col-form-label">중요</label>
                           <div class="col-sm-10">
-                            <input type="checkbox" class="chksignal" name="signal" value="${notice.signal}" ${notice.signal eq 1 ? 'checked' : ''} />
+                            <input type="checkbox" class="chksignal form-check-input" name="signal" value="${notice.signal}" ${notice.signal eq 1 ? 'checked' : ''} />
                           </div>
                         </div>
                         <div class="row mb-3">
@@ -60,7 +61,7 @@
 
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label"
-                              for="basic-default-message">답변</label>
+                              for="basic-default-message">내용</label>
                           <div class="col-sm-10">
                               <textarea id="basic-default-message"
                                   class="form-control" placeholder="내용"
@@ -71,12 +72,22 @@
                         </div>
 
 
-                        <h3>현재 첨부 목록</h3>
-                        <div id="attach-list" ></div>
+                        
+                        <div class="attached-file-area">
+                          <p>첨부파일 <i class='bx bx-paperclip'></i></p>
+                          <div id="attach-list" ></div>
+                          <div class="loading">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                        </div>
+                        
+                        
                         <div class="row mb-3">
                           <label for="formFileMultiple"
                               class="col-sm-2 col-form-label"> 파일첨부
-                               <span class="file-add-btn">추가버튼!!!</span>
+                               <span class="file-add-btn">추가</span>
                           </label>
                           <div class="col-sm-10 notice-input-area">
                              <!-- <input class="form-control" type="file" name="files" id="files" />-->
@@ -85,10 +96,10 @@
                           
                         </div>
 
-                        <div>
+                        <div style="display:flex;">
                           <input type="hidden" name="delAttachList" id="delAttachList">
                           <input type="hidden" name="noticeNo" value="${notice.noticeNo}">
-                          <button type="submit" id="btn-edit-submit">수정완료</button>
+                          <button type="submit" id="btn-edit-submit" class="btn-reset sd-btn sd-point-bg">수정</button>
                         </div>
                       </form>
                     </div>
@@ -99,6 +110,10 @@
     <!-- / Content -->  
 </div>
 <script>
+
+
+$(".loading").hide();
+
 let insAttachList = [];
 // 기존 첨부 파일 목록 가져오기 및 파일 입력 필드 생성
 const fnAttachList = () => {
@@ -115,7 +130,7 @@ const fnAttachList = () => {
         const attach = attachList[i];
         let str = '<div class="attach">';
         str += '<span>' + attach.originalFilename + '</span>';
-        str += '<a style="margin-left: 10px;" class="remove-attach" data-attach-no="' + attach.attachNo + '">x</a>';
+        str += '<a style="margin-left: 10px;" class="remove-attach" data-attach-no="' + attach.attachNo + '"><span data-attach-no="'+attach.attachNo+'" class="material-symbols-outlined">cancel</span></a>';
         str += '</div>';
         divAttachList.innerHTML += str;
       }
@@ -146,7 +161,7 @@ const fnAttachCheck = () => {
       const inputArea = $(e.target).closest(".file-input-div");
       
       if (!inputArea.find('.del-btn').length) {
-        const delBtn = $('<span class="del-btn">X</span>');
+        const delBtn = $('<span class="del-btn"><span class="material-symbols-outlined">cancel</span></span>');
         inputArea.append(delBtn);
       }
 
@@ -163,14 +178,10 @@ const fnAttachCheck = () => {
   });
 }
  
- 
-
-
 
 //첨부파일 첨부 - 5개로 제한 , 2개 기본, 추가 누를시 파일input창 생기게... 없앨까? 
     // 이거 하는중
-    
-const fnAttachAdd = () => {
+const fnAttachInput = () => {
   $(".file-add-btn").on('click', () => {
     
     //여기에
@@ -194,16 +205,15 @@ const fnAttachAdd = () => {
     
   });
 }
-fnAttachAdd();
+fnAttachInput();
+
+
 
 // 첨부 파일 추가 이벤트 설정
 let globalFormData = new FormData();
-
 // 첨부 파일 추가 이벤트 설정
-
 const fnAddAttach = () => {
   
-  //
   const fileInputContainer = document.getElementById('file-input-container');
   
   fileInputContainer.addEventListener('change', (event) => {
@@ -214,7 +224,7 @@ const fnAddAttach = () => {
       console.log(file);
       
       if (file) {
-        globalFormData = new FormData(); // 새 formData 객체 생성
+        //globalFormData = new FormData(); // 새 formData 객체 생성
         globalFormData.append('files', file);
         globalFormData.append('noticeNo', '${notice.noticeNo}');
         
@@ -232,12 +242,26 @@ const fnAttachDel = () => {
   $(document).on('click', '.del-btn', (e) => {
     
     const inputArea = $(e.target).closest('.file-input-div');
-    
+    const fileInput = inputArea.find('input[type="file"]')[0];
+    const fileName = fileInput.files[0].name;
+
     inputArea.remove();
 
     //원래있던globalFormData를 빼야할듯
+    /*
     console.log(globalFormData);
-
+    const inputsArea = $(".notice-input-area");
+    const inputCount = inputsArea.children('.file-input-div').length;
+    */
+    
+    const newFormData = new FormData();
+    for (let pair of globalFormData.entries()) {
+      if (pair[1].name !== fileName) {
+        newFormData.append(pair[0], pair[1]);
+      }
+    }
+    globalFormData = newFormData
+    
     const inputsArea = $(".notice-input-area");
     const inputCount = inputsArea.children('.file-input-div').length;
     
@@ -271,14 +295,14 @@ const fnAddAttachGo = () => {
           if (!confirm('해당 첨부 파일을 삭제할까요?')) {
               return;
           }
-          
           const attachNo = evt.target.dataset.attachNo;
           //console.log('gsdg');
           //fnRemoveAttachGo(attachNo);
           console.log(attachNo)
 
           // ※ attachNo가 파일명에 붙어있는게 아니라 x버튼에 붙어있음
-          let parentElement = $(evt.target).parent();
+          let parentElement = $(evt.target).parent().parent();
+          console.log(parentElement);
           let children = parentElement.children();
           parentElement.remove();
           
@@ -327,12 +351,22 @@ const fnModifyUpload = () => {
     if (document.getElementById('basic-default-name').value === '') {
       alert('제목은 필수입니다.');
       evt.preventDefault();
-      console.log($('input[name="signal"]').val());
+      //console.log($('input[name="signal"]').val());
       return;
     }
+    if (document.getElementById('basic-default-message').value === '') {
+      alert('내용을 입력해주세요.');
+      evt.preventDefault();
+      //console.log($('input[name="signal"]').val());
+      return;
+    }
+    
+    
+    
     evt.preventDefault(); // 폼 제출 중지
     fnAddAttachGo(); // 파일 첨부 실행
     fnRemoveAttachGo();
+    $(".loading").show();
     evt.target.submit(); // 폼 제출 재개
   });
 }

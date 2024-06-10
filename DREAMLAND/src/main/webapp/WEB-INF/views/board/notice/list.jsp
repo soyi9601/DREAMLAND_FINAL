@@ -16,11 +16,11 @@
 
 
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board" id="notice-board">
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y">
-      <div class="sd-title sd-point">공지사항</div>
+      <div class="title sd-point">공지사항</div>
         
       <!-- Hoverable Table rows -->
       
@@ -73,17 +73,27 @@
       </div>
       <!--/ Hoverable Table rows -->
       
-      <div>${paging}</div>
       
-      <div class="sd-btn-write-area">
-        <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-          <button id="list-edit-btn">편집</button>
-          <button id="list-del-btn">삭제</button>
-          <p class="sd-btn-write">
-            <a href="${contextPath}/board/notice/write.page">작성</a>
-          </p>
-        </c:if>
+      
+      
+      <div class="sd-btns-area">
+        <div>
+          <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
+            <button id="list-edit-btn" class="btn-reset sd-btn sd-gray-bg">편집</button>
+            <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
+          </c:if>
+        </div>
+        <div class="btn-reset sd-btn sd-point-bg" >
+          <a href="${contextPath}/board/notice/write.page">작성</a>
+        </div>
       </div>
+      
+      
+
+      
+      
+      <div class="pg-btn-area">${paging}</div>
+      
   </div>
     <!-- / Content -->
 </div>
@@ -140,15 +150,16 @@ const fnNoticeListDel = () =>{
       checked.each(function(){
         no.push($(this).val());
         idx.push($(this).data("idx"));
-        console.log(checked);
       });
+      
+      idx.sort((a, b) => a - b);
       
       // console.log("DB "+no);
       // console.log("목록상"+idx);
       
       let msg = checked.length == 1 ? 
-      		idx+'번 게시글을 삭제할까요?' : 
-          idx.join(",")+'번 게시글을(를) 삭제할까요?';
+          idx+'번 게시글을 삭제할까요?' : 
+          idx.join(",")+'번 게시글을 삭제할까요?';
       if(confirm(msg)){
         $.ajax({
           url:"${contextPath}/board/notice/removeNo.do",

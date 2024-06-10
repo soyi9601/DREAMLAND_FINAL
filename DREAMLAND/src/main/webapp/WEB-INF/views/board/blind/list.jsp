@@ -12,6 +12,8 @@
 
 <!-- link -->
 <link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
+<!-- include moment.js -->
+<script src="/resources/assets/moment/moment-with-locales.min.js"></script> 
 
 
 <!-- Content wrapper -->
@@ -19,10 +21,26 @@
     
     
     <!-- Content -->
-    <div class="container-xxl flex-grow-1 container-p-y sd-notice-write">
+    <div class="container-xxl flex-grow-1 container-p-y ">
         <div class="title sd-point">익명게시판</div>
           
+          
+         <div class="sd-btn-write-area">
+            <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+              <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
+            </c:if>
+            
+            <c:if test="${not empty loginEmployee}">
+              <p class="sd-btn sd-point-bg">
+                <a href="${contextPath}/board/blind/write.page">작성</a>
+              </p>
+            </c:if>
+            
+          </div>
+
           <div class="card sd-table-wrapper">
+          
+
             
             <div class="table-responsive text-nowrap">
               <table class="table table-hover sd-table" id="blind-list-table">
@@ -44,22 +62,12 @@
               </table>
             </div>
           </div>
+
+          
     </div>
     <!-- / Content -->
     <!-- 작성 버튼 화면 하단에 띄움 -->
-    <c:if test="${not empty loginEmployee}">
-      <p class="sd-btn sd-point-bg">
-        <a href="${contextPath}/board/blind/write.page">작성</a>
-      </p>
-    </c:if>
-    
-    <div class="sd-btn-write-area">
-      <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-        <button id="list-edit-btn">편집</button>
-        <button id="list-del-btn">삭제</button>
 
-      </c:if>
-    </div>
     
     
 </div>
@@ -102,8 +110,22 @@
             // str += '<td><a href="${contextPath}/board/blind/detail.do?blindNo='+blind.blindNo+'">' +  blind.boardTitle + '</a></td>';
             str += '<td data-blind-no="'+ blind.blindNo+'"  class="blindTitle">'+  blind.boardTitle + '</td>';
             //str += '<td><a class="blindTitle" href="${contextPath}/board/blind/updateHit.do?blindNo='+blind.blindNo+'">' +  blind.boardTitle + '</a></td>';
-           //${contextPath}/board/blind/updateHit.do?blindNo='+evt.target.dataset.blindNo 
-           str += '<td>'+blind.boardCreateDt+'</td>';
+           //${contextPath}/board/blind/updateHit.do?blindNo='+evt.target.dataset.blindNo
+               
+            //시간 표시
+            const publishTime = moment(blind.boardCreateDt);
+            const now = moment();
+            const diffHours = now.diff(publishTime, 'hours');
+            str += '<td class="publish-time">' + publishTime.locale('ko').fromNow() + '</td>';
+            /*
+            if (diffHours <= 12) {
+              str += '<td class="publish-time">' + publishTime.locale('ko').fromNow() + '</td>';
+            } else {
+              str += '<td class="publish-time">' + publishTime.format('YYYY-MM-DD HH:mm:ss') + '</td>';
+            }    
+            */
+              
+            // str += '<td>'+blind.boardCreateDt+'</td>';
             str += '<td>'+blind.commentCount+'</td>';
             str += '<td>'+blind.hit+'</td></tr>'
 
@@ -229,8 +251,8 @@ const fnNoticeListDel = () =>{
       
       
       let msg = checked.length == 1 ? 
-      		idx +'번 게시글을 삭제할까요?' : 
-          idx.join(",")+'번 게시글을(를) 삭제할까요?';
+          idx +'번 게시글을 삭제할까요?' : 
+          idx.join(",")+'번 게시글을 삭제할까요?';
       if(confirm(msg)){
         $.ajax({
           url:"${contextPath}/board/blind/removeNo.do",
