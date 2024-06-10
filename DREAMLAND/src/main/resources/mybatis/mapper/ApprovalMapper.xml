@@ -615,5 +615,19 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
        SET LEAVE_STATUS = 0
      WHERE APV_NO = #{apvNo}
     </update>
+    
+   <select id="getEmployeeList"
+    	  resultType="EmployeeDto">
+	 	SELECT EMP_NO, EMP_NAME, DEPT_NO, POS_NO
+	 	  FROM EMPLOYEE	
+	 </select>
+	 
+	 <select id="getDepartmentList"
+	 			resultType="DepartmentDto">
+	 			SELECT DEPT_NO, DEPT_NAME
+	 			  FROM DEPARTMENT
+	 			 WHERE DEPT_NO NOT BETWEEN 5001 AND 5999
+                    AND NOT DEPT_NO = 4000
+	  </select>
   
 </mapper>

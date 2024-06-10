@@ -50,7 +50,6 @@
     <input type="hidden" name="apvNo" id="apvNo" value="${approval.apvNo}">
             </div>
              <div class="section-title">결재자</div>
-                  담당
                   
 
      <button id="openOrgChartBtn" type="button">조직도 열기</button>
@@ -72,9 +71,22 @@
                     <td>본부장</td>
                     <td>대표이사</td>
                 </tr>
-                <tr id="selectedEmployeesRow">
+                <c:if test="${empty title}">
+                                <tr id="selectedEmployeesRow">
                     <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
                 </tr>
+      
+                </c:if>
+                <c:if test="${not empty title}">
+
+                  <tr id="selectedEmployeesRow">
+                     <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
+                    <c:if test="${not empty appovers.approver1}"><td><input type="text" name="approver2" value="${appovers.approver1}"></input></td></c:if>
+                    <c:if test="${not empty appovers.approver2}"><td><input type="text" name="approver3" value="${appovers.approver2}"></input></td></c:if>
+                    <c:if test="${not empty appovers.approver3}"><td><input type="text" name="approver4" value="${appovers.approver3}"></input></td></c:if>
+                 </tr>
+                </c:if>
+                
             </table>
             <div class="section">
                 <div class="section-title">참조자</div>
@@ -146,19 +158,38 @@
          <input type="hidden" name="temp" value="0">
             <input type="hidden" name="apvNo" value="${approval.apvNo}">
              <div class="section-title">결재자</div>
-            <table class="approval-table">
+ 
+     <button id="openOrgChartBtn2" type="button">조직도 열기</button>
+
+    <div id="orgChartModal2" class="modal">
+        <div class="modal-content">
+            <span class="close2">&times;</span>
+            <div id="orgChart2"></div>
+        </div>
+    </div>
+
+                <table class="approval-table">
                 <tr>
                     <td>담당</td>
                     <td>팀장</td>
                     <td>본부장</td>
                     <td>대표이사</td>
                 </tr>
-                <tr>
+                <c:if test="${empty title}">
+                                <tr id="selectedEmployeesRow2">
+                    <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
+                </tr>
+      
+                </c:if>
+                <c:if test="${not empty title}">
+                  <tr id="selectedEmployeesRow2">
                      <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
-                    <td><input type="text" name="approver2" value="${appovers.approver1}"></input></td>
-                    <td><input type="text" name="approver3" value="${appovers.approver2}"></input></td>
-                    <td><input type="text" name="approver4" value="${appovers.approver3}"></input></td>
+                    <c:if test="${not empty appovers.approver1}"><td><input type="text" name="approver2" value="${appovers.approver1}"></input></td></c:if>
+                    <c:if test="${not empty appovers.approver2}"><td><input type="text" name="approver3" value="${appovers.approver2}"></input></td></c:if>
+                    <c:if test="${not empty appovers.approver3}"><td><input type="text" name="approver4" value="${appovers.approver3}"></input></td></c:if>
                  </tr>
+                </c:if>
+                
             </table>
             <div class="section">
                 <div class="section-title">참조자</div>
@@ -219,9 +250,7 @@
                					  
                					  </c:if> </td>
                					
-               					</c:if>
-               					
-               					
+               					</c:if>         					
                					</c:if>
                					
                					
@@ -282,25 +311,93 @@
 
 <script>
 
-$(document).ready(function() {
+var tdCount =0;
+function fnTdcount() {
+const selectedEmployeesRow = document.getElementById('selectedEmployeesRow');
+tdCount = selectedEmployeesRow.getElementsByTagName('td').length +1;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	fnTdcount();
+});
+
+function fnJstree() {
     const openOrgChartBtn = document.getElementById("openOrgChartBtn");
     const orgChartModal = document.getElementById("orgChartModal");
     const closeBtn = document.getElementsByClassName("close")[0];
     const selectedEmployeesRow = document.getElementById("selectedEmployeesRow");
-    let selectedCount = 2;
+    const openOrgChartBtn2 = document.getElementById("openOrgChartBtn2");
+    const orgChartModal2 = document.getElementById("orgChartModal2");
+    const closeBtn2 = document.getElementsByClassName("close2")[0];
+    const selectedEmployeesRow2 = document.getElementById("selectedEmployeesRow2");
+    
+    var data = [];
+    
+    
+    $.ajax({
+        url: '${contextPath}/approval/employeeList.do',
+        type: 'GET',
+        dataType: 'json',
+        success: (resData) => {
+        	
+        	resData.departmentList.forEach(item => {
+                let node = {
+                        "id": item.deptNo+"",
+                        "text": item.deptName+"",
+                        "parent" : "#"
+                    }
+                data.push(node);
+        		
+        	})
+        	console.log(data);
+        		  resData.employeeList.forEach(item => {
+          // jsTree 형식에 맞게 변환하여 data 배열에 추가
+          let node = {
+              "id": item.empNo+"",
+              "text": item.empName,
+              "parent" : item.deptNo+"",
+              "icon": "bx bx-user"
+          };
+          data.push(node);
+    });
+        	     	console.log(data);
+        	
+        	
+        	
+        	
+            $('#orgChart').jstree({
+                'core': {
+                    'data': data
+                }
+            });
+        	
+            $('#orgChart2').jstree({
+                'core': {
+                    'data': data
+                }
+            });
 
-    const data = [
-        { "id": "1", "text": "맹구" },
-        { "id": "2", "text": "유리" },
-        { "id": "3", "text": "철수" },
-
-    ];
-
-    $('#orgChart').jstree({
-        'core': {
-            'data': data
+            },
+        	
+       
+        error: (jqXHR) => {
+            alert(jqXHR.statusText + '(' + jqXHR.status + ')');
         }
     });
+    
+    
+
+
+    
+    
+
+
+    
+    if (tdCount >= 5) {
+        openOrgChartBtn.style.display = "none";
+        openOrgChartBtn2.style.display = "none";
+        
+    }
 
     openOrgChartBtn.onclick = function() {
         orgChartModal.style.display = "block";
@@ -310,18 +407,28 @@ $(document).ready(function() {
         orgChartModal.style.display = "none";
     };
 
+
+    openOrgChartBtn2.onclick = function() {
+        orgChartModal2.style.display = "block";
+    };
+
+    closeBtn2.onclick = function() {
+        orgChartModal2.style.display = "none";
+    };
+
     window.onclick = function(event) {
-        if (event.target == orgChartModal) {
+        if (event.target == orgChartModal2 || event.target == orgChartModal) {
             orgChartModal.style.display = "none";
+            orgChartModal2.style.display = "none";
         }
     };
     $('#orgChart').on("select_node.jstree", function (e, data) {
-        if (selectedCount < 5) {
+        if (tdCount < 5) {
             const name = data.node.text;
             const newCell = selectedEmployeesRow.insertCell();
-            newCell.innerHTML = '<input type="text" name="approver' + selectedCount+ '" value="'+name+'" ></input>'; // HTML 추가
-            selectedCount++;
-            if (selectedCount >= 5) {
+            newCell.innerHTML = '<input type="text" name="approver' + tdCount+ '" value="'+name+'" ></input>'; // HTML 추가
+            tdCount++;
+            if (tdCount >= 5) {
                 openOrgChartBtn.style.display = "none";
             } else {
                 openOrgChartBtn.style.display = "inline-block";
@@ -329,9 +436,24 @@ $(document).ready(function() {
             orgChartModal.style.display = "none";
         }
     });
-});
+    $('#orgChart2').on("select_node.jstree", function (e, data) {
+        if (tdCount < 5) {
+            const name = data.node.text;
+            const newCell = selectedEmployeesRow2.insertCell();
+            newCell.innerHTML = '<input type="text" name="approver' + tdCount+ '" value="'+name+'" ></input>'; // HTML 추가
+            tdCount++;
+            if (tdCount >= 5) {
+                openOrgChartBtn2.style.display = "none";
+            } else {
+                openOrgChartBtn2.style.display = "inline-block";
+            }
+            orgChartModal2.style.display = "none";
+        }
+    });
+    
+    fnTdcount();
+};
 
-   
    
    function updateLeaveForm() {
 	   
@@ -364,8 +486,6 @@ $(document).ready(function() {
            $('input[name="temp"]').val('3');
            $('#myForm2').submit(); // 폼 제출
        });
-       
-
    });
    
    
@@ -373,6 +493,11 @@ $(document).ready(function() {
        const pages = document.querySelectorAll('.page');
        pages.forEach(page => {
            page.classList.remove('active');
+           let firstChild = selectedEmployeesRow.firstElementChild;
+           fnTdcount();
+           while (selectedEmployeesRow.lastElementChild && selectedEmployeesRow.lastElementChild !== firstChild) {
+               selectedEmployeesRow.removeChild(selectedEmployeesRow.lastElementChild);
+           }
        });
        document.getElementById(pageId).classList.add('active');
    }
@@ -471,7 +596,8 @@ $(document).ready(function() {
 
    // Initialize to show the first page
   showPage('approvalForm');
-  updateLeaveForm()
+  fnJstree();
+  updateLeaveForm();
 	fnAttachAdd();
 	fnAttachCheck();
 	fnAttachDel();
