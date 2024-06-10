@@ -15,7 +15,7 @@
               <div class="row">
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
-	                <h5 class="card-header">받은편지함 <small id="receive-count"></small></h5>
+	                <h5 class="card-header">받은쪽지함 <small id="receive-count"></small></h5>
 	                  <form id="receive-form" method="POST">
 	                  <div>
 	                    <button type="button" id="btn-save">보관하기</button>
