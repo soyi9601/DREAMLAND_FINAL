@@ -30,7 +30,7 @@ public class WorkController {
     Map<String, Object> attendanceCounts = workService.getWorkCountByEmail(email);
     
     model.addAttribute("lateCount", attendanceCounts.get("lateCount"));
-    model.addAttribute("earlyLeaveCount", attendanceCounts.get("earlyLeaveCount"));
+    //model.addAttribute("earlyLeaveCount", attendanceCounts.get("earlyLeaveCount"));
     model.addAttribute("absenceCount", attendanceCounts.get("absenceCount"));
     model.addAttribute("totalWorkDays", attendanceCounts.get("totalWorkDays"));
     model.addAttribute("totalWorkHours", attendanceCounts.get("totalWorkHours"));
