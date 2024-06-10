@@ -135,7 +135,7 @@
           </div>
           <div class="col-md-4">
             <div class="main-news-wrap">
-              <div class="btn rounded-pill btn-outline-secondary mb-4 py-3">안읽은 쪽지<br/><strong class="msg-count">0</strong> 건입니다.</div>
+              <div class="btn rounded-pill btn-outline-secondary mb-4 py-3">안읽은 쪽지<br/><strong class="msg-count"></strong> 건입니다.</div>
               <div class="btn rounded-pill btn-outline-success mb-4 py-3">대기 전자문서<br/><strong class="wait-count">0</strong> 건입니다.</div>
               <div class="btn rounded-pill btn-outline-info py-3">진행 전자문서<br/><strong class="continue-count">0</strong> 건입니다.</div>
             </div>

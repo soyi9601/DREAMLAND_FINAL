@@ -50,5 +50,13 @@
          , NOTICE_NO, BOARD_TITLE, SIGNAL, BOARD_MODIFY_DT
       FROM NOTICE_BOARD
   </select>
+  
+  
+  <!-- 쪽지 건수 확인 -->
+  <select id="getMessageCountByReceiver">
+    SELECT COUNT(*)
+      FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
+     WHERE M.MSG_RECEIVER = ${empNo}
+  </select>
 
 </mapper> 

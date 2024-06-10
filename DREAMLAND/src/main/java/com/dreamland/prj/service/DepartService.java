@@ -23,7 +23,7 @@ public interface DepartService {
   void updateDepart(DepartmentDto departmentDto);   // 부서 정보 수정
   void updateEmployee(EmployeeDto employeeDto);     // 직원 정보 수정
   
-  List<DepartmentDto> getAllDepart();
+  List<DepartmentDto> getAllDepart();               // Option 선택 시 모든 부서 나오기
   void addDepartment(HttpServletRequest request, HttpServletResponse response); // 부서 추가
   
   List<Map<String, Object>> getOrgChartData();

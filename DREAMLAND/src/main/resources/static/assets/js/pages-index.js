@@ -192,6 +192,21 @@ const fnNoticeDetail = () => {
   })
 }
 
+const fnGetMessageCount = () => {
+  
+  $.ajax({
+    type: 'GET',
+    url: '/receiveCount',
+    data: 'empNo=' + empNo,
+    dataType: 'json',
+    success: function(resData) {
+      $('.msg-count').text(resData);
+    },
+    error: function(jqXHR) {
+      console.error('Error: (' + jqXHR.status + ')');
+    }
+  })
+}
 
 
 /* ********************** 함수 호출 ********************** */
@@ -203,7 +218,7 @@ fnCalendar();
 fnWorkIn();
 fnWorkOut();
 fnGetNotice();
-
+fnGetMessageCount();
 /* ********************** ********* ********************** */
 
 

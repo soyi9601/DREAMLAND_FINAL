@@ -82,9 +82,7 @@ public class DepartServiceImpl implements DepartService {
   // 부서 추가
   @Override
   public List<DepartmentDto> getAllDepart() {
-    List<DepartmentDto> a = departMapper.getAllDepart();
-    System.out.println(a);
-    return a;
+    return departMapper.getAllDepart();
   }
   @Override
   public void addDepartment(HttpServletRequest request, HttpServletResponse response) {
@@ -119,6 +117,7 @@ public class DepartServiceImpl implements DepartService {
       deptData.put("name", depart.getDeptName());
       Integer pid = depart.getParentId() == null || depart.getParentId().isEmpty() || "#".equals(depart.getParentId()) ? null : Integer.parseInt(depart.getParentId());
       deptData.put("pid", pid);
+      deptData.put("tags",  Arrays.asList(new String[]{"default"}));
       departMap.put(depart.getDeptNo(), deptData);
     }
     
@@ -126,7 +125,7 @@ public class DepartServiceImpl implements DepartService {
     List<Map<String, Object>> employeeList = new ArrayList<>();
     
     for(OrgChartDto depart : allDepart) {
-      if(depart.getEmpNo() != 0) {
+      if(depart.getEmpNo() != 0 && !"관리자".equals(depart.getEmpName())) {
 //      if(depart.getEmployee() !=null) {
         Map<String, Object> employeeData = new HashMap<>();
         employeeData.put("id", depart.getEmpNo());
@@ -134,10 +133,6 @@ public class DepartServiceImpl implements DepartService {
         employeeData.put("email", depart.getEmail());
         employeeData.put("pid", depart.getDeptNo());
         employeeData.put("tags", Arrays.asList(new String[]{"employees"})); // 직원 데이터에 tags 추가
-//        employeeData.put("id", depart.getEmployee().getEmpNo());
-//        employeeData.put("name", depart.getEmployee().getEmpName());
-//        employeeData.put("email", depart.getEmployee().getEmail());
-//        employeeData.put("pid", depart.getDeptNo());
 
         employeeList.add(employeeData);        
       }
