@@ -100,17 +100,17 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
+                <a href="${contextPath}/board/faq/list.do" class="menu-link">
                   <div>FAQ</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
+                <a href="${contextPath}/board/notice/list.do" class="menu-link">
                   <div>공지사항</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
+                <a href="${contextPath}/board/blind/list.page" class="menu-link">
                   <div>익명게시판</div>
                 </a>
               </li>

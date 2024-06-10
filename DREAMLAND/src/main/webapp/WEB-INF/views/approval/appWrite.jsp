@@ -321,6 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	fnTdcount();
 });
 
+// jstree
 function fnJstree() {
     const openOrgChartBtn = document.getElementById("openOrgChartBtn");
     const orgChartModal = document.getElementById("orgChartModal");
@@ -454,7 +455,7 @@ function fnJstree() {
     fnTdcount();
 };
 
-   
+   // 반차 선택시 오전,오후 선택창 생성
    function updateLeaveForm() {
 	   
 	    $(document).on("change", "#leave-type", (e) => {
@@ -473,6 +474,7 @@ function fnJstree() {
    }
    
    
+   // 
    $(document).ready(function() {
        $('#submitBtn1').click(function(event) {
            event.preventDefault(); // 기본 제출 동작을 막음
@@ -567,7 +569,7 @@ function fnJstree() {
      });
    }
    
-   
+  
    const fnAttachDelete = () => {
        // attachDelete 태그 클릭 이벤트 핸들러
        $(document).on("click", "#attachDelete", function() {
