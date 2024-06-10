@@ -13,10 +13,27 @@ public interface MessageMapper {
   
   List<EmployeeDto> getEmployeeList(Map<String, Object> param);
   int sendMessage(Map<String, Object> param);
-  List<MessageDto> getMessageByReceiver(int empNo);
-  List<MessageDto> getMessageBySender(int empNo);
   
+  // 메시지 리스트 받아오기
+  List<MessageDto> getMessageByReceiver(Map<String, Object> param);
+  List<MessageDto> getMessageBySender(Map<String, Object> param);
+  List<MessageDto> getMessageByStar(Map<String, Object> param);
+  
+  // 메시지 갯수
   int getMessageCountByReceiver(int empNo);
+  int getMessageCountByRecRead(int empNo);
+  int getMessageCountByRecStar(int empNo);
   int getMessageCountBySender(int empNo);
+  int getMessageCountByStar(int empNo);
+  int getMessageCountByStarRead(int empNo);
+  
+  // 메시지 디테일
+  MessageDto getMessageDetail(int msgNo);
+  
+  // 읽음 여부 업데이트
+  int updateMsgRead(int msgNo);
+  
+  // 저장 여부 업데이트
+  int updateMsgStar(int msgNo);
 
 }

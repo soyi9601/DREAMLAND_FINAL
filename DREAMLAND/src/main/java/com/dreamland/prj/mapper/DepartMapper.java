@@ -26,6 +26,7 @@ public interface DepartMapper {
   void updateEmployee(EmployeeDto employeeDto);     // 직원 정보 수정
   
   void insertDepart(DepartmentDto departmentDto);   // 부서 추가
+  List<DepartmentDto> getAllDepart();
   
   
   // 유저

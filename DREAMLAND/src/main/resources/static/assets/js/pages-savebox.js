@@ -1,10 +1,12 @@
 /**
  * 작성자 : 고은정
- * 기능   : 받은편지함
+ * 기능   : 중요보관함
  * 이력   :
- *    1) 240605
- *        - 받은 쪽지 개수 가져오기
+ *    1) 240610
+ *        - 중요 쪽지 개수 가져오기
  *        - MessageDto List 를 ajax 으로 가져오기
+ *    2) 240609
+ *        - 상세보기, 삭제, 보관함 이동 함수
  */
 
 'use strict';
@@ -19,11 +21,12 @@ var page = 0;
 $(document).ready(function() {
     $.ajax({
         type: 'GET',
-        url: '/message/sendCount.do',
+        url: '/message/starCount.do',
         data: 'empNo=' + empNo, 
         dataType: 'json',
         success: function(response) {
-            $('#send-count').text(response);
+            $('#save-count').text(response.notReadCount + ' / ' + response.total);
+            
         },
         error: function(jqXHR, textStatus, errorThrown) {
            console.error('Error:', textStatus, '(' + jqXHR.status + '):', errorThrown);
@@ -31,17 +34,6 @@ $(document).ready(function() {
     });
 })
 
-// 상세보기 링크
-document.addEventListener("DOMContentLoaded", () => {
-    const rows = document.querySelectorAll(".clickable-row");
-    rows.forEach(row => {
-        row.addEventListener("click", () => {
-            window.location.href = row.dataset.href;
-        });
-    });
-});
 
 /************************** 함수 호출 **************************/
-/*document.getElementById('contents').addEventListener('keyup', fnCheckByte);
-fnEmployeeList();*/
-//fnGetReceiveMessage();
+

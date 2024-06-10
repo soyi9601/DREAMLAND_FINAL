@@ -17,7 +17,9 @@ nav .avatar i {font-size: 3rem}
 
 
 /* 메인 공지사항 */
+.noti-card {min-height: 255px;}
 .notice-important {color: #ee2b4b; padding: 3px 10px; margin-right: 10px; font-size: 13px; border: 1px solid #ee2b4b; border-radius: 25px;}
+.notice-list {cursor: pointer;}
 
 
 /* 메인 캘린더 */

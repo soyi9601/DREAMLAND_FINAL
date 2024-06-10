@@ -31,7 +31,7 @@
 
   <link rel="stylesheet" href="/resources/assets/vendor/libs/apex-charts/apex-charts.css" />
 
-  <!-- Page CSS -->
+  <link rel="icon" href="/resources/assets/img/logo/favicon.ico">
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <!-- Helpers -->
@@ -241,7 +241,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="${contextPath}/user/receiveBox">
+                    <a class="dropdown-item" href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}">
                       <i class="bx bx-cog me-2"></i>
                       <span class="align-middle">받은쪽지함</span>
                     </a>

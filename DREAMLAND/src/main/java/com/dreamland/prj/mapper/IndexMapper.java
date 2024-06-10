@@ -18,4 +18,6 @@ public interface IndexMapper {
   void updateWorkOut(WorkDto work);     // 퇴근
   
   List<NoticeBoardDto> getNoticeList(Map<String, Object> map);
+  
+  int getMessageCountByReceiver(int empNo);
 }
