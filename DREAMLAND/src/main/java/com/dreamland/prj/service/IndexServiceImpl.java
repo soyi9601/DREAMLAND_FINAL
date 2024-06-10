@@ -51,12 +51,20 @@ public class IndexServiceImpl implements IndexService {
   }
   
   
+  // 공지사항 조회
   @Override
   public ResponseEntity<Map<String, Object>> getNoticeList(HttpServletRequest request) {
     Map<String, Object> map = new HashMap<>();
     List<NoticeBoardDto> noticeList = indexMapper.getNoticeList(map);
     map.put("noticeList", noticeList);
     return new ResponseEntity<>(map, HttpStatus.OK);
+  }
+  
+  
+  // 쪽지 건수 확인
+  @Override
+  public int getReceiveCount(int empNo) {
+    return indexMapper.getMessageCountByReceiver(empNo);
   }
 
 }
