@@ -24,6 +24,8 @@
 
 <div class="container">
     <div class="title">기안서 작성하기</div>
+         <div id="container">
+
     <c:if test="${empty title}">
   <div class="select-container">
         <select id="pageSelector" onchange="showPage(this.value)">
@@ -48,19 +50,43 @@
     <input type="hidden" name="apvNo" id="apvNo" value="${approval.apvNo}">
             </div>
              <div class="section-title">결재자</div>
-            <table class="approval-table">
+                  
+
+     <button id="openOrgChartBtn" type="button">조직도 열기</button>
+
+    <div id="orgChartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="orgChart"></div>
+        </div>
+    </div>
+
+
+   
+    
+                <table class="approval-table">
                 <tr>
                     <td>담당</td>
                     <td>팀장</td>
                     <td>본부장</td>
                     <td>대표이사</td>
                 </tr>
-                <tr>
+                <c:if test="${empty title}">
+                                <tr id="selectedEmployeesRow">
                     <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
-                    <td><input type="text" name="approver2" value="${appovers.approver1}"></input></td>
-                    <td><input type="text" name="approver3" value="${appovers.approver2}"></input></td>
-                    <td><input type="text" name="approver4" value="${appovers.approver3}"></input></td>
                 </tr>
+      
+                </c:if>
+                <c:if test="${not empty title}">
+
+                  <tr id="selectedEmployeesRow">
+                     <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
+                    <c:if test="${not empty appovers.approver1}"><td><input type="text" name="approver2" value="${appovers.approver1}"></input></td></c:if>
+                    <c:if test="${not empty appovers.approver2}"><td><input type="text" name="approver3" value="${appovers.approver2}"></input></td></c:if>
+                    <c:if test="${not empty appovers.approver3}"><td><input type="text" name="approver4" value="${appovers.approver3}"></input></td></c:if>
+                 </tr>
+                </c:if>
+                
             </table>
             <div class="section">
                 <div class="section-title">참조자</div>
@@ -132,19 +158,38 @@
          <input type="hidden" name="temp" value="0">
             <input type="hidden" name="apvNo" value="${approval.apvNo}">
              <div class="section-title">결재자</div>
-            <table class="approval-table">
+ 
+     <button id="openOrgChartBtn2" type="button">조직도 열기</button>
+
+    <div id="orgChartModal2" class="modal">
+        <div class="modal-content">
+            <span class="close2">&times;</span>
+            <div id="orgChart2"></div>
+        </div>
+    </div>
+
+                <table class="approval-table">
                 <tr>
                     <td>담당</td>
                     <td>팀장</td>
                     <td>본부장</td>
                     <td>대표이사</td>
                 </tr>
-                <tr>
+                <c:if test="${empty title}">
+                                <tr id="selectedEmployeesRow2">
+                    <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
+                </tr>
+      
+                </c:if>
+                <c:if test="${not empty title}">
+                  <tr id="selectedEmployeesRow2">
                      <td><input type="text" name="approver" readonly="readonly" value="${loginEmployee.empName}"></input></td>
-                    <td><input type="text" name="approver2" value="${appovers.approver1}"></input></td>
-                    <td><input type="text" name="approver3" value="${appovers.approver2}"></input></td>
-                    <td><input type="text" name="approver4" value="${appovers.approver3}"></input></td>
+                    <c:if test="${not empty appovers.approver1}"><td><input type="text" name="approver2" value="${appovers.approver1}"></input></td></c:if>
+                    <c:if test="${not empty appovers.approver2}"><td><input type="text" name="approver3" value="${appovers.approver2}"></input></td></c:if>
+                    <c:if test="${not empty appovers.approver3}"><td><input type="text" name="approver4" value="${appovers.approver3}"></input></td></c:if>
                  </tr>
+                </c:if>
+                
             </table>
             <div class="section">
                 <div class="section-title">참조자</div>
@@ -188,25 +233,24 @@
                     
                     
                        <c:if test="${kind ==1 }">
-                       <c:if test="${approva.leaveClassify ==0}">
-                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> ~ <input type="date" name="leaveend" value="${approval.leaveEnd}"></td>
-               					
-               					  <c:if test="${approva.halfday == 'morning'}">
-               					          <label><input type="radio" name="halfday" value="morning" checked> 오전</label>
+                       <c:if test="${approval.leaveClassify ==0}">
+                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> ~  <input type="date" name="leaveend" value="${approval.leaveEnd}"></td>
+               				
+
+               					</c:if>
+               					                       <c:if test="${approval.leaveClassify ==1}">
+                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}">
+                                   					  <c:if test="${approval.halfday == 'morning'}">
+               					          <label><input type="radio" name="halfday" value="morning" checked> 오전 </label>
                                  <label><input type="radio" name="halfday" value="afternoon"> 오후</label>
                            </c:if>
-               					  <c:if test="${approva.halfday == 'afternoon'}">
-               					          <label><input type="radio" name="halfday" value="morning"> 오전</label>
+               					  <c:if test="${approval.halfday == 'afternoon'}">
+               					          <label><input type="radio" name="halfday" value="morning"> 오전 </label>
                                  <label><input type="radio" name="halfday" value="afternoon" checked> 오후</label>
                					  
-               					  </c:if>
-               					</c:if>
-               					                       <c:if test="${approva.leaveClassify ==1}">
-                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> </td>
+               					  </c:if> </td>
                					
-               					</c:if>
-               					
-               					
+               					</c:if>         					
                					</c:if>
                					
                					
@@ -262,28 +306,154 @@
         </form>
     </div>
 </div>
+    </div>
+</div>
 
 <script>
-/**
-   document.getElementById('addButton').addEventListener('click', function() {
-       var newButton = '<button class="button button">결재자</button>'
-       document.getElementById('buttonContainer').innerHTML += newButton;
-   });
-   document.getElementById('addButton2').addEventListener('click', function() {
-       var newButton = '<button class="button button">참조자</button>'
-       document.getElementById('buttonContainer2').innerHTML += newButton;
-   });
-   document.getElementById('addButton3').addEventListener('click', function() {
-       var selectedForm = document.getElementById('formSelect').value;
-       var formContainer = document.getElementById('formContainer');
+
+var tdCount =0;
+function fnTdcount() {
+const selectedEmployeesRow = document.getElementById('selectedEmployeesRow');
+tdCount = selectedEmployeesRow.getElementsByTagName('td').length +1;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	fnTdcount();
+});
+
+function fnJstree() {
+    const openOrgChartBtn = document.getElementById("openOrgChartBtn");
+    const orgChartModal = document.getElementById("orgChartModal");
+    const closeBtn = document.getElementsByClassName("close")[0];
+    const selectedEmployeesRow = document.getElementById("selectedEmployeesRow");
+    const openOrgChartBtn2 = document.getElementById("openOrgChartBtn2");
+    const orgChartModal2 = document.getElementById("orgChartModal2");
+    const closeBtn2 = document.getElementsByClassName("close2")[0];
+    const selectedEmployeesRow2 = document.getElementById("selectedEmployeesRow2");
+    
+    var data = [];
+    
+    
+    $.ajax({
+        url: '${contextPath}/approval/employeeList.do',
+        type: 'GET',
+        dataType: 'json',
+        success: (resData) => {
+        	
+        	resData.departmentList.forEach(item => {
+                let node = {
+                        "id": item.deptNo+"",
+                        "text": item.deptName+"",
+                        "parent" : "#"
+                    }
+                data.push(node);
+        		
+        	})
+        	console.log(data);
+        		  resData.employeeList.forEach(item => {
+          // jsTree 형식에 맞게 변환하여 data 배열에 추가
+          let node = {
+              "id": item.empNo+"",
+              "text": item.empName,
+              "parent" : item.deptNo+"",
+              "icon": "bx bx-user"
+          };
+          data.push(node);
+    });
+        	     	console.log(data);
+        	
+        	
+        	
+        	
+            $('#orgChart').jstree({
+                'core': {
+                    'data': data
+                }
+            });
+        	
+            $('#orgChart2').jstree({
+                'core': {
+                    'data': data
+                }
+            });
+
+            },
+        	
        
-       if (selectedForm === 'expense') {
-    	   formContainer.innerHTML = '<p>지출품의서</p>';
-       } else if (selectedForm === 'leave') {
-           formContainer.innerHTML = '<p>휴가신청서</p>';
-       }
-   });
-   */
+        error: (jqXHR) => {
+            alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+        }
+    });
+    
+    
+
+
+    
+    
+
+
+    
+    if (tdCount >= 5) {
+        openOrgChartBtn.style.display = "none";
+        openOrgChartBtn2.style.display = "none";
+        
+    }
+
+    openOrgChartBtn.onclick = function() {
+        orgChartModal.style.display = "block";
+    };
+
+    closeBtn.onclick = function() {
+        orgChartModal.style.display = "none";
+    };
+
+
+    openOrgChartBtn2.onclick = function() {
+        orgChartModal2.style.display = "block";
+    };
+
+    closeBtn2.onclick = function() {
+        orgChartModal2.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+        if (event.target == orgChartModal2 || event.target == orgChartModal) {
+            orgChartModal.style.display = "none";
+            orgChartModal2.style.display = "none";
+        }
+    };
+    $('#orgChart').on("select_node.jstree", function (e, data) {
+        if (tdCount < 5) {
+            const name = data.node.text;
+            const newCell = selectedEmployeesRow.insertCell();
+            newCell.innerHTML = '<input type="text" name="approver' + tdCount+ '" value="'+name+'" ></input>'; // HTML 추가
+            tdCount++;
+            if (tdCount >= 5) {
+                openOrgChartBtn.style.display = "none";
+            } else {
+                openOrgChartBtn.style.display = "inline-block";
+            }
+            orgChartModal.style.display = "none";
+        }
+    });
+    $('#orgChart2').on("select_node.jstree", function (e, data) {
+        if (tdCount < 5) {
+            const name = data.node.text;
+            const newCell = selectedEmployeesRow2.insertCell();
+            newCell.innerHTML = '<input type="text" name="approver' + tdCount+ '" value="'+name+'" ></input>'; // HTML 추가
+            tdCount++;
+            if (tdCount >= 5) {
+                openOrgChartBtn2.style.display = "none";
+            } else {
+                openOrgChartBtn2.style.display = "inline-block";
+            }
+            orgChartModal2.style.display = "none";
+        }
+    });
+    
+    fnTdcount();
+};
+
    
    function updateLeaveForm() {
 	   
@@ -316,8 +486,6 @@
            $('input[name="temp"]').val('3');
            $('#myForm2').submit(); // 폼 제출
        });
-       
-
    });
    
    
@@ -325,6 +493,11 @@
        const pages = document.querySelectorAll('.page');
        pages.forEach(page => {
            page.classList.remove('active');
+           let firstChild = selectedEmployeesRow.firstElementChild;
+           fnTdcount();
+           while (selectedEmployeesRow.lastElementChild && selectedEmployeesRow.lastElementChild !== firstChild) {
+               selectedEmployeesRow.removeChild(selectedEmployeesRow.lastElementChild);
+           }
        });
        document.getElementById(pageId).classList.add('active');
    }
@@ -423,7 +596,8 @@
 
    // Initialize to show the first page
   showPage('approvalForm');
-  updateLeaveForm()
+  fnJstree();
+  updateLeaveForm();
 	fnAttachAdd();
 	fnAttachCheck();
 	fnAttachDel();
