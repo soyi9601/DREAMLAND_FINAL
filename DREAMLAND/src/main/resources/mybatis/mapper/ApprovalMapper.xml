@@ -32,6 +32,13 @@
 	 	 WHERE EMP_NO = #{empNo} 
 	 </select>
 	 
+	 	 <select id="getApprovers">
+	 	SELECT APV_STATE
+	 	  FROM APV_WRITER	
+	 	 WHERE APV_NO = #{apvNo} 
+  ORDER BY WRITER_LIST
+	 </select>
+	 
 	 	 <select id="getApprover">
 	 	SELECT EMP_NO 
 	 	  FROM APV_WRITER	
@@ -499,7 +506,7 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
     <select id="getApvLeaveDetailByNo"
          parameterType="Int"
          resultType="AppleaveDto">
-    SELECT LEAVE_NO, APV_NO, LEAVE_CLASSIFY, LEAVE_START, LEAVE_END, DETAIL, LEAVE_STATUS, HALFDAY
+    SELECT LEAVE_NO, APV_NO, LEAVE_CLASSIFY, LEAVE_START, LEAVE_END, DETAIL, LEAVE_STATUS, HALFDAY, EMP_NO
       FROM APV_LEAVE
      WHERE APV_NO = #{apvNo}
     </select>
@@ -522,6 +529,12 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
   	UPDATE APV_LEAVE
   	   SET LEAVE_STATUS = 1
   	 WHERE APV_NO = #{apvNo}
+  </update>
+  
+      <update id="updateEmployee">
+  	UPDATE EMPLOYEE
+  	   SET USED_DAY_OFF = USED_DAY_OFF + #{useDay}
+  	 WHERE EMP_NO = #{empNo}
   </update>
   
       <update id="modifyApproval"
@@ -602,5 +615,19 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
        SET LEAVE_STATUS = 0
      WHERE APV_NO = #{apvNo}
     </update>
+    
+   <select id="getEmployeeList"
+    	  resultType="EmployeeDto">
+	 	SELECT EMP_NO, EMP_NAME, DEPT_NO, POS_NO
+	 	  FROM EMPLOYEE	
+	 </select>
+	 
+	 <select id="getDepartmentList"
+	 			resultType="DepartmentDto">
+	 			SELECT DEPT_NO, DEPT_NAME
+	 			  FROM DEPARTMENT
+	 			 WHERE DEPT_NO NOT BETWEEN 5001 AND 5999
+                    AND NOT DEPT_NO = 4000
+	  </select>
   
 </mapper>

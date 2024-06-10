@@ -37,6 +37,7 @@ public class ApprovalController {
 	  public String applist(HttpServletRequest request, Model model) {
 		return "approval/appList";
 	}
+
 	
 	@GetMapping("/appMyList" )
 	public String appMyList(HttpServletRequest request, Model model) {
@@ -180,5 +181,10 @@ public class ApprovalController {
 	            response.put("message", "Failed to delete attachment");
 	        }
 	        return ResponseEntity.ok(response);
+	}
+
+	@GetMapping(value= "/employeeList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> employeeList(HttpServletRequest request) {
+		return approvalService.employeeList(request);
 	}
 }
