@@ -1,5 +1,6 @@
 package com.dreamland.prj.schedule;
 
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Component
+@EnableScheduling
 @Slf4j
 public class WorkCheckScheduler {
 
   private final WorkService workService;
   
-  // 평일 오전 9시 1분에 checkLate 서비스 동작
-  @Scheduled(cron="0 1 9 ? * MON-FRI *")
-  public void execute() {
+  // 평일 오후 6시 1분에 checkLate 서비스 동작
+  //@Scheduled(cron = "0 * * * * ?")
+  //@Scheduled(cron="0 1 18 ? * MON-FRI *")
+  public void checkLate() {
     log.info("========= 지각체크 =========");
     try {
       workService.checkLate();
@@ -28,8 +31,9 @@ public class WorkCheckScheduler {
   }
   
   // 평일 오후 6시 1분에 checkAbsence 서비스 동작 
-  @Scheduled(cron = "0 1 18 ? * MON-FRI") 
-  public void checkAbsenteeism() {
+  //@Scheduled(cron = "0 1 18 ? * MON-FRI")
+  //@Scheduled(cron = "0 * * * * ?")
+  public void checkAbsence() {
     log.info("========= 결근체크 =========");
     try {
       workService.checkAbsence();
@@ -38,5 +42,20 @@ public class WorkCheckScheduler {
       log.error("결근체크 실패", e);
     }
   }
-}
   
+  //평일 오전 9시 1분에 checkdayoffStatus 서비스 동작
+  //@Scheduled(cron = "0 * * * * ?")
+  //@Scheduled(cron="0 1 9 ? * MON-FRI *")
+  public void checkDayoff() {
+      log.info("========= 연차 및 반차 체크 =========");
+      try {
+          workService.checkDayoff();
+          log.info("연차 및 반차 체크 성공");
+      } catch (Exception e) {
+          log.error("연차 및 반차 체크 실패", e);
+      }
+  }
+  
+}
+
+

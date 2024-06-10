@@ -73,8 +73,7 @@
     <script src="../assets/js/config.js"></script>
 		
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  </head>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <body>
 
 <form method="POST" 
@@ -84,6 +83,7 @@
     		
     <div class="col-sm-10">
 				<button type="submit" class="btn btn-primary">전송</button>
+				<button type="button" onclick="myFunction()">추가</button>
 		</div>
 
 		<!-- Hoverable Table rows -->
@@ -101,16 +101,9 @@
                         <th>파일첨부</th>
                       </tr>
                     </thead>
-                    <tbody class="table-border-bottom-0">
+                    <tbody class="table-border-bottom-0" id="myTable">
                     	 <tr>
-                    	 <td><input type="text"  class="deptNo" name="deptNo"></td>
-                    	 	<td><input type="text"  class="facilityName" name="facilityName"></td>
-                    	 	<td id="currentDate"></td>
-                    	 	<td><input type="checkbox" class="management" name="management" value="1" /></td>
-                    	 	<td><textarea id="basic-default-message"
-																				class="form-control" name="remarks">
-														</textarea></td>
-                    	 	<td><input class="form-control" type="file" name="files" /></td>
+                    	 
                     	 </tr>
                     </tbody>
                   </table>
@@ -120,17 +113,87 @@
 </body>
 
 <script>
-        function showCurrentDate() {
-            const dateElement = document.getElementById('currentDate');
-            const currentDate = new Date();
-            const formattedDate = currentDate.toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-            });
-            dateElement.textContent = formattedDate;
-        }
+function showCurrentDate() {
+	const dateElement = document.getElementById('currentDate');
+	const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString('ko-KR', {
+  	year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  dateElement.textContent = formattedDate;
+}
+window.onload = showCurrentDate;
+        
+function myFunction() {
+	var addRowIndex = 1;
+  var table = document.getElementById("myTable");
+  var row = table.insertRow(addRowIndex);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
+	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
+	cell1.innerHTML = "<td><input type='text'  class='deptNo' name='deptNo'></td>";
+	cell2.innerHTML = "<td><input type='text'  class='facilityName' name='facilityName'></td>";
+	cell3.innerHTML = "<span id='currentDate'></span>";
+	cell4.innerHTML = "<td><input type='checkbox' class='chkmanagement' name='management'/></td>";
+	cell5.innerHTML = "<td><textarea id='basic-default-message' class='form-control' name='remarks'></textarea></td>";
+	cell6.innerHTML = "<td><input class='form-control' type='file' name='files' /></td>";
+	cell7.innerHTML = "<td><button type='button' onclick='deleteRow(this)' class='btn_delete'>Delect</button>";
+	
+	 var currentDateElement = row.querySelector('#currentDate');
+	    if (currentDateElement) {
+	        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+	        var currentDate = new Date().toLocaleDateString('ko-KR', options);
+	        currentDateElement.textContent = currentDate;
+	}
+	
+	addRowIndex = addRowIndex + 1;
+	}
+	
+	
+function deleteRow(btn) {
+	console.log('btn', btn)
+	var row = btn.parentNode.parentNode; // 클릭된 버튼의 부모 행을 찾습니다.
+	console.log('row', row)
+	row.parentNode.removeChild(row);     // 테이블에서 해당 행을 제거합니다.
+}
 
-        window.onload = showCurrentDate;
+
+
+const fnCkgMng = () => {
+	  
+	$('input[name="management"]').val(0);
+	  
+	  $(document).on('click', '.chkmanagement', (e) => {
+	      if ($(e.target).prop('checked')) {
+	        $('input[name="management"]').val(1);
+	      } else {
+	         $('input[name="management"]').val(0); 
+	      }
+	  });
+	}
+
+fnCkgMng();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </html>

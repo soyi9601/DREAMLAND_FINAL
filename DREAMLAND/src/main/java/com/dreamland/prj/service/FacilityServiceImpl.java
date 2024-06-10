@@ -1,10 +1,16 @@
 package com.dreamland.prj.service;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -41,8 +47,10 @@ public class FacilityServiceImpl implements FacilityService {
 		// FACILITY 테이블에 추가하기
 		String facilityName = multipartRequest.getParameter("facilityName"); 
 		String remarks = multipartRequest.getParameter("remarks"); 
-		int management = Integer.parseInt(multipartRequest.getParameter("management"));
 		int deptNo = Integer.parseInt(multipartRequest.getParameter("deptNo"));
+		
+		String managementParam = multipartRequest.getParameter("management");
+		int management = managementParam != null ? Integer.parseInt(managementParam) : 0;
 		
 		DepartmentDto dept = new DepartmentDto();
 		dept.setDeptNo(deptNo);
@@ -132,5 +140,137 @@ public class FacilityServiceImpl implements FacilityService {
 		model.addAttribute("page", page);
 	}
 
+	@Transactional(readOnly=true)
+	@Override
+	public void loadFacilityByNo(int facilityNo, Model model) {
+		model.addAttribute("facility", facilityMapper.getFacilityByNo(facilityNo));
+		model.addAttribute("attachList", facilityMapper.getAttachList(facilityNo));
+	}
 	
+	@Override
+	public ResponseEntity<Resource> download(HttpServletRequest request) {
+
+		int attachNo = Integer.parseInt(request.getParameter("attachNo"));
+		FacilityAttachDto attach = facilityMapper.getAttachByNo(attachNo);
+		
+		File file = new File(attach.getUploadPath(), attach.getFilesystemName());
+		Resource resource = new FileSystemResource(file);
+		
+		if(!resource.exists()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		String originalFilename = attach.getOriginalFilename();
+		String userAgent = request.getHeader("User-Agent");
+		
+		try {
+			//IE
+			if(userAgent.contains("Trident")) {
+				originalFilename = URLEncoder.encode(originalFilename, "UTF-8").replace("+", " ");
+			}
+			//Edg
+			else if(userAgent.contains("Edg")) {
+				originalFilename = URLEncoder.encode(originalFilename, "UTF_8");
+			}
+			//Other
+			else {
+				originalFilename = new String(originalFilename.getBytes("UTF-8"), "ISO-8858-1");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// 다운로드용 응답 헤더 설정 (HTTP 참조)
+    HttpHeaders responseHeader = new HttpHeaders();
+    responseHeader.add("Content-Type", "application/octet-stream");
+    responseHeader.add("Content-Disposition", "attachment; filename=" + originalFilename);
+    responseHeader.add("Content-Length", file.length() + "");
+    
+    // 다운로드 진행
+    return new ResponseEntity<Resource>(resource, responseHeader, HttpStatus.OK);
+	}
+	
+	@Transactional(readOnly=true)
+	@Override
+	public FacilityDto getFacilityByNo(int facilityNo) {
+		return facilityMapper.getFacilityByNo(facilityNo);
+	}
+	
+	@Override
+	public int modifyFacility(FacilityDto facility) {
+		return facilityMapper.updateFacility(null);
+	}
+	
+	@Override
+	public int deleteAttach(int attachNo) {
+		return facilityMapper.deleteAttach(attachNo);
+	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> getAttachList(int facilityNo) {
+		return ResponseEntity.ok(Map.of("attachList", facilityMapper.getAttachList(facilityNo)));
+	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> addAttach(MultipartHttpServletRequest multipartRequest) throws Exception {
+
+		List<MultipartFile> files = multipartRequest.getFiles("files");
+		int attachCount = 0;
+		for (MultipartFile multipartFile : files) {
+			if (multipartFile != null && !multipartFile.isEmpty()) {
+				String uploadPath = myFileUtils.getUploadPath();
+				File dir = new File(uploadPath);
+				if (!dir.exists()) {
+						dir.mkdirs();
+				}
+				
+				String originalFilename = multipartFile.getOriginalFilename();
+				String filesystemName = myFileUtils.getFilesystemName(originalFilename);
+				File file = new File(dir, filesystemName);
+				
+				multipartFile.transferTo(file);
+				
+				FacilityAttachDto attach = FacilityAttachDto.builder()
+																	 		.uploadPath(uploadPath)
+																	 		.originalFilename(originalFilename)
+																	 		.filesystemName(filesystemName)
+																	 		.facilityNo(Integer.parseInt(multipartRequest.getParameter("facilityNo")))
+																	 		.build();
+				
+				attachCount += facilityMapper.insertFacilityAttach(attach);
+			}
+		}
+		return ResponseEntity.ok(Map.of("attachResult", files.size() == attachCount));
+	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> removeAttach(int attachNo) {
+		
+		FacilityAttachDto attach = facilityMapper.getAttachByNo(attachNo);
+		
+		File file = new File(attach.getUploadPath(), attach.getFilesystemName());
+		if(file.exists()) {
+			file.delete();
+		}
+		
+		int deleteCount = facilityMapper.deleteAttach(attachNo);
+		
+		return ResponseEntity.ok(Map.of("deleteCount", deleteCount));
+	}
+	
+	@Override
+	public int removeFacility(int FacilityNo) {
+		
+		List<FacilityAttachDto> attachList = facilityMapper.getAttachList(FacilityNo);
+		for(FacilityAttachDto attach : attachList) {
+			
+			File file = new File(attach.getUploadPath(), attach.getFilesystemName());
+			if(file.exists()) {
+				file.delete();
+			}
+		}
+		 facilityMapper.deleteAttach(FacilityNo);
+		 
+		return facilityMapper.deleteFacility(FacilityNo);
+	}
 }

@@ -35,6 +35,9 @@
 
     <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+ 
+ 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/themes/default/style.min.css" integrity="sha512-A5OJVuNqxRragmJeYTW19bnw9M2WyxoshScX/rGTgZYj5hRXuqwZ+1AVn2d6wYTZPzPXxDeAGlae0XwTQdXjQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js" integrity="sha512-ekwRoEshEqHU64D4luhOv/WNmhml94P8X5LnZd9FNOiOfSKgkY12cDFz3ZC6Ws+7wjMPQ4bPf94d+zZ3cOjlig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Helpers -->
     <!-- Page CSS -->
      <style>
@@ -57,10 +60,7 @@
             border-collapse: collapse;
             text-align: center;
         }
-        .approval-table {
-            width: 100%;
-            margin-bottom: 20px;
-        }
+
         .section {
             margin-bottom: 20px;
         }
@@ -102,7 +102,14 @@
             background-color: #888;
             color: white;
         }
+            .jstree-node.custom-node {
+        background-color: #f0f0f0;
+    }
      
+     .fixed-size {
+    width: 100px;
+    height: 50px;
+}
     </style>
 
     <!-- Helpers -->
