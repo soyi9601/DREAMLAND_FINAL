@@ -14,4 +14,13 @@ public interface FacilityMapper {
 	int insertFacilityAttach(FacilityAttachDto facilityAttach);
 	int getFacilityCount();
 	List<FacilityDto> getFacilityList(Map<String, Object> map);
+	
+	FacilityDto getFacilityByNo(int facilityNo);
+	
+	List<FacilityAttachDto> getAttachList(int facilityNo);
+	
+	FacilityAttachDto getAttachByNo(int facilityNo);
+	int updateFacility(FacilityAttachDto facility);
+	int deleteAttach(int attachNo);
+	int deleteFacility(int FacilityNo);
 }

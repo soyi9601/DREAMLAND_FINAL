@@ -50,7 +50,7 @@
              <div class="p-3 border bg-light">
                  <h4>근태 현황</h4>
                  <p id="late_count">지각 : <span id="lateCount">${lateCount}</span>회</p>
-                 <p id="early_leave_count">조기퇴근 : <span id="earlyLeaveCount">${earlyLeaveCount}</span>회</p>
+                 <%-- <p id="early_leave_count">조기퇴근 : <span id="earlyLeaveCount">${earlyLeaveCount}</span>회</p> --%>
                  <p id="absence_count">결근 : <span id="absenceCount">${absenceCount}</span>회</p>
              </div>
          </div>
@@ -176,10 +176,10 @@
 	       function getWorkState(workState) {
 	           switch (workState) {
 	               case '10': return '정상출근';
-	               case '20': return '조기퇴근';
+	               //case '20': return '조기퇴근';
+	               case '20': return '반차';
 	               case '30': return '연차';
-	               case '40': return '반차';
-	               case '50': return '결근';
+	               case '40': return '결근';
 	               default: return '알 수 없음';
 	           }
 	       }

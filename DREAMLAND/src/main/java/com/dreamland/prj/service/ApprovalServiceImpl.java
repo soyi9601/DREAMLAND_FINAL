@@ -5,10 +5,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,13 +72,19 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    String contents =  multipartRequest.getParameter("contents");
 	    
 	    int temp  =  Integer.parseInt(multipartRequest.getParameter("temp"));
-	    String approver22 = approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver2"));
-	    String approver33 = approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver3"));
-	    String approver44 = approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver4"));
-	    String approver  =  approvalMapper.getEmployeeNo(multipartRequest.getParameter("approver"));
-	    String approver2 =  approver22 == null ? " " : approver22;
-	    String approver3 =  approver33 == null ? " " : approver33;
-	    String approver4 =  approver44 == null ? " " : approver44;
+	    
+	    
+	
+	    String approver =  approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver"));
+	    Optional<String> approver22 = Optional.ofNullable(multipartRequest.getParameter("approver2"));
+	    String approver2 =  approvalMapper.getEmployeeNo(approver22.orElse(" ")) ;
+	    Optional<String> approver33 = Optional.ofNullable(multipartRequest.getParameter("approver3"));
+	    String approver3 =  approvalMapper.getEmployeeNo(approver33.orElse(" "));
+	    Optional<String> approver44 = Optional.ofNullable(multipartRequest.getParameter("approver4"));
+	    String approver4 =  approvalMapper.getEmployeeNo(approver44.orElse(" "));
+	    approver2 = approver2 != null ? approver2 : " ";
+	    approver3 = approver3 != null ? approver3 : " ";
+	    approver4 = approver4 != null ? approver4 : " ";
 	    String approvers = approver2 + " " + approver3 + " " + approver4;
 
 	    String referrer  =  multipartRequest.getParameter("referrer");
@@ -1154,9 +1163,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int apvNo = Integer.parseInt(request.getParameter("apvNo"));
 		int flag = 0;
 		String empNo = request.getParameter("empNo");
+		String apvKind = request.getParameter("apvKind");
 		String returnReason = request.getParameter("rejectedReason");
 		approvalMapper.updateApprover(apvNo,empNo,returnReason);
-		
+		 
 
 		if(returnReason.equals("0")) {
 			List<String> b = approvalMapper.getApprovers(apvNo);
@@ -1164,8 +1174,42 @@ public class ApprovalServiceImpl implements ApprovalService {
 		 		if (b.get(i).equals("100")) {flag ++;}
 		    }
 		 	if(flag == 0) {
-		 		approvalMapper.updateApproval(apvNo,1);
-			    approvalMapper.updateApvLeave(apvNo);
+		 		
+		 		if(apvKind.equals("1")) {
+		 			approvalMapper.updateApproval(apvNo,1);
+		 			approvalMapper.updateApvLeave(apvNo);
+		 			AppleaveDto a = approvalMapper.getApvLeaveDetailByNo(apvNo);
+		 			// (임의) 포맷형, 시작일, 종료일
+		 			String dateFormatType = "yyyy-MM-dd HH:mm:ss";
+		 			String strDate = a.getLeaveStart();
+		 			String endDate = a.getLeaveEnd();
+		 			String empNo2 = a.getEmpNo() + "";
+		 			
+		 			if(strDate.equals(endDate)) {
+		 				
+		 				approvalMapper.updateEmployee(empNo2,  (float) 0.5);
+		 				
+		 			} else {
+		 				
+		 				// 포맷 정의
+		 				try {
+		 					SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormatType);
+		 					Date from = simpleDateFormat.parse(strDate);
+		 					Date to = simpleDateFormat.parse(endDate);
+		 					long diff = to.getTime() - from.getTime();
+		 					long re = diff / 86400000L +1;		 
+		 					approvalMapper.updateEmployee(empNo2, re);
+		 					
+		 				} catch (ParseException e) {
+		 					// TODO Auto-generated catch block
+		 					e.printStackTrace();
+		 				}
+		 				
+		 			}
+			    
+		 		}else {
+		 			approvalMapper.updateApproval(apvNo,1);
+		 		}
 		 	}
 		
 		} else {
@@ -1188,11 +1232,52 @@ public class ApprovalServiceImpl implements ApprovalService {
 		approvalMapper.revokeApproval(apvNo);
 		
 		if(apvKind.equals("1")) {
-		approvalMapper.revokeApvLeave(apvNo);}
+			
+		approvalMapper.revokeApvLeave(apvNo);
+		
+			AppleaveDto a = approvalMapper.getApvLeaveDetailByNo(Integer.parseInt(apvNo));
+			// (임의) 포맷형, 시작일, 종료일
+			String dateFormatType = "yyyy-MM-dd HH:mm:ss";
+			
+			
+			String strDate = a.getLeaveStart();
+			String endDate = a.getLeaveEnd();
+			String empNo = a.getEmpNo() +"";
+			
+			if(strDate.equals(endDate)) {
+				
+				approvalMapper.updateEmployee(empNo, (float)-0.5);
+				
+			} else {
+				
+				// 포맷 정의
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormatType);
+				try {
+					Date from = simpleDateFormat.parse(strDate);
+					Date to = simpleDateFormat.parse(endDate);
+					long diff = to.getTime() - from.getTime();
+					long re = -(diff / 86400000L +1);		 
+					
+					approvalMapper.updateEmployee(empNo, re);
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		
+		
+		}
 		
 		return 0;
 	} 
 	
-	
+	@Override
+	public ResponseEntity<Map<String, Object>> employeeList(HttpServletRequest request) {
+		return new ResponseEntity<>(Map.of("employeeList", approvalMapper.getEmployeeList()
+				                           ,"departmentList", approvalMapper.getDepartmentList())
+				                           , HttpStatus.OK);
+	} 
 }
 	
