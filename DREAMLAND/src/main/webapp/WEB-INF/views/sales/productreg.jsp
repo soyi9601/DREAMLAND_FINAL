@@ -94,6 +94,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0" id="myTable">
+
                     <!--<tr>
                         		<td>11<input type="hidden" name="productSctCd" value="11"></td>
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>자유이용권(대)</strong>
@@ -505,11 +506,11 @@ function myFunction() {
 	  var cell3 = row.insertCell(2);
 	  var cell4 = row.insertCell(3);
 	  var cell5 = row.insertCell(4);
-	  cell1.innerHTML = "<input type='text' name='productSctCd'>";
+	  cell1.innerHTML = "<td><input type='text' name='productSctCd'></td>";
 	  cell2.innerHTML = "<td><i class='fab fa-bootstrap fa-lg text me-3'></i> <strong><input type='text' name='productNM'></strong></td>";
 	  cell3.innerHTML = "<td><input type='text' name='price'></td>";
 	  cell4.innerHTML = "<td><input type='text' name='deptNo'></td>";
-	  cell5.innerHTML = "<td><button type='button' onclick='deleteRow(this)' class='btn_delete'>Delect</button>";
+	  cell5.innerHTML = "<td><button type='button' onclick='deleteRow(this)' class='btn_delete'>Delect</button></td>";
 	  addRowIndex = addRowIndex + 1;
 	}
 

@@ -43,7 +43,7 @@
   		#{facilityNo}
   	, #{department.deptNo}
   	, #{facilityName}
-  	, 0
+  	, #{management}
   	, CURRENT_DATE
   	, #{remarks}
   	)
@@ -90,6 +90,53 @@
   )
   WHERE RN BETWEEN #{begin} AND #{end}	
   </select>
+  
+  <select id="getFacilityByNo"
+  				resultMap="FacilityMap">
+  SELECT F.FACILITY_NO, F.FACILITY_NAME, F.MANAGEMENT, F.FACILITY_DATE, F.REMARKS
+  		 , D.DEPT_NO, D.DEPT_NAME
+  	FROM DEPARTMENT D INNER JOIN FACILITY F
+  		ON D.DEPT_NO = F.DEPT_NO
+   WHERE F.FACILITY_NO = #{facilityNo}
+  </select>
+  
+  <select id="getAttachList"
+  				resultType="FacilityAttachDto">
+  	SELECT ATTACH_NO, UPLOAD_PATH, FILESYSTEM_NAME, ORIGINAL_FILENAME   
+  		FROM FACILITY_ATTACH
+  	 WHERE FACILITY_NO = #{facilityNo} 		
+  </select>
+  
+  <select id="getAttachByNo"
+  				resultType="FacilityAttachDto">
+ 		SELECT ATTACH_NO, UPLOAD_PATH, FILESYSTEM_NAME, ORIGINAL_FILENAME   
+  		FROM FACILITY_ATTACH
+  	 WHERE ATTACH_NO = #{attachNo} 	
+ 	</select>
+ 	
+ 	<update id="updateFacility"
+ 					parameterType="FacilityDto">
+ 		UPDATE FACILITY
+ 			 SET FACILITY_NAME = #{facilityName}
+  			 , MANAGEMENT		 = #{management}	
+  			 , FACILITY_DATE = CURRENT_DATE
+  			 , REMARKS			 = #{remarks}
+     WHERE FACILITY_NO   = #{facilityNo}
+ 	</update>
+ 	
+ 	<delete id="deleteAttach">
+ 		DELETE
+ 			FROM FACILITY_ATTACH
+ 		 WHERE FACILITY_NO = #{facilityNo}	
+ 	</delete>
+ 	
+ 	<delete id="deleteFacility">
+ 		DELETE
+ 			FROM FACILITY
+ 		 WHERE FACILITY_NO = #{facilityNo}	
+ 	</delete>
+  
+	
   
   
   

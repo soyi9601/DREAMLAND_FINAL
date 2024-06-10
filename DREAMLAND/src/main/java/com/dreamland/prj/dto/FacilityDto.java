@@ -17,5 +17,6 @@ public class FacilityDto {
 	private String facilityName, remarks;
 	private Date 	 facilityDate;
 	private DepartmentDto department; 
+	private String delAttachList;
 	
 }
