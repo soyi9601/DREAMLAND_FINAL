@@ -147,7 +147,7 @@ const fnNoticeListDel = () =>{
       // console.log("목록상"+idx);
       
       let msg = checked.length == 1 ? 
-          '삭제할까요?' : 
+      		idx+'번 게시글을 삭제할까요?' : 
           idx.join(",")+'번 게시글을(를) 삭제할까요?';
       if(confirm(msg)){
         $.ajax({

@@ -51,6 +51,8 @@
                               </p>
                             </div>
                             <div class="board-title-btns">
+                            
+                              
                               <form id="frm-btn" method="POST">  
                                 <input type="hidden" name="blindNo" value="${blind.blindNo}">
                                 <button type="button" id="btn-edit" class="btn btn-warning btn-sm">편집</button>
@@ -104,12 +106,15 @@
     </div>
 </div>
 
+
+
+
 <!-- 게시글 편집삭제 모달창 -->
 <div id="boardPwModal" style="display:none;">
   <form id="boardPasswordForm" 
         method="POST" >
     <input type="hidden" name="blindNo" value="${blind.blindNo}">
-    <label for="password">Enter Password:</label>
+    <label for="password">비밀번호 입력</label>
     <input type="password" id="board-password" name="password">
     <button type="submit" id="submit-btn" >Submit</button>
   </form>
