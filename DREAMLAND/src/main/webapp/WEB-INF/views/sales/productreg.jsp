@@ -75,7 +75,7 @@
  
         <!-- Bootstrap Dark Table -->
         
-        <h5 class="card-header">티켓</h5>
+        <h5 class="card-header">상품등록</h5>
         
         <div>
         	<button type="submit" id="regbtn" class="btn-reg">저장</button>
@@ -90,10 +90,12 @@
                             <th>상품</th>
                             <th>가격</th>
                             <th>파트번호</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0" id="myTable">
-                    		<tr>
+
+                    <!--<tr>
                         		<td>11<input type="hidden" name="productSctCd" value="11"></td>
                             <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>자유이용권(대)</strong>
                                 <input type="hidden" name="productNM" value="자유이용권대"></td>
@@ -485,7 +487,7 @@
                                 <input type="hidden" name="productNM" value="드림이인형"></td>
                             <td>10000<input type="hidden" name="price" value="10000"></td>
                             <td>5530<input type="hidden" name="deptNo" value="5530"></td>
-                        </tr> 
+                        </tr> --> 
                     </tbody>
                 </table>
             </div>
@@ -496,7 +498,7 @@
 
 <script>
 function myFunction() {
-		var addRowIndex =6;
+		var addRowIndex = 0;
 	  var table = document.getElementById("myTable");
 	  var row = table.insertRow(addRowIndex);
 	  var cell1 = row.insertCell(0);
@@ -504,11 +506,11 @@ function myFunction() {
 	  var cell3 = row.insertCell(2);
 	  var cell4 = row.insertCell(3);
 	  var cell5 = row.insertCell(4);
-	  cell1.innerHTML = "<input type='text' name='productSctCd'>";
+	  cell1.innerHTML = "<td><input type='text' name='productSctCd'></td>";
 	  cell2.innerHTML = "<td><i class='fab fa-bootstrap fa-lg text me-3'></i> <strong><input type='text' name='productNM'></strong></td>";
 	  cell3.innerHTML = "<td><input type='text' name='price'></td>";
 	  cell4.innerHTML = "<td><input type='text' name='deptNo'></td>";
-	  cell5.innerHTML = "<td><button type='button' onclick='deleteRow(this)' class='btn_delete'>Delect</button>";
+	  cell5.innerHTML = "<td><button type='button' onclick='deleteRow(this)' class='btn_delete'>Delect</button></td>";
 	  addRowIndex = addRowIndex + 1;
 	}
 

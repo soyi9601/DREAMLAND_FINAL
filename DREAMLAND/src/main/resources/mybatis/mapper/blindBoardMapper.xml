@@ -4,221 +4,256 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.dreamland.prj.mapper.BlindBoardMapper">
-		
-		<resultMap type="BlindBoardDto" id="BlindMap">
-			<id     property="blindNo"           	column="BLIND_NO" />
+    
+    <resultMap type="BlindBoardDto" id="BlindMap">
+      <id     property="blindNo"            column="BLIND_NO" />
       <result property="boardTitle"         column="BOARD_TITLE"/>
       <result property="boardContents"      column="BOARD_CONTENTS"/>
       <result property="boardCreateDt"      column="BOARD_CREATE_DT"/>
       <result property="boardModifyDt"      column="BOARD_MODIFY_DT"/>
       <result property="hit"                column="HIT"/>
       <result property="delYn"              column="DEL_YN"/>
-      <result property="password"        		column="PASSWORD"/>
-		</resultMap>
-		
-		<resultMap type="BlindCommentDto" 		id="BlindCommentMap">
-			<id 		property="commentNo" 				column="COMMENT_NO" />
-			<result property="contents" 				column="CONTENTS" />
-			<result property="createDt" 				column="CREATE_DT" />
-			<result property="delYn" 						column="DEL_YN" />
-			<result property="depth" 						column="DEPTH" />
-			<result property="groupNo" 					column="GROUP_NO" />
-			<result property="blindNo" 					column="BLIND_NO" />
-			<result property="commentPassword" 	column="COMMENT_PASSWORD" />
-		</resultMap>
-		
-  	<insert id="insertBlindBoard"
-  					parameterType="BlindBoardDto">
-  		<selectKey order="BEFORE" keyProperty="blindNo" resultType="int">
-  			SELECT BLIND_SEQ.NEXTVAL
-  				  FROM DUAL
-  		</selectKey>
-  		INSERT INTO BLIND_BOARD(
-  				BLIND_NO
-  			, BOARD_TITLE
-  			, BOARD_CONTENTS
-  			, BOARD_CREATE_DT
-  			, BOARD_MODIFY_DT
-  			, PASSWORD
-  		) VALUES (
-  				#{blindNo}
-  			, #{boardTitle}
-  			, #{boardContents}
-  			, CURRENT_TIMESTAMP
-  			, CURRENT_TIMESTAMP
-  			, #{password}
-  		)
-  	</insert>
-  	
-  	<insert id="insertBlindImage"
-  					parameterType="BlindImageDto">
-  		INSERT INTO BLIND_IMAGE(
-  				BLIND_IMAGE_NO
-        ,	BLIND_NO
-      	, UPLOAD_PATH
-      	, FILESYSTEM_NAME
-    	) 	VALUES (
-    		BLIND_IMAGE_SEQ.NEXTVAL
+      <result property="password"           column="PASSWORD"/>
+      <result property="commentCount"       column="COMMENT_COUNT"/>
+      
+    </resultMap>
+    
+    <resultMap type="BlindCommentDto"     id="BlindCommentMap">
+      <id     property="commentNo"        column="COMMENT_NO" />
+      <result property="contents"         column="CONTENTS" />
+      <result property="createDt"         column="CREATE_DT" />
+      <result property="delYn"            column="DEL_YN" />
+      <result property="depth"            column="DEPTH" />
+      <result property="groupNo"          column="GROUP_NO" />
+      <result property="blindNo"          column="BLIND_NO" />
+      <result property="commentPassword"  column="COMMENT_PASSWORD" />
+    </resultMap>
+    
+    <insert id="insertBlindBoard"
+            parameterType="BlindBoardDto">
+      <selectKey order="BEFORE" keyProperty="blindNo" resultType="int">
+        SELECT BLIND_SEQ.NEXTVAL
+            FROM DUAL
+      </selectKey>
+      INSERT INTO BLIND_BOARD(
+          BLIND_NO
+        , BOARD_TITLE
+        , BOARD_CONTENTS
+        , BOARD_CREATE_DT
+        , BOARD_MODIFY_DT
+        , PASSWORD
+      ) VALUES (
+          #{blindNo}
+        , #{boardTitle}
+        , #{boardContents}
+        , CURRENT_TIMESTAMP
+        , CURRENT_TIMESTAMP
+        , #{password}
+      )
+    </insert>
+    
+    <insert id="insertBlindImage"
+            parameterType="BlindImageDto">
+      INSERT INTO BLIND_IMAGE(
+          BLIND_IMAGE_NO
+        , BLIND_NO
+        , UPLOAD_PATH
+        , FILESYSTEM_NAME
+      )   VALUES (
+        BLIND_IMAGE_SEQ.NEXTVAL
       , #{blindNo}
       , #{uploadPath}
       , #{filesystemName}
     )
-  	</insert>
+    </insert>
 
-		<select id="getBlindCount"
-						resultType="int">
-			SELECT COUNT(*)
-			  FROM BLIND_BOARD
-		</select>
-		
-		<select id="getBlindList"
-						parameterType="Map"
-						resultMap="BlindMap">
-			SELECT BLIND_NO, BOARD_TITLE, BOARD_CONTENTS, HIT, BOARD_CREATE_DT, BOARD_MODIFY_DT
-      FROM (SELECT ROW_NUMBER() OVER(ORDER BY BLIND_NO DESC) AS RN
-                 , BLIND_NO, BOARD_TITLE, BOARD_CONTENTS, HIT, BOARD_CREATE_DT, BOARD_MODIFY_DT
-              FROM BLIND_BOARD )
-     WHERE RN BETWEEN #{begin} AND #{end}
-		</select>
-		
-		
-		<select id="getBlindByNo"
-						resultMap="BlindMap">
-			SELECT BLIND_NO, BOARD_TITLE, BOARD_CONTENTS, HIT, BOARD_CREATE_DT, BOARD_MODIFY_DT, PASSWORD
-      FROM BLIND_BOARD
-     WHERE BLIND_NO = #{blindNo}
-		</select>
-		
-		<update id="updateBlind"
-						parameterType="BlindBoardDto">
-			UPDATE BLIND_BOARD
-			   SET BOARD_TITLE = #{boardTitle}
-			   	 , BOARD_CONTENTS = #{boardContents}
-			   	 , BOARD_MODIFY_DT = CURRENT_TIMESTAMP
-			   	 , PASSWORD = #{password}
-			 WHERE BLIND_NO = #{blindNo}	 
-		</update>
-		
-		<select id="getBlindImageList"
-						resultType="BlindImageDto">
-			SELECT BLIND_NO, UPLOAD_PATH, FILESYSTEM_NAME
-			  FROM BLIND_IMAGE
-			 WHERE BLIND_NO = #{blindNo}
-		</select> 
-		
-		<!-- 비밀번호 -->
-		<select id="getPasswordByBlindNo" parameterType="int" resultType="String">
-		SELECT PASSWORD
-      FROM BLIND_BOARD
-     WHERE BLIND_NO = #{blindNo}
-		</select>
-		
-		<!-- 삭제 -->
-		<delete id="deleteBlindImage">
-			DELETE
-			  FROM BLIND_IMAGE
-			 WHERE FILESYSTEM_NAME = #{filesystemName} 
-		</delete>
-		
-		<delete id="deleteBlindImageList">
-			DELETE
+    <select id="getBlindCount"
+            resultType="int">
+      SELECT COUNT(*)
+        FROM BLIND_BOARD
+    </select>
+    
+    <select id="getBlindList"
+            parameterType="Map"
+            resultMap="BlindMap">
+    SELECT B.BLIND_NO, B.BOARD_TITLE, B.BOARD_CONTENTS, B.HIT, B.BOARD_CREATE_DT, B.BOARD_MODIFY_DT,
+           C.COMMENT_COUNT AS COMMENT_COUNT
+    FROM (SELECT BLIND_NO, BOARD_TITLE, BOARD_CONTENTS, HIT, BOARD_CREATE_DT, BOARD_MODIFY_DT,
+                 ROW_NUMBER() OVER (ORDER BY BLIND_NO DESC) AS RN
+            FROM BLIND_BOARD) B
+    LEFT JOIN (SELECT BLIND_NO, COUNT(*) AS COMMENT_COUNT
+                 FROM BLIND_COMMENT
+                GROUP BY BLIND_NO) C
+                   ON B.BLIND_NO = C.BLIND_NO
+    WHERE B.RN BETWEEN #{begin} AND #{end}
+    </select>
+
+    
+    
+    <select id="getBlindByNo"
+            resultMap="BlindMap">
+    SELECT B.BLIND_NO, B.BOARD_TITLE, B.BOARD_CONTENTS, B.HIT, B.BOARD_CREATE_DT, B.BOARD_MODIFY_DT, B.PASSWORD,
+        (
+            SELECT COUNT(*)
+            FROM BLIND_COMMENT
+            WHERE BLIND_NO = B.BLIND_NO
+        ) AS COMMENT_COUNT
+    FROM BLIND_BOARD B
+    WHERE B.BLIND_NO = #{blindNo}
+    </select>
+    
+    <update id="updateBlind"
+            parameterType="BlindBoardDto">
+      UPDATE BLIND_BOARD
+         SET BOARD_TITLE = #{boardTitle}
+           , BOARD_CONTENTS = #{boardContents}
+           , BOARD_MODIFY_DT = CURRENT_TIMESTAMP
+           , PASSWORD = #{password}
+           , COMMENT_COUNT = (
+            SELECT COUNT(*)
+            FROM BLIND_COMMENT
+            WHERE BLIND_NO = #{blindNo}
+        )
+       WHERE BLIND_NO = #{blindNo}   
+    </update>
+    
+    <select id="getBlindImageList"
+            resultType="BlindImageDto">
+      SELECT BLIND_NO, UPLOAD_PATH, FILESYSTEM_NAME
         FROM BLIND_IMAGE
        WHERE BLIND_NO = #{blindNo}
-		</delete>
-		
-		<delete id="deleteBlind">
-			DELETE
-			  FROM BLIND_BOARD
-			 WHERE BLIND_NO = #{blindNo}
-		</delete>
-		 
-		 
-		 <!-- 조회수 -->
-		<update id="updateHit">
-			UPDATE BLIND_BOARD
-			   SET HIT = HIT + 1
-			 WHERE BLIND_NO = #{blindNo}
-		</update>
-		
-		
-		<!-- 댓글 -->
-		<insert id="insertComment"
-						parameterType="BlindCommentDto">
-			INSERT INTO BLIND_COMMENT(
-				 	COMMENT_NO
-			  , CONTENTS
-			  , CREATE_DT
-			  , DEL_YN
-			  , DEPTH
-			  , GROUP_NO
-			  , BLIND_NO
-			  , COMMENT_PASSWORD
-			) VALUES(
-				 	BLIND_COMMENT_SEQ.NEXTVAL
-			  ,	#{contents}
-			  , CURRENT_TIMESTAMP
-			  , 'N'
-			  , 0
-			  , BLIND_COMMENT_SEQ.CURRVAL
-			  , #{blindNo}
-			  , #{commentPassword}
-			)
-		</insert>
-		
-		<select id="getCommentCount"
-						resultType="int">
-			SELECT COUNT(*)
-				FROM BLIND_COMMENT
-			 WHERE BLIND_NO = #{blindNo}
-		</select>
-		
-		<select id="getCommentList"
-						parameterType="Map"
-						resultMap="BlindCommentMap">
-			SELECT COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
-			  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, DEPTH ASC, COMMENT_NO DESC) AS RN,
-			  			COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
-			  				FROM BLIND_COMMENT
-			  			 WHERE BLIND_NO = #{blindNo})
-			  WHERE	RN BETWEEN #{begin} AND #{end}		 
-		</select>
-		
-		<insert id="insertReply"
-						parameterType="BlindCommentDto">
-			INSERT INTO BLIND_COMMENT(
-				 	COMMENT_NO
-			  , CONTENTS
-			  , CREATE_DT
-			  , DEL_YN
-			  , DEPTH
-			  , GROUP_NO
-			  , BLIND_NO
-			  , COMMENT_PASSWORD
-			) VALUES(
-				 	BLIND_COMMENT_SEQ.NEXTVAL
-			  ,	#{contents}
-			  , CURRENT_TIMESTAMP
-			  , 'N'
-			  , 1
-			  , #{groupNo}
-			  , #{blindNo}
-			  ,#{commentPassword}
-			)
-		</insert>
-		
-		<update id="deleteComment">
-			UPDATE BLIND_COMMENT
-			   SET DEL_YN = 'Y'
-			 WHERE COMMENT_NO = #{commentNo}
-		</update> 
-		
-		
-				<!-- 댓글비밀번호 -->
-		<select id="getPasswordByCommentNo" parameterType="int" resultType="String">
-		SELECT COMMENT_PASSWORD
+    </select> 
+    
+    <!-- 비밀번호 -->
+    <select id="getPasswordByBlindNo" parameterType="int" resultType="String">
+    SELECT PASSWORD
+      FROM BLIND_BOARD
+     WHERE BLIND_NO = #{blindNo}
+    </select>
+    
+    <!-- 삭제 -->
+    <delete id="deleteBlindImage">
+      DELETE
+        FROM BLIND_IMAGE
+       WHERE FILESYSTEM_NAME = #{filesystemName} 
+    </delete>
+    
+    <delete id="deleteBlindImageList">
+      DELETE
+        FROM BLIND_IMAGE
+       WHERE BLIND_NO = #{blindNo}
+    </delete>
+    
+    <delete id="deleteBlind">
+      DELETE
+        FROM BLIND_BOARD
+       WHERE BLIND_NO = #{blindNo}
+    </delete>
+     
+     
+     <!-- 조회수 -->
+    <update id="updateHit">
+      UPDATE BLIND_BOARD
+         SET HIT = HIT + 1
+       WHERE BLIND_NO = #{blindNo}
+    </update>
+    
+    
+    <!-- 댓글 -->
+    <insert id="insertComment"
+            parameterType="BlindCommentDto">
+      INSERT INTO BLIND_COMMENT(
+          COMMENT_NO
+        , CONTENTS
+        , CREATE_DT
+        , DEL_YN
+        , DEPTH
+        , GROUP_NO
+        , BLIND_NO
+        , COMMENT_PASSWORD
+      ) VALUES(
+          BLIND_COMMENT_SEQ.NEXTVAL
+        , #{contents}
+        , CURRENT_TIMESTAMP
+        , 'N'
+        , 0
+        , BLIND_COMMENT_SEQ.CURRVAL
+        , #{blindNo}
+        , #{commentPassword}
+      )
+    </insert>
+    
+    <select id="getCommentCount"
+            resultType="int">
+      SELECT COUNT(*)
+        FROM BLIND_COMMENT
+       WHERE BLIND_NO = #{blindNo}
+    </select>
+    
+    <select id="getCommentList"
+            parameterType="Map"
+            resultMap="BlindCommentMap">
+    <!--    SELECT COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
+        FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, DEPTH ASC, COMMENT_NO DESC) AS RN,
+              COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
+                FROM BLIND_COMMENT
+               WHERE BLIND_NO = #{blindNo})
+        WHERE RN BETWEEN #{begin} AND #{end} -->
+        
+        
+        SELECT COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
+    FROM BLIND_COMMENT
+    WHERE BLIND_NO = #{blindNo}
+    ORDER BY GROUP_NO DESC, COMMENT_NO ASC
+        
+             
+    </select>
+    
+    
+    <update id="updateComment"
+            parameterType="Map">
+      UPDATE BLIND_BOARD
+         SET COMMENT_COUNT = (SELECT COUNT(*) FROM BLIND_COMMENT WHERE BLIND_NO = #{blindNo})
+       WHERE BLIND_NO = #{blindNo}
+    </update>
+    
+    
+    <insert id="insertReply"
+            parameterType="BlindCommentDto">
+      INSERT INTO BLIND_COMMENT(
+          COMMENT_NO
+        , CONTENTS
+        , CREATE_DT
+        , DEL_YN
+        , DEPTH
+        , GROUP_NO
+        , BLIND_NO
+        , COMMENT_PASSWORD
+      ) VALUES(
+          BLIND_COMMENT_SEQ.NEXTVAL
+        , #{contents}
+        , CURRENT_TIMESTAMP
+        , 'N'
+        , 1
+        , #{groupNo}
+        , #{blindNo}
+        ,#{commentPassword}
+      )
+    </insert>
+    
+    <update id="deleteComment">
+      UPDATE BLIND_COMMENT
+         SET DEL_YN = 'Y'
+       WHERE COMMENT_NO = #{commentNo}
+    </update> 
+    
+    
+        <!-- 댓글비밀번호 -->
+    <select id="getPasswordByCommentNo" parameterType="int" resultType="String">
+    SELECT COMMENT_PASSWORD
       FROM BLIND_COMMENT
      WHERE COMMENT_NO = #{commentNo}
-		</select>
-		
+    </select>
+    
   
   </mapper>

@@ -8,26 +8,20 @@
 <jsp:include page="../../layout/header.jsp" />
 
 <!-- link -->
-<link rel="stylesheet" href="/resources/assets/css/sd_css.css" />
+<link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board" id="faq-edit">
   <!-- Content -->
 
   <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4">
-      <span class="text-muted fw-light">Forms/</span> Horizontal Layouts
-    </h4>
+    <div class="title sd-point">FAQ 작성</div>
 
     <!-- Basic Layout & Basic with Icons -->
     <div class="row">
       <!-- Basic Layout -->
       <div class="col-xxl">
         <div class="card mb-4">
-          <div
-            class="card-header d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">Basic Layout</h5>
-            <small class="text-muted float-end">Default label</small>
-          </div>
+         
           <div class="card-body">
             <!-- Form 시작 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
             <form id="frm-faq-register" method="POST"
@@ -35,12 +29,10 @@
               <input class="faqno" name="faqNo" type="hidden"
                 value="${faq.faqNo}">
               <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" for="basic-default-name">질문제목</label>
+                <label class="col-sm-2 col-form-label" for="basic-default-name">FAQ 제목</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="basic-default-name"
-                    placeholder="제목을 입력해주세요. Q란에 들어갈 부분입니다." name="boardTitle"
-                    /
-                             value="${faq.boardTitle}">
+                    name="boardTitle" value="${faq.boardTitle}">
                 </div>
               </div>
               <div class="row mb-3">
@@ -49,12 +41,20 @@
                 <div class="col-sm-10">
                   <select id="defaultSelect" class="form-select col-sm-10"
                     name="category">
-                    <option>${faq.category}</option>
+                    <option value="${faq.category}">
+                      <c:if test="${faq.category==1}">인사</c:if>
+                      <c:if test="${faq.category==2}">경영지원</c:if>
+                      <c:if test="${faq.category==3}">안전관리</c:if>
+                      <c:if test="${faq.category==4}">시설운영</c:if>
+                      <c:if test="${faq.category==5}">마케팅</c:if>
+                      <c:if test="${faq.category==6}">기타</c:if>
+                    </option>
                     <option value="1">인사</option>
                     <option value="2">경영지원</option>
                     <option value="3">안전관리</option>
                     <option value="4">시설운영</option>
                     <option value="5">마케팅</option>
+                    <option value="6">기타</option>
                   </select>
                 </div>
               </div>
@@ -70,11 +70,11 @@
                 </div>
               </div>
               <div class="row justify-content-end">
-                <div class="col-sm-10">
+                
                   <input type="hidden" name="userNo"
                     value="${sessionScope.user.userNo}">
-                  <button type="submit" class="btn btn-primary"></button>
-                </div>
+                  <button type="submit" class="btn-reset sd-btn sd-point-bg">수정</button>
+               
               </div>
             </form>
           </div>
@@ -85,5 +85,42 @@
     </div>
   </div>
   <!-- / Content -->
+ </div>
+ 
+<script>
+
+/* 필수*/
+const fnRegister = () =>{
+  document.getElementById('frm-faq-register').addEventListener('submit', (e) => {
+    
+    //defaultSelect = document.getElementById('defaultSelect').value;
+    
+    if(document.getElementById('basic-default-name').value === '') {
+      alert('제목은 필수입니다.');
+      e.preventDefault();
+      return;
+    }
+    
+    if(document.getElementById('defaultSelect').value === '') {
+      alert('분류는 필수선택입니다.')
+      e.preventDefault();
+      return;
+    }
+    
+    if(document.getElementById('basic-default-message').value === '') {
+      alert('답변을 입력해주세요.');
+      e.preventDefault();
+      return;
+    }
+
+  })
+}
+  
+  
+fnRegister();
+
+
+
+</script> 
 
 <%@ include file="../../layout/footer.jsp"%>

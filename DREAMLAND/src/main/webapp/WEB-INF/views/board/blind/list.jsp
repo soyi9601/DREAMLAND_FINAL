@@ -1,113 +1,148 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-		pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
 <c:set var="loginEmployee"
-		value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
+    value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
 
 <jsp:include page="../../layout/header.jsp" />
 
 <!-- link -->
 <link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
+<!-- include moment.js -->
+<script src="/resources/assets/moment/moment-with-locales.min.js"></script> 
 
 
 <!-- Content wrapper -->
 <div class="content-wrapper sd-board" id="blind-board">
-		<!-- Content -->
+    
+    
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y ">
+        <div class="title sd-point">익명게시판</div>
+          
+          
+         <div class="sd-btn-write-area">
+            <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+              <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
+            </c:if>
+            
+            <c:if test="${not empty loginEmployee}">
+              <p class="sd-btn sd-point-bg">
+                <a href="${contextPath}/board/blind/write.page">작성</a>
+              </p>
+            </c:if>
+            
+          </div>
 
-		<div class="container-xxl flex-grow-1 container-p-y sd-notice-write">
-				<div class="title sd-point">익명게시판</div>
-					<c:if test="${not empty loginEmployee}">
-						<p class="sd-btn-write">
-	            <a href="${contextPath}/board/blind/write.page">작성</a>
-	          </p>
-	        </c:if>
-					<div class="card sd-table-wrapper">
-        		<div class="table-responsive text-nowrap">
-		          <table class="table table-hover sd-table">
-		            <thead>
-		              <tr>
-		                <th>번호</th>
-		                <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-		                  <th>선택</th>
-		                </c:if>
-		                <th>제목</th>
-		                <th>작성일자</th>
-		                <th>댓글</th>
-		                <th>조회수</th>
-		              </tr>
-		            </thead>
-		            <tbody class="table-border-bottom-0" id="blind-list">
-		              
-		            </tbody>
-          		</table>
-        		</div>
-      		</div>
-				
-		</div>
-		<!-- / Content -->
+          <div class="card sd-table-wrapper">
+          
 
-	<script>
+            
+            <div class="table-responsive text-nowrap">
+              <table class="table table-hover sd-table" id="blind-list-table">
+                <thead>
+                  <tr>
+                    <th style="width:8%">번호</th>
+                    <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+                      <th style="width:8%">선택</th>
+                    </c:if>
+                    <th style="width:45%" class="blindTitle1">제목</th>
+                    <th style="width:15%">작성일자</th>
+                    <th style="width:10%">댓글</th>
+                    <th style="width:10%">조회수</th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0" id="blind-list">
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-	let page = 1;
-	let totalPage = 0;
-	let totalItems = 0;  // 전체 항목 수
-	
-	userRole = '${loginEmployee.role}';
-	
-	const fnGetBlindList = () =>{
-		$.ajax({
-			type:'GET',
-			url:'${contextPath}/board/blind/getBlindList.do',
-			data:'page='+page,
-			dataType:'json',
-			success:(resData) =>{
-				
-				totalPage = resData.totalPage;
-				totalItems = resData.totalItems;  // 전체 항목 수를 서버에서 받아
-				
-				console.log("Total Items: " + totalItems)
-			// 최신 글의 전체 개수를 기반으로 인덱스 부여
-				let startIndex = totalItems - (page - 1) * resData.pageSize;  
-				console.log("Start Index: " + startIndex);
-				//totalPage = resData.totalPage;
-				
-				//let lastIndex = resData.blindList.length - 1; // 최신 글의 인덱스
-				
-				//console.log("lastIndex:" + lastIndex)
+          
+    </div>
+    <!-- / Content -->
+    <!-- 작성 버튼 화면 하단에 띄움 -->
+
+    
+    
+</div>
+  <script>
+
+  let page = 1;
+  let totalPage = 0;
+  let totalItems = 0;  // 전체 항목 수
+  
+  userRole = '${loginEmployee.role}';
+  
+  const fnGetBlindList = () =>{
+    $.ajax({
+      type:'GET',
+      url:'${contextPath}/board/blind/getBlindList.do',
+      data:'page='+page,
+      dataType:'json',
+      success:(resData) =>{
+        
+        totalPage = resData.totalPage;
+        totalItems = resData.totalItems;  // 전체 항목 수를 서버에서 받아
+        
+       // console.log("Total Items: " + totalItems)
+      // 최신 글의 전체 개수를 기반으로 인덱스 부여
+        let startIndex = totalItems - (page - 1) * resData.pageSize;  
+       // console.log("Start Index: " + startIndex);
+        //totalPage = resData.totalPage;
+        
+        //let lastIndex = resData.blindList.length - 1; // 최신 글의 인덱스
+        
+        //console.log("lastIndex:" + lastIndex)
         $.each(resData.blindList, (i, blind) => {
-        		
+            
             let reversedIndex = startIndex - i; // 역순으로 된 인덱스
             //console.log("reversedIndex"+reversedIndex)
             let str = '<tr><td>' + reversedIndex + '</td>'; // 역순으로 된 인덱스 사용
             if (userRole === 'ROLE_ADMIN') {
-                str += '<td><input type="checkbox" name="blindChk" value="' + blind.blindNo + '"/></td>'
+                str += '<td><input type="checkbox" name="blindChk" data-idx="'+reversedIndex+'" value="' + blind.blindNo + '"/></td>'
             }
             // str += '<td><a href="${contextPath}/board/blind/detail.do?blindNo='+blind.blindNo+'">' +  blind.boardTitle + '</a></td>';
             str += '<td data-blind-no="'+ blind.blindNo+'"  class="blindTitle">'+  blind.boardTitle + '</td>';
             //str += '<td><a class="blindTitle" href="${contextPath}/board/blind/updateHit.do?blindNo='+blind.blindNo+'">' +  blind.boardTitle + '</a></td>';
-           //${contextPath}/board/blind/updateHit.do?blindNo='+evt.target.dataset.blindNo 
-           str += '<td>'+blind.boardCreateDt+'</td>';
-            str += '<td></td>';
+           //${contextPath}/board/blind/updateHit.do?blindNo='+evt.target.dataset.blindNo
+               
+            //시간 표시
+            const publishTime = moment(blind.boardCreateDt);
+            const now = moment();
+            const diffHours = now.diff(publishTime, 'hours');
+            str += '<td class="publish-time">' + publishTime.locale('ko').fromNow() + '</td>';
+            /*
+            if (diffHours <= 12) {
+              str += '<td class="publish-time">' + publishTime.locale('ko').fromNow() + '</td>';
+            } else {
+              str += '<td class="publish-time">' + publishTime.format('YYYY-MM-DD HH:mm:ss') + '</td>';
+            }    
+            */
+              
+            // str += '<td>'+blind.boardCreateDt+'</td>';
+            str += '<td>'+blind.commentCount+'</td>';
             str += '<td>'+blind.hit+'</td></tr>'
 
             $('#blind-list').append(str);
         });
     },
-			error:(jqXHR) => {
-				alert(jqXHR.statusText+'('+jqXHR.status+')');
-			}
-		});
-	}
-	
-	fnGetBlindList();
-	
-	
-	// 조회수 쿠키
-	// 쿠키 설정 함수
+      error:(jqXHR) => {
+        alert(jqXHR.statusText+'('+jqXHR.status+')');
+      }
+    });
+  }
+  
+  fnGetBlindList();
+  
+  
+  // 조회수 쿠키
+  // 쿠키 설정 함수
 // 쿠키 설정 함수
 function setCookie(name, value, days) {
     let expires = "";
@@ -193,6 +228,64 @@ const fnScrollHandler = () => {
 fnScrollHandler();
 
 
+const fnNoticeListDel = () =>{
+  $(document).on('click','#list-del-btn',(evt)=>{
+
+    let checked = $("input[name='blindChk']:checked");
+
+    if(checked.length > 0){
+      
+      let no = [];   // 게시글 진짜 no(DB상)
+      let idx = [];  // 목록상 게시글 index
+      
+      checked.each(function(){
+        no.push($(this).val());
+        idx.push($(this).data("idx"));
+        console.log(checked);
+      });
+      
+      idx.sort((a, b) => a - b);
+      
+       console.log("DB "+no);
+       console.log("목록상"+idx);
+      
+      
+      let msg = checked.length == 1 ? 
+          idx +'번 게시글을 삭제할까요?' : 
+          idx.join(",")+'번 게시글을 삭제할까요?';
+      if(confirm(msg)){
+        $.ajax({
+          url:"${contextPath}/board/blind/removeNo.do",
+          type:"POST",
+          data:{no:no},
+          traditional: true,
+          success:function(response){
+             if (response === '삭제되었습니다.') {
+                // 삭제가 성공했을 때의 동작
+                alert("삭제되었습니다.");
+                loadNoticeList(); // 공지사항 목록 다시 불러오기 등의 동작
+            } else {
+                // 삭제가 실패했거나 삭제할 게시글이 없는 경우의 동작
+                alert("삭제할 게시글이 없습니다.");
+            }
+          }
+        })
+      }
+    }else{
+      alert("삭제할 게시글을 선택하세요.");
+    }
+    
+    function loadNoticeList(){
+      location.reload();
+    }
+    
+  })
+}
+
+
+fnNoticeListDel();
+
+
 //삭제 후 문구 
 const fnRemoveResult = () => {
   const removeResult = '${removeResult}';
@@ -203,4 +296,4 @@ const fnRemoveResult = () => {
 fnRemoveResult();
   </script>
 
-		<%@ include file="../../layout/footer.jsp"%>
+    <%@ include file="../../layout/footer.jsp"%>

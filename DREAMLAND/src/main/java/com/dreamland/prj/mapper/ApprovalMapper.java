@@ -12,6 +12,8 @@ import com.dreamland.prj.dto.ApprovalDto;
 import com.dreamland.prj.dto.ApvAttachDto;
 import com.dreamland.prj.dto.ApvRefDto;
 import com.dreamland.prj.dto.ApvWriterDto;
+import com.dreamland.prj.dto.DepartmentDto;
+import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.FaqBoardDto;
 
 @Mapper
@@ -68,6 +70,7 @@ public interface ApprovalMapper {
 	 ApvAttachDto getAttachByNo(int attachNo);
 	 int updateApprover(int apvNo, String empNo, String returnReason);
 	 int updateApproval(int apvNo, int state);
+	 int updateEmployee(String empNo, float useDay);
 	 int updateApvLeave(int apvNo);
 	 int modifyApproval(ApprovalDto apvNo);
 	 int modifyApvWriter(int empNo, String apvNo, int i);
@@ -80,5 +83,8 @@ public interface ApprovalMapper {
 	 int  deleteAttach(String apvNo, String attachNo);
 	 List<String> getApprovers(int apvNo);
 	 ApvWriterDto getReturnApprover(int apvNo);
+	 List<EmployeeDto> getEmployeeList();
+	 List<DepartmentDto> getDepartmentList();
+	 
 	 
 }

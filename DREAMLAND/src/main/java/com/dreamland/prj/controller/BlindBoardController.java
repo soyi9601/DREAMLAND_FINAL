@@ -1,5 +1,6 @@
 package com.dreamland.prj.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -94,11 +95,13 @@ public class BlindBoardController {
 	
 	@PostMapping("/modify.do")
 	public String modify(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		
 		int modifyCount = blindBoardService.modifyBlind(request);
 		redirectAttributes
 				.addAttribute("blindNo", request.getParameter("blindNo"))
 				.addFlashAttribute("modifyResult",modifyCount == 1 ? "수정되었습니다.": "수정되지 않았습니다.");
 		return "redirect:/board/blind/detail.do?blindNo={blindNo}";
+		
 	}
 	
 	
@@ -120,6 +123,18 @@ public class BlindBoardController {
     return "redirect:/board/blind/list.page";
 	}
 	
+	
+	// list페이지 게시글 목록 삭제
+  @PostMapping("/removeNo.do")
+  @ResponseBody  
+  public String delete(@RequestParam List<Integer> no) {
+  		int deleteCount = 0;
+      for (int n : no) {
+      		blindBoardService.removeBlind(n);
+          deleteCount++;
+      }
+      return deleteCount > 0 ? "삭제되었습니다." : "삭제할 게시글이 없습니다.";
+  }
 	
 	//조회수
 	@GetMapping("/updateHit.do")

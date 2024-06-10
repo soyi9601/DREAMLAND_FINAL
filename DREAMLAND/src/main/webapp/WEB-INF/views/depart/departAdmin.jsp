@@ -58,12 +58,9 @@
 		        <label class="form-label" for="deptNo">소속</label>
 		        <select id="emp-dept-no" name="deptNo" class="select2 form-select">
 		          <option value="">선택하세요</option>
-		          <option value="9999">대표이사</option>
-		          <option value="1000">인사</option>
-		          <option value="2000">경영지원</option>
-		          <option value="3000">안전관리</option>
-		          <option value="5000">시설운영</option>
-		          <option value="6000">마케팅</option>
+		          <c:forEach var="depart" items="${depart}">
+                <option value="${depart.deptNo}">${depart.deptName}</option>
+               </c:forEach>
 		        </select>
 		      </div>
 		      <div class="mb-3 col-md-6">
@@ -113,12 +110,9 @@
             <label class="form-label" for="deptNo">소속부서</label>
             <select id="parent-id" name="parentId" class="select2 form-select">
               <option value="">선택하세요</option>
-              <option value="9999">대표이사</option>
-              <option value="1000">인사</option>
-              <option value="2000">경영지원</option>
-              <option value="3000">안전관리</option>
-              <option value="5000">시설운영</option>
-              <option value="6000">마케팅</option>
+              <c:forEach var="depart" items="${depart}">
+                <option value="${depart.deptNo}">${depart.deptName}</option>
+               </c:forEach>
             </select>
           </div>
            <div class="mt-2">
