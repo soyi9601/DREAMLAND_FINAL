@@ -77,83 +77,115 @@
                 </a>
               </li>
               <li class="menu-item">
-                <a href="layouts-without-navbar.html" class="menu-link">
-                  <div>근태1</div>
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>부서등록</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>조직도-관리자</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>조직도-유저</div>
                 </a>
               </li>
             </ul>
           </li>
-
-          <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">근태</span>
-          </li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-dock-top"></i>
-              <div>근태1</div>
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>게시판</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/work/status.do" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>FAQ</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>공지사항</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>익명게시판</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>쪽지함</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>받은쪽지함</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>보낸쪽지함</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>중요보관함</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>휴지통</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>매출</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>시설</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>일정</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>캘린더</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>근태</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>근태관리</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/dayoff/info.do" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>휴가관리</div>
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-              <div>결재</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                  <a href="auth-login-basic.html" class="menu-link" target="_blank">
-                    <div>Login</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="auth-register-basic.html" class="menu-link" target="_blank">
-                    <div>Register</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                    <div>Forgot Password</div>
-                  </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-              <div>Misc</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="pages-misc-error.html" class="menu-link">
-                  <div>Error</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div>Under Maintenance</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <!-- Components -->
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">결재</span></li>
-          <!-- Cards -->
-          <li class="menu-item">
-            <a href="cards-basic.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-collection"></i>
-              <div>결재</div>
-            </a>
           </li>
           <!-- User interface -->
           <li class="menu-item">
@@ -188,9 +220,9 @@
           <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
             <ul class="navbar-nav flex-row align-items-center ms-auto">
               <!-- 알림 -->
-              <li class="nav-item lh-1 me-3">
+              <!-- <li class="nav-item lh-1 me-3">
                 <a>알림</a>
-              </li>
+              </li> -->
               
               <!-- User -->
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -247,21 +279,12 @@
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
-                      <span class="d-flex align-items-center align-middle">
-                        <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                        <span class="flex-grow-1 align-middle">Billing</span>
-                        <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                      </span>
-                    </a>
-                  </li>
-                  <li>
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
                     <a class="dropdown-item" href="/logout">
                       <i class="bx bx-power-off me-2"></i>
-                      <span class="align-middle">Log Out</span>
+                      <span class="align-middle">로그아웃</span>
                     </a>
                   </li>
                 </ul>
