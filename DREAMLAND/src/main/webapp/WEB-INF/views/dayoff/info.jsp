@@ -45,7 +45,7 @@
               <div class="col">
                   <div class="stat-detail">
                     <span>사용 연차</span>
-                    <span class="fs-4">10</span>
+                    <span class="fs-4">${loginEmployee.usedDayOff}</span>
                   </div>
               </div>
               <div class="col">

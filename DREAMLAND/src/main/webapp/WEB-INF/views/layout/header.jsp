@@ -163,7 +163,7 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
+                <a href="${contextPath}/schedule/calendar.do" class="menu-link">
                   <div>캘린더</div>
                 </a>
               </li>
@@ -176,12 +176,12 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
+                <a href="${contextPath}/work/status.do" class="menu-link">
                   <div>근태관리</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
+                <a href="${contextPath}/dayoff/info.do" class="menu-link">
                   <div>휴가관리</div>
                 </a>
               </li>
