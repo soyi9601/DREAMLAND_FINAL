@@ -24,11 +24,11 @@
 <script src="${contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
 
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board" id="blind-edit">
     <!-- Content -->
 
-    <div class="container-xxl flex-grow-1 container-p-y sd-notice-write">
-        <div class="sd-title sd-point">익명게시판 작성</div>
+    <div class="container-xxl flex-grow-1 container-p-y sd-blind">
+        <div class="title sd-point">익명게시판 편집</div>
 
         <!-- Basic Layout & Basic with Icons -->
         <div class="row">
@@ -40,20 +40,35 @@
                         action="${contextPath}/board/blind/modify.do">
                     <div class="card-body">
                     
-                      <input type="text" name="boardTitle" value="${blind.boardTitle}">               
-                      <textarea id="contents" name="boardContents" >
+                      <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-default-name">제목</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" name="boardTitle" id="board-title" placeholder="제목을 입력해주세요."
+                          value="${blind.boardTitle}">   
+                        </div>
+                      </div>                    
+                    
+                      <textarea id="contents" name="boardContents" placeholder="내용을 입력하세요">
                         ${blind.boardContents}
-                      </textarea>
+                      </textarea> 
+                      
+                      
+                      <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-default-name">비밀번호</label>
+                        <div class="col-sm-10">
+                          <input type="password" class="form-control" id="password" name="password" value=""> 
+                          <input type="hidden" id="oldPassword" name="oldPassword" value="${blind.password}">
+                        </div>
+                      
+                      </div>
+                      <div class="btn-area">
+                      
+                        <button type="submit" class="btn-reset sd-btn sd-point-bg">수정</button>
+                        <input type="hidden" name="blindNo" value="${blind.blindNo}">
+                      </div>
                     </div>
-                    <div>
-                      <input type="password" id="password" name="password" value=""> 
-                      <input type="hidden" id="oldPassword" name="oldPassword" value="${blind.password}">
-                      ${blind.password}
-                      <button type="submit">작성완료</button>
-                      <input type="hidden" name="blindNo" value="${blind.blindNo}">
-                    </div>
-                    ${blind.password}
-                  
+                    
+                
                   </form>
                     
                 </div>
@@ -62,11 +77,13 @@
         </div>
     </div>
     <!-- / Content -->
+</div>
+
 
   <script>
   const fnSummernoteEditor = () => {
     $('#contents').summernote({
-      width: 900,
+ 
       height: 500,
       lang: 'ko-KR',
       toolbar: [
@@ -117,11 +134,11 @@
            document.getElementById('password').value = passwordField;
            
            //alert(passwordField+'<<<이거');
-           alert(document.getElementById('password').value)
+           //alert(document.getElementById('password').value)
        }else{
          
          document.getElementById('password').value = encryptPassword(passwordField);
-         alert(document.getElementById('password').value)
+         //alert(document.getElementById('password').value)
        }
        
        //document.getElementById('password').value = encryptPassword(passwordField);

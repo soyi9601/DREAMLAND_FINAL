@@ -8,15 +8,15 @@
 <jsp:include page="../../layout/header.jsp" />
 
 <!-- link -->
-<link rel="stylesheet" href="/resources/assets/css/sd_css.css" />
+<link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
 
 
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board" id="faq-write">
   <!-- Content -->
 
   <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="sd-title sd-point">FAQ작성</div>
+    <div class="title sd-point">FAQ 작성</div>
 
     <!-- Basic Layout & Basic with Icons -->
     <div class="row">
@@ -30,10 +30,10 @@
               action="${contextPath}/board/faq/registerFaq.do">
               <div class="row mb-3">
                 <input type="hidden" name="empNo" value="${loginEmployee.empNo}">
-                <label class="col-sm-2 col-form-label" for="basic-default-name">질문제목</label>
+                <label class="col-sm-2 col-form-label" for="basic-default-name">FAQ 제목</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="basic-default-name"
-                    placeholder="제목을 입력해주세요. Q란에 들어갈 부분입니다." name="boardTitle" />
+                    placeholder="제목을 입력해주세요. Q칸에 들어갈 부분입니다." name="boardTitle" />
                 </div>
               </div>
               <div class="row mb-3">
@@ -43,12 +43,14 @@
                 <div class="col-sm-10">
                   <select id="defaultSelect" class="form-select col-sm-10"
                     name="category">
-                    <option>필수선택!막아주는 js추가해야함!!</option>
+                    <option value="">분류는 필수 선택사항입니다.</option>
                     <option value="1">인사</option>
                     <option value="2">경영지원</option>
                     <option value="3">안전관리</option>
                     <option value="4">시설운영</option>
                     <option value="5">마케팅</option>
+                    <option value="6">기타</option>
+                    
                   </select>
                 </div>
               </div>
@@ -58,17 +60,16 @@
                   for="basic-default-message">답변</label>
                 <div class="col-sm-10">
                   <textarea id="basic-default-message" class="form-control"
-                    placeholder="A에 들어갈 부분입니다.답변을 입력해주세요."
+                    placeholder="A칸에 들어갈 부분입니다.답변을 입력해주세요."
                     aria-label="Hi, Do you have a moment to talk Joe?"
                     aria-describedby="basic-icon-default-message2"
                     name="boardContents"></textarea>
                 </div>
               </div>
               <div class="row justify-content-end">
-                <div class="col-sm-10">
-                  
-                  <button type="submit" class="btn btn-primary"></button>
-                </div>
+                
+                <button type="submit" class="btn-reset sd-btn sd-point-bg">작성</button>
+                
               </div>
             </form>
           </div>
@@ -79,10 +80,42 @@
     </div>
   </div>
   <!-- / Content -->
+</div>
 
-  <script>
-    
-  </script>
+<script>
+  
+/* 필수*/
+const fnRegister = () =>{
+	document.getElementById('frm-faq-register').addEventListener('submit', (e) => {
+		
+		//defaultSelect = document.getElementById('defaultSelect').value;
+		
+		if(document.getElementById('basic-default-name').value === '') {
+      alert('제목은 필수입니다.');
+      e.preventDefault();
+      return;
+    }
+		
+		if(document.getElementById('defaultSelect').value === '') {
+			alert('분류는 필수선택입니다.')
+			e.preventDefault();
+			return;
+		}
+		
+    if(document.getElementById('basic-default-message').value === '') {
+      alert('답변을 입력해주세요.');
+      e.preventDefault();
+      return;
+    }
+
+	})
+}
+  
+  
+fnRegister();
+  
+  
+</script>
 
 <%@ include file="../../layout/footer.jsp"%>
 

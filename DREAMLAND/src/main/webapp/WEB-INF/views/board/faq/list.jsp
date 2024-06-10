@@ -8,95 +8,73 @@
 <jsp:include page="../../layout/header.jsp" />
 
 <!-- link -->
-<link rel="stylesheet" href="/resources/assets/css/sd_css.css" />
+<link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
 
 
 
 
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board" id="faq-board">
   <!-- Content -->
 
   <div class="container-xxl flex-grow-1 container-p-y">
 
-    <div class="sd-title sd-point">FAQ게시판</div>
+    <div class="title sd-point">FAQ 게시판</div>
 
     <div class="row">
       <div class="col-md mb-4 mb-md-0">
-        <ul class="faq-category-list">
+        <ul class="category-list">
           <li>
             <!-- 검색 쿼리가 있을 경우 이를 포함 --> <a
             href="${contextPath}/board/faq/list.do">전체</a>
           </li>
-          <li><a href="${contextPath}/board/faq/sort.do?category=1"">
-              1번 카테고리 </a></li>
+          <li><a href="${contextPath}/board/faq/sort.do?category=1">
+              인사 </a></li>
           <li><a href="${contextPath}/board/faq/sort.do?category=2">
-              2번 카테고리 </a></li>
+              경영지원 </a></li>
           <li><a href="${contextPath}/board/faq/sort.do?category=3">
-              3번 카테고리 </a></li>
+              안전관리 </a></li>
           <li><a href="${contextPath}/board/faq/sort.do?category=4">
-              4번 카테고리 </a></li>
+              시설운영 </a></li>
           <li><a href="${contextPath}/board/faq/sort.do?category=5">
-              5번 카테고리 </a></li>
-
+              마케팅 </a></li>
+          <li><a href="${contextPath}/board/faq/sort.do?category=6">
+              기타 </a></li>
         </ul>
         <%
         String paramValue = request.getParameter("category");
         %>
         <form method="GET" action="${contextPath}/board/faq/search.do">
 
-          <div>
+          <div class="search-area">
             <%
             if (paramValue != null && !paramValue.isEmpty()) {
             %>
-            <input type="hidden" name="category" value="<%=paramValue%>">
+            <input type="hidden" name="category" value="<%=paramValue%>" >
             <%
             }
             %>
-            <input type="text" name="query">
+            <input type="text" name="query"
+                    class="form-control border-0 shadow-none"
+                    placeholder="검색"
+                    aria-label="Search...">
 
-            <button type="submit">검색</button>
+            <button type="submit" class="faq-search-btn">
+              <i class="bx bx-search"></i>
+            </button>
           </div>
         </form>
 
 
 
         <div class="accordion mt-3" id="accordionExample">
-
-          <div class="card accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-              <button type="button" class="accordion-button collapsed"
-                data-bs-toggle="collapse" data-bs-target="#accordionTwo"
-                aria-expanded="false" aria-controls="accordionTwo">
-                Accordion Item 2</button>
-            </h2>
-            <div id="accordionTwo" class="accordion-collapse collapse"
-              aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-              <div class="accordion-body">Dessert ice cream donut oat
-                cake jelly-o pie sugar plum cheesecake. Bear claw dragée oat
-                cake dragée ice cream halvah tootsie roll. Danish cake oat cake
-                pie macaroon tart donut gummies. Jelly beans candy canes carrot
-                cake. Fruitcake chocolate chupa chups.</div>
-            </div>
-          </div>
-
-          <!--  -->
-          <div class="card accordion-item">
-            <div class="accordion-header sdheader" id="headingTwo">
-              <div class="sdtitle"></div>
-              <div class="sdicon on"></div>
-            </div>
-            <div class="accordion-body">ㄴㅇㅎㄴㅇㅎㄴㅇㅎㄴㅇㅎㄶ</div>
-          </div>
-          <!--  -->
-          <!-- 이거 -->
+          <!-- FAQ목록들 시작-->
           <c:forEach items="${faqBoardList}" var="faq" varStatus="vs">
             <div class="card accordion-item">
-              <div class="accordion-header faqheader" id="headingTwo">
+              <div class="accordion-header faq-title-area" id="headingTwo">
 
                 <div class="faqtitle">
-                  
-                    <span class=faq-no>${beginNo - vs.index}</span>
+                    <span class=faq-no>${beginNo - vs.index}.</span>
                     <span class="faq-category sd-point">
                       [
                       <c:if test="${faq.category==1}">인사</c:if>
@@ -104,6 +82,7 @@
                       <c:if test="${faq.category==3}">안전관리</c:if>
                       <c:if test="${faq.category==4}">시설운영</c:if>
                       <c:if test="${faq.category==5}">마케팅</c:if>
+                      <c:if test="${faq.category==6}">기타</c:if>
                       ]
                     </span> 
                   
@@ -112,7 +91,7 @@
                   <span style="display:none">index
                     : ${faq.faqNo}
                   </span> 
-                  <span>${faq.employee.empName}gg</span>
+                  
                 </div>
                 <div class="faqicon on"></div>
               </div>
@@ -120,14 +99,17 @@
                 <span class="faq-a">A.</span> ${faq.boardContents}
               
                 <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-                  <button type="button" class="btn-edit btn btn-warning btn-sm">편집</button>
-                  <button type="button" class="btn-remove btn btn-danger btn-sm">삭제</button>
+                
+                  <div class="button-area">
+                    <button type="button" class="btn-reset btn-edit sd-btn sd-gray-bg btn-sm">편집</button>
+                    <button type="button" class="btn-reset btn-remove sd-btn sd-danger-bg btn-sm">삭제</button>
+                  </div>
                   <input class="faqno" type="hidden" value="${faq.faqNo}">
                 </c:if>
               </div>
             </div>
           </c:forEach>
-          <!--  -->
+          <!-- FAQ목록들 끝  -->
 
 
 
@@ -135,17 +117,20 @@
       </div>
 
     </div>
-${loginEmployee.role}
+
     <div class="sd-btn-write-area">
       <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-        <p class="sd-btn-write">
+        <p class="sd-btn sd-point-bg">
           <a href="${contextPath}/board/faq/write.page">작성</a>
         </p>
       </c:if>
       
       
     </div>
-    <div>${paging}</div>
+   
+      <div class="pg-btn-area">${paging}</div>
+    
+    
   </div>
   <!--/ Accordion -->
 
@@ -171,21 +156,9 @@ $(".accordion-header").click(function(){
   }
   $(this).siblings('.accordion-body').slideToggle(400);
 })
-                    
-//var frmBtn = $('#frm-btn');
-/*
-const fnEditFaq = () => {
-  $(".btn-edit").on('click', (evt)=>{
-    alert($(evt.target));
-    location.href = '${contextPath}/board/faq/edit.do?faqNo='+$(evt.target).next().val();
-  })
-   
-}
-*/
-                    
+                   
 const fnEditFaq = () => {
   $(".btn-edit").on('click', (evt) => {
-    //alert('gggg');
       const faqNo = $(evt.target).closest('.accordion-item').find('.faqno').val();
       location.href = '${contextPath}/board/faq/edit.do?faqNo=' + faqNo;
   });

@@ -33,7 +33,9 @@ public class DepartController {
   
   // 관리자 - 조직도 페이지 이동
   @GetMapping("/departAdmin.page")
-  public String depart() {
+  public String depart(Model model) {
+    List<DepartmentDto> depart = departService.getAllDepart();
+    model.addAttribute("depart", depart);
     return "depart/departAdmin";
   }
   
@@ -98,10 +100,12 @@ public class DepartController {
     
   // 부서 등록 페이지 이동
   @GetMapping("/addDepart.page")
-  public String addDepart() {
+  public String addDepart(Model model) {
+    List<DepartmentDto> depart = departService.getAllDepart();
+    model.addAttribute("depart", depart);
     return "depart/addDepart";
   }
-  
+    
   // 부서 등록
   @PostMapping("/addDepart.do")
   public String registerDepart(HttpServletRequest request, HttpServletResponse response) {
