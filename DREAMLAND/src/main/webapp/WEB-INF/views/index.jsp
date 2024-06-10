@@ -26,7 +26,7 @@
 	            <c:when test="${emp.role == 'ROLE_USER'}">
 	              <div class="button-wrapper text-end">
                   <input id="empNo" type="hidden" name="empNo" value="${emp.empNo}">
-		              <button type="button" class="btn btn-primary mb-4" id="btn-work-in">
+		              <button type="button" class="btn btn-primary mb-4" id="btn-work-in" ${hasCheckedWorkIn ? 'disabled' : ''}>
 		                <span class="d-none d-sm-block">출근</span>
 		              </button>
 		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out">
@@ -62,7 +62,7 @@
 	                   <strong>${emp.empName}</strong>
 	                 </c:when>
 	                 <c:when test="${emp.role == 'ROLE_USER'}">
-                     <strong>${emp.empName}${emp.posName}</strong>
+                     <strong>${emp.empName} ${emp.posName}</strong>
                    </c:when>                   
 	                </c:choose><br/>
 	                ${emp.email}<br/>
@@ -136,8 +136,8 @@
           <div class="col-md-4">
             <div class="main-news-wrap">
               <div class="btn rounded-pill btn-outline-secondary mb-4 py-3">안읽은 쪽지<br/><strong class="msg-count"></strong> 건입니다.</div>
-              <div class="btn rounded-pill btn-outline-success mb-4 py-3">대기 전자문서<br/><strong class="wait-count">0</strong> 건입니다.</div>
-              <div class="btn rounded-pill btn-outline-info py-3">진행 전자문서<br/><strong class="continue-count">0</strong> 건입니다.</div>
+              <div class="btn rounded-pill btn-outline-success mb-4 py-3">대기 전자문서<br/><strong class="wait-count"></strong> 건입니다.</div>
+              <div class="btn rounded-pill btn-outline-info py-3">진행 전자문서<br/><strong class="my-apv-count"></strong> 건입니다.</div>
             </div>
           </div>
         </div>

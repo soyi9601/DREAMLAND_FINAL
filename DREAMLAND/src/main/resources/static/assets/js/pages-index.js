@@ -8,6 +8,8 @@
  *        - 캘린더 조회, 출퇴근 체크
  *    3) 240605
  *        - 공지사항 조회
+ *    4) 240610
+ *        - 전자결재
  */
  
  
@@ -192,8 +194,9 @@ const fnNoticeDetail = () => {
   })
 }
 
+
+/* *********** 쪽지 카운트 *********** */
 const fnGetMessageCount = () => {
-  
   $.ajax({
     type: 'GET',
     url: '/receiveCount',
@@ -209,6 +212,38 @@ const fnGetMessageCount = () => {
 }
 
 
+/* *********** 전자결재 대기문서 *********** */
+const fnGetWaitCount = () => {
+  $.ajax({
+    type: 'GET',
+    url: '/waitCount',
+    data: 'empNo=' + empNo,
+    dataType: 'json',
+    success: function(resData) {
+      $('.wait-count').text(resData);
+    },
+    error: function(jqXHR) {
+      console.error('Error: (' + jqXHR.status + ')');
+    }
+  })
+}
+
+/* *********** 전자결재 진행문서 *********** */
+const fnGetMyApvCount = () => {
+  $.ajax({
+    type: 'GET',
+    url: '/waitMyApvCount',
+    data: 'empNo=' + empNo,
+    dataType: 'json',
+    success: function(resData) {
+      $('.my-apv-count').text(resData);
+    },
+    error: function(jqXHR) {
+      console.error('Error: (' + jqXHR.status + ')');
+    }
+  })
+}
+
 /* ********************** 함수 호출 ********************** */
 fnWeather();
 fnGetDate();
@@ -219,6 +254,8 @@ fnWorkIn();
 fnWorkOut();
 fnGetNotice();
 fnGetMessageCount();
+fnGetWaitCount();
+fnGetMyApvCount();
 /* ********************** ********* ********************** */
 
 
