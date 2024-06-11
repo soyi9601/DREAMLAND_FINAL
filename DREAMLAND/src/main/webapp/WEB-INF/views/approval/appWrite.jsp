@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:include page="./../layout/approvalWrite-header.jsp" />  
+<jsp:include page="./../layout/header.jsp" />  
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
@@ -53,7 +53,7 @@
                   
 
      <button id="openOrgChartBtn" type="button">조직도 열기</button>
-
+     <button id="resetBtn" type="button" style="display:none">지우기</button>
     <div id="orgChartModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -110,8 +110,8 @@
             <div class="footer">
                 위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.<br>
                 <br>
-                20<span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;</span>년&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;일<br>
-                작성자: <span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> (인)
+                <div class="today"></div>
+                
             </div>
             <br>
             <div class="button-container">
@@ -160,6 +160,7 @@
              <div class="section-title">결재자</div>
  
      <button id="openOrgChartBtn2" type="button">조직도 열기</button>
+     <button id="resetBtn2" type="button"  style="display:none">지우기</button>
 
     <div id="orgChartModal2" class="modal">
         <div class="modal-content">
@@ -271,10 +272,10 @@
             </table>
             <div class="footer">
                 위와 같은 사유로 휴가를 신청하오니 허가하여 주시기 바랍니다.<br>
-                <br>
-                20<span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;</span>년&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;일<br>
-                작성자: <span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> (인)
-            </div>
+                     <br>
+                <div class="today"></div>        
+                
+                </div>
                <br>
         <div class="button-container">
    														<div class="row mb-3">
@@ -312,6 +313,22 @@
 <script>
 
 var tdCount =0;
+
+
+function fnToDay() {
+	var today = new Date();
+
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+
+	var dateString = year + '년 ' + month  + '월 ' + day +'일      작성자:' + '${loginEmployee.empName}';
+	   document.getElementsByClassName('today')[0].innerHTML = dateString;
+	   document.getElementsByClassName('today')[1].innerHTML = dateString;
+}
+
+
+
 function fnTdcount() {
 const selectedEmployeesRow = document.getElementById('selectedEmployeesRow');
 tdCount = selectedEmployeesRow.getElementsByTagName('td').length +1;
@@ -324,10 +341,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // jstree
 function fnJstree() {
     const openOrgChartBtn = document.getElementById("openOrgChartBtn");
+    const resetBtn = document.getElementById("resetBtn");
     const orgChartModal = document.getElementById("orgChartModal");
     const closeBtn = document.getElementsByClassName("close")[0];
     const selectedEmployeesRow = document.getElementById("selectedEmployeesRow");
     const openOrgChartBtn2 = document.getElementById("openOrgChartBtn2");
+    const resetBtn2 = document.getElementById("resetBtn2");
     const orgChartModal2 = document.getElementById("orgChartModal2");
     const closeBtn2 = document.getElementsByClassName("close2")[0];
     const selectedEmployeesRow2 = document.getElementById("selectedEmployeesRow2");
@@ -385,13 +404,6 @@ function fnJstree() {
             alert(jqXHR.statusText + '(' + jqXHR.status + ')');
         }
     });
-    
-    
-
-
-    
-    
-
 
     
     if (tdCount >= 5) {
@@ -416,6 +428,24 @@ function fnJstree() {
     closeBtn2.onclick = function() {
         orgChartModal2.style.display = "none";
     };
+    resetBtn.onclick = function() {
+    	  let firstChild = selectedEmployeesRow.firstElementChild;
+        while (selectedEmployeesRow.lastElementChild && selectedEmployeesRow.lastElementChild !== firstChild) {
+            selectedEmployeesRow.removeChild(selectedEmployeesRow.lastElementChild);
+        }
+        openOrgChartBtn.style.display = "inline-block";
+        resetBtn.style.display = "none";
+        tdCount=2;
+    };
+    resetBtn2.onclick = function() {
+    	  let firstChild2 = selectedEmployeesRow2.firstElementChild;
+        while (selectedEmployeesRow2.lastElementChild && selectedEmployeesRow2.lastElementChild !== firstChild2) {
+            selectedEmployeesRow2.removeChild(selectedEmployeesRow2.lastElementChild);
+        }
+        openOrgChartBtn.style.display = "inline-block";
+        resetBtn.style.display = "none";
+        tdCount=2;
+    };
 
     window.onclick = function(event) {
         if (event.target == orgChartModal2 || event.target == orgChartModal) {
@@ -425,12 +455,17 @@ function fnJstree() {
     };
     $('#orgChart').on("select_node.jstree", function (e, data) {
         if (tdCount < 5) {
+        	
+        	if(data.node.parent == '#') {
+        		return
+        	}
             const name = data.node.text;
             const newCell = selectedEmployeesRow.insertCell();
             newCell.innerHTML = '<input type="text" name="approver' + tdCount+ '" value="'+name+'" ></input>'; // HTML 추가
             tdCount++;
             if (tdCount >= 5) {
                 openOrgChartBtn.style.display = "none";
+            resetBtn.style.display = "inline-block";
             } else {
                 openOrgChartBtn.style.display = "inline-block";
             }
@@ -438,6 +473,11 @@ function fnJstree() {
         }
     });
     $('#orgChart2').on("select_node.jstree", function (e, data) {
+    	
+    	
+    	if(data.node.parent == '#') {
+    		return
+    	}
         if (tdCount < 5) {
             const name = data.node.text;
             const newCell = selectedEmployeesRow2.insertCell();
@@ -445,6 +485,7 @@ function fnJstree() {
             tdCount++;
             if (tdCount >= 5) {
                 openOrgChartBtn2.style.display = "none";
+            resetBtn2.style.display = "inline-block";
             } else {
                 openOrgChartBtn2.style.display = "inline-block";
             }
@@ -604,6 +645,7 @@ function fnJstree() {
 	fnAttachCheck();
 	fnAttachDel();
   fnAttachDelete();
+  fnToDay();
 </script>
    
     

@@ -40,25 +40,41 @@ public class MyAppPageUtils {
     
     // <
     if(beginPage == 1) {
-      builder.append("<span class=\"dont-click\">&lt;</span>");
+        builder.append("<li class=\"page-item prev\">"
+                + "<a class=\"page-link\"  >"
+                + "<i class=\"tf-icon bx bx-chevrons-left\"></i></a>"
+                + "</li>");
     } else {
-      builder.append("<span class=\"paging\" data-page=" + (beginPage - 1) + " data-sort=" + sort + " data-display=" + display + ">&lt;</span>");
+    	builder.append("<li class=\"page-item prev\">"
+    		  + "<a class=\"page-link\" id=\"paging\" data-page=" + (beginPage - 1) + " data-sort=" + sort + " data-display=" + display + ">"
+    		  + "<i class=\"tf-icon bx bx-chevrons-left\"></i></a>"
+              + "</li>");
     }
     
     // 1 2 3 4 5 6 7 8 9 10
     for(int p = beginPage; p <= endPage; p++) {
       if(p == page) {
-        builder.append("<span class=\"paging\" data-page=" + p + " data-sort=" + sort + " data-display=" + display + ">&nbsp" + p + "</span>");
+        builder.append("<li class=\"page-item active\">"
+        		  + "<a class=\"page-link\" id=\"paging\"  data-page=" + p + " data-sort=" + sort + " data-display=" + display + ">" + p +  "</a>"
+        		  + "</li>");
       } else {
-        builder.append("<span class=\"paging\" data-page=" + p + " data-sort=" + sort + " data-display=" + display + ">&nbsp" + p + "</span>");
+        builder.append("<li class=\"page-item\">"
+        		  + "<a class=\"page-link\" id=\"paging\"  data-page=" + p + " data-sort=" + sort + " data-display=" + display + ">" + p + "</a>"
+        		  + "</li>");
       }
     }
     
     // >
     if(endPage == totalPage) {
-      builder.append("<span class=\"dont-click\">&nbsp;&gt;</span>");
+      builder.append("<li class=\"page-item next\">"
+    		    + "<a class=\"page-link\" >"
+    		   + "<i class=\"tf-icon bx bx-chevrons-right\"></i></a>"
+    		   + "</li>");
     } else {
-      builder.append("<span class=\"paging\" data-page=" + (endPage + 1) + " data-sort=" + sort + "data-display=" + display + ">&nbsp;&gt;</span>");
+      builder.append("<li class=\"page-item next\">"
+    		   + "<a class=\"page-link\" id=\"paging\"  data-page=" + (endPage + 1) + " data-sort=" + sort + "data-display=" + display + ">"
+    	       + "<i class=\"tf-icon bx bx-chevrons-right\"></i></a>"
+    		   + "</li>");
     }
     
     return builder.toString();

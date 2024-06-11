@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<jsp:include page="./../layout/approvalList-header.jsp" />  
+<jsp:include page="./../layout/header.jsp" /> 
 
   <!-- Content wrapper -->
   <div class="content-wrapper">
@@ -25,6 +25,12 @@
             <div id="post-list-body">
   
             </div>
+            
+            <div class="tab-content">
+                     <nav aria-label="Page navigation">
+                         <ul class="pagination justify-content-center" id="pagingArea"></ul>
+                       </nav>
+                       </div>
         <div class="footer">
             문서 수 : <span id="document-count">0</span>
             <div class="pagination">
@@ -76,8 +82,9 @@
 		         str += '</div>';
 		         $('#post-list-body').append(str);
 		       })
-		       $('#post-list-body').append(resData.paging);
-		        clickableElements = document.querySelectorAll('.paging');
+		       	       $('#pagingArea').empty();
+		       $('#pagingArea').append(resData.paging);
+		        clickableElements = document.querySelectorAll('#paging');
 				  clickableElements.forEach(element => {
 				    element.addEventListener('click', evt => {
 				      FnRequestAppList(kind,evt.target.dataset.page, 'DESC', 20, id );
