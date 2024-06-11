@@ -20,13 +20,6 @@
       </association>
     </resultMap>
     
-    <!-- 결근리스트 조회 -->
-    <!-- <select id="getAbsenceList" resultType="WorkDto">
-        SELECT * FROM WORK
-        WHERE WORK_DATE = #{workDate}
-          AND WORK_IN IS NULL
-    </select> -->
-    
     <!-- 오늘 날짜 근무기록 조회 -->
     <select id="getWorkListByDate" 
              parameterType="map" 

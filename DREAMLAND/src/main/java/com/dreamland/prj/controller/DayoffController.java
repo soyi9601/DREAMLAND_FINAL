@@ -28,8 +28,10 @@ public class DayoffController {
   //휴가관리 페이지이동
   @GetMapping("/info.do")
   public String dayoffPage(Model model) {
-      EmployeeDto employee = getEmployeeFromSession();
-      dayoffService.loadDayoffData(model, employee);
+      EmployeeDto loginEmployee = getEmployeeFromSession();
+      System.out.println("====== 로그인 정보 ======");
+      System.out.println(loginEmployee);
+      dayoffService.loadDayoffData(model, loginEmployee);
       return "dayoff/info";
   }
 	
@@ -57,17 +59,17 @@ public class DayoffController {
   // 휴가 리스트 조회 (연도별)
   @GetMapping("/list.do")
   public ResponseEntity<Map<String, Object>> getLeaveListByYear(@RequestParam int year) {
-      EmployeeDto employee = getEmployeeFromSession();
-      List<AppleaveDto> dayoffList = dayoffService.getDayoffListByYear(employee.getEmpNo(), year);
+      EmployeeDto loginEmployee = getEmployeeFromSession();
+      List<AppleaveDto> dayoffList = dayoffService.getDayoffListByYear(loginEmployee.getEmpNo(), year);
       Map<String, Object> result = new HashMap<>();
       result.put("dayoffList", dayoffList);
       return ResponseEntity.ok(result);
   }
 
-  // 세션 정보
+  // 현재 세션에서 로그인된 사용자 정보 가져옴
   private EmployeeDto getEmployeeFromSession() {
     PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return principalUser.getEmployeeDto();
-}
+  }
   
 }

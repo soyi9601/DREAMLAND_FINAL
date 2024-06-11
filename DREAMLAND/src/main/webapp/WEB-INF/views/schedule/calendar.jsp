@@ -4,8 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<%-- <%session.setAttribute("empNo", 3);%>            
-<%session.setAttribute("deptNo", 2000);%> --%>
 
 <jsp:include page="../layout/header.jsp" />
 <!-- FullCalendar CDN -->
@@ -24,12 +22,12 @@
 
 
 <style>
-    body {
+ /*    body {
         margin: 40px 10px;
         padding: 0;
         font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
         font-size: 14px;
-    }
+    } */
     #calendar {
         max-width: 1100px;
         margin: 0 auto;
@@ -112,11 +110,11 @@
 	                    </div>
 	                    <!-- 세션 정보 -->
 	                    <input type="hidden" name="empNo" value="${loginEmployee.empNo}"> 
-	                    <input type="hidden" name="empNo" value="2">  
+	                    <!-- <input type="hidden" name="empNo" value="2">  --> 
 	              
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	                    <button type="button" class="btn btn-primary" id="btn-save">저장</button>
+	                    <button type="submit" class="btn btn-primary" id="btn-save">저장</button>
 	                </div>   
 	                </div>
 	            </div>
@@ -220,8 +218,6 @@
             </div>
         </div>
     </div> 
-
-
 
  <script>
  

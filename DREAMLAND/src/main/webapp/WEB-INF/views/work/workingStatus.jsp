@@ -74,18 +74,7 @@
 	        </div>
 	     </div>
 	   </div>
-       <!-- <div class="row">
-          <div class="col-md-6">
-              <label for="dateRange">기간 설정</label>
-              <input type="text" id="dateRange" class="form-control"  style="width: 230px;">
-          </div>
-      </div>
-      <div class="row mt-3">
-          <div class="col-md-12">
-              <button id="btn-search" class="btn btn-primary">조회</button>
-          </div>
-      </div> -->
-      <div class="row mt-3">
+     <div class="row mt-3">
           <div class="col-md-12">
               <table class="table table-striped" id="work-list">
                   <thead>
