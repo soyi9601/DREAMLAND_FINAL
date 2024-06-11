@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="/resources/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="/resources/assets/css/demo.css" />
   <link rel="stylesheet" href="/resources/assets/css/main.css" />
-
+  <link rel="stylesheet" href="/resources/assets/css/apv.css" />
 
 
   <!-- Vendors CSS -->
