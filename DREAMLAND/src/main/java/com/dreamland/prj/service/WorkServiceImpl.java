@@ -15,7 +15,6 @@ import com.dreamland.prj.dto.WorkDto;
 import com.dreamland.prj.mapper.WorkMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -24,21 +23,54 @@ public class WorkServiceImpl implements WorkService {
   private final WorkMapper workMapper;
   private final LoginService loginService;
   
-  // 지각처리
+  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+  String today = sdf.format(new Date());
+  
+  // 지각
   @Override
   @Transactional
   public void checkLate() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    String today = sdf.format(new Date());
     workMapper.updateLate(today);
   }
 
-  // 결근처리
+  // 연차
+  @Override
+  @Transactional
+  public void checkDayoff() {
+    List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today);
+    for (Integer empNo : dayoffEmpList) {
+      Integer dayoffType = workMapper.getDayoffType(today, empNo);
+      if (dayoffType != null) {
+        WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
+        if (dayoffType == 30) {  // 연차
+          workMapper.updateDayoffStatus(today, dayoffType, empNo);
+          if (workRecord == null) {
+            workMapper.insertDayoff(today, dayoffType, empNo);
+          }
+        }
+      }
+    }
+  }
+  
+  // 반차
+  @Override
+  public void checkHafDayoff() {
+    List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today);
+    for (Integer empNo : dayoffEmpList) {
+      Integer dayoffType = workMapper.getDayoffType(today, empNo);
+      if (dayoffType != null) {
+        //WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
+        if (dayoffType == 20) {  // 반차
+          workMapper.updateDayoffStatus(today, dayoffType, empNo);
+        }
+      } 
+    }
+  }
+  
+  // 결근
   @Override
   @Transactional
   public void checkAbsence() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    String today = sdf.format(new Date());
     List<Integer> empNos = workMapper.getAbsenceEmpList(today);
     for (Integer empNo : empNos) {
       WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
@@ -48,32 +80,6 @@ public class WorkServiceImpl implements WorkService {
     }
   }
 
-  // 반차, 연차 처리
-  @Override
-  @Transactional
-  public void checkDayoff() {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-      String today = sdf.format(new Date());
-      
-      List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today);
-      for (Integer empNo : dayoffEmpList) {
-          Integer dayoffType = workMapper.getDayoffType(today, empNo);
-          if (dayoffType != null) {
-              WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
-              if (dayoffType == 30) {  // 연차
-                  if (workRecord == null) {
-                      workMapper.insertDayoff(today, dayoffType, empNo);
-                  }
-              } else if (dayoffType == 20) { // 반차
-                  if (workRecord == null) {
-                      workMapper.insertDayoff(today, dayoffType, empNo);
-                  } else {
-                      workMapper.updateDayoffStatus(today, dayoffType, empNo);
-                  }
-              }
-          }
-      }
-  }
   
   // 지각 + 조기퇴근 + 결근 횟수 + 근무시간 조회
   @Override

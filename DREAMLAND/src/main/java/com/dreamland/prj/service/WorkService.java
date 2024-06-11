@@ -4,7 +4,8 @@ import java.util.Map;
 
 public interface WorkService {
   
-  void checkLate();
+  void checkLate();    
+  void checkHafDayoff();
   void checkDayoff();
   void checkAbsence();
   Map<String, Object> getWorkCountByEmail(String email);

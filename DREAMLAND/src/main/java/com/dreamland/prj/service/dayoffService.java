@@ -11,7 +11,7 @@ public interface dayoffService {
  
   void loadDayoffData(Model model, EmployeeDto employee);
   List<AppleaveDto> getDayoffListByYear(int empNo, int year);
-  int calculateRemainDayOff(int totalDayOff, int usedDayOff);
+  double calculateRemainDayOff(double totalDayOff, double usedDayOff);
   public List<Integer> getYearList(int empNo);
 
 }

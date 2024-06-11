@@ -68,13 +68,12 @@ public class ScheduleController {
 //    return "redirect:/schedule/calendar.do"; 
 //  }
   
-//일정 삭제
-@PostMapping("/remove.do")
-public ResponseEntity<Map<String, Object>> remove(@RequestParam int skdNo) {
-   int removeCount = scheduleService.removeSkd(skdNo);
-   return ResponseEntity.ok(Map.of("removeCount", removeCount));
-}
-  
+  //일정 삭제
+  @PostMapping("/remove.do")
+  public ResponseEntity<Map<String, Object>> remove(@RequestParam int skdNo) {
+     int removeCount = scheduleService.removeSkd(skdNo);
+     return ResponseEntity.ok(Map.of("removeCount", removeCount));
+  }
   
   // 현재 세션에서 로그인된 사용자 정보 가져옴
   private EmployeeDto getEmployeeFromSession() {

@@ -39,6 +39,47 @@
         AND LATE_YN = 'N'
     </update>
     
+    <!-- 반차, 연차 사원리스트 조회 (오늘날짜) -->
+    <select id="getDayoffEmpList" 
+            resultType="int">
+       SELECT EMP_NO
+         FROM APV_LEAVE
+        WHERE LEAVE_STATUS = 1
+          AND LEAVE_START <![CDATA[ <= ]]> TO_DATE(#{today}, 'YYYY-MM-DD')
+          AND LEAVE_END <![CDATA[ >= ]]> TO_DATE(#{today}, 'YYYY-MM-DD')
+    </select>
+    
+    <!-- 반차 상태 업데이트 -->
+    <update id="updateDayoffStatus">
+       UPDATE WORK
+       SET WORK_STATE = #{dayoffType}
+       WHERE WORK_DATE = TO_DATE(#{today}, 'YYYY-MM-DD')
+         AND EMP_NO = #{empNo}
+    </update>
+    
+    <!-- 연차 상태 삽입 -->
+    <insert id="insertDayoff">
+        INSERT INTO WORK (
+            WORK_NO
+          , WORK_DATE
+          , WORK_IN
+          , WORK_OUT
+          , WORK_TOTAL_TIME
+          , WORK_STATE
+          , LATE_YN
+          , EMP_NO
+         ) VALUES (
+            WORK_SEQ.NEXTVAL
+          , TO_DATE(#{today}, 'YYYY-MM-DD')
+          , NULL
+          , NULL
+          , 0 
+          , #{dayoffType}
+          , 'N'
+          , #{empNo}
+         )
+    </insert>
+    
     <!-- 결근 사원 목록 -->
     <select id="getAbsenceEmpList" 
             resultType="int">
@@ -73,47 +114,6 @@
           , #{empNo}
         )
     </insert>
-    
-    <!-- 반차, 연차 사원리스트 조회 (오늘날짜) -->
-    <select id="getDayoffEmpList" 
-            resultType="int">
-       SELECT EMP_NO
-         FROM APV_LEAVE
-        WHERE LEAVE_STATUS = 1
-          AND LEAVE_START <![CDATA[ <= ]]> TO_DATE(#{today}, 'YYYY-MM-DD')
-          AND LEAVE_END <![CDATA[ >= ]]> TO_DATE(#{today}, 'YYYY-MM-DD')
-    </select>
-    
-    <!-- 연차 상태 삽입 -->
-    <insert id="insertDayoff">
-        INSERT INTO WORK (
-            WORK_NO
-          , WORK_DATE
-          , WORK_IN
-          , WORK_OUT
-          , WORK_TOTAL_TIME
-          , WORK_STATE
-          , LATE_YN
-          , EMP_NO
-         ) VALUES (
-            WORK_SEQ.NEXTVAL
-          , TO_DATE(#{today}, 'YYYY-MM-DD')
-          , NULL
-          , NULL
-          , 0 
-          , #{dayoffType}
-          , 'N'
-          , #{empNo}
-         )
-    </insert>
-    
-    <!-- 반차 상태 업데이트 -->
-    <update id="updateDayoffStatus">
-       UPDATE WORK
-       SET WORK_STATE = #{dayoffType}
-       WHERE WORK_DATE = TO_DATE(#{today}, 'YYYY-MM-DD')
-         AND EMP_NO = #{empNo}
-    </update>
     
      <!-- 휴가종류 조회 -->
      <select id="getDayoffType" 
