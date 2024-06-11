@@ -174,7 +174,7 @@
                     </tr>           
                 </table>
             </div>
-            
+            <input type="hidden" id="leaveKind" value="${approval.leaveClassify}">
               <div class="section">
             <table class="input-table">
                 <tr>
@@ -304,8 +304,14 @@
 <script>
 
 const apvNo = ${approval.apvNo};
-const leavekind = ${approval.leaveClassify};
 const apvKind = ${kind};
+var leavekinf ;
+if(apvKind == '1') {
+	 leavekind = document.getEelementById('leaveKind').value ;
+	} else {
+		 leavekind = 0;
+	}
+
 const empNo = ${loginEmployee.empNo};
 
 const fnDownload = () => {
