@@ -12,10 +12,9 @@ public interface FaqBoardService {
 	FaqBoardDto getFaqBoardByNo(int boardNo);
 	int modifyFaqBoard(FaqBoardDto faqBoardDto);
 	int removeFaqBoard(int faqNo);
-	
-	// category하는중
+	// 분류 카테고리 
 	void loadFaqCategoryList(HttpServletRequest request, Model model);
-	// search
+	// 검색
 	void loadFaqSearchList(HttpServletRequest request, Model model);
 	
 }
