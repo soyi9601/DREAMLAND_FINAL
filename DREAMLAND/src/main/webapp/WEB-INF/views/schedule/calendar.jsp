@@ -222,13 +222,14 @@
  <script>
  
  document.addEventListener('DOMContentLoaded', function() {
-	    // 전체 일정 데이터
-	    var eventArray = [];
+	    // 로그인된 사용자 정보 (사원번호 + 부서번호)
 	    var empNo = '${loginEmployee.empNo}'; 
 	    var deptNo = '${loginEmployee.deptNo}'; 
 	    console.log("사원번호 :" + empNo);
 	    console.log("부서번호 :" + deptNo);
 	    
+	    // 필터링된 일정 리스트 이벤트 배열에 추가
+	    var eventArray = [];
 	    <c:forEach var='skd' items='${skdList}'>
 	      // 공유부서 배열에 저장
 	    	var sharedDeptNos = '<c:forEach var="dept" items="${skd.shrDept}">${dept.deptNo} </c:forEach>'.trim().split(' ');
