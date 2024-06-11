@@ -1,0 +1,119 @@
+@charset "UTF-8";
+
+
+        .apv-container {
+            width: 80%;
+            margin: auto;
+            border: 1px solid #000;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .approval-table, .approval-table td {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .input-table, .input-table td {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+        .input-table {
+            width: 100%;
+        }
+        .textarea {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #000;
+            resize: none;
+        }
+        .footer {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .page {
+            display: none;
+            flex-grow: 1;
+            overflow: auto;
+        }
+        .page.active {
+            display: block;
+        }
+          .button-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .button-secondary {
+            background-color: #888;
+            color: white;
+        }
+            .jstree-node.custom-node {
+        background-color: #f0f0f0;
+    }
+     
+     .fixed-size {
+    width: 100px;
+    height: 50px;
+}
+      
+  
+        .post-list-container {
+    min-width:1300px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-list-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.post-list-table th, .post-list-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.post-list-table th {
+    background-color: #f9f9f9;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.pagination span {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    margin-left: -1px;
+    cursor: pointer;
+}
+
+.pagination span:hover {
+    background-color: #f1f1f1;
+}
+      tbody tr:hover {
+            cursor: pointer;
+        }
+
+
+   
