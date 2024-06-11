@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:include page="./../layout/header.jsp" />  
+<jsp:include page="./../layout/apv-header.jsp" />  
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
@@ -10,10 +10,10 @@
    <div class="container-xxl flex-grow-1 container-p-y">
 <div class="col-6 mb-4" style="width:100%; height:100%">
 
-<div class="container">
+<div class="apv-container">
     <div id="approvalForm" >
         <!-- 품의서 내용 -->
-        <div class="container">
+        <div class="apv-container">
             <div class="title">품 의 서</div>
             <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
             <input type="hidden" name="userNo" value="1">
@@ -142,16 +142,15 @@
 <div class="col-6 mb-4" style="width:100%; height:100%">
 
 
-     <div class="container">
+     <div class="apv-container">
     <div id="leaveRequestForm" >
 
         <h2>휴가신청서</h2>
         <!-- 휴가신청서 내용 -->
-        <div class="container">
+        <div class="apv-container">
             <div class="title">휴가신청서</div>
                             <div class="section-title">제목</div>
                                        	<div id="title">${title}</div>
-        
              <div class="section-title">결재자</div>
             <table class="approval-table">
                 <tr>
@@ -305,6 +304,7 @@
 <script>
 
 const apvNo = ${approval.apvNo};
+const leavekind = ${approval.leaveClassify};
 const apvKind = ${kind};
 const empNo = ${loginEmployee.empNo};
 
@@ -349,7 +349,7 @@ function handlePopupFormSubmission(inputText) {
 
 
 document.getElementById('approve').addEventListener('click', function() {
-    const queryParams = { apvNo: apvNo, empNo:empNo, rejectedReason:'0' , apvKind : apvKind};
+    const queryParams = { apvNo: apvNo, empNo:empNo, rejectedReason:'0' , apvKind : apvKind, leavekind: leavekind };
     sendGetRequest(queryParams);
 });
 

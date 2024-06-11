@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:include page="./../layout/header.jsp" />  
+<jsp:include page="./../layout/apv-header.jsp" />  
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
@@ -22,7 +22,7 @@
     </c:if>
 </c:if>
 
-<div class="container">
+<div class="apv-container">
     <div class="title">기안서 작성하기</div>
          <div id="container">
 
@@ -40,7 +40,7 @@
         action="${contextPath}/approval/approval.do">
         <h2>품의서</h2>
         <!-- 품의서 내용 -->
-        <div class="container">
+        <div class="apv-container">
             <div class="title">품 의 서</div>
             <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
            <div class="section">
@@ -151,7 +151,7 @@
         action="${contextPath}/approval/leave.do">
         <h2>휴가신청서</h2>
         <!-- 휴가신청서 내용 -->
-        <div class="container">
+        <div class="apv-container">
             <div class="title">휴가신청서</div>
                             <div class="section-title">제목</div>
                         	<input type="text" style="width:750px;" name="title" value="${title}"></input>

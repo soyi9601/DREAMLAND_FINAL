@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="/resources/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="/resources/assets/css/demo.css" />
   <link rel="stylesheet" href="/resources/assets/css/main.css" />
-
+  <link rel="stylesheet" href="/resources/assets/css/apv.css" />
 
 
   <!-- Vendors CSS -->
@@ -170,7 +170,7 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/schedule/calendar.do" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>캘린더</div>
                 </a>
               </li>
@@ -183,12 +183,12 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/work/status.do" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>근태관리</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/dayoff/info.do" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>휴가관리</div>
                 </a>
               </li>
