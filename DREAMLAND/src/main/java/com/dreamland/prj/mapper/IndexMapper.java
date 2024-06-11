@@ -20,4 +20,10 @@ public interface IndexMapper {
   List<NoticeBoardDto> getNoticeList(Map<String, Object> map);
   
   int getMessageCountByReceiver(int empNo);
+  
+  int getWaitCount(int empNo);
+  int getMyApvCount(int empNo);
+  
+  int hasCheckedWorkIn(int empNo);
+  void updateCheckedWorkOut();
 }

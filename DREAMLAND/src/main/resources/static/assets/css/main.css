@@ -21,14 +21,12 @@ nav .avatar i {font-size: 3rem}
 .notice-important {color: #ee2b4b; padding: 3px 10px; margin-right: 10px; font-size: 13px; border: 1px solid #ee2b4b; border-radius: 25px;}
 .notice-list {cursor: pointer;}
 
+/* 메인 알림 영역 */
+.main-news-wrap div a {display: inline-block; width:100%; height: 100%;}
+.main-news-wrap div.news-msg a {color: #8592a3;}
+.main-news-wrap div.news-await a {color: #71dd37;}
+.main-news-wrap div.news-my-await a {color: #03c3ec;}
+.main-news-wrap div:hover a {color: #fff;}
 
 /* 메인 캘린더 */
 .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {display: none;}
-
-
-/* 조직도 */
-#empForm, #deptForm {display: none;}
-.jstree-default .jstree-search {color: #0e8b00;}
-.jstree-default .jstree-icon.bxs-spreadsheet:before {color: #90b54c;}
-
-.boc-light {font-family: "Pretendard Variable", Pretendard!important};

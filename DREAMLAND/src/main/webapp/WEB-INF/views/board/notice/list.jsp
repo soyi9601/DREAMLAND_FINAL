@@ -13,7 +13,8 @@
 <!-- link -->
 <link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
 <link rel="stylesheet" href="/resources/assets/vendor/fonts/boxicons.css" />
-
+<!-- include moment.js -->
+<script src="/resources/assets/moment/moment-with-locales.min.js"></script>
 
 <!-- Content wrapper -->
 <div class="content-wrapper sd-board" id="notice-board">
@@ -51,15 +52,19 @@
                     <td><input type="checkbox" name="noticeChk" value="${notice.noticeNo}" data-idx="${beginNo - vs.index}"/></td>
                   </c:if>
                   <td data-notice-no="${notice.noticeNo}" class="noticeTitle">
-                    <c:if test="${notice.signal eq 1}">
-                      <span class="notice-important">
-                        중요
-                      </span>
-                    </c:if>
-                    <span data-notice-no="${notice.noticeNo}" class="noticeTitle">${notice.boardTitle}</span> 
-                    <c:if test="${notice.attachCount!=0}">
-                      <i class='bx bxs-file'></i>
-                    </c:if>
+                    
+                    <span data-notice-no="${notice.noticeNo}" class="noticeTitle">
+                      <c:if test="${notice.signal eq 1}">
+	                      <span class="important badge rounded-pill bg-label-danger" data-notice-no="${notice.noticeNo}" >
+	                        중요
+	                      </span>
+	                    </c:if>
+                    ${notice.boardTitle}
+                      <c:if test="${notice.attachCount!=0}">
+	                      <i class='bx bxs-file' data-notice-no="${notice.noticeNo}" ></i>
+	                    </c:if>
+                    </span> 
+                    
                   </td>
                   
                   <td>${notice.employee.empName}</td>
@@ -83,16 +88,16 @@
             <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
           </c:if>
         </div>
-        <div class="btn-reset sd-btn sd-point-bg" >
-          <a href="${contextPath}/board/notice/write.page">작성</a>
-        </div>
+        <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+	        <div class="btn-reset sd-btn sd-point-bg" >
+	          <a href="${contextPath}/board/notice/write.page">작성</a>
+	        </div>
+	      </c:if>
       </div>
       
-      
-
-      
-      
-      <div class="pg-btn-area">${paging}</div>
+      <div class="pagination">${paging}</div>
+      <!-- 
+      <div class="pg-btn-area">${paging}</div>-->
       
   </div>
     <!-- / Content -->

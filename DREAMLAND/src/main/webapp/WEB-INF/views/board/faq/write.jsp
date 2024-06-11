@@ -37,8 +37,7 @@
                 </div>
               </div>
               <div class="row mb-3">
-                <label for="defaultSelect" class="form-label col-sm-2"
-                  name="category"> 분류 </label>
+                <label for="defaultSelect" class="form-label col-sm-2" name="category"> 분류 </label>
 
                 <div class="col-sm-10">
                   <select id="defaultSelect" class="form-select col-sm-10"
@@ -50,7 +49,6 @@
                     <option value="4">시설운영</option>
                     <option value="5">마케팅</option>
                     <option value="6">기타</option>
-                    
                   </select>
                 </div>
               </div>
@@ -67,16 +65,12 @@
                 </div>
               </div>
               <div class="row justify-content-end">
-                
                 <button type="submit" class="btn-reset sd-btn sd-point-bg">작성</button>
-                
               </div>
             </form>
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
   <!-- / Content -->
@@ -84,11 +78,9 @@
 
 <script>
   
-/* 필수*/
+/* 등록 필수*/
 const fnRegister = () =>{
 	document.getElementById('frm-faq-register').addEventListener('submit', (e) => {
-		
-		//defaultSelect = document.getElementById('defaultSelect').value;
 		
 		if(document.getElementById('basic-default-name').value === '') {
       alert('제목은 필수입니다.');

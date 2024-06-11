@@ -19,5 +19,4 @@ public interface FaqBoardMapper {
 	List<FaqBoardDto> getSortList(Map<String, Object> map);
 	int getSearchCount(Map<String, Object> map);
 	List<FaqBoardDto> getSearchList(Map<String, Object> map);
-	
 }

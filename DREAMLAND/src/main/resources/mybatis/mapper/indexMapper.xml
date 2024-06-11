@@ -32,18 +32,36 @@
       , TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
       , NULL
       , NULL
-      , NULL
-      , N
+      , 10
+      , 'N'
       , #{empNo}      
     )
   </insert>
   
+  <select id="hasCheckedWorkIn" parameterType="int" resultType="int">
+    SELECT COUNT(*)
+      FROM WORK
+     WHERE EMP_NO = #{empNo}
+       AND WORK_DATE = TO_DATE(TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+  </select>
+  
   <update id="updateWorkOut" parameterType="WorkDto">
     UPDATE WORK
        SET WORK_OUT = TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
+         , WORK_TOTAL_TIME = ROUND((TO_NUMBER(TO_CHAR(CURRENT_TIMESTAMP, 'SSSSS')) - TO_NUMBER(TO_CHAR(WORK_IN, 'SSSSS'))) / 3600, 2)
      WHERE EMP_NO = #{empNo}     
   </update>
   
+  <update id="updateCheckedWorkOut">
+    UPDATE WORK
+       SET WORK_OUT = TO_TIMESTAMP(TO_CHAR(SYSDATE, 'YYYY-MM-DD') || ' 18:00:00', 'YYYY-MM-DD HH24:MI:SS')
+         , WORK_TOTAL_TIME = ROUND(EXTRACT(HOUR FROM (TO_TIMESTAMP(TO_CHAR(SYSDATE, 'YYYY-MM-DD') || ' 18:00:00', 'YYYY-MM-DD HH24:MI:SS') - WORK_IN)) + 
+                                   EXTRACT(MINUTE FROM (TO_TIMESTAMP(TO_CHAR(SYSDATE, 'YYYY-MM-DD') || ' 18:00:00', 'YYYY-MM-DD HH24:MI:SS') - WORK_IN)) / 60, 2)
+     WHERE WORK_OUT IS NULL
+  </update>
+  
+  
+  <!-- 공지사항 리스트 -->
   <select id="getNoticeList" parameterType="NoticeBoardDto">
     SELECT ROW_NUMBER() OVER(ORDER BY 
       CASE WHEN SIGNAL = 1 THEN 0 ELSE 1 END, NOTICE_NO DESC)
@@ -56,7 +74,29 @@
   <select id="getMessageCountByReceiver">
     SELECT COUNT(*)
       FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
-     WHERE M.MSG_RECEIVER = ${empNo}
+     WHERE M.MSG_RECEIVER = ${empNo} AND READ_YN = 'N'
   </select>
+  
+  <!-- 결재 대기문서 -->
+  <select id="getWaitCount">
+	  SELECT COUNT(*)
+	    FROM APPROVAL B
+	   WHERE B.APV_NO IN (SELECT APV_NO
+	                        FROM (SELECT APV_NO, WRITER_LIST, APV_STATE, EMP_NO,
+	                                     ROW_NUMBER() OVER (PARTITION BY APV_NO, APV_STATE ORDER BY WRITER_LIST) as RN
+	                                FROM APV_WRITER
+	                               WHERE APV_STATE = 100)
+	                       WHERE RN = 1 
+	                         AND EMP_NO = #{empNo})
+	     AND NOT B.APV_CHECK = 3
+  </select>
+
+	<!-- 결재 진행문서 -->
+	<select id="getMyApvCount">
+	  SELECT COUNT(*)
+	    FROM APPROVAL
+	   WHERE EMP_NO = #{empNo}
+	     AND APV_CHECK = 0
+	</select>
 
 </mapper> 

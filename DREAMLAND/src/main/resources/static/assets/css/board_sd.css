@@ -36,6 +36,9 @@
 .sd-btns-area{display:flex;justify-content: space-between;margin-top:20px;}
 
 
+.pagination{justify-content: center;margin-top:10px;}
+.pagination .page-link{background:#fff;}
+
 /*게시판 공통write*/
 #basic-default-message{resize:none;height:180px;}
 
@@ -55,34 +58,10 @@
  #comment-password{display:inline-block !important;width:40% !important;}
 .board-detail .frm-comment-top{border-bottom:1px dashed #d9dee3;padding-bottom:30px;margin-bottom:20px;color:#c6c6c6}
 .board-detail  .frm-comment-top .comment-count{color:#90b54c }
-
-
 .board-detail  #frm-comment #btn-comment-registrer{color:#fff;}
 
-
-
-
-
-
-/* 게시판 페이징 버튼 */
-.pg-btn-area{display:flex;justify-content:center;;}
-.pg-btn-area .dont-click{width:24px;height:24px;text-align:center;line-height:24px;
-  font-family: "Nanum Pen Script", cursive;
-  font-weight: 400;
-  font-style: normal;}
-  
-.pg-btn-area .dont-click:first-child{margin-right:12px;;}
-.pg-btn-area .dont-click:last-child{margin-left:12px;}
-
-/*
-.pg-btn-area .current-page{display:inline-block;width:24px;height:24px;background:#fff;text-align:center;line-height:24px;
-                          border-radius:4px;color:#999 }*/
-
-.pg-btn-area div:not(.dont-click){display:inline-block;width:24px;height:24px;background:#fff;text-align:center;line-height:24px;
-                          border-radius:4px;margin-right:5px; }
-.pg-btn-area div:not(.dont-click) a{color:#999;}
-.pg-btn-area .current-page {color:#90b54c !important}
-
+.new{font-size:0.85em;margin-right:12px;padding:0 5px;}
+.important{font-size:0.85em;margin-right:12px;padding:3px 5px;}
 
 
 /* ==========================================================
@@ -92,10 +71,13 @@
     FAQ(/board/faq)
       └ list.jsp
   ===========================*/
-
 #faq-board .category-list{display:flex;justify-content: center;list-style:none;width:100%;margin:30px 0 20px;}
 #faq-board .category-list li a{display:block;font-size:18px;padding-right:20px;color:var(--bs-table-hover-color);}
 #faq-board .category-list li a:hover{color:#90b54c;font-weight:600;}
+
+.category-list li.on{color:#90b54c !important;font-weight:bold;}
+
+.no-results{text-align:center;}
 
 #faq-board .search-area{display:flex;justify-content:center;}
 #faq-board .border-0.shadow-none{width:40%;border-radius:0.375rem 0 0 0.375rem;}
@@ -112,7 +94,7 @@
 .faq-category{display:inline-block;min-width:80px;margin-left:6px;}
 .faq-q {font-weight: 600;margin:0 10px;color: #ee2b4b ;}
 
-.faq-a {font-weight: 600;margin-right: 10px;color: #90b54c;}
+.faq-a {font-weight: 600;margin-right: 10px;color: #ee2b4b;margin-left:80px;}
 .faqicon {width: 0.75rem;height: 0.75rem;transition: transform 0.3s ease-in-out;}
 
 .faqicon.on {background-repeat: no-repeat;background-size: 0.75rem;
@@ -170,8 +152,7 @@
 
 /*테이블 tbody*/
 /*.sd-notice-write .form-control{margin-bottom:12px;}*/
-.notice-important{color:#ee2b4b;padding:1px 3px;border:1px solid #ee2b4b;border-radius:25px;margin-right:6px;
-                  font-size:12px;}
+
 
 
 
@@ -202,7 +183,9 @@
 .sd-notice-detail .mb-3{border-bottom:1px solid #e3e3e3}
 .sd-notice-detail .col-sm-10{padding-top: calc(0.4375rem + 1px); padding-bottom: calc(0.4375rem + 1px); font-size:12px;}
 /*.bx-download{cursor:pointer;}*/
-.sd-notice-detail .board-title span{font-size:13px;font-weight:normal;color:#ee2b4b;padding:0px 5px;display:inline-block;border-radius:50px;border:1px solid #ee2b4b}
+
+.sd-notice-detail .board-title{display:flex;align-items: center;}
+.sd-notice-detail .board-title span{font-size:13px;font-weight:normal;color:#ee2b4b;padding:0px 5px;display:inline-block;border-radius:50px;border:1px solid #ee2b4b;line-height:1.3;margin-right: 12px;}
 
 .attached-file-area{border-top:1px dashed #d9dee3;padding:20px;padding-bottom:10px;background:#f5f5f9;display:flex;margin-bottom:20px;}
 .attached-file-area>p{font-weight:bold;}
