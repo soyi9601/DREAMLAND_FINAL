@@ -107,24 +107,35 @@
             if (userRole === 'ROLE_ADMIN') {
                 str += '<td><input type="checkbox" name="blindChk" data-idx="'+reversedIndex+'" value="' + blind.blindNo + '"/></td>'
             }
+            
+            //시간 표시
+            const publishTime = moment(blind.boardCreateDt);
+            console.log("publishTime:",publishTime)
+            const now = moment();
+            console.log("now:",now)
+            const diffHours = now.diff(publishTime, 'hours');
+           // const diffDays = now.diff(publishTime2,'days');
+            
+            let titleClass = "";
+            
+            if(diffHours <= 24){
+            	 str += '<td data-blind-no="'+ blind.blindNo+'"  class="blindTitle"><span class="new rounded-pill bg-label-success">new</span>'+  blind.boardTitle + '</td>';
+            }else{
+            	 str += '<td data-blind-no="'+ blind.blindNo+'"  class="blindTitle">'+  blind.boardTitle + '</td>';
+            	
+            }
+            
+            
             // str += '<td><a href="${contextPath}/board/blind/detail.do?blindNo='+blind.blindNo+'">' +  blind.boardTitle + '</a></td>';
-            str += '<td data-blind-no="'+ blind.blindNo+'"  class="blindTitle">'+  blind.boardTitle + '</td>';
+           
             //str += '<td><a class="blindTitle" href="${contextPath}/board/blind/updateHit.do?blindNo='+blind.blindNo+'">' +  blind.boardTitle + '</a></td>';
            //${contextPath}/board/blind/updateHit.do?blindNo='+evt.target.dataset.blindNo
                
-            //시간 표시
-            const publishTime = moment(blind.boardCreateDt);
-            const now = moment();
-            const diffHours = now.diff(publishTime, 'hours');
             str += '<td class="publish-time">' + publishTime.locale('ko').fromNow() + '</td>';
-            /*
-            if (diffHours <= 12) {
-              str += '<td class="publish-time">' + publishTime.locale('ko').fromNow() + '</td>';
-            } else {
-              str += '<td class="publish-time">' + publishTime.format('YYYY-MM-DD HH:mm:ss') + '</td>';
-            }    
-            */
-              
+ 
+            
+            
+            
             // str += '<td>'+blind.boardCreateDt+'</td>';
             str += '<td>'+blind.commentCount+'</td>';
             str += '<td>'+blind.hit+'</td></tr>'

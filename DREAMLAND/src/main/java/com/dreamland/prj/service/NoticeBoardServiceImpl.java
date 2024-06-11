@@ -27,6 +27,7 @@ import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.NoticeAttachDto;
 import com.dreamland.prj.dto.NoticeBoardDto;
 import com.dreamland.prj.mapper.NoticeBoardMapper;
+import com.dreamland.prj.utils.MyBoardPageUtils;
 import com.dreamland.prj.utils.MyFileUtils;
 import com.dreamland.prj.utils.MyPageUtils;
 
@@ -38,13 +39,13 @@ import jakarta.servlet.http.HttpServletRequest;
 public class NoticeBoardServiceImpl implements NoticeBoardService {
 	
 	private final NoticeBoardMapper noticeMapper;
-	private final MyPageUtils myPageUtils;
+	private final MyBoardPageUtils myBoardPageUtils;
 	private final MyFileUtils myFileUtils;
 	
-	public NoticeBoardServiceImpl(NoticeBoardMapper noticeMapper, MyPageUtils myPageUtils, MyFileUtils myFileUtils) {
+	public NoticeBoardServiceImpl(NoticeBoardMapper noticeMapper, MyBoardPageUtils myBoardPageUtils, MyFileUtils myFileUtils) {
 		super();
 		this.noticeMapper = noticeMapper;
-		this.myPageUtils = myPageUtils;
+		this.myBoardPageUtils = myBoardPageUtils;
 		this.myFileUtils = myFileUtils;
 	}
 
@@ -145,17 +146,17 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(optPage.orElse("1"));
 		
-		myPageUtils.setPaging(total, display, page);
+		myBoardPageUtils.setPaging(total, display, page);
 		
     String sort = "desc";
     
-    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
-    															 , "end"  , myPageUtils.getEnd()
+    Map<String, Object> map = Map.of("begin", myBoardPageUtils.getBegin()
+    															 , "end"  , myBoardPageUtils.getEnd()
     															 , "sort", sort);
 		
     model.addAttribute("beginNo", total - (page - 1) * display);
     model.addAttribute("noticeBoardList", noticeMapper.getNoticeList(map));
-    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/board/notice/list.do", sort, display));
+    model.addAttribute("paging", myBoardPageUtils.getPaging(request.getContextPath() + "/board/notice/list.do", sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
     model.addAttribute("page", page);

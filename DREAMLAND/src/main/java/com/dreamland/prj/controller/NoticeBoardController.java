@@ -32,7 +32,6 @@ public class NoticeBoardController {
 	public String list(HttpServletRequest request, Model model) {
 	 	 model.addAttribute("request", request);
 	 	 noticeBoardService.loadNoticeList(model);
-	 	 System.out.println(model);
 	 	 return "board/notice/list";
 	}
 	
