@@ -14,7 +14,7 @@
   <!-- Content -->
 
   <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="title sd-point">FAQ 작성</div>
+    <div class="title sd-point">FAQ 수정</div>
 
     <!-- Basic Layout & Basic with Icons -->
     <div class="row">
@@ -70,11 +70,9 @@
                 </div>
               </div>
               <div class="row justify-content-end">
-                
-                  <input type="hidden" name="userNo"
-                    value="${sessionScope.user.userNo}">
-                  <button type="submit" class="btn-reset sd-btn sd-point-bg">수정</button>
-               
+                <input type="hidden" name="userNo"
+                  value="${sessionScope.user.userNo}">
+                <button type="submit" class="btn-reset sd-btn sd-point-bg">수정</button>
               </div>
             </form>
           </div>
@@ -92,8 +90,6 @@
 /* 필수*/
 const fnRegister = () =>{
   document.getElementById('frm-faq-register').addEventListener('submit', (e) => {
-    
-    //defaultSelect = document.getElementById('defaultSelect').value;
     
     if(document.getElementById('basic-default-name').value === '') {
       alert('제목은 필수입니다.');

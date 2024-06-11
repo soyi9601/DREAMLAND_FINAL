@@ -5,20 +5,21 @@
   
  <mapper namespace="com.dreamland.prj.mapper.FaqBoardMapper">
    <resultMap type="FaqBoardDto" id="FaqMap">
-    <id     property="faqNo"           column="FAQ_NO" />
-    <result property="boardTitle"       column="BOARD_TITLE"/>
-    <result property="boardContents"    column="BOARD_CONTENTS"/>
-    <result property="boardCreateDt"    column="BOARD_CREATE_DT"/>
-    <result property="boardModifyDt"    column="BOARD_MODIFY_DT"/>
-    <result property="hit"              column="HIT"/>
-    <result property="category"         column="CATEGORY"/>
-    <association property="employee"    javaType="EmployeeDto">
+	   <id     property="faqNo"            column="FAQ_NO" />
+     <result property="boardTitle"       column="BOARD_TITLE"/>
+     <result property="boardContents"    column="BOARD_CONTENTS"/>
+     <result property="boardCreateDt"    column="BOARD_CREATE_DT"/>
+     <result property="boardModifyDt"    column="BOARD_MODIFY_DT"/>
+     <result property="hit"              column="HIT"/>
+     <result property="category"         column="CATEGORY"/>
+     <association property="employee"    javaType="EmployeeDto">
       <id     property="empNo"          column="EMP_NO"/>
       <result property="empName"        column="EMP_NAME"/>
-    </association>
-  </resultMap>
+     </association>
+   </resultMap>
   
-  <insert id="insertFaqBoard"
+  
+   <insert id="insertFaqBoard"
           parameterType="FaqBoardDto" >
      INSERT INTO FAQ_BOARD(
          FAQ_NO
@@ -96,7 +97,7 @@
           resultMap="FaqMap">
     SELECT FAQ_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, HIT, CATEGORY
          , EMP_NO, EMP_NAME
-      FROM (SELECT ROW_NUMBER() OVER (ORDER BY FAQ_NO ${sort}) AS RN
+      FROM (SELECT ROW_NUMBER() OVER (ORDER BY FAQ_NO DESC) AS RN
                  , FAQ.FAQ_NO, FAQ.BOARD_TITLE, FAQ.BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY
                  , EMP.EMP_NO, EMP.EMP_NAME
               FROM EMPLOYEE EMP INNER JOIN FAQ_BOARD FAQ
@@ -111,17 +112,17 @@
           resultType="int">
    SELECT COUNT(*)
   FROM FAQ_BOARD
-  <where>
-    <if test="category != null">
-      CATEGORY = #{category}
-      AND (BOARD_TITLE LIKE '%' || #{query} || '%'
-      OR BOARD_CONTENTS LIKE '%' || #{query} || '%')
-    </if>
-    <if test="category == null">
-      (BOARD_TITLE LIKE '%' || #{query} || '%'
-      OR BOARD_CONTENTS LIKE '%' || #{query} || '%')
-    </if>
-  </where>
+	  <where>
+	    <if test="category != null">
+	      CATEGORY = #{category}
+	      AND (BOARD_TITLE LIKE '%' || #{query} || '%'
+	      OR BOARD_CONTENTS LIKE '%' || #{query} || '%')
+	    </if>
+	    <if test="category == null">
+	      (BOARD_TITLE LIKE '%' || #{query} || '%'
+	      OR BOARD_CONTENTS LIKE '%' || #{query} || '%')
+	    </if>
+	  </where>
   </select>
   
   <!-- 검색 결과 목록 -->
@@ -129,25 +130,24 @@
           parameterType="Map"
           resultMap="FaqMap">
     SELECT FAQ_NO, BOARD_TITLE, BOARD_CONTENTS, BOARD_CREATE_DT, BOARD_MODIFY_DT, HIT, CATEGORY, EMP_NO, EMP_NAME
-  FROM (
-    SELECT ROW_NUMBER() OVER (ORDER BY FAQ_NO ${sort}) AS RN,
-           FAQ.FAQ_NO, FAQ.BOARD_TITLE, FAQ.BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY,
-           EMP.EMP_NO, EMP.EMP_NAME
-    FROM EMPLOYEE EMP
-    INNER JOIN FAQ_BOARD FAQ ON EMP.EMP_NO = FAQ.EMP_NO
-    <where>
-      <if test="category != null">
-        CATEGORY = #{category}
-        AND (FAQ.BOARD_TITLE LIKE '%' || #{query} || '%'
-        OR FAQ.BOARD_CONTENTS LIKE '%' || #{query} || '%')
-      </if>
-      <if test="category == null">
-        (FAQ.BOARD_TITLE LIKE '%' || #{query} || '%'
-        OR FAQ.BOARD_CONTENTS LIKE '%' || #{query} || '%')
-      </if>
-    </where>
-  )
-  WHERE RN BETWEEN #{begin} AND #{end}
+      FROM (SELECT ROW_NUMBER() OVER (ORDER BY FAQ_NO ${sort}) AS RN,
+                   FAQ.FAQ_NO, FAQ.BOARD_TITLE, FAQ.BOARD_CONTENTS, FAQ.BOARD_CREATE_DT, FAQ.BOARD_MODIFY_DT, FAQ.HIT, FAQ.CATEGORY,
+                   EMP.EMP_NO, EMP.EMP_NAME
+              FROM EMPLOYEE EMP
+             INNER JOIN FAQ_BOARD FAQ ON EMP.EMP_NO = FAQ.EMP_NO
+				    <where>
+				      <if test="category != null">
+				        CATEGORY = #{category}
+				        AND (FAQ.BOARD_TITLE LIKE '%' || #{query} || '%'
+				         OR  FAQ.BOARD_CONTENTS LIKE '%' || #{query} || '%')
+				      </if>
+				      <if test="category == null">
+				          (FAQ.BOARD_TITLE LIKE '%' || #{query} || '%'
+				         OR FAQ.BOARD_CONTENTS LIKE '%' || #{query} || '%')
+				      </if>
+				    </where>
+             )
+     WHERE RN BETWEEN #{begin} AND #{end}
   </select>
   
  </mapper>

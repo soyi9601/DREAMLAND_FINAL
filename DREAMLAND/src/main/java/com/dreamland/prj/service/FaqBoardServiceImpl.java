@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.FaqBoardDto;
 import com.dreamland.prj.mapper.FaqBoardMapper;
+import com.dreamland.prj.utils.MyBoardPageUtils;
 import com.dreamland.prj.utils.MyPageUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
 
@@ -21,12 +22,12 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class FaqBoardServiceImpl implements FaqBoardService {
 	private final FaqBoardMapper faqBoardMapper;
-	private final MyPageUtils myPageUtils;
+	private final MyBoardPageUtils myBoardPageUtils;
 	
-	public FaqBoardServiceImpl(FaqBoardMapper faqBoardMapper, MyPageUtils myPageUtils) {
+	public FaqBoardServiceImpl(FaqBoardMapper faqBoardMapper, MyBoardPageUtils myBoardPageUtils) {
 		super();
 		this.faqBoardMapper = faqBoardMapper;
-		this.myPageUtils = myPageUtils;
+		this.myBoardPageUtils = myBoardPageUtils;
 	}
 	@Override
 	public int registerFaq(HttpServletRequest request) {
@@ -64,17 +65,17 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 	  Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
 	  int page = Integer.parseInt(optPage.orElse("1"));
     
-    myPageUtils.setPaging(total, display, page);
+	  myBoardPageUtils.setPaging(total, display, page);
     
     String sort = "desc";
     
-    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
-    															 , "end"  , myPageUtils.getEnd()
+    Map<String, Object> map = Map.of("begin", myBoardPageUtils.getBegin()
+    															 , "end"  , myBoardPageUtils.getEnd()
     															 , "sort", sort);
 	  
     model.addAttribute("beginNo", total - (page - 1) * display);
     model.addAttribute("faqBoardList", faqBoardMapper.getFaqBoardList(map));
-    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath()+"/board/faq/list.do"
+    model.addAttribute("paging", myBoardPageUtils.getPaging(request.getContextPath()+"/board/faq/list.do"
     				  , sort
     				  , display));
     model.addAttribute("display", display);
@@ -111,13 +112,15 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 		
 		int display = 10;
 		
+		//String sort = "desc";
+		
 		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(optPage.orElse("1"));
 		
-		myPageUtils.setPaging(total, display, page);
+		myBoardPageUtils.setPaging(total, display, page);
 	    
-		map.put("begin", myPageUtils.getBegin());
-		map.put("end", myPageUtils.getEnd());
+		map.put("begin", myBoardPageUtils.getBegin());
+		map.put("end", myBoardPageUtils.getEnd());
 		
 		// 카테고리 목록 가져오기
 		List<FaqBoardDto> faqList = faqBoardMapper.getSortList(map);
@@ -127,7 +130,7 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 		
 		model.addAttribute("beginNo", total -(page - 1) * display);
 		model.addAttribute("faqBoardList", faqList);
-		model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/board/faq/sort.do"
+		model.addAttribute("paging", myBoardPageUtils.getPaging(request.getContextPath() + "/board/faq/sort.do"
 				    	 , ""
 				    	 , 10
 				    	 , "category="+category));
@@ -160,17 +163,17 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(optPage.orElse("1"));
 		
-		myPageUtils.setPaging(total, display, page);
+		myBoardPageUtils.setPaging(total, display, page);
 	    
-		map.put("begin", myPageUtils.getBegin());
-		map.put("end", myPageUtils.getEnd());
+		map.put("begin", myBoardPageUtils.getBegin());
+		map.put("end", myBoardPageUtils.getEnd());
 		
 		// 검색 목록 가져오기
 		List<FaqBoardDto> faqList = faqBoardMapper.getSearchList(map);
 		
 		model.addAttribute("beginNo", total -(page - 1) * display);
 		model.addAttribute("faqBoardList", faqList);
-		model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/board/faq/search.do"
+		model.addAttribute("paging", myBoardPageUtils.getPaging(request.getContextPath() + "/board/faq/search.do"
 				    	 , ""
 				    	 , 10
 				    	 , "category="+category + "&query="+query));
