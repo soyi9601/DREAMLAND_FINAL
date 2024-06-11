@@ -85,7 +85,7 @@ public class IndexServiceImpl implements IndexService {
     return indexMapper.getWaitCount(empNo);
   }
   
-  //결재 진행문서
+  // 결재 진행문서
   @Override
   public int getMyApvCount(int empNo) {
     return indexMapper.getMyApvCount(empNo);
