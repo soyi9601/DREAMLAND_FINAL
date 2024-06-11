@@ -17,7 +17,7 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">보낸쪽지함 <small id="send-count"></small></h5>
-	                  <form id="send-form" method="POST">
+	                  <form id="frm-send-box" method="POST">
                     <div>
                       <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
                     </div>
@@ -25,7 +25,7 @@
 	                  <table class="table table-hover">
 	                    <thead>
 	                      <tr>
-                          <th></th>
+                          <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
                           <th>받는사람</th>
                           <th>쪽지내용</th>
                           <th>받은시간</th>

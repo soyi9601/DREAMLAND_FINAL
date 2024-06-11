@@ -16,7 +16,7 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">받은쪽지함 <small id="receive-count"></small></h5>
-	                  <form id="receive-form" method="POST">
+	                  <form id="frm-receive-box" method="POST">
 	                  <div>
 	                    <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
 	                    <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
@@ -25,7 +25,7 @@
 	                  <table class="table table-hover">
 	                    <thead>
 	                      <tr>
-	                        <th></th>
+	                        <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
 	                        <th>보낸사람</th>
 	                        <th>쪽지내용</th>
 	                        <th>받은시간</th>
@@ -41,11 +41,14 @@
 											    <c:if test="${not empty receiveList}">
 										        <c:forEach items="${receiveList}" var="receive" varStatus="vs">
 									            <tr>
-								                <td><input class="form-check-input" type="checkbox" value="${receive.msgNo}" id="star-no" name="checkYn"/></td>
+								                <td><input class="form-check-input" type="checkbox" value="${receive.msgNo}" name="checkYn"/></td>
 											            <c:choose>
 											                <c:when test="${receive.readYn == 'Y'}">
 											                    <td style="color: lightgray;">${receive.senderName}</td>
-											                    <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}</a></td>
+											                    <td style="color: lightgray;">
+											                      <a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}
+											                      </a>
+											                    </td>
 											                    <td style="color: lightgray;">${receive.msgCreateDt}</td>
 											                </c:when>
 											                <c:otherwise>

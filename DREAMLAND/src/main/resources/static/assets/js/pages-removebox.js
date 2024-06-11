@@ -31,6 +31,14 @@ $(document).ready(function() {
     });
 })
 
+// 전체 선택 체크박스 이벤트 핸들러
+document.getElementById("check-all").addEventListener("change", function() {
+    let checkboxes = document.getElementsByClassName('form-check-input');
+    for(let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = this.checked;
+    }
+});
+
 
 /************************** 함수 호출 **************************/
 

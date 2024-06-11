@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,6 +25,7 @@ public class MessageController {
   @Autowired
   private MessageService messageService;
   
+  // 자동완성 위한 직원 리스트 가져오기
   @GetMapping("/user/employeeList")
   public @ResponseBody Map<String, Object> getEmployeeList(@RequestParam Map<String, Object> param) {
     List<EmployeeDto> resultList = messageService.getEmployeeList(param);
@@ -33,9 +35,14 @@ public class MessageController {
   
   // 쪽지 보내기
   @PostMapping("/message/send.do")
-  public String send(HttpServletRequest request) {
+  public String send(@RequestHeader(value = "Referer", required = false) String referer, HttpServletRequest request) {
     messageService.insertMessage(request);
-    return "redirect:/user/sendMessage";
+    if(referer != null) {
+      return "redirect:"+referer;
+    }else {
+      return "redirect:/user/sendMessage";
+      
+    }
   }
   
   // 받은 쪽지함 개수
@@ -107,12 +114,20 @@ public class MessageController {
     return ResponseEntity.ok(total);
   }
   
-  // 휴지통 이동하기
-  @PostMapping("/user/deleteMsg.do")
-  public String msgRemove(HttpServletRequest request) {
+  // 받은편지함에서 휴지통 이동하기
+  @PostMapping("/user/deleteRecMsg.do")
+  public String recMsgRemove(HttpServletRequest request) {
     int empNo = Integer.parseInt(request.getParameter("empNo"));
-    messageService.deleteMessage(request);
+    messageService.deleteRecMessage(request);
     return "redirect:/user/receiveBox?empNo=" + empNo;
+  }
+  
+  // 보낸편지함에서 휴지통 이동하기
+  @PostMapping("/user/deleteSendMsg.do")
+  public String sendMsgRemove(HttpServletRequest request) {
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
+    messageService.deleteSendMessage(request);
+    return "redirect:/user/sendBox?empNo=" + empNo;
   }
   
   // 삭제 리스트
@@ -129,6 +144,13 @@ public class MessageController {
     Map<String, Object> total = messageService.getDeleteCount(empNo);
     return ResponseEntity.ok(total);
   }
-
-
+  
+  // 답장 보내기 페이지
+  @GetMapping("/user/replyMessage")
+  public String replyMessage(HttpServletRequest request, Model model) {
+    model.addAttribute("request", request);
+    messageService.setReply(model);
+    return "message/replyMessage";
+  }
+  
 }

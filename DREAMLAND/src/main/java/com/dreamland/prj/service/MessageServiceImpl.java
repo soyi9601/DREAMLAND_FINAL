@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.dreamland.prj.dto.EmployeeDto;
+import com.dreamland.prj.dto.MessageDto;
 import com.dreamland.prj.mapper.MessageMapper;
 import com.dreamland.prj.utils.MyMessagePageUtils;
 
@@ -48,7 +49,6 @@ public class MessageServiceImpl implements MessageService {
       insertCount += messageMapper.sendMessage(param);
     }
 
-    System.out.println(insertCount);
     return insertCount;
   }
   
@@ -83,8 +83,17 @@ public class MessageServiceImpl implements MessageService {
     
     Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", nonStar);
 
+    List<MessageDto> msgs = messageMapper.getMessageByReceiver(map);
+    
+    for(MessageDto msg : msgs) {
+      String originContents = msg.getMsgContents();
+      if(originContents.length() > 50) {
+        String truncatedContents = originContents.substring(0, 50) + "...";
+        msg.setMsgContents(truncatedContents);
+      }
+    }
     model.addAttribute("beginNo", nonStar - (page - 1) * display);
-    model.addAttribute("receiveList", messageMapper.getMessageByReceiver(map));
+    model.addAttribute("receiveList", msgs);
     model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/receiveBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
@@ -118,9 +127,19 @@ public class MessageServiceImpl implements MessageService {
     String sort = optSort.orElse("DESC");
     
     Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
+    
+    List<MessageDto> msgs = messageMapper.getMessageBySender(map);
+    
+    for(MessageDto msg : msgs) {
+      String originContents = msg.getMsgContents();
+      if(originContents.length() > 50) {
+        String truncatedContents = originContents.substring(0, 50) + "...";
+        msg.setMsgContents(truncatedContents);
+      }
+    }
 
     model.addAttribute("beginNo", total - (page - 1) * display);
-    model.addAttribute("sendList", messageMapper.getMessageBySender(map));
+    model.addAttribute("sendList", msgs);
     model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/sendBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
@@ -191,9 +210,19 @@ public class MessageServiceImpl implements MessageService {
     String sort = optSort.orElse("DESC");
     
     Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
+    
+    List<MessageDto> msgs = messageMapper.getMessageByStar(map);
+    
+    for(MessageDto msg : msgs) {
+      String originContents = msg.getMsgContents();
+      if(originContents.length() > 50) {
+        String truncatedContents = originContents.substring(0, 50) + "...";
+        msg.setMsgContents(truncatedContents);
+      }
+    }
 
     model.addAttribute("beginNo", total - (page - 1) * display);
-    model.addAttribute("saveList", messageMapper.getMessageByStar(map));
+    model.addAttribute("saveList", msgs);
     model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/saveBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
@@ -210,7 +239,7 @@ public class MessageServiceImpl implements MessageService {
   }
   
   @Override
-  public int deleteMessage(HttpServletRequest request) {
+  public int deleteRecMessage(HttpServletRequest request) {
     
     String[] saveList = request.getParameterValues("checkYn");
     
@@ -219,7 +248,23 @@ public class MessageServiceImpl implements MessageService {
     int[] msgNoList = new int[saveList.length];
     for (int i = 0; i < saveList.length; i++) {
       msgNoList[i] = Integer.parseInt(saveList[i]);
-      messageMapper.updateMsgDelete(msgNoList[i]);
+      messageMapper.updateRecMsgDelete(msgNoList[i]);
+      count++;
+    }
+    
+    return count;
+  }
+  
+  @Override
+  public int deleteSendMessage(HttpServletRequest request) {
+    String[] saveList = request.getParameterValues("checkYn");
+
+    int count = 0;
+    // 문자열 배열을 int 배열로 변환
+    int[] msgNoList = new int[saveList.length];
+    for (int i = 0; i < saveList.length; i++) {
+      msgNoList[i] = Integer.parseInt(saveList[i]);
+      messageMapper.updateSendMsgDelete(msgNoList[i]);
       count++;
     }
     
@@ -248,8 +293,18 @@ public class MessageServiceImpl implements MessageService {
     
     Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
     
+    List<MessageDto> msgs = messageMapper.getMessageByDelete(map);
+    
+    for(MessageDto msg : msgs) {
+      String originContents = msg.getMsgContents();
+      if(originContents.length() > 50) {
+        String truncatedContents = originContents.substring(0, 50) + "...";
+        msg.setMsgContents(truncatedContents);
+      }
+    }
+    
     model.addAttribute("beginNo", total - (page - 1) * display);
-    model.addAttribute("deleteList", messageMapper.getMessageByDelete(map));
+    model.addAttribute("deleteList", msgs);
     model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/removeBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
@@ -262,8 +317,20 @@ public class MessageServiceImpl implements MessageService {
     Map<String, Object> total = new HashMap<>();
     total.put("notReadCount", messageMapper.getMessageCountByDeleteRead(empNo));
     total.put("total", messageMapper.getMessageCountByDelete(empNo));
-    System.out.println(total.toString());
     return total;
+  }
+  
+  @Override
+  public void setReply(Model model) {
+    
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
+    int senderNo = Integer.parseInt(request.getParameter("senderNo"));
+    
+    EmployeeDto emp = messageMapper.getEmployeeBySender(senderNo);
+    model.addAttribute("sender", emp);
+
   }
   
 }

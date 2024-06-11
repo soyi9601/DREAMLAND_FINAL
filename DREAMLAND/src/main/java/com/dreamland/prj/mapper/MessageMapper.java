@@ -40,9 +40,13 @@ public interface MessageMapper {
   int updateMsgStar(int msgNo);
   
   // 삭제 여부 업데이트
-  int updateMsgDelete(int msgNo);
+  int updateRecMsgDelete(int msgNo);
+  int updateSendMsgDelete(int msgNo);
   
   // 스케줄러용 삭제
   void deleteOldMessages();
+  
+  // 답장할 직원 정보
+  EmployeeDto getEmployeeBySender(int senderNo);
 
 }

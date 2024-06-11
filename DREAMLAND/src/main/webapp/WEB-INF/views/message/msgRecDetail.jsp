@@ -16,10 +16,11 @@
               <div class="row">
                 <div class="card">
                   <h5 class="card-header">상세보기</h5>
+                  <form id="frm-receive-detail" method="POST">
                     <div class="card-body">
                     <div class="row mb-3" >
 	                    <div class="d-flex flex-wrap justify-content-end" >
-	                      <button type="button" class="btn btn-xs btn-primary" id="btn-send-message">답장하기</button>
+	                      <button type="button" class="btn btn-xs btn-primary" id="btn-reply-message">답장하기</button>
 	                      <button type="button" class="btn btn-xs btn-warning" id="btn-save">보관하기</button>
 	                      <button type="button" class="btn btn-xs btn-danger" id="btn-delete">삭제하기</button>
 	                    </div>
@@ -34,6 +35,9 @@
 	                          value="${msgDetail.senderName}[${msgDetail.senderDeptName}-${msgDetail.senderPosName}]"
 	                          readOnly
 	                        />
+	                        <input class="form-emp-no" type="hidden" value="${msgDetail.msgSender}" id="senderNo" name="senderNo"/> 
+		                      <input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/> 
+		                      <input class="form-emp-no" type="hidden" value="${msgDetail.msgNo}" id="msgNo" name="checkYn"/> 
                         </div>
                       </div>
                       <div class="row mb-3" >
@@ -53,10 +57,11 @@
                         <pre>${msgDetail.msgContents}</pre>
                       </div>
                     </div>
+                    </form>
                   </div>
                 </div>
                 </div>
 
             <!-- / Content -->
-<!-- <script src="../assets/js/pages-send-message.js"></script> -->
+<script src="../assets/js/pages-receive-detail.js"></script>
 <%@ include file="../layout/footer.jsp" %>

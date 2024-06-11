@@ -33,8 +33,12 @@ public interface MessageService {
   Map<String, Object> getStarCount(int empNo);
   
   // 삭제
-  int deleteMessage(HttpServletRequest request);
+  int deleteRecMessage(HttpServletRequest request);
+  int deleteSendMessage(HttpServletRequest request);
   void getDeleteMessage(Model model);
   Map<String, Object> getDeleteCount(int empNo);
+  
+  // 답장
+  void setReply(Model model);
   
 }

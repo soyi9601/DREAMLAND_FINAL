@@ -17,7 +17,7 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">중요보관함 <small id="save-count"></small></h5>
-	                  <form id="save-form" method="POST">
+	                  <form id="frm-save-box" method="POST">
                     <div>
                       <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
                     </div>
@@ -25,7 +25,7 @@
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th></th>
+                          <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
                           <th>보낸사람</th>
                           <th>쪽지내용</th>
                           <th>받은시간</th>
@@ -59,6 +59,7 @@
                           </c:if>
                         </tbody>
                     </table>
+                    <input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/>  
                     </div>
                     </form>
                     <div class="tab-content">

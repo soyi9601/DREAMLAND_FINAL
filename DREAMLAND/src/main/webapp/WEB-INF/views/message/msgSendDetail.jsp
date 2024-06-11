@@ -16,6 +16,7 @@
               <div class="row">
                 <div class="card">
                   <h5 class="card-header">상세보기</h5>
+                  <form id="frm-send-detail" method="POST">
                     <div class="card-body">
                     <div class="row mb-3" >
                       <div class="d-flex flex-wrap justify-content-end" >
@@ -44,6 +45,8 @@
                             value="${msgDetail.msgCreateDt}"
                             readOnly
                           />
+                          <input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/> 
+                          <input class="form-emp-no" type="hidden" value="${msgDetail.msgNo}" id="msgNo" name="checkYn"/> 
                         </div>
                       </div>
                       <hr></hr>
@@ -51,10 +54,11 @@
                         <pre>${msgDetail.msgContents}</pre>
                       </div>
                     </div>
+                    </form>
                   </div>
                 </div>
                 </div>
 
             <!-- / Content -->
-<!-- <script src="../assets/js/pages-send-message.js"></script> -->
+<script src="../assets/js/pages-send-detail.js"></script>
 <%@ include file="../layout/footer.jsp" %>

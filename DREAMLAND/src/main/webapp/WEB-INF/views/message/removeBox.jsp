@@ -21,7 +21,7 @@
 	                  <table class="table table-hover">
 	                    <thead>
 	                      <tr>
-	                        <th></th>
+	                        <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
 	                        <th>보낸사람</th>
 	                        <th>쪽지내용</th>
 	                        <th>보낸시간</th>
@@ -40,12 +40,12 @@
                                   <c:choose>
                                       <c:when test="${delete.readYn == 'Y'}">
                                           <td style="color: lightgray;">${delete.senderName}</td>
-                                          <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${delete.msgNo}">${delete.msgContents}</a></td>
+                                          <td style="color: lightgray;">${delete.msgContents}</td>
                                           <td style="color: lightgray;">${delete.msgCreateDt}</td>
                                       </c:when>
                                       <c:otherwise>
                                           <td>${delete.senderName}</td>
-                                          <td><a href="${contextPath}/user/msgRecDetail?msgNo=${delete.msgNo}">${delete.msgContents}</a></td>
+                                          <td>${delete.msgContents}</td>
                                           <td>${delete.msgCreateDt}</td>
                                       </c:otherwise>
                                   </c:choose>
