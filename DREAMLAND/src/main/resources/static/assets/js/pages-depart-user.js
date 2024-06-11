@@ -44,17 +44,28 @@ OrgChart.templates.employees.field_0 = '<text data-width="140" class="field_0" s
       employees: {
         template: "employees",
       },
-    },
-    nodeMouseClick: function(args) {
-      console.log(node);
-        if (args.node.tags.includes("employees")) {
-            return OrgChart.action.edit;   // employees 태그가 있는 노드에 대한 클릭 이벤트를 활성화
-        }
-        return OrgChart.action.none;   // 다른 모든 노드에 대한 클릭 이벤트를 비활성화
-    },
+    },    
     editForm: {readOnly: true},
     nodes: orgChartData
   });
   
+  chart.on('click', function (sender, args) {
+    if (args.node.min) {
+        sender.maximize(args.node.id);
+    }
+    else {
+        sender.minimize(args.node.id);
+    }
+    return false;
+});
+  
+  // 클릭 이벤트 추가
+/*chart.on('click', function(sender, args) {
+    var node = chart.getNode(args.node.id);
+    if (node.tags.includes("employees")) {
+        // employees 태그가 있는 노드에 대한 클릭 이벤트를 활성화
+        alert("You clicked on an employee node!");
+    }
+});*/
   chart.load(orgChartData); 
 

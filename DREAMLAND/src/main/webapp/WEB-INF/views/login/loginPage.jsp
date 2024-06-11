@@ -55,6 +55,7 @@
     <!-- Page CSS -->
     <!-- Page -->
     <link rel="stylesheet" href="/resources/assets/vendor/css/pages/page-auth.css" />
+    <link rel="icon" href="/resources/favicon.ico">
     <!-- Helpers -->
     <script src="/resources/assets/vendor/js/helpers.js"></script>
 

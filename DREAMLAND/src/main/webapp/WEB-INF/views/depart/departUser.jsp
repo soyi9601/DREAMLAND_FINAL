@@ -20,5 +20,5 @@
 <script>
 var orgChartData = JSON.parse('<c:out value="${orgChartData}" escapeXml="false"/>');
 </script>
-<script src="../assets/js/pages-departUser.js"></script>
+<script src="../assets/js/pages-depart-user.js"></script>
 <%@ include file="../layout/footer.jsp" %>    
