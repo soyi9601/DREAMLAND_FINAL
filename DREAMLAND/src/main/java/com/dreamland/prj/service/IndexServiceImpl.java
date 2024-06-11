@@ -42,12 +42,23 @@ public class IndexServiceImpl implements IndexService {
                      .build();
     indexMapper.insertWork(work);
   }  
+  
   @Override
   public void workOut(int empNo) {
     WorkDto work = WorkDto.builder()
                        .empNo(empNo)
                      .build();
     indexMapper.updateWorkOut(work);    
+  }
+  
+  @Override
+  public boolean hasCheckedWorkIn(int empNo) {
+    return indexMapper.hasCheckedWorkIn(empNo) > 0;
+  }
+  
+  @Override
+  public void updateCheckedWorkOut() {
+    indexMapper.updateCheckedWorkOut();    
   }
   
   
@@ -65,6 +76,19 @@ public class IndexServiceImpl implements IndexService {
   @Override
   public int getReceiveCount(int empNo) {
     return indexMapper.getMessageCountByReceiver(empNo);
+  }
+  
+  
+  // 결재 대기문서
+  @Override
+  public int getWaitCount(int empNo) {
+    return indexMapper.getWaitCount(empNo);
+  }
+  
+  // 결재 진행문서
+  @Override
+  public int getMyApvCount(int empNo) {
+    return indexMapper.getMyApvCount(empNo);
   }
 
 }
