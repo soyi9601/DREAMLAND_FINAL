@@ -9,7 +9,7 @@
  *    3) 240605
  *        - 공지사항 조회
  *    4) 240610
- *        - 전자결재
+ *        - 전자결재 카운터
  */
  
  
@@ -86,7 +86,6 @@ function fnCalendar() {
     var indexCalendar = new FullCalendar.Calendar(calendarEl, {
       height: 500,
       initialView: 'dayGridMonth',
-      locale: 'ko', // 한국어 설정
       headerToolbar: {
         left: 'prev,next',
         center: 'title',
@@ -98,7 +97,6 @@ function fnCalendar() {
       start: '2024-06-02'},
       customButtons: {          
         customToday: { // 오늘 날짜로 이동
-          text: '오늘',
           click: function() {
             indexCalendar.today();
           }

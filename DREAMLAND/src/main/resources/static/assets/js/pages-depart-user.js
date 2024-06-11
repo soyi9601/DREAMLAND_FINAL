@@ -45,7 +45,7 @@ OrgChart.templates.employees.field_0 = '<text data-width="140" class="field_0" s
         template: "employees",
       },
     },    
-    editForm: {readOnly: true},
+    nodeMouseClick: OrgChart.action.none,
     nodes: orgChartData
   });
   

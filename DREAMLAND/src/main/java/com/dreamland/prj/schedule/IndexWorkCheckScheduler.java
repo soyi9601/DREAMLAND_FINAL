@@ -18,7 +18,7 @@ public class IndexWorkCheckScheduler {
   private final IndexService indexService;
   
   // 평일 오후 6시 1분에 checkLate 서비스 동작
-  @Scheduled(cron="59 59 10 * * MON-FRI")
+  @Scheduled(cron="59 59 23 * * MON-FRI")
   public void checkedkWorkOut() {
     log.info("========= 퇴근체크 =========");
     indexService.updateCheckedWorkOut();
