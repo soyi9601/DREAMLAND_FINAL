@@ -1169,9 +1169,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int flag = 0;
 		String empNo = request.getParameter("empNo");
 		String apvKind = request.getParameter("apvKind");
+		String leavekind = request.getParameter("leavekind");
 		String returnReason = request.getParameter("rejectedReason");
 		approvalMapper.updateApprover(apvNo,empNo,returnReason);
-		 
+		
 
 		if(returnReason.equals("0")) {
 			List<String> b = approvalMapper.getApprovers(apvNo);
@@ -1190,7 +1191,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		 			String endDate = a.getLeaveEnd();
 		 			String empNo2 = a.getEmpNo() + "";
 		 			
-		 			if(strDate.equals(endDate)) {
+		 			if(leavekind.equals("1")) {
 		 				
 		 				approvalMapper.updateEmployee(empNo2,  (float) 0.5);
 		 				
