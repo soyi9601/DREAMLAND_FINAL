@@ -8,13 +8,6 @@
    <select id="getDayoffListByYear" 
            parameterType="map" 
            resultType="AppleaveDto">
-      <!-- SELECT L.LEAVE_CLASSIFY, L.LEAVE_START, L.LEAVE_END, L.DETAIL
-        FROM APV_LEAVE L
-        JOIN EMPLOYEE E ON L.EMP_NO = E.EMP_NO
-       WHERE L.EMP_NO = #{empNo}
-         AND L.LEAVE_STATUS = 1
-         AND TO_CHAR(L.LEAVE_START, 'YYYY') = #{year}
-       ORDER BY L.LEAVE_START -->
        SELECT LEAVE_CLASSIFY, LEAVE_START , LEAVE_END, DETAIL 
          FROM APV_LEAVE
         WHERE EMP_NO = #{empNo}

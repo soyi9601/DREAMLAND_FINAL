@@ -24,7 +24,6 @@ public class WorkServiceImpl implements WorkService {
   
   private final WorkMapper workMapper;
   private final LoginService loginService;
-
   
   // 지각처리
   @Override
@@ -33,7 +32,6 @@ public class WorkServiceImpl implements WorkService {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     String today = sdf.format(new Date());
     workMapper.updateLate(today);
-    
   }
 
   // 결근처리
@@ -62,7 +60,7 @@ public class WorkServiceImpl implements WorkService {
       for (Integer empNo : dayoffEmpList) {
               Integer dayoffType = workMapper.getDayoffType(today, empNo);
               if (dayoffType != null) {
-                  if (dayoffType == 30) { // 연차
+                  if (dayoffType == 30) {  // 연차
                       List<WorkDto> workList = workMapper.getWorkListByDate(today, empNo);
                       if (workList.isEmpty()) {
                           workMapper.insertDayoff(today, dayoffType, empNo);

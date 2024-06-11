@@ -186,10 +186,10 @@
     <select id="getTotalWorkHours" 
             parameterType="map" 
             resultType="int">
-      SELECT SUM(WORK_TOTAL_TIME)
+      SELECT COALESCE(SUM(WORK_TOTAL_TIME), 0) <!-- NULL 처리 : 합계가 NULL 이면 0 반환 -->
       FROM WORK 
       WHERE EMP_NO = #{empNo}
-        AND WORK_STATE IN ('10', '20') 
+        AND WORK_STATE IN ('10', '20') <!-- 정상출근, 반차 -->
         AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
     </select>
     
@@ -197,7 +197,7 @@
     <select id="getAvgWorkHours" 
             parameterType="map" 
             resultType="double">
-      SELECT AVG(WORK_TOTAL_TIME)
+      SELECT COALESCE(AVG(WORK_TOTAL_TIME), 0.0) <!-- NULL 처리 : 평균값이 NULL 이면 0.0 반환 -->
       FROM WORK 
       WHERE EMP_NO = #{empNo}
         AND WORK_STATE IN (10, 20) <!-- 정상출근, 반차 -->

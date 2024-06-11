@@ -21,15 +21,25 @@
 
   <div class="container my-5 p-5 bg-white shadow rounded">
         <div class="row align-items-center mb-5">
-            <div class="col-auto">
+        <!-- 프로필 사진 영역 -->
+        <!--<div class="col-auto">
                 <div class="avatar bg-secondary rounded-circle"></div>
-            </div>
+            </div> -->
             <div class="col">
                 <h2>${loginEmployee.empName}</h2>
-                <span class="badge rounded-pill bg-secondary">${loginEmployee.deptName}</span>
+                 <span class="badge rounded-pill bg-secondary">
+				            <c:choose>
+				                <c:when test="${loginEmployee.deptNo == 9999}">대표이사</c:when>
+				                <c:when test="${loginEmployee.deptNo == 1000}">인사팀</c:when>
+				                <c:when test="${loginEmployee.deptNo == 2000}">경영지원팀</c:when>
+				                <c:when test="${loginEmployee.deptNo == 3000}">안전관리팀</c:when>
+				                <c:when test="${loginEmployee.deptNo == 5000}">시설운영팀</c:when>
+				                <c:when test="${loginEmployee.deptNo == 6000}">마케팅팀</c:when>
+				            </c:choose>
+                 </span>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-primary">연차신청</button>
+                <a class="btn btn-primary" href="${contextPath}/approval/appWrite?apvNo=000">연차신청</a>
             </div>
         </div>
 
@@ -54,7 +64,7 @@
               <div class="col">
                   <div class="stat-detail">
                     <span>잔여 연차</span>
-                    <span class="fs-4">${remainingDayOff}</span>
+                    <span class="fs-4">${remainDayOff}</span>
                   </div>
               </div>
           </div>
