@@ -1,8 +1,6 @@
 @charset "UTF-8";
 
-        body {
-            font-family: Arial, sans-serif;
-        }
+
         .container {
             width: 80%;
             margin: auto;
