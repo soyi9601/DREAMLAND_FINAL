@@ -17,27 +17,40 @@
                 <div class="card">
                   <h5 class="card-header">상세보기</h5>
                     <div class="card-body">
-                    <div>
-                      <button type="button" class="btn btn-primary" id="btn-send-message">답장하기</button>
-                      <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
-                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
+                    <div class="row mb-3" >
+	                    <div class="d-flex flex-wrap justify-content-end" >
+	                      <button type="button" class="btn btn-xs btn-primary" id="btn-send-message">답장하기</button>
+	                      <button type="button" class="btn btn-xs btn-warning" id="btn-save">보관하기</button>
+	                      <button type="button" class="btn btn-xs btn-danger" id="btn-delete">삭제하기</button>
+	                    </div>
                     </div>
-                      <div class="mb-3" >
-                        <label for="sender" class="form-label">보낸사람</label>
-                        <div id="sender-container" class="input-container">
+                      <div class="row mb-3" >
+                        <label for="sender" class="col-sm-2 col-form-label">보낸사람</label>
+                        <div class="col-sm-10">
 	                        <input
 	                          type="text"
 	                          class="form-control"
 	                          id="sender"
-	                          value="${msgDetail.senderName}"
+	                          value="${msgDetail.senderName}[${msgDetail.senderDeptName}-${msgDetail.senderPosName}]"
 	                          readOnly
 	                        />
                         </div>
-                        <div id="auto-complete"></div>
                       </div>
-                      <div>
-                        <label for="contents" class="form-label">내용</label>
-                        <textarea class="form-control" id="contents" name="contents" rows="10" readOnly>${msgDetail.msgContents}</textarea>
+                      <div class="row mb-3" >
+                        <label for="create-dt" class="col-sm-2 col-form-label">받은시간</label>
+                        <div class="col-sm-10">
+	                        <input
+	                          type="text"
+	                          class="form-control"
+	                          id="create-dt"
+	                          value="${msgDetail.msgCreateDt}"
+	                          readOnly
+	                        />
+                        </div>
+                      </div>
+                      <hr></hr>
+                      <div class="row mb-3">
+                        <pre>${msgDetail.msgContents}</pre>
                       </div>
                     </div>
                   </div>

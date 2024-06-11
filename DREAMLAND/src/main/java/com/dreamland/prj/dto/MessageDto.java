@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class MessageDto {
 	
   private int msgNo, msgSender, msgReceiver;
-  private String msgContents, readYn, delYn, starYn, senderName, receiverName, msgCreateDt;
+  private String msgContents, readYn, delYn, starYn, senderName, receiverName, msgCreateDt, senderDeptName, senderPosName, receiverDeptName, receiverPosName ;
   
 }

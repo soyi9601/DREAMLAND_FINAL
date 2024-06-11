@@ -40,8 +40,8 @@
                           </c:if>
                           <c:if test="${not empty sendList}">
                             <c:forEach items="${sendList}" var="send" varStatus="vs">
-                              <tr class="clickable-row" data-href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">
-                                <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1" /></td>
+                              <tr>
+                                <td><input class="form-check-input" type="checkbox" value="${send.msgNo}" id="star-no" name="checkYn"/></td>
                                 <td>${send.receiverName}</td>
                                 <td><a href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">${send.msgContents}</a></td>
                                 <td>${send.msgCreateDt}</td>
@@ -58,12 +58,14 @@
                           </c:if>
                         </tbody>
 	                  </table>
+	                  <input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/>  
 				            <div class="tab-content">
                      <nav aria-label="Page navigation">
                          <ul class="pagination justify-content-center">${paging}</ul>
                        </nav>
                        </div>
 			                </div>
+			                </form>
 			              </div>
 					              <!--/ Hoverable Table rows -->
                    </div>

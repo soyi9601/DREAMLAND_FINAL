@@ -31,6 +31,12 @@ $(document).ready(function() {
     });
 })
 
+// 삭제 이동
+document.getElementById("btn-delete").addEventListener("click", function() {
+    document.getElementById("send-form").action = "/user/deleteMsg.do";
+    document.getElementById("send-form").submit();
+});
+
 /************************** 함수 호출 **************************/
 /*document.getElementById('contents').addEventListener('keyup', fnCheckByte);
 fnEmployeeList();*/
