@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="/resources/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="/resources/assets/css/demo.css" />
   <link rel="stylesheet" href="/resources/assets/css/main.css" />
-
+  <link rel="stylesheet" href="/resources/assets/css/apv.css" />
 
 
   <!-- Vendors CSS -->
@@ -72,20 +72,6 @@
 
         <ul class="menu-inner py-1">
           <!-- Layouts -->
-          <li class="menu-item">
-            <div class="row mx-5">
-              <!-- Button trigger modal -->
-              <button
-                type="button"
-                class="btn btn-primary justify-content-sm-center"
-                id="btn-send-message"
-              >
-                쪽지보내기
-              </button>
-              </div>
-
-              <!-- Modal -->
-          </li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -144,22 +130,22 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>받은쪽지함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/sendBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>보낸쪽지함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/saveBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>중요보관함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/removeBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>휴지통</div>
                 </a>
               </li>
@@ -279,6 +265,7 @@
                         </div>
                         <div class="flex-grow-1">
                           <span class="fw-semibold d-block">${loginEmployee.empName}</span>
+                          <small class="text-muted">${loginEmployee.posName}</small>
                         </div>
                       </div>
                     </a>
@@ -314,16 +301,3 @@
           </div>
         </nav>
         <!-- / Navbar -->
-        
-       <script>
-        const fnGetContextPath = ()=>{
-            const host = location.host;  /* localhost:8080 */
-            const url = location.href;   /* http://localhost:8080/mvc/getDate.do */
-            const begin = url.indexOf(host) + host.length;
-            const end = url.indexOf('/', begin + 1);
-            return url.substring(begin, end);
-          } 
-          document.getElementById('btn-send-message').addEventListener('click', ()=>{
-            location.href="http://" + location.host +"/user/sendMessage"
-          })
-        </script>
