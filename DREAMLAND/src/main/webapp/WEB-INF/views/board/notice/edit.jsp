@@ -220,9 +220,7 @@ const fnAddAttach = () => {
     if (event.target.type === 'file') {
       
       let file = event.target.files[0];
-      
       console.log(file);
-      
       if (file) {
         //globalFormData = new FormData(); // 새 formData 객체 생성
         globalFormData.append('files', file);
@@ -360,9 +358,7 @@ const fnModifyUpload = () => {
       //console.log($('input[name="signal"]').val());
       return;
     }
-    
-    
-    
+
     evt.preventDefault(); // 폼 제출 중지
     fnAddAttachGo(); // 파일 첨부 실행
     fnRemoveAttachGo();

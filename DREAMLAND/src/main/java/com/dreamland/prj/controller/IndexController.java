@@ -28,7 +28,9 @@ public class IndexController {
   public String index(Model model, Authentication authentication) {
     String email = authentication.getName();
     EmployeeDto emp = indexService.loadUser(email);
+    boolean hasCheckedWorkIn = indexService.hasCheckedWorkIn(emp.getEmpNo());
     model.addAttribute("emp", emp);
+    model.addAttribute("hasCheckedWorkIn", hasCheckedWorkIn);
     return "index";
   }
   
@@ -50,15 +52,35 @@ public class IndexController {
     return ResponseEntity.ok(response);
   }
   
+  
+  // 공지사항
   @GetMapping(value="/notice", produces="application/json")
   public ResponseEntity<Map<String, Object>> getNoticeList(HttpServletRequest request) {
     return indexService.getNoticeList(request);
   }
   
+  
+  // 쪽지카운트
   @GetMapping(value="/receiveCount", produces="application/json")
   public ResponseEntity<Integer> getReceiveCount(@RequestParam int empNo){
     int receiveCount = indexService.getReceiveCount(empNo);
     return ResponseEntity.ok(receiveCount);
   }
+  
+  
+  // 전자결재 대기문서(내가 결재해야 할 것)
+  @GetMapping(value="/waitCount", produces="application/json")
+  public ResponseEntity<Integer> getWaitCount(@RequestParam int empNo) {
+    int waitCount = indexService.getWaitCount(empNo);
+    return ResponseEntity.ok(waitCount);
+  }
+  
+  //전자결재 진행문서(내가 결재 올린 것)
+  @GetMapping(value="/waitMyApvCount", produces="application/json")
+  public ResponseEntity<Integer> getMyApvCount(@RequestParam int empNo) {
+    int myApvCount = indexService.getMyApvCount(empNo);
+    return ResponseEntity.ok(myApvCount);
+  }
+  
   
 }
