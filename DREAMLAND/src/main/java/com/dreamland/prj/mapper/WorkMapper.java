@@ -10,7 +10,7 @@ import com.dreamland.prj.dto.WorkDto;
 @Mapper
 public interface WorkMapper {
   
-  List<WorkDto> getWorkListByDate(String today, int empNo);         // 근무기록 조회 (오늘날짜)
+  WorkDto getWorkByDate(String today, int empNo);                   // 근무기록 조회 (오늘날짜)
   void updateLate(String today);                                    // 지각 처리
   List<Integer> getAbsenceEmpList(String today);                    // 결근 사원 목록
   void insertAbsence(String today, int empNo);                      // 결근 처리

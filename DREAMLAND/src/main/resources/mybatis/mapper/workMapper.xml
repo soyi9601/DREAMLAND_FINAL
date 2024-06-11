@@ -21,7 +21,7 @@
     </resultMap>
     
     <!-- 오늘 날짜 근무기록 조회 -->
-    <select id="getWorkListByDate" 
+    <select id="getWorkByDate" 
              parameterType="map" 
              resultType="WorkDto">
         SELECT WORK_NO, WORK_DATE, WORK_IN, WORK_OUT, WORK_TOTAL_TIME, WORK_STATE, LATE_YN, EMP_NO

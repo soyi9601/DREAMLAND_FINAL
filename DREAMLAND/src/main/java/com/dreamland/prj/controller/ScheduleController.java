@@ -31,6 +31,10 @@ public class ScheduleController {
   @GetMapping(value="/calendar.do", produces="application/json")
   public String list(HttpServletRequest request, Model model) {
     EmployeeDto loginEmployee = getEmployeeFromSession(); // 현재 세션에서 로그인된 사용자 정보 가져옴
+    
+    // 로그인된 사용자 정보를 세션에 저장
+    request.getSession().setAttribute("loginEmployee", loginEmployee);
+    
     model.addAttribute("loginEmployee", loginEmployee);   // 사용자 정보 모델에 추가
     scheduleService.loadSkdList(request, model);          // 일정목록
     return "schedule/calendar";
@@ -56,13 +60,21 @@ public class ScheduleController {
      return ResponseEntity.ok(Map.of("modifyCount", modifyCount));
   }
   
-  // 일정 삭제
-  @GetMapping("/remove.do")
-  public String remove(@RequestParam int skdNo, RedirectAttributes redirectAttributes) {
-      int removeCount = scheduleService.removeSkd(skdNo);
-      redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "삭제되었습니다." : "삭제를 하지 못했습니다.");
-    return "redirect:/schedule/calendar.do"; 
-  }
+//  // 일정 삭제
+//  @GetMapping("/remove.do")
+//  public String remove(@RequestParam int skdNo, RedirectAttributes redirectAttributes) {
+//    int removeCount = scheduleService.removeSkd(skdNo);
+//    redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "삭제되었습니다." : "삭제를 하지 못했습니다.");
+//    return "redirect:/schedule/calendar.do"; 
+//  }
+  
+//일정 삭제
+@PostMapping("/remove.do")
+public ResponseEntity<Map<String, Object>> remove(@RequestParam int skdNo) {
+   int removeCount = scheduleService.removeSkd(skdNo);
+   return ResponseEntity.ok(Map.of("removeCount", removeCount));
+}
+  
   
   // 현재 세션에서 로그인된 사용자 정보 가져옴
   private EmployeeDto getEmployeeFromSession() {

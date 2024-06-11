@@ -41,8 +41,8 @@ public class WorkServiceImpl implements WorkService {
     String today = sdf.format(new Date());
     List<Integer> empNos = workMapper.getAbsenceEmpList(today);
     for (Integer empNo : empNos) {
-      List<WorkDto> workRecords = workMapper.getWorkListByDate(today, empNo);
-      if (workRecords.isEmpty()) {
+      WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
+      if (workRecord == null) {
           workMapper.insertAbsence(today, empNo);
       }
     }
@@ -57,19 +57,23 @@ public class WorkServiceImpl implements WorkService {
       
       List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today);
       for (Integer empNo : dayoffEmpList) {
-              Integer dayoffType = workMapper.getDayoffType(today, empNo);
-              if (dayoffType != null) {
-                  if (dayoffType == 30) {  // 연차
-                      List<WorkDto> workList = workMapper.getWorkListByDate(today, empNo);
-                      if (workList.isEmpty()) {
-                          workMapper.insertDayoff(today, dayoffType, empNo);
-                      }
-                  } else if (dayoffType == 20) { // 반차
+          Integer dayoffType = workMapper.getDayoffType(today, empNo);
+          if (dayoffType != null) {
+              WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
+              if (dayoffType == 30) {  // 연차
+                  if (workRecord == null) {
+                      workMapper.insertDayoff(today, dayoffType, empNo);
+                  }
+              } else if (dayoffType == 20) { // 반차
+                  if (workRecord == null) {
+                      workMapper.insertDayoff(today, dayoffType, empNo);
+                  } else {
                       workMapper.updateDayoffStatus(today, dayoffType, empNo);
                   }
               }
           }
       }
+  }
   
   // 지각 + 조기퇴근 + 결근 횟수 + 근무시간 조회
   @Override
