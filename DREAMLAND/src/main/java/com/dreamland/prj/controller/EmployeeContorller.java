@@ -20,6 +20,15 @@ public class EmployeeContorller {
   
   @Autowired
   private EmployeeServiceImpl employeeService;
+ 
+  // 부서, 직급 가져오기
+  @GetMapping("/employee/add")
+  public String add(HttpServletRequest request, Model model) {
+    model.addAttribute("request", request);
+    employeeService.getDeptAndPos(model);
+    return "employee/addEmployee";
+    
+  }
   
   // 직원 등록
   @PostMapping("/employee/add.do")
