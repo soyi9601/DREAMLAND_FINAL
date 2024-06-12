@@ -32,6 +32,13 @@
 	 	 WHERE EMP_NO = #{empNo} 
 	 </select>
 	 
+	 <select id="getEmployeePosName">
+	 	SELECT P.POS_NAME
+	 	  FROM EMPLOYEE E	INNER JOIN POSITION P
+	 	    ON E.POS_NO = P.POS_NO
+	 	 WHERE E.EMP_NO = #{empNo} 
+	 </select>
+	 
 	 	 <select id="getApprovers">
 	 	SELECT APV_STATE
 	 	  FROM APV_WRITER	
@@ -564,7 +571,6 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
      WHERE APV_NO = #{apvNo}
    </update>
    
-   
    <delete id="deleteApvRef">
   DELETE FROM APV_REF
 				WHERE APV_NO = #{apvNo}
@@ -602,6 +608,11 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE
   DELETE FROM APV_ATTACH
 				WHERE APV_NO = #{apvNo}
 				  AND ATTACH_NO = #{attachNo}
+    </delete>
+    
+    <delete id="deleteApp">
+  DELETE FROM APPROVAL
+				WHERE APV_NO = #{apvNo}
     </delete>
     
    <update id="revokeApproval">

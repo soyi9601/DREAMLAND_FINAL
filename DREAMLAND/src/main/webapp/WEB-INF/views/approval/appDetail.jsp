@@ -26,15 +26,15 @@
             <table class="approval-table">
                 <tr>
                     <td>담당</td>
-                    <td>팀장</td>
-                    <td>본부장</td>
-                    <td>대표이사</td>
+  									 <c:if test="${not empty appovers.approver1}"><td><div>${appovers.approverPosName1}</div></td></c:if>
+                     <c:if test="${not empty appovers.approver2}"><td><div>${appovers.approverPosName2}</div></td></c:if>
+                     <c:if test="${not empty appovers.approver3}"><td><div>${appovers.approverPosName3}</div></td></c:if>
                 </tr>
                 <tr>
                     <td><div>${appovers.writer}</div></td>
-                    <td><div>${appovers.approver1}</div></td>
-                    <td><div>${appovers.approver2}</div></td>
-                    <td><div>${appovers.approver3}</div></td>
+                     <c:if test="${not empty appovers.approver1}"><td><div>${appovers.approver1}</div></td></c:if>
+                     <c:if test="${not empty appovers.approver2}"><td><div>${appovers.approver2}</div></td></c:if>
+                     <c:if test="${not empty appovers.approver3}"><td><div>${appovers.approver3}</div></td></c:if>
                 </tr>
             </table>
             <div class="section">
@@ -102,9 +102,7 @@
             <div class="footer">
                 위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.<br>
                 <br>
-                20<span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;</span>년&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;일<br>
-                작성자: <span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> (인)
-            </div>
+                     </div>
             <c:if test="${kind2 == 'wait' &&  loginEmployee.empName == appovers.approver1 || kind2 == 'wait' &&  loginEmployee.empName == appovers.approver2 || kind2 == 'wait' &&  loginEmployee.empName == appovers.approver3}">
             <div class="button-container">
                      <input type="hidden" name="apvNo" value="${approval.apvNo}">
@@ -117,6 +115,7 @@
             </c:if>
             
                <c:if test="${reject == 2}">
+               	  <button class="button button-primary"  id="delete">삭제하기</button>
                	  <button class="button button-primary"  id="write">작성하기</button>
                </c:if>
                
@@ -271,9 +270,7 @@
    
                 위와 같은 사유로 휴가를 신청하오니 허가하여 주시기 바랍니다.<br>
                 <br>
-                20<span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;</span>년&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;일<br>
-                작성자: <span style="border-bottom: 1px solid #000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> (인)
-            </div>
+                  </div>
             <c:if test="${kind2 == 'wait' &&  loginEmployee.empName == appovers.approver1 || kind2 == 'wait' &&  loginEmployee.empName == appovers.approver2 || kind2 == 'wait' &&  loginEmployee.empName == appovers.approver3}">
             <div class="button-container">
                      <input type="hidden" name="apvNo" value="${approval.apvNo}">
@@ -286,6 +283,7 @@
             </c:if>
                         
                <c:if test="${reject == 2}">
+               	  <button class="button button-primary"  id="delete">삭제하기</button>
                	  <button class="button button-primary"  id="write">작성하기</button>
                </c:if>
                
@@ -305,11 +303,10 @@
 
 const apvNo = ${approval.apvNo};
 const apvKind = ${kind};
-var leavekinf ;
 if(apvKind == '1') {
-	 leavekind = document.getEelementById('leaveKind').value ;
+	var leavekind = document.getElementById('leaveKind').value ;
 	} else {
-		 leavekind = 0;
+		var leavekind = 0;
 	}
 
 const empNo = ${loginEmployee.empNo};
@@ -335,7 +332,15 @@ const fnReWrite = () => {
 	};
 	fnReWrite();
 	
-	const fnRevoke = () => {
+const fnDelete = () => {
+	  $('#delete').on('click', (evt) => {
+	      location.href = '${contextPath}/approval/appDelete?apvNo=' + apvNo; 
+	    
+	  });
+	};
+	fnDelete();
+	
+const fnRevoke = () => {
 		  $('#revoke').on('click', (evt) => {
 			  if (confirm('정말 철회하시겠습니까? 철회된 문서는 임시저장함으로 이동합니다')) {
 		      location.href = '${contextPath}/approval/revoke.do?apvNo=' + apvNo +'&apvKind=' + apvKind; 
