@@ -4,9 +4,6 @@
  * 이력   :
  *    1) 240610
  *        - 중요 쪽지 개수 가져오기
- *        - MessageDto List 를 ajax 으로 가져오기
- *    2) 240609
- *        - 상세보기, 삭제, 보관함 이동 함수
  */
 
 'use strict';
@@ -33,6 +30,48 @@ $(document).ready(function() {
         }
     });
 })
+
+// 삭제 이동
+document.getElementById("btn-delete").addEventListener("click", function(evt) {
+    document.getElementById("frm-save-box").action = "/user/deleteSaveMsg.do";
+    fnBlankCheck(evt, '쪽지를 삭제하시겠습니까?','쪽지가 성공적으로 삭제되었습니다.');
+});
+
+// 공백 체크 함수
+const fnBlankCheck = (evt, message1, message2)=>{
+    let inpCheckbox = document.getElementsByClassName('form-check-input');
+    let isChecked = false;
+    
+    for(let i = 0 ; i < inpCheckbox.length; i++){
+      if(inpCheckbox[i].checked){
+        isChecked = true;
+        break;
+      }
+    }
+    if(!isChecked){
+      alert('쪽지를 선택해주세요');
+      evt.preventDefault();
+      return;
+    } else {
+      let btnConfirm = confirm(message1);
+      if(!btnConfirm){
+        evt.preventDefault();
+        return;
+      } else{
+        document.getElementById("frm-save-box").submit();
+        alert(message2);        
+      }
+      
+    }
+}
+
+// 전체 선택 체크박스 이벤트 핸들러
+document.getElementById("check-all").addEventListener("change", function() {
+    let checkboxes = document.getElementsByClassName('form-check-input');
+    for(let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = this.checked;
+    }
+});
 
 
 /************************** 함수 호출 **************************/

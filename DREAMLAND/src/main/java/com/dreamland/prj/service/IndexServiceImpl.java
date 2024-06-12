@@ -1,5 +1,7 @@
 package com.dreamland.prj.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,18 +16,14 @@ import com.dreamland.prj.dto.WorkDto;
 import com.dreamland.prj.mapper.IndexMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
-
+@RequiredArgsConstructor
 @Service
 public class IndexServiceImpl implements IndexService {
 
   private final IndexMapper indexMapper;
   
-  public IndexServiceImpl(IndexMapper indexMapper) {
-    super();
-    this.indexMapper = indexMapper;
-  }
-
   
   //부서 + 직원 전체 리스트 조회
   @Override
@@ -42,12 +40,28 @@ public class IndexServiceImpl implements IndexService {
                      .build();
     indexMapper.insertWork(work);
   }  
+  
   @Override
-  public void workOut(int empNo) {
-    WorkDto work = WorkDto.builder()
-                       .empNo(empNo)
-                     .build();
-    indexMapper.updateWorkOut(work);    
+  public Map<String, Object> workOut(int empNo) {
+    
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String today = sdf.format(new Date());
+    
+    Map<String, Object> map = new HashMap<>();
+    map.put("today", today);
+    map.put("empNo", empNo);
+    indexMapper.updateWorkOut(map);
+    return map;    
+  }
+  
+  @Override
+  public boolean hasCheckedWorkIn(int empNo) {
+    return indexMapper.hasCheckedWorkIn(empNo) > 0;
+  }
+  
+  @Override
+  public void updateCheckedWorkOut() {
+    indexMapper.updateCheckedWorkOut();    
   }
   
   
@@ -65,6 +79,19 @@ public class IndexServiceImpl implements IndexService {
   @Override
   public int getReceiveCount(int empNo) {
     return indexMapper.getMessageCountByReceiver(empNo);
+  }
+  
+  
+  // 결재 대기문서
+  @Override
+  public int getWaitCount(int empNo) {
+    return indexMapper.getWaitCount(empNo);
+  }
+  
+  // 결재 진행문서
+  @Override
+  public int getMyApvCount(int empNo) {
+    return indexMapper.getMyApvCount(empNo);
   }
 
 }

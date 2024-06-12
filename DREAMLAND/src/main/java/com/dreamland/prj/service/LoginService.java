@@ -3,17 +3,19 @@ package com.dreamland.prj.service;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.PrincipalUser;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public interface LoginService {
   
   EmployeeDto getEmployeeByEmail(String email);
+  
+  void getDeptAndPos(Model model);
   
   // 마이페이지 수정
   void modifyUserInfo(MultipartFile profilePath

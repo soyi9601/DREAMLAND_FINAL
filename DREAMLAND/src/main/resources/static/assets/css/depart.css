@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+/* 조직도 - 관리자 */
+#empForm, #deptForm {display: none;}
+.jstree-default .jstree-search {color: #0e8b00;}
+.jstree-default .jstree-icon.bxs-spreadsheet:before {color: #90b54c;}
+
+.boc-light {font-family: "Pretendard Variable", Pretendard!important;}
+
+
+/* 조직도 - 유저 */
+#tree {width: 100%; height: 100%; background: #f3f3f3;}

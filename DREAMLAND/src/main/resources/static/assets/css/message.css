@@ -19,12 +19,14 @@
 }
 
 .input-container button {
+	border-color: #ced4da;
   margin: 2px;
   white-space: nowrap;
 }
 
 .input-container button:hover {
   cursor: pointer;
+  color: #495057;
 }
 
 .input-container button.btn-outline-secondary {

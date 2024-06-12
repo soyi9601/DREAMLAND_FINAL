@@ -161,10 +161,17 @@
                             <input
                              class="form-control"
                              type="text"
+                             id="deptName"
+                             name="deptName"
+                             value="${emp.deptName}"
+                             readOnly
+                           />
+                            <input
+                             class="form-control"
+                             type="hidden"
                              id="deptNo"
                              name="deptNo"
                              value="${loginEmployee.deptNo}"
-                             readOnly
                            />
                          </div>
                          <div class="mb-3 col-md-6">
@@ -172,10 +179,17 @@
                              <input
                              class="form-control"
                              type="text"
+                             id="posName"
+                             name="posName"
+                             value="${emp.posName}"
+                             readOnly
+                           />
+                           <input
+                             class="form-control"
+                             type="hidden"
                              id="posNo"
                              name="posNo"
                              value="${loginEmployee.posNo}"
-                             readOnly
                            />
                          </div>
                          <div class="mb-3 col-md-6">

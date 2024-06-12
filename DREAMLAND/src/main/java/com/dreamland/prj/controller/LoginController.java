@@ -39,6 +39,15 @@ public class LoginController {
     return "login/loginPage";
   }
   
+  // 정보 가져오기
+  @GetMapping("/user/mypage")
+  public String add(HttpServletRequest request, Model model) {
+    model.addAttribute("request", request);
+    loginService.getDeptAndPos(model);
+    return "user/mypage";
+    
+  }
+  
   // 마이페이지 수정
   @PostMapping("/user/modify.do")
   public String modifyUserInfo(@RequestParam("profilePath") MultipartFile profilePath
