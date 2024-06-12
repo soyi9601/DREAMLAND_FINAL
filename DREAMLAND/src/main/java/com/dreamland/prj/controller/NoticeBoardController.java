@@ -77,13 +77,6 @@ public class NoticeBoardController {
     return "board/notice/edit";
   }
   
-  @PostMapping("/edit2.do")
-  public String edit2(@RequestParam int noticeNo, Model model) {
-    model.addAttribute("notice", noticeBoardService.getNoticeByNo(noticeNo));
-    return "board/notice/edit";
-  }
-  
-
   
   @GetMapping(value="/attachList.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> attachList(@RequestParam int noticeNo) {
@@ -94,8 +87,7 @@ public class NoticeBoardController {
   @PostMapping("/modify.do")
   public String modify(NoticeBoardDto notice, RedirectAttributes redirectAttributes) {
   	
-  	 // todo delAttachList를 split("|") 해서 attachNo를 delete하는 구문 작성(service, mapper-sql)
-  	
+  	// todo delAttachList를 split("|") 해서 attachNo를 delete하는 구문 작성(service, mapper-sql)
   	String[] delAttachArr = notice.getDelAttachList().split("\\|");
   	for (String attachNo : delAttachArr) {
   	    if (!attachNo.isEmpty()) {
@@ -117,18 +109,6 @@ public class NoticeBoardController {
     return noticeBoardService.addAttach(multipartRequest);
   }
 	
-  
-  // 얘로
-  /*
-  @PostMapping(value="/removeAttach.do", produces="application/json")
-  public ResponseEntity<Map<String, Object>> removeAttach(@RequestBody NoticeAttachDto attach, NoticeBoardDto notice) {
-  	
-    return noticeBoardService.removeAttach(attach.getAttachNo());
-  }
-  */
-  
-  
-  
   @PostMapping("/removeNotice.do")
   public String removeNotice(@RequestParam(value="noticeNo", required=false, defaultValue="0") int noticeNo
                            , RedirectAttributes redirectAttributes) {
@@ -137,7 +117,7 @@ public class NoticeBoardController {
     return "redirect:/board/notice/list.do";
   }
   
-  // 게시글 목록 삭제
+  // 게시글 목록(list)에서 체크박스로 삭제
   @PostMapping("/removeNo.do")
   @ResponseBody  
   public String delete(@RequestParam List<Integer> no) {
@@ -148,8 +128,6 @@ public class NoticeBoardController {
       }
       return deleteCount > 0 ? "삭제되었습니다." : "삭제할 게시글이 없습니다.";
   }
-  
-  
   
   @GetMapping("/updateHit.do")
   public String updateHit(@RequestParam int noticeNo) {

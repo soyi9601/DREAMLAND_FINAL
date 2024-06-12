@@ -162,14 +162,7 @@ public class BlindBoardServiceImpl implements BlindBoardService {
     String boardTitle = request.getParameter("boardTitle");
     String boardContents = request.getParameter("boardContents");
     String password = request.getParameter("password");
-/*
-    try {
-        password = AESUtils.encrypt(request.getParameter("password")); // AES로 복호화
-    } catch (Exception e) {
-        // 복호화 실패 처리
-    	throw new RuntimeException("암호화오류", e);
-    }
-    */
+
     int blindNo = Integer.parseInt(request.getParameter("blindNo"));
 
     List<BlindImageDto> blindImageDtoList = blindMapper.getBlindImageList(blindNo);
@@ -335,6 +328,20 @@ public class BlindBoardServiceImpl implements BlindBoardService {
     String storedPassword = blindMapper.getPasswordByCommentNo(commentNo);
     
     return hashedPassword.equals(storedPassword);
+	}
+	
+	@Override
+	public int removeUpdate(int blindNo) {
+		return blindMapper.deleteBlindByWriter(blindNo);
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public ResponseEntity<Map<String, Object>> getBlindListHot(HttpServletRequest request) {
+		
+		List<BlindBoardDto> blindHotList = blindMapper.getBlindListByHot();
+		return new ResponseEntity<>(Map .of("blindHotList", blindHotList )
+				 , HttpStatus.OK);
 	}
 	
 }
