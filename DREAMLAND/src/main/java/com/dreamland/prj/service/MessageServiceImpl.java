@@ -1,18 +1,16 @@
 package com.dreamland.prj.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.dreamland.prj.dto.EmployeeDto;
+import com.dreamland.prj.dto.MessageDto;
 import com.dreamland.prj.mapper.MessageMapper;
 import com.dreamland.prj.utils.MyMessagePageUtils;
 
@@ -51,7 +49,6 @@ public class MessageServiceImpl implements MessageService {
       insertCount += messageMapper.sendMessage(param);
     }
 
-    System.out.println(insertCount);
     return insertCount;
   }
   
@@ -71,7 +68,7 @@ public class MessageServiceImpl implements MessageService {
     
     int empNo = Integer.parseInt(request.getParameter("empNo"));
     int total = messageMapper.getMessageCountByReceiver(empNo);
-    int nonStar = messageMapper.getMessageCountByRecStar(empNo);
+    int nonRead = messageMapper.getMessageCountByRecRead(empNo);
     
     Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
     int display = Integer.parseInt(optDisplay.orElse("5"));
@@ -79,15 +76,24 @@ public class MessageServiceImpl implements MessageService {
     Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
     int page = Integer.parseInt(optPage.orElse("1"));
     
-    myPageUtils.setPaging(nonStar, display, page);
+    myPageUtils.setPaging(total, display, page);
     
     Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
     String sort = optSort.orElse("DESC");
     
-    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", nonStar);
+    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
 
-    model.addAttribute("beginNo", nonStar - (page - 1) * display);
-    model.addAttribute("receiveList", messageMapper.getMessageByReceiver(map));
+    List<MessageDto> msgs = messageMapper.getMessageByReceiver(map);
+    
+    for(MessageDto msg : msgs) {
+      String originContents = msg.getMsgContents();
+      if(originContents.length() > 50) {
+        String truncatedContents = originContents.substring(0, 50) + "...";
+        msg.setMsgContents(truncatedContents);
+      }
+    }
+    model.addAttribute("beginNo", total - (page - 1) * display);
+    model.addAttribute("receiveList", msgs);
     model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/receiveBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
@@ -121,9 +127,19 @@ public class MessageServiceImpl implements MessageService {
     String sort = optSort.orElse("DESC");
     
     Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
+    
+    List<MessageDto> msgs = messageMapper.getMessageBySender(map);
+    
+    for(MessageDto msg : msgs) {
+      String originContents = msg.getMsgContents();
+      if(originContents.length() > 50) {
+        String truncatedContents = originContents.substring(0, 50) + "...";
+        msg.setMsgContents(truncatedContents);
+      }
+    }
 
     model.addAttribute("beginNo", total - (page - 1) * display);
-    model.addAttribute("sendList", messageMapper.getMessageBySender(map));
+    model.addAttribute("sendList", msgs);
     model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/sendBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
@@ -157,16 +173,32 @@ public class MessageServiceImpl implements MessageService {
   }
   
   @Override
-  public int saveMessage(HttpServletRequest request) {
+  public int saveRecMessage(HttpServletRequest request) {
     
-    String[] saveList = request.getParameterValues("starYn");
+    String[] saveList = request.getParameterValues("checkYn");
     
     int count = 0;
     // 문자열 배열을 int 배열로 변환
     int[] msgNoList = new int[saveList.length];
     for (int i = 0; i < saveList.length; i++) {
       msgNoList[i] = Integer.parseInt(saveList[i]);
-      messageMapper.updateMsgStar(msgNoList[i]);
+      messageMapper.updateRecMsgStar(msgNoList[i]);
+      count++;
+    }
+    
+    return count;
+  }
+  
+  @Override
+  public int saveSendMessage(HttpServletRequest request) {
+    String[] saveList = request.getParameterValues("checkYn");
+    
+    int count = 0;
+    // 문자열 배열을 int 배열로 변환
+    int[] msgNoList = new int[saveList.length];
+    for (int i = 0; i < saveList.length; i++) {
+      msgNoList[i] = Integer.parseInt(saveList[i]);
+      messageMapper.updateSendMsgStar(msgNoList[i]);
       count++;
     }
     
@@ -194,9 +226,19 @@ public class MessageServiceImpl implements MessageService {
     String sort = optSort.orElse("DESC");
     
     Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
+    
+    List<MessageDto> msgs = messageMapper.getMessageByStar(map);
+    
+    for(MessageDto msg : msgs) {
+      String originContents = msg.getMsgContents();
+      if(originContents.length() > 50) {
+        String truncatedContents = originContents.substring(0, 50) + "...";
+        msg.setMsgContents(truncatedContents);
+      }
+    }
 
     model.addAttribute("beginNo", total - (page - 1) * display);
-    model.addAttribute("saveList", messageMapper.getMessageByStar(map));
+    model.addAttribute("saveList", msgs);
     model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/saveBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
     model.addAttribute("sort", sort);
@@ -210,6 +252,101 @@ public class MessageServiceImpl implements MessageService {
     total.put("notReadCount", messageMapper.getMessageCountByStarRead(empNo));
     total.put("total", messageMapper.getMessageCountByStar(empNo));
     return total;
+  }
+  
+  @Override
+  public int deleteRecMessage(HttpServletRequest request) {
+    
+    String[] saveList = request.getParameterValues("checkYn");
+    
+    int count = 0;
+    // 문자열 배열을 int 배열로 변환
+    int[] msgNoList = new int[saveList.length];
+    for (int i = 0; i < saveList.length; i++) {
+      msgNoList[i] = Integer.parseInt(saveList[i]);
+      messageMapper.updateRecMsgDelete(msgNoList[i]);
+      count++;
+    }
+    
+    return count;
+  }
+  
+  @Override
+  public int deleteSendMessage(HttpServletRequest request) {
+    String[] saveList = request.getParameterValues("checkYn");
+
+    int count = 0;
+    // 문자열 배열을 int 배열로 변환
+    int[] msgNoList = new int[saveList.length];
+    for (int i = 0; i < saveList.length; i++) {
+      msgNoList[i] = Integer.parseInt(saveList[i]);
+      messageMapper.updateSendMsgDelete(msgNoList[i]);
+      count++;
+    }
+    
+    return count;
+  }
+  
+  @Override
+  public void getDeleteMessage(Model model) {
+    
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
+    int total = messageMapper.getMessageCountByDelete(empNo);
+    
+    Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
+    int display = Integer.parseInt(optDisplay.orElse("5"));
+    
+    Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(optPage.orElse("1"));
+    
+    myPageUtils.setPaging(total, display, page);
+    
+    Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
+    String sort = optSort.orElse("DESC");
+    
+    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
+    
+    List<MessageDto> msgs = messageMapper.getMessageByDelete(map);
+    
+    for(MessageDto msg : msgs) {
+      String originContents = msg.getMsgContents();
+      if(originContents.length() > 50) {
+        String truncatedContents = originContents.substring(0, 50) + "...";
+        msg.setMsgContents(truncatedContents);
+      }
+    }
+    
+    model.addAttribute("beginNo", total - (page - 1) * display);
+    model.addAttribute("deleteList", msgs);
+    model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/removeBox?empNo=" + empNo, sort, display));
+    model.addAttribute("display", display);
+    model.addAttribute("sort", sort);
+    model.addAttribute("page", page);
+    
+  }
+  
+  @Override
+  public Map<String, Object> getDeleteCount(int empNo) {
+    Map<String, Object> total = new HashMap<>();
+    total.put("notReadCount", messageMapper.getMessageCountByDeleteRead(empNo));
+    total.put("total", messageMapper.getMessageCountByDelete(empNo));
+    return total;
+  }
+  
+  @Override
+  public void setReply(Model model) {
+    
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
+    int senderNo = Integer.parseInt(request.getParameter("senderNo"));
+    
+    EmployeeDto emp = messageMapper.getEmployeeBySender(senderNo);
+    model.addAttribute("sender", emp);
+
   }
   
 }

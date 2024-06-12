@@ -15,13 +15,13 @@ var mobileCheck = false;
 
 /************************** 함수 정의 **************************/
 // contextPath 저장 함수
-const fnGetContextPath = ()=>{
-  const host = location.host;  /* localhost:8080 */
-  const url = location.href;   /* http://localhost:8080/mvc/getDate.do */
+/*const fnGetContextPath = ()=>{
+  const host = location.host;   localhost:8080 
+  const url = location.href;    http://localhost:8080/mvc/getDate.do 
   const begin = url.indexOf(host) + host.length;
   const end = url.indexOf('/', begin + 1);
   return url.substring(begin, end);
-}
+}*/
 
 
 // 이미지 등록 함수(프로필 사진, 전자서명)

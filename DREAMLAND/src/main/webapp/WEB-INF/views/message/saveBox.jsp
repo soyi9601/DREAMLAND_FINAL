@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<jsp:include page="../layout/message-header.jsp" /> 
+<jsp:include page="../layout/header.jsp" /> 
 
             <!-- Content -->
 
@@ -17,12 +17,16 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">중요보관함 <small id="save-count"></small></h5>
+	                  <form id="frm-save-box" method="POST">
+                    <div>
+                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
+                    </div>
                   <div class="table-responsive text-nowrap">
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th></th>
-                          <th>보낸사람</th>
+                          <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
+                          <th>보낸사람/받는사람</th>
                           <th>쪽지내용</th>
                           <th>받은시간</th>
                         </tr>
@@ -37,15 +41,45 @@
                           <c:if test="${not empty saveList}">
                             <c:forEach items="${saveList}" var="save" varStatus="vs">
                               <tr>
-                                <td><input class="form-check-input" type="checkbox" value="${save.msgNo}" id="star-no" name="starYn"/></td>
-                                <td>${save.senderName}</td>
-                                <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">${save.msgContents}</a></td>
-                                <td>${save.msgCreateDt}</td>
+                                <td><input class="form-check-input" type="checkbox" value="${save.msgNo}" id="check-no" name="checkYn"/></td>
+                                  <c:choose>
+                                      <c:when  test="${save.sendStarYn == 'Y' }">
+			                                  <c:choose>
+		                                      <c:when test="${save.readYn == 'Y'}">
+	                                          <td style="color: lightgray;">${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+	                                          <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgSendDetail?msgNo=${save.msgNo}">[보낸쪽지] ${save.msgContents}</a></td>
+	                                          <td style="color: lightgray;">${save.msgCreateDt}</td>
+		                                      </c:when>
+		                                      <c:otherwise>
+	                                          <td>${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+	                                          <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">[보낸쪽지] ${save.msgContents}</a></td>
+	                                          <td>${save.msgCreateDt}</td>
+		                                      </c:otherwise>
+			                                  </c:choose>
+                                      </c:when>
+		                                  <c:otherwise>
+		                                    <c:choose>
+                                          <c:when test="${save.readYn == 'Y'}">
+                                              <td style="color: lightgray;">${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+                                              <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">[받은쪽지] ${save.msgContents}</a></td>
+                                              <td style="color: lightgray;">${save.msgCreateDt}</td>
+                                          </c:when>
+                                          <c:otherwise>
+                                              <td>${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+                                              <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">[받은쪽지] ${save.msgContents}</a></td>
+                                              <td>${save.msgCreateDt}</td>
+                                          </c:otherwise>
+		                                    </c:choose>
+
+		                                  </c:otherwise>
+                                      
+                                  </c:choose>
                               </tr>
                             </c:forEach>
                           </c:if>
                         </tbody>
                     </table>
+                    <input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/>  
                     </div>
                     </form>
                     <div class="tab-content">
@@ -56,8 +90,8 @@
                       </div>
                     </div>
                         <!--/ Hoverable Table rows -->
+                   
                    </div>
-               
 
 
 

@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<jsp:include page="../layout/message-header.jsp" /> 
+<jsp:include page="../layout/header.jsp" /> 
 <link rel="stylesheet" href="/resources/assets/css/message.css" />
 
             <!-- Content -->
@@ -16,32 +16,50 @@
               <div class="row">
                 <div class="card">
                   <h5 class="card-header">상세보기</h5>
+                  <form id="frm-send-detail" method="POST">
                     <div class="card-body">
-                    <div>
-<!--                       <button type="button" class="btn btn-primary" id="btn-send-message">답장하기</button> -->
+                    <div class="row mb-3" >
+                      <div class="d-flex flex-wrap justify-content-end" >
+                        <button type="button" class="btn btn-xs btn-warning" id="btn-save">보관하기</button>
+                        <button type="button" class="btn btn-xs btn-danger" id="btn-delete">삭제하기</button>
+                      </div>
                     </div>
-                      <div class="mb-3" >
-                        <label for="receiver" class="form-label">받는사람</label>
-                        <div id="receiver-container" class="input-container">
+                      <div class="row mb-3" >
+                        <label for="receiver" class="col-sm-2 col-form-label">받는사람</label>
+                        <div class="col-sm-10">
 	                        <input
 	                          type="text"
 	                          class="form-control"
 	                          id="receiver"
-	                          value="${msgDetail.receiverName}"
+	                          value="${msgDetail.receiverName}[${msgDetail.receiverDeptName}-${msgDetail.receiverPosName}]"
 	                          readOnly
 	                        />
                         </div>
-                        <div id="auto-complete"></div>
                       </div>
-                      <div>
-                        <label for="contents" class="form-label">내용</label>
-                        <textarea class="form-control" id="contents" name="contents" rows="10" readOnly>${msgDetail.msgContents}</textarea>
+                      <div class="row mb-3" >
+                        <label for="create-dt" class="col-sm-2 col-form-label">받은시간</label>
+                        <div class="col-sm-10">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="create-dt"
+                            value="${msgDetail.msgCreateDt}"
+                            readOnly
+                          />
+                          <input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/> 
+                          <input class="form-emp-no" type="hidden" value="${msgDetail.msgNo}" id="msgNo" name="checkYn"/> 
+                        </div>
+                      </div>
+                      <hr></hr>
+                      <div class="row mb-3">
+                        <pre>${msgDetail.msgContents}</pre>
                       </div>
                     </div>
+                    </form>
                   </div>
                 </div>
                 </div>
 
             <!-- / Content -->
-<!-- <script src="../assets/js/pages-send-message.js"></script> -->
+<script src="../assets/js/pages-send-detail.js"></script>
 <%@ include file="../layout/footer.jsp" %>
