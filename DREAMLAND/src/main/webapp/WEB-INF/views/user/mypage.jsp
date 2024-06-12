@@ -218,8 +218,10 @@
                       <label for="postcode" class="form-label">우편번호</label>
                       <input type="text" id="postcode" name="postcode" class="form-control" value="${loginEmployee.postcode}" readOnly>
                     </div>
-                    <div class="mb-3 col-md-10">
-                      <input type="button" onclick="fnExecDaumPostcode()" class="btn btn-primary me-2" value="우편번호 찾기">
+                    <div class="mb-3 col-md-10" style="display:flex;flex-direction: column;">
+                      <label for="postcode" class="form-label" style="color:transparent"> ddd</label>
+                      <input type="button" onclick="fnExecDaumPostcode()" class="btn btn-primary me-2" value="우편번호 찾기" 
+                        style="width:130px;">
                     </div>
                       <div class="mb-3 col-md-5">
                         <label for="address" class="form-label">주소</label>
@@ -250,6 +252,7 @@
            </div>
            </div>
            <!-- / Content -->
+
 <script src="../assets/js/pages-account-mypage.js"></script>
 <%@ include file="../layout/footer.jsp" %>
     

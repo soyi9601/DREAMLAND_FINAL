@@ -301,7 +301,7 @@
 			                          <img src="${loginEmployee.profilePath}" alt class="w-px-40 h-auto rounded-circle" />
 			                        </c:when>
 			                        <c:otherwise>
-			                          <img src="../assets/img/user-solid.png"  alt class="w-px-40 h-auto rounded-circle" />
+			                          <img src="/resources/assets/img/user-solid.png"  alt class="w-px-40 h-auto rounded-circle" />
 			                        </c:otherwise>
 			                      </c:choose>
                           </div>
