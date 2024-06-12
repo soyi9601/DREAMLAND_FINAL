@@ -33,7 +33,7 @@ $(document).ready(function() {
 
 // 삭제 이동
 document.getElementById("btn-delete").addEventListener("click", function(evt) {
-    document.getElementById("frm-save-box").action = "/user/deleteRecMsg.do";
+    document.getElementById("frm-save-box").action = "/user/deleteSaveMsg.do";
     fnBlankCheck(evt, '쪽지를 삭제하시겠습니까?','쪽지가 성공적으로 삭제되었습니다.');
 });
 

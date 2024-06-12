@@ -39,6 +39,12 @@ document.getElementById("btn-delete").addEventListener("click", function(evt) {
     fnBlankCheck(evt, '쪽지를 삭제하시겠습니까?','쪽지가 성공적으로 삭제되었습니다.');
 });
 
+// 중요보관함 이동
+document.getElementById("btn-save").addEventListener("click", function(evt) {
+    document.getElementById("frm-send-box").action = "/user/saveSendMsg.do";
+    fnBlankCheck(evt, '쪽지를 보관하시겠습니까?','쪽지가 성공적으로 보관되었습니다.');
+});
+
 // 공백 체크 함수
 const fnBlankCheck = (evt, message1, message2)=>{
     let inpCheckbox = document.getElementsByClassName('form-check-input');

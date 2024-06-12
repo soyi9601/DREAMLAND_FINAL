@@ -20,6 +20,7 @@
                     <div class="card-body">
                     <div class="row mb-3" >
                       <div class="d-flex flex-wrap justify-content-end" >
+                        <button type="button" class="btn btn-xs btn-warning" id="btn-save">보관하기</button>
                         <button type="button" class="btn btn-xs btn-danger" id="btn-delete">삭제하기</button>
                       </div>
                     </div>

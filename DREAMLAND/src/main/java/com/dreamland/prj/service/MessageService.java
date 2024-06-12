@@ -28,7 +28,8 @@ public interface MessageService {
   void getMessageDetailBySend(Model model);
   
   // 중요보관함
-  int saveMessage(HttpServletRequest request);
+  int saveRecMessage(HttpServletRequest request);
+  int saveSendMessage(HttpServletRequest request);
   void getStarMessage(Model model);
   Map<String, Object> getStarCount(int empNo);
   

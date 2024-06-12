@@ -1,13 +1,20 @@
 package com.dreamland.prj.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
+import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
+import com.dreamland.prj.dto.PositionDto;
 
 @Mapper
 public interface EmployeeMapper {
   int insertEmployee(EmployeeDto emp);
   EmployeeDto getEmployeeByEmail(String email);
+  
+  List<DepartmentDto> getDeptList();
+  List<PositionDto> getPosList();
   String getDeptNameByDeptNo(int deptNo);
   String getPosNameByPosNo(int posNo);
   int updateUserInfo(EmployeeDto emp);

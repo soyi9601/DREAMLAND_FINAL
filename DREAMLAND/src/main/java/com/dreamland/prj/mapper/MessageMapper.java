@@ -37,13 +37,14 @@ public interface MessageMapper {
   int updateMsgRead(int msgNo);
   
   // 저장 여부 업데이트
-  int updateMsgStar(int msgNo);
+  int updateRecMsgStar(int msgNo);
+  int updateSendMsgStar(int msgNo);
   
   // 삭제 여부 업데이트
   int updateRecMsgDelete(int msgNo);
   int updateSendMsgDelete(int msgNo);
   
-  // 스케줄러용 삭제
+  // 스케줄러용 논리삭제
   void deleteOldMessages();
   
   // 답장할 직원 정보

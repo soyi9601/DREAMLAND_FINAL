@@ -35,13 +35,13 @@ public class MessageController {
   
   // 쪽지 보내기
   @PostMapping("/message/send.do")
-  public String send(@RequestHeader(value = "Referer", required = false) String referer, HttpServletRequest request) {
+  public String send(HttpServletRequest request) {
     messageService.insertMessage(request);
+    String referer = request.getHeader("referer");
     if(referer != null) {
       return "redirect:"+referer;
     }else {
       return "redirect:/user/sendMessage";
-      
     }
   }
   
@@ -91,12 +91,31 @@ public class MessageController {
     return "message/msgSendDetail";
   }
   
-  // 중요보관함 저장하기
-  @PostMapping("/user/saveMsg.do")
-  public String msgSave(HttpServletRequest request) {
+  // 받은쪽지함 중요보관함 저장하기
+  @PostMapping("/user/saveRecMsg.do")
+  public String msgRecSave(HttpServletRequest request) {
     int empNo = Integer.parseInt(request.getParameter("empNo"));
-    messageService.saveMessage(request);
-    return "redirect:/user/receiveBox?empNo=" + empNo;
+    messageService.saveRecMessage(request);
+    String referer = request.getHeader("referer");
+    if(referer.contains("empNo")) {
+      return "redirect:"+referer;
+    }else {
+      return "redirect:/user/receiveBox?empNo=" + empNo;
+    }
+  }
+  
+  // 보낸쪽지함 중요보관함 저장하기
+  @PostMapping("/user/saveSendMsg.do")
+  public String msgSendSave(HttpServletRequest request) {
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
+    messageService.saveSendMessage(request);
+    String referer = request.getHeader("referer");
+    messageService.saveRecMessage(request);
+    if(referer.contains("empNo")) {
+      return "redirect:"+referer;
+    }else {
+      return "redirect:/user/sendBox?empNo=" + empNo;
+    }
   }
   
   // 중요보관함 리스트
@@ -114,7 +133,7 @@ public class MessageController {
     return ResponseEntity.ok(total);
   }
   
-  // 받은편지함에서 휴지통 이동하기
+  // 받은쪽지함에서 휴지통 이동하기
   @PostMapping("/user/deleteRecMsg.do")
   public String recMsgRemove(HttpServletRequest request) {
     int empNo = Integer.parseInt(request.getParameter("empNo"));
@@ -122,12 +141,20 @@ public class MessageController {
     return "redirect:/user/receiveBox?empNo=" + empNo;
   }
   
-  // 보낸편지함에서 휴지통 이동하기
+  // 보낸쪽지함에서 휴지통 이동하기
   @PostMapping("/user/deleteSendMsg.do")
   public String sendMsgRemove(HttpServletRequest request) {
     int empNo = Integer.parseInt(request.getParameter("empNo"));
     messageService.deleteSendMessage(request);
     return "redirect:/user/sendBox?empNo=" + empNo;
+  }
+  
+  // 중요쪽지함에서 휴지통 이동하기
+  @PostMapping("/user/deleteSaveMsg.do")
+  public String saveMsgRemove(HttpServletRequest request) {
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
+    messageService.deleteRecMessage(request);
+    return "redirect:/user/saveBox?empNo=" + empNo;
   }
   
   // 삭제 리스트

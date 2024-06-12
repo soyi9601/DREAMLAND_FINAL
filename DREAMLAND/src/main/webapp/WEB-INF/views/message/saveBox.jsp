@@ -26,7 +26,7 @@
                       <thead>
                         <tr>
                           <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
-                          <th>보낸사람</th>
+                          <th>보낸사람/받는사람</th>
                           <th>쪽지내용</th>
                           <th>받은시간</th>
                         </tr>
@@ -43,16 +43,36 @@
                               <tr>
                                 <td><input class="form-check-input" type="checkbox" value="${save.msgNo}" id="check-no" name="checkYn"/></td>
                                   <c:choose>
-                                      <c:when test="${save.readYn == 'Y'}">
-                                          <td style="color: lightgray;">${save.senderName}</td>
-                                          <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">${save.msgContents}</a></td>
-                                          <td style="color: lightgray;">${save.msgCreateDt}</td>
+                                      <c:when  test="${save.sendStarYn == 'Y' }">
+			                                  <c:choose>
+		                                      <c:when test="${save.readYn == 'Y'}">
+	                                          <td style="color: lightgray;">${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+	                                          <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgSendDetail?msgNo=${save.msgNo}">[보낸쪽지] ${save.msgContents}</a></td>
+	                                          <td style="color: lightgray;">${save.msgCreateDt}</td>
+		                                      </c:when>
+		                                      <c:otherwise>
+	                                          <td>${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+	                                          <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">[보낸쪽지] ${save.msgContents}</a></td>
+	                                          <td>${save.msgCreateDt}</td>
+		                                      </c:otherwise>
+			                                  </c:choose>
                                       </c:when>
-                                      <c:otherwise>
-                                          <td>${save.senderName}</td>
-                                          <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">${save.msgContents}</a></td>
-                                          <td>${save.msgCreateDt}</td>
-                                      </c:otherwise>
+		                                  <c:otherwise>
+		                                    <c:choose>
+                                          <c:when test="${save.readYn == 'Y'}">
+                                              <td style="color: lightgray;">${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+                                              <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">[받은쪽지] ${save.msgContents}</a></td>
+                                              <td style="color: lightgray;">${save.msgCreateDt}</td>
+                                          </c:when>
+                                          <c:otherwise>
+                                              <td>${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+                                              <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">[받은쪽지] ${save.msgContents}</a></td>
+                                              <td>${save.msgCreateDt}</td>
+                                          </c:otherwise>
+		                                    </c:choose>
+
+		                                  </c:otherwise>
+                                      
                                   </c:choose>
                               </tr>
                             </c:forEach>

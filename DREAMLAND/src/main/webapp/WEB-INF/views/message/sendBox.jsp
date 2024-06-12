@@ -19,6 +19,7 @@
 	                <h5 class="card-header">보낸쪽지함 <small id="send-count"></small></h5>
 	                  <form id="frm-send-box" method="POST">
                     <div>
+                      <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
                       <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
                     </div>
 	                <div class="table-responsive text-nowrap">
@@ -42,7 +43,7 @@
                             <c:forEach items="${sendList}" var="send" varStatus="vs">
                               <tr>
                                 <td><input class="form-check-input" type="checkbox" value="${send.msgNo}" id="star-no" name="checkYn"/></td>
-                                <td>${send.receiverName}</td>
+                                <td>${send.senderName}[${send.senderDeptName}-${send.senderPosName}]</td>
                                 <td><a href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">${send.msgContents}</a></td>
                                 <td>${send.msgCreateDt}</td>
                                 <td>

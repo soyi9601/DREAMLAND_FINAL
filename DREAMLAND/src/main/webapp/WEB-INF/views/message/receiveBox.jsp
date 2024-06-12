@@ -44,7 +44,7 @@
 								                <td><input class="form-check-input" type="checkbox" value="${receive.msgNo}" name="checkYn"/></td>
 											            <c:choose>
 											                <c:when test="${receive.readYn == 'Y'}">
-											                    <td style="color: lightgray;">${receive.senderName}</td>
+											                    <td style="color: lightgray;">${receive.senderName}[${receive.senderDeptName}-${receive.senderPosName}]</td>
 											                    <td style="color: lightgray;">
 											                      <a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}
 											                      </a>
@@ -52,7 +52,7 @@
 											                    <td style="color: lightgray;">${receive.msgCreateDt}</td>
 											                </c:when>
 											                <c:otherwise>
-											                    <td>${receive.senderName}</td>
+											                    <td>${receive.senderName}[${receive.senderDeptName}-${receive.senderPosName}]</td>
 											                    <td><a href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}</a></td>
 											                    <td>${receive.msgCreateDt}</td>
 											                </c:otherwise>

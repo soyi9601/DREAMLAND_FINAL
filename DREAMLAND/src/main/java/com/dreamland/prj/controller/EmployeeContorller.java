@@ -21,6 +21,14 @@ public class EmployeeContorller {
   @Autowired
   private EmployeeServiceImpl employeeService;
   
+  @GetMapping("/employee/add")
+  public String add(HttpServletRequest request, Model model) {
+    model.addAttribute("request", request);
+    employeeService.getDeptAndPos(model);
+    return "employee/addEmployee";
+    
+  }
+  
   // 직원 등록
   @PostMapping("/employee/add.do")
   public String addEmployee(@RequestParam("profilePath") MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {

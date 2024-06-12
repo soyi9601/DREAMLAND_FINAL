@@ -63,6 +63,18 @@
       , NULL
     )  
   </insert>
+  
+  <select id="getDeptList"
+          resultType="DepartmentDto">
+    SELECT DEPT_NO, DEPT_NAME, DEPTH, PARENT_ID, TREE_TEXT
+      FROM DEPARTMENT
+  </select>
+  
+  <select id="getPosList"
+          resultType="PositionDto">
+    SELECT POS_NO, POS_NAME
+      FROM POSITION
+  </select>
 
   <delete id="deleteEmployee">
     DELETE
@@ -99,7 +111,6 @@
          , SIGN_PATH = #{signPath}
      WHERE EMAIL = #{email}
   </update>
-
 
   <update id="updatePassword"
           parameterType="String">

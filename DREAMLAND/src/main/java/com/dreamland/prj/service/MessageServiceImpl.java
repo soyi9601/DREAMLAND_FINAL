@@ -68,7 +68,7 @@ public class MessageServiceImpl implements MessageService {
     
     int empNo = Integer.parseInt(request.getParameter("empNo"));
     int total = messageMapper.getMessageCountByReceiver(empNo);
-    int nonStar = messageMapper.getMessageCountByRecStar(empNo);
+    int nonRead = messageMapper.getMessageCountByRecRead(empNo);
     
     Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
     int display = Integer.parseInt(optDisplay.orElse("5"));
@@ -76,12 +76,12 @@ public class MessageServiceImpl implements MessageService {
     Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
     int page = Integer.parseInt(optPage.orElse("1"));
     
-    myPageUtils.setPaging(nonStar, display, page);
+    myPageUtils.setPaging(total, display, page);
     
     Optional<String> optSort = Optional.ofNullable(request.getParameter("sort"));
     String sort = optSort.orElse("DESC");
     
-    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", nonStar);
+    Map<String, Object> map = Map.of("empNo", empNo, "begin", myPageUtils.getBegin(), "end", myPageUtils.getEnd(), "total", total);
 
     List<MessageDto> msgs = messageMapper.getMessageByReceiver(map);
     
@@ -92,7 +92,7 @@ public class MessageServiceImpl implements MessageService {
         msg.setMsgContents(truncatedContents);
       }
     }
-    model.addAttribute("beginNo", nonStar - (page - 1) * display);
+    model.addAttribute("beginNo", total - (page - 1) * display);
     model.addAttribute("receiveList", msgs);
     model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/user/receiveBox?empNo=" + empNo, sort, display));
     model.addAttribute("display", display);
@@ -173,7 +173,7 @@ public class MessageServiceImpl implements MessageService {
   }
   
   @Override
-  public int saveMessage(HttpServletRequest request) {
+  public int saveRecMessage(HttpServletRequest request) {
     
     String[] saveList = request.getParameterValues("checkYn");
     
@@ -182,7 +182,23 @@ public class MessageServiceImpl implements MessageService {
     int[] msgNoList = new int[saveList.length];
     for (int i = 0; i < saveList.length; i++) {
       msgNoList[i] = Integer.parseInt(saveList[i]);
-      messageMapper.updateMsgStar(msgNoList[i]);
+      messageMapper.updateRecMsgStar(msgNoList[i]);
+      count++;
+    }
+    
+    return count;
+  }
+  
+  @Override
+  public int saveSendMessage(HttpServletRequest request) {
+    String[] saveList = request.getParameterValues("checkYn");
+    
+    int count = 0;
+    // 문자열 배열을 int 배열로 변환
+    int[] msgNoList = new int[saveList.length];
+    for (int i = 0; i < saveList.length; i++) {
+      msgNoList[i] = Integer.parseInt(saveList[i]);
+      messageMapper.updateSendMsgStar(msgNoList[i]);
       count++;
     }
     

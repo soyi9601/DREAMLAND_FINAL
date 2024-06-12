@@ -12,6 +12,12 @@
 
 /************************** 함수 정의 **************************/
 
+// 중요보관함 이동
+document.getElementById("btn-save").addEventListener("click", function(evt) {
+    document.getElementById("frm-send-detail").action = "/user/saveSendMsg.do";
+    fnBlankCheck(evt, '쪽지를 보관하시겠습니까?','쪽지가 성공적으로 보관되었습니다.');
+});
+
 // 삭제 이동
 document.getElementById("btn-delete").addEventListener("click", function(evt) {
     document.getElementById("frm-send-detail").action = "/user/deleteSendMsg.do";
