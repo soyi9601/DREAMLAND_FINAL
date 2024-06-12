@@ -12,7 +12,8 @@
   
   <!-- File 에 로그를 찍는 Appender -->
   <appender name="file" class="ch.qos.logback.core.FileAppender">
-    <file>/logs/dreamland.log</file>
+   <file>/logs/dreamland.log</file>
+    <!-- <file>/Users/suzy/logs/dreamland.log/</file> -->
     <append>true</append>
     <immediateFlush>true</immediateFlush>
     <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
@@ -24,6 +25,7 @@
   <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <fileNamePattern>/logs/dreamland-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <!-- <fileNamePattern>/Users/suzy/logs/dreamland-%d{yyyy-MM-dd}.%i.log/</fileNamePattern> -->
       <maxFileSize>10MB</maxFileSize>
       <totalSizeCap>100GB</totalSizeCap>
       <maxHistory>30</maxHistory>
