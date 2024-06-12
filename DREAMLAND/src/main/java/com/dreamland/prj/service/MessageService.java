@@ -28,8 +28,18 @@ public interface MessageService {
   void getMessageDetailBySend(Model model);
   
   // 중요보관함
-  int saveMessage(HttpServletRequest request);
+  int saveRecMessage(HttpServletRequest request);
+  int saveSendMessage(HttpServletRequest request);
   void getStarMessage(Model model);
   Map<String, Object> getStarCount(int empNo);
+  
+  // 삭제
+  int deleteRecMessage(HttpServletRequest request);
+  int deleteSendMessage(HttpServletRequest request);
+  void getDeleteMessage(Model model);
+  Map<String, Object> getDeleteCount(int empNo);
+  
+  // 답장
+  void setReply(Model model);
   
 }

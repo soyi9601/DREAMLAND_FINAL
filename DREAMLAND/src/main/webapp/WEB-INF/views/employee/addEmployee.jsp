@@ -105,26 +105,17 @@
                           <div class="mb-3 col-md-6">
                             <label class="form-label" for="deptNo">소속</label>
                             <select id="dept-no" name="deptNo" class="select2 form-select">
-                              <option value="">선택하세요</option>
-                              <option value="9999">대표이사</option>
-                              <option value="1000">인사</option>
-                              <option value="2000">경영지원</option>
-                              <option value="3000">안전관리</option>
-                              <option value="5000">시설운영</option>
-                              <option value="6000">마케팅</option>
+                              <c:forEach var="depart" items="${deptList}">
+                                <option value="${depart.deptNo}">${depart.deptName}</option>
+                              </c:forEach>
                             </select>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="posNo" class="form-label">직급</label>
                             <select id="pos-no" name="posNo" class="select2 form-select">
-                              <option value="">선택하세요</option>
-                              <option value="10">사원</option>
-                              <option value="20">주임</option>
-                              <option value="30">대리</option>
-                              <option value="40">과장</option>
-                              <option value="50">부장</option>
-                              <option value="60">팀장</option>
-                              <option value="100">대표이사</option>
+                              <c:forEach var="pos" items="${posList}">
+                                <option value="${pos.posNo}">${pos.posName}</option>
+                              </c:forEach>
                             </select>
                           </div>
                           <div class="mb-3 col-md-6">
