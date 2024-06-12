@@ -7,10 +7,10 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
 
-	<!-- Content wrapper -->
-	<div class="content-wrapper">
-	  <!-- Content -->
-	
+<!-- Content wrapper -->
+<div class="content-wrapper">
+	  
+	<!-- Content -->	
 	<div class="container-xxl flex-grow-1 container-p-y">
 	  <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사관리 /</span> 부서등록</h4>
 	

@@ -85,6 +85,7 @@ function fnCalendar() {
     var calendarEl = document.getElementById('cal');
     var indexCalendar = new FullCalendar.Calendar(calendarEl, {
       height: 500,
+      paddingTop: '20px',
       initialView: 'dayGridMonth',
       headerToolbar: {
         left: 'prev,next',
@@ -169,7 +170,7 @@ const fnGetNotice = () => {
           let str = '<tr>';
           str += '<td class="text-center" scope="col" style="width: 3%"">' +  notice.noticeNo + '</td>';
           if(notice.signal === 1) {
-            str += '<td  class="notice-list" scope="col" style="width: 77%" data-notice-no="' + notice.noticeNo + '"><span class="notice-important">중요</span>' 
+            str += '<td class="notice-list" scope="col" style="width: 77%" data-notice-no="' + notice.noticeNo + '"><span class="notice-badge important badge rounded-pill bg-label-danger" data-notice-no="' + notice.noticeNo + '">중요</span>' 
                 + notice.boardTitle + '</td>';
           } else {
             str += '<td class="notice-list" scope="col" style="width: 77%" data-notice-no="' + notice.noticeNo + '">' + notice.boardTitle + '</td>';            
