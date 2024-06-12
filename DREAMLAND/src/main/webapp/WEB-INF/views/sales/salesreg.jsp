@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- notie/list.jsp -->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
@@ -13,6 +16,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 
+
+<!-- link -->
+<link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
+<link rel="stylesheet" href="/resources/assets/vendor/fonts/boxicons.css" />
+<!-- include moment.js -->
+<script src="/resources/assets/moment/moment-with-locales.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  		
  		<style>
  		.card {
@@ -318,6 +328,6 @@ function validateForm() {
 
 </html>
 
-
+<%@ include file="../layout/footer.jsp"%>
 	
 	
