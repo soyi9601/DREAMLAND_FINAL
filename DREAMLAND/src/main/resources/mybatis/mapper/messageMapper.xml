@@ -53,7 +53,7 @@
 		SELECT COUNT(*)
 		  FROM MESSAGE M JOIN EMPLOYEE ES 
 		    ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER 
-		                             ON M.MSG_RECEIVER = ER.EMP_NO
+		                                  ON M.MSG_RECEIVER = ER.EMP_NO
 		 WHERE M.MSG_RECEIVER = ${empNo} 
 		   AND M.REC_STAR_YN = 'N' 
 		   AND M.REC_DEL_YN = 'N'
@@ -64,7 +64,7 @@
 		SELECT COUNT(*)
 		  FROM MESSAGE M JOIN EMPLOYEE ES 
 		                   ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER 
-		    ON M.MSG_RECEIVER = ER.EMP_NO
+		                                                 ON M.MSG_RECEIVER = ER.EMP_NO
 		 WHERE M.MSG_RECEIVER = ${empNo} 
 		   AND M.REC_STAR_YN = 'N' 
 		   AND M.READ_YN = 'N' 

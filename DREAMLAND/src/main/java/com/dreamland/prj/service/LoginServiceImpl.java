@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dreamland.prj.config.DBConnectionProvider;
@@ -67,6 +68,19 @@ public class LoginServiceImpl implements LoginService {
       newFilePath = beforePath;
     }
     return newFilePath;
+  }
+  
+  @Override
+  public void getDeptAndPos(Model model) {
+    Map<String, Object> modelMap = model.asMap();
+    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    
+    int empNo = Integer.parseInt(request.getParameter("empNo"));
+    
+    EmployeeDto emp = employeeMapper.getEmployeeByEmpNo(empNo);
+    
+    model.addAttribute("emp", emp);
+    
   }
   
   // 로그인

@@ -12,14 +12,12 @@ import com.dreamland.prj.dto.PositionDto;
 public interface EmployeeMapper {
   int insertEmployee(EmployeeDto emp);
   EmployeeDto getEmployeeByEmail(String email);
+  EmployeeDto getEmployeeByEmpNo(int empNo);
   
   List<DepartmentDto> getDeptList();
   List<PositionDto> getPosList();
-  String getDeptNameByDeptNo(int deptNo);
-  String getPosNameByPosNo(int posNo);
   int updateUserInfo(EmployeeDto emp);
   int updatePassword(String email, String changePw);
-//  int deleteUser(int userNo);
-//  int insertAccessHistory(Map<String, Object> map);
-//  int updateAccessHistory(String sessionId);
+  
+
 }

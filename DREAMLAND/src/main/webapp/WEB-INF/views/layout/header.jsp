@@ -26,8 +26,6 @@
   <link rel="stylesheet" href="/resources/assets/css/demo.css" />
   <link rel="stylesheet" href="/resources/assets/css/main.css" />
 
-
-
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
@@ -39,6 +37,8 @@
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js" integrity="sha256-J8ay84czFazJ9wcTuSDLpPmwpMXOm573OUtZHPQqpEU=" crossorigin="anonymous"></script>
+  <!-- moment.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
   <!-- Helpers -->
   <script src="/resources/assets/vendor/js/helpers.js"></script>
 
@@ -97,21 +97,21 @@
                   <div>직원등록</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
-                  <div>부서등록</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
-                  <div>조직도-관리자</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
-                  <div>조직도-유저</div>
-                </a>
-              </li>
+							<li class="menu-item">
+							  <a href="${contextPath}/depart/addDepart.page" class="menu-link">
+							    <div>부서등록</div>
+							  </a>
+							</li>
+							<li class="menu-item">
+							  <a href="${contextPath}/depart/departAdmin.page" class="menu-link">
+							    <div>조직도-관리자</div>
+							  </a>
+							</li>
+							<li class="menu-item">
+							  <a href="${contextPath}/depart/depart.page" class="menu-link">
+							    <div>조직도-유저</div>
+							  </a>
+							</li>
             </ul>
           </li>
           <li class="menu-item">
@@ -165,49 +165,78 @@
               </li>
             </ul>
           </li>
-          <li class="menu-item">
+<li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-layout"></i>
               <div>매출</div>
             </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="${contextPath}/sales/Allsales.page" class="menu-link">
+                  <div>매출화면</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/sales/productreg.page" class="menu-link">
+                  <div>상품등록</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/sales/salesreg.page" class="menu-link">
+                  <div>매출등록</div>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-layout"></i>
               <div>시설</div>
             </a>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-layout"></i>
-              <div>일정</div>
-            </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
-                  <div>캘린더</div>
+                <a href="${contextPath}/facility/list.do" class="menu-link">
+                  <div>시설게시판</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/facility/write.page" class="menu-link">
+                  <div>시설등록</div>
                 </a>
               </li>
             </ul>
           </li>
           <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-layout"></i>
-              <div>근태</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
-                  <div>근태관리</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="${contextPath}/employee/add" class="menu-link">
-                  <div>휴가관리</div>
-                </a>
-              </li>
-            </ul>
-          </li>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+       <i class="menu-icon tf-icons bx bx-layout"></i>
+       <div>일정</div>
+      </a>
+      <ul class="menu-sub">
+       <li class="menu-item">
+        <a href="${contextPath}/schedule/calendar.do" class="menu-link">
+         <div>캘린더</div>
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="menu-item">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+       <i class="menu-icon tf-icons bx bx-layout"></i>
+       <div>근태</div>
+      </a>
+      <ul class="menu-sub">
+       <li class="menu-item">
+        <a href="${contextPath}/work/status.do" class="menu-link">
+         <div>근태관리</div>
+        </a>
+       </li>
+       <li class="menu-item">
+        <a href="${contextPath}/dayoff/info.do" class="menu-link">
+         <div>휴가관리</div>
+        </a>
+       </li>
+      </ul>
+     </li> 
           <!-- User interface -->
           <li class="menu-item">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
@@ -287,7 +316,7 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="${contextPath}/user/mypage">
+                    <a class="dropdown-item" href="${contextPath}/user/mypage?empNo=${loginEmployee.empNo}">
                       <i class="bx bx-user me-2"></i>
                       <span class="align-middle">마이페이지</span>
                     </a>

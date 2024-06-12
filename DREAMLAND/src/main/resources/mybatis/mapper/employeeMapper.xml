@@ -16,6 +16,17 @@
       <if test="email!=null">EMAIL = #{email}</if>
     </where>
   </select>
+  
+  <select id="getEmployeeByEmpNo"
+          parameterType="int"
+          resultType="EmployeeDto">
+		SELECT E.EMP_NO, E.EMP_NAME, E.DEPT_NO, E.POS_NO
+         , D.DEPT_NAME AS DEPT_NAME, P.POS_NAME AS POS_NAME
+		  FROM EMPLOYEE E 
+		  JOIN DEPARTMENT D  ON E.DEPT_NO = D.DEPT_NO
+		  JOIN POSITION P ON E.POS_NO = P.POS_NO
+		 WHERE E.EMP_NO = #{empNo}
+  </select>
 
   <insert id="insertEmployee"
           parameterType="EmployeeDto">
@@ -76,27 +87,11 @@
       FROM POSITION
   </select>
 
-  <delete id="deleteEmployee">
+<!--   <delete id="deleteEmployee">
     DELETE
       FROM EMPLOYEE
      WHERE EMP_NO = #{empNo}
-  </delete>
-  
-  <select id="getDeptNameByDeptNo"
-          parameterType="int"
-          resultType="String">
-    SELECT DEPT_NAME
-      FROM DEPARTMENT
-     WHERE DEPT_NO = #{deptNo}
-  </select>
-  
-  <select id="getPosNameByPosNo"
-          parameterType="int"
-          resultType="String">
-    SELECT POS_NAME
-      FROM POSITION
-     WHERE POS_NO = #{posNo}
-  </select>
+  </delete> -->
   
   <update id="updateUserInfo"
           parameterType="EmployeeDto">
