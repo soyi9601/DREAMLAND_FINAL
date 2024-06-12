@@ -25,23 +25,23 @@ public interface BlindBoardService {
 	
 	//게시글 비밀번호
 	boolean validatePassword(int blindNo, String password);
-	
-	
 	int removeBlind(int blindNo);
-	
 	// 조회수
 	int updateHit(int blindNo);
-	
 	// 댓글
 	int registerComment(HttpServletRequest request);
 	Map<String, Object> getCommentList(HttpServletRequest request);
-	
 	// 답글
 	int registerReply(HttpServletRequest request);
 	int removeComment(int commentNo);
 	
-	
 	//댓글 비밀번호
 	boolean validatePw(int commentNo, String pw);
 	
+	// 게시글 본인삭제
+	int removeUpdate(int blindNo);
+
+	//
+	ResponseEntity<Map<String, Object>> getBlindListHot(HttpServletRequest request);
+
 }
