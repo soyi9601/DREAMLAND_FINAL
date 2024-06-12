@@ -21,6 +21,7 @@ public interface ApprovalMapper {
 	 int getApvNo();
 	 String getEmployeeNo(String empName);
 	 String getEmployeeName(String empNo);
+	 String getEmployeePosName(String empNo);
 	 List<String> getReferrer(int apvNo);
 	 List<String> getApprover(int apvNo);
 	
@@ -78,9 +79,10 @@ public interface ApprovalMapper {
 	 int modifyApvLeave( AppleaveDto leave);
 	 int revokeApproval(String apvNo );
 	 int revokeApvLeave(String apvNo );
-	 int  deleteApvRef(int apvNo);
-	 int  deleteApvWriter(int apvNo);
-	 int  deleteAttach(String apvNo, String attachNo);
+	 int deleteApp(int apvNo );
+	 int deleteApvRef(int apvNo);
+	 int deleteApvWriter(int apvNo);
+	 int deleteAttach(String apvNo, String attachNo);
 	 List<String> getApprovers(int apvNo);
 	 ApvWriterDto getReturnApprover(int apvNo);
 	 List<EmployeeDto> getEmployeeList();
