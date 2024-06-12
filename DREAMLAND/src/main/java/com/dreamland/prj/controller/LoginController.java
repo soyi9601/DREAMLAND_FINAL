@@ -57,7 +57,7 @@ public class LoginController {
     EmployeeDto employee = loginService.getEmployeeByEmail(request.getParameter("email"));
    
     
-    return "redirect:/user/mypage";
+    return "redirect:/user/mypage?empNo=" + employee.getEmpNo();
   }
   
   // 비밀번호 변경

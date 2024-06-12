@@ -46,6 +46,8 @@ public class SecurityConfig {
             .requestMatchers(req->CorsUtils.isPreFlightRequest(req)).permitAll()
             .requestMatchers("/user/**").authenticated()  // 인증만 되면 들어갈 수 있는 주소
             .requestMatchers("/manager/**", "/").hasAnyRole("ADMIN", "USER")
+            .requestMatchers("/depart/addDepart.page").hasRole("ADMIN")
+            .requestMatchers("/depart/departAdmin.page").hasRole("ADMIN")
             .requestMatchers("/employee/**").hasRole("ADMIN")
             //.requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()) 
