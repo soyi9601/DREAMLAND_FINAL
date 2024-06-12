@@ -26,7 +26,8 @@
   <link rel="stylesheet" href="/resources/assets/css/demo.css" />
   <link rel="stylesheet" href="/resources/assets/css/main.css" />
 
-
+  <script src="https://cdn.jsdelivr.net/sockjs/1.0.3/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -47,6 +48,7 @@
   <script src="/resources/assets/js/config.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js" integrity="sha512-ekwRoEshEqHU64D4luhOv/WNmhml94P8X5LnZd9FNOiOfSKgkY12cDFz3ZC6Ws+7wjMPQ4bPf94d+zZ3cOjlig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
  
+  
 
 </head>
 

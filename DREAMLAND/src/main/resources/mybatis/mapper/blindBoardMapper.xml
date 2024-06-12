@@ -15,7 +15,6 @@
       <result property="delYn"              column="DEL_YN"/>
       <result property="password"           column="PASSWORD"/>
       <result property="commentCount"       column="COMMENT_COUNT"/>
-      
     </resultMap>
     
     <resultMap type="BlindCommentDto"     id="BlindCommentMap">
@@ -33,7 +32,7 @@
             parameterType="BlindBoardDto">
       <selectKey order="BEFORE" keyProperty="blindNo" resultType="int">
         SELECT BLIND_SEQ.NEXTVAL
-            FROM DUAL
+          FROM DUAL
       </selectKey>
       INSERT INTO BLIND_BOARD(
           BLIND_NO
@@ -61,9 +60,9 @@
         , FILESYSTEM_NAME
       )   VALUES (
         BLIND_IMAGE_SEQ.NEXTVAL
-      , #{blindNo}
-      , #{uploadPath}
-      , #{filesystemName}
+        , #{blindNo}
+        , #{uploadPath}
+        , #{filesystemName}
     )
     </insert>
 
@@ -193,20 +192,10 @@
     <select id="getCommentList"
             parameterType="Map"
             resultMap="BlindCommentMap">
-    <!--    SELECT COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
-        FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, DEPTH ASC, COMMENT_NO DESC) AS RN,
-              COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
-                FROM BLIND_COMMENT
-               WHERE BLIND_NO = #{blindNo})
-        WHERE RN BETWEEN #{begin} AND #{end} -->
-        
-        
-        SELECT COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
-    FROM BLIND_COMMENT
-    WHERE BLIND_NO = #{blindNo}
-    ORDER BY GROUP_NO DESC, COMMENT_NO ASC
-        
-             
+      SELECT COMMENT_NO, CONTENTS, CREATE_DT, DEL_YN, DEPTH, GROUP_NO, BLIND_NO, COMMENT_PASSWORD
+        FROM BLIND_COMMENT
+       WHERE BLIND_NO = #{blindNo}
+       ORDER BY GROUP_NO DESC, COMMENT_NO ASC
     </select>
     
     
@@ -248,7 +237,7 @@
     </update> 
     
     
-        <!-- 댓글비밀번호 -->
+    <!-- 댓글비밀번호 -->
     <select id="getPasswordByCommentNo" parameterType="int" resultType="String">
     SELECT COMMENT_PASSWORD
       FROM BLIND_COMMENT
