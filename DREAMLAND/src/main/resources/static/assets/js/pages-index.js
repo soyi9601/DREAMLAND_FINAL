@@ -28,7 +28,7 @@ const fnWeather = () => {
     url: apiURI,
     data: 'json',
     success: (resData) => {
-      console.log(resData);
+      // console.log(resData);
       const weatherIcon = resData.weather[0].icon;
       const weatherIconAdrs = 'http://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';  // 날씨 icon 링크 연결
       weatherIconImg.setAttribute('src', weatherIconAdrs);  // 날씨 icon <img> 태그 src 변경
@@ -179,7 +179,7 @@ const fnGetNotice = () => {
           mainNotice.append(str);
         })
       }
-      console.log(resData);
+      // console.log(resData);
       fnNoticeDetail();
     }
   })  

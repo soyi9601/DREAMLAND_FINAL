@@ -15,7 +15,7 @@ public interface IndexMapper {
   EmployeeDto getUser(String email);    // 직원조회
   
   void insertWork(WorkDto work);        // 출근
-  void updateWorkOut(WorkDto work);     // 퇴근
+  int updateWorkOut(Map<String, Object> map);     // 퇴근
   
   List<NoticeBoardDto> getNoticeList(Map<String, Object> map);
   
