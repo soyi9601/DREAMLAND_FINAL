@@ -20,7 +20,8 @@ public class EmployeeContorller {
   
   @Autowired
   private EmployeeServiceImpl employeeService;
-  
+ 
+  // 부서, 직급 가져오기
   @GetMapping("/employee/add")
   public String add(HttpServletRequest request, Model model) {
     model.addAttribute("request", request);
