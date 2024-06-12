@@ -3,6 +3,7 @@ package com.dreamland.prj.controller;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.dreamland.prj.dto.FaqBoardDto;
+import com.dreamland.prj.dto.EmployeeDto;
+import com.dreamland.prj.dto.PrincipalUser;
 import com.dreamland.prj.dto.ScheduleDto;
 import com.dreamland.prj.service.ScheduleService;
 
@@ -25,16 +27,16 @@ import lombok.RequiredArgsConstructor;
 public class ScheduleController {
 	private final ScheduleService scheduleService;
 	
-//	// 일정 페이지이동
-//	@GetMapping("/calendar")
-//	public String calendarPage() {
-//	  return "schedule/calendar";
-//	}
-	
   //일정 조회
   @GetMapping(value="/calendar.do", produces="application/json")
   public String list(HttpServletRequest request, Model model) {
-    scheduleService.loadSkdList(request, model);
+    EmployeeDto loginEmployee = getEmployeeFromSession(); // 현재 세션에서 로그인된 사용자 정보 가져옴
+    
+    // 로그인된 사용자 정보를 세션에 저장
+    request.getSession().setAttribute("loginEmployee", loginEmployee);
+    
+    model.addAttribute("loginEmployee", loginEmployee);   // 사용자 정보 모델에 추가
+    scheduleService.loadSkdList(request, model);          // 일정목록
     return "schedule/calendar";
   }
 	
@@ -42,7 +44,6 @@ public class ScheduleController {
   @PostMapping(value="/register.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> register(HttpServletRequest requset) {
     return ResponseEntity.ok(Map.of("insertSkdCount", scheduleService.registerSkd(requset)));
-     
   }
   
   // 일정 상세보기
@@ -59,13 +60,26 @@ public class ScheduleController {
      return ResponseEntity.ok(Map.of("modifyCount", modifyCount));
   }
   
-  // 일정 삭제
-  @GetMapping("/remove.do")
-  public String remove(@RequestParam int skdNo, RedirectAttributes redirectAttributes) {
-      int removeCount = scheduleService.removeSkd(skdNo);
-      redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "삭제되었습니다." : "삭제를 하지 못했습니다.");
-    return "redirect:/schedule/calendar.do"; 
+//  // 일정 삭제
+//  @GetMapping("/remove.do")
+//  public String remove(@RequestParam int skdNo, RedirectAttributes redirectAttributes) {
+//    int removeCount = scheduleService.removeSkd(skdNo);
+//    redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "삭제되었습니다." : "삭제를 하지 못했습니다.");
+//    return "redirect:/schedule/calendar.do"; 
+//  }
+  
+  //일정 삭제
+  @PostMapping("/remove.do")
+  public ResponseEntity<Map<String, Object>> remove(@RequestParam int skdNo) {
+     int removeCount = scheduleService.removeSkd(skdNo);
+     return ResponseEntity.ok(Map.of("removeCount", removeCount));
   }
-
+  
+  // 현재 세션에서 로그인된 사용자 정보 가져옴
+  private EmployeeDto getEmployeeFromSession() {
+    // Spring Security Context에서 PrincipalUser 객체를 가져옴
+    PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return principalUser.getEmployeeDto(); // PrincipalUser 객체에서 EmployeeDto를 반환
+  }
   
 }

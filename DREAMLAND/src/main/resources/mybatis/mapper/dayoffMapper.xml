@@ -5,7 +5,24 @@
   
  <mapper namespace="com.dreamland.prj.mapper.dayoffMapper">
         
-   
+   <select id="getDayoffListByYear" 
+           parameterType="map" 
+           resultType="AppleaveDto">
+       SELECT LEAVE_CLASSIFY, LEAVE_START , LEAVE_END, DETAIL 
+         FROM APV_LEAVE
+        WHERE EMP_NO = #{empNo}
+          AND TO_CHAR(LEAVE_START, 'YYYY') = #{year}
+          AND LEAVE_STATUS = 1
+        ORDER BY LEAVE_START
+    </select>
+    
+    <select id="getEnterDate" 
+            parameterType="int" 
+            resultType="string">
+       SELECT TO_CHAR(ENTER_DATE, 'YYYY-MM-DD')  
+         FROM EMPLOYEE
+        WHERE EMP_NO = #{empNo}
+    </select>
     
 </mapper>
  
