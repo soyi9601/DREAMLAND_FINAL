@@ -4,8 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<%-- <%session.setAttribute("empNo", 3);%>            
-<%session.setAttribute("deptNo", 2000);%> --%>
 
 <jsp:include page="../layout/header.jsp" />
 <!-- FullCalendar CDN -->
@@ -24,12 +22,12 @@
 
 
 <style>
-    body {
+ /*    body {
         margin: 40px 10px;
         padding: 0;
         font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
         font-size: 14px;
-    }
+    } */
     #calendar {
         max-width: 1100px;
         margin: 0 auto;
@@ -112,11 +110,11 @@
 	                    </div>
 	                    <!-- 세션 정보 -->
 	                    <input type="hidden" name="empNo" value="${loginEmployee.empNo}"> 
-	                    <input type="hidden" name="empNo" value="2">  
+	                    <!-- <input type="hidden" name="empNo" value="2">  --> 
 	              
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	                    <button type="button" class="btn btn-primary" id="btn-save">저장</button>
+	                    <button type="submit" class="btn btn-primary" id="btn-save">저장</button>
 	                </div>   
 	                </div>
 	            </div>
@@ -221,29 +219,20 @@
         </div>
     </div> 
 
-
-
  <script>
  
  document.addEventListener('DOMContentLoaded', function() {
-	    // 전체 일정 데이터
-	    var eventArray = [];
+	    // 로그인된 사용자 정보 (사원번호 + 부서번호)
 	    var empNo = '${loginEmployee.empNo}'; 
 	    var deptNo = '${loginEmployee.deptNo}'; 
 	    console.log("사원번호 :" + empNo);
 	    console.log("부서번호 :" + deptNo);
 	    
+	    // 필터링된 일정 리스트 이벤트 배열에 추가
+	    var eventArray = [];
 	    <c:forEach var='skd' items='${skdList}'>
-	      // 공유부서 배열에 저장
-	    	var sharedDeptNos = '<c:forEach var="dept" items="${skd.shrDept}">${dept.deptNo} </c:forEach>'.trim().split(' ');
-	    	
-    	   // 공유 부서 텍스트를 가져오기 위해 부서 번호를 텍스트로 변환
-        var sharedDeptTexts = sharedDeptNos.map(function(deptNo) {
-            return $("#modify-deptNo option[value='" + deptNo.trim() + "']").text();
-        }).join(', ');
-	    	
         eventArray.push({
-            id: '${skd.skdNo}',  // 일정 ID 추가
+            id: '${skd.skdNo}',
             title: '${skd.skdTitle}',
             start: '${skd.skdStart}',
             end: '${skd.skdEnd}',
@@ -253,13 +242,13 @@
                 category: '${skd.skdCategory}',
                 writer: '${skd.employee.empName}',
                 empNo: '${skd.employee.empNo}',
-                sharedDepts: sharedDeptTexts
-                //sharedDepts: '${skd.shrDept}'
+                sharedDepts: '<c:forEach var="dept" items="${skd.shrDept}">${dept.deptNo} </c:forEach>'.trim().split(' ').map(function(deptNo) {
+                    return $("#modify-deptNo option[value='" + deptNo.trim() + "']").text();
+                }).join(', ')
             }
         });
+        
     </c:forEach>
-    
-	    
 	    // 전체 일정 데이터 확인용 (개발완료 후 삭제!!)
 	    console.log("전체일정 :" , eventArray);
 	    
@@ -286,11 +275,6 @@
 	          
           /**************** 일정 상세보기 ****************/
           eventClick: function(info) {
-        	  /*  var sharedDeptTexts = info.event.extendedProps.sharedDepts.split(' ').map(function(deptNo) {
-                    return $("#modify-deptNo option[value='" + deptNo.trim() + "']").text();
-                }).join(', ');
-*/               
-
 							var categoryText = $("#modify-category option[value='" + info.event.extendedProps.category + "']").text();
 							
 							$('#detail-title').text(info.event.title);
@@ -336,7 +320,7 @@
 	      
 	    /**************** 일정 등록 ****************/
        $('#frm-schedule').on('submit', function(e) {
-			    e.preventDefault();
+			    e.preventDefault(); // 폼의 기본 제출 동작 (새로고침) 막기
 			    
 			    // formData 생성 및 부서공유 선택 추가
 			    var formData = $(this).serializeArray();
@@ -355,34 +339,29 @@
 			        success: function(resData) {
 			            if (resData.insertSkdCount === 1) {
 			                $('#insertModal').modal('hide');   // 모달 닫기
-			                //location.reload();                 // 페이지 새로고침
 			                // 새로운 이벤트 추가
 			                var newEvent = {
+			                		id: resData.skdNo, // 반환된 일정 ID 사용
 			                    title: $('#title').val(),
 			                    start: $('#start').val(),
 			                    end: $('#end').val(),
-			                    color: $('#color').val(),
+			                    backgroundColor: $('#color').val(),
 			                    extendedProps: {
-			                        category: $('#category option:selected').text(),
-			                        sharedDepts: selectedDepts.join(''),
-			                        contents: $('#contents').val()
-			                    }
+                               category: $('#category').val(),
+                               sharedDepts: selectedDepts.map(function(deptNo) {
+                                   return $("#deptNo option[value='" + deptNo + "']").text();
+                               }).join(', '),
+                               contents: $('#contents').val(),
+                               writer: '${loginEmployee.empName}', // 현재 로그인한 사용자 이름
+                               empNo: empNo
+	                        }
 			                };
 			                calendar.addEvent(newEvent);
 			                calendar.render();
-			                $('#frm-schedule').reset();  // 폼 초기화
-			                
-			              /*   // 입력 필드 초기화
-			                $('#title').val('');
-			                $('#start').val('');
-			                $('#end').val('');
-			                $('#category').val('work'); 
-			                $('#deptNo').val(''); 
-			                $('#color').val('gray'); 
-			                $('#contents').val(''); */
+			                $('#frm-schedule')[0].reset();  // 폼 초기화
 			            } else {
 			                alert('일정 등록 실패했습니다.');
-			                $('#frm-schedule').reset();
+			                $('#frm-schedule')[0].reset();
 			            }
 			        },
 			        error: function(jqXHR) {
@@ -394,8 +373,8 @@
         /**************** 일정 수정 ****************/
         // 기존 일정 수정 버튼 클릭 시 모달창에 데이터 채우기
         $('#btn-edit').on('click', function() {
-            var selectedSkdNo = $('#skdNo').val();
-            var event = calendar.getEventById(selectedSkdNo);
+            var selectedSkdNo = $('#skdNo').val();            // 현재 선택된 일정 ID 가져오기
+            var event = calendar.getEventById(selectedSkdNo); // FullCalendar 에서 해당 일정 이벤트 가져오기
             
             $('#modify-skdNo').val(selectedSkdNo);
             $('#modify-title').val(event.title);
@@ -405,12 +384,69 @@
             $('#modify-color').val(event.backgroundColor); 
             $('#modify-contents').val(event.extendedProps.contents);
             
+            // 일정 상세보기 모달 숨기고 수정 모달 표시
             $('#detailModal').modal('hide');
             $('#modifyModal').modal('show');
         });
+        
+        $('#frm-modify-schedule').on('submit', function(e) {
+            e.preventDefault(); // 폼의 기본 제출 동작 (새로고침) 막기
+
+            // formData 생성 및 부서공유 선택 추가
+            var formData = {
+                skdNo: parseInt($('#modify-skdNo').val()),
+                skdTitle: $('#modify-title').val(),
+                skdStart: $('#modify-start').val(),
+                skdEnd: $('#modify-end').val(),
+                skdCategory: $('#modify-category').val(),
+                skdColor: $('#modify-color').val(),
+                skdContents: $('#modify-contents').val(),
+                shrDept: []
+            };
+
+            var selectedDepts = $('#modify-deptNo').val();
+            if (selectedDepts) {
+                selectedDepts.forEach(function(dept) {
+                    formData.shrDept.push({ skdNo: formData.skdNo, deptNo: dept });
+                });
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "${contextPath}/schedule/modify.do",
+                contentType: "application/json", // JSON 형식으로 전송
+                data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+                dataType: "json",
+                success: function(resData) {
+                    if (resData.modifyCount === 1) {
+                        $('#modifyModal').modal('hide'); // 모달 닫기
+                        
+                        // 업데이트된 이벤트 정보 설정
+                        var event = calendar.getEventById(formData.skdNo);
+                        event.setProp('title', formData.skdTitle);
+                        event.setStart(formData.skdStart);
+                        event.setEnd(formData.skdEnd);
+                        event.setProp('backgroundColor', formData.skdColor);
+                        event.setExtendedProp('category', formData.skdCategory);
+                        event.setExtendedProp('sharedDepts', selectedDepts.map(function(dept) {
+                            return $("#modify-deptNo option[value='" + dept + "']").text();
+                        }).join(', '));
+                        event.setExtendedProp('contents', formData.skdContents);
+                        calendar.render();
+                        $('#frm-modify-schedule')[0].reset(); // 폼 초기화
+                    } else {
+                        alert('일정 수정 실패했습니다.');
+                    }
+                },
+                error: function(jqXHR) {
+                    alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+                }
+            });
+        });
+
 
               
-           $('#btn-modify-skd').on('click', function() {
+         /*   $('#btn-modify-skd').on('click', function() {
              // formData 생성 및 부서공유 선택 추가
                var formData = $(this).serializeArray();
                  var selectedDepts = $('#modify-deptNo').val();
@@ -444,8 +480,7 @@
                 success: function(resData) {
                     if (resData.modifyCount === 1) {
                         
-                        $('#modifyModal').modal('hide');  // 모달 닫기
-                        //location.reload();                // 페이지 새로고침
+                        $('#modifyModal').modal('hide');    // 모달 닫기
                         // 업데이트된 이벤트 정보 설정
                         var event = calendar.getEventById(data.skdNo);
                         event.setProp('title', data.skdTitle);
@@ -458,7 +493,7 @@
                         }).join(', '));
                         event.setExtendedProp('contents', data.skdContents);
                         calendar.render();
-                        $('#frm-modify-schedule').reset();
+                        $('#frm-modify-schedule')[0].reset();
                     } else {
                         alert('일정 수정 실패했습니다.');
                     }
@@ -467,14 +502,40 @@
                     alert(jqXHR.statusText + '(' + jqXHR.status + ')');
                 }
             });
-        });
+        }); */
 	   
-	    	   $('#btn-remove').on('click', function() {
+	    	  /*  $('#btn-remove').on('click', function() {
 	    	    if(confirm('일정 삭제할까요?')){
 	    	    	  const skdNo = $('#skdNo').val();
 	    	        location.href = '${contextPath}/schedule/remove.do?skdNo=' + skdNo;
 	    	    }
-	    	  });
+	    	  }); */
+	    	  
+        $('#btn-remove').on('click', function() {
+            if (confirm('일정 삭제할까요?')) {
+                const skdNo = $('#skdNo').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "${contextPath}/schedule/remove.do",
+                    data: { skdNo: skdNo },
+                    success: function(resData) {
+                        if (resData.removeCount === 1) {
+                            // FullCalendar에서 이벤트 제거
+                            var event = calendar.getEventById(skdNo);
+                            event.remove();
+                            $('#detailModal').modal('hide');
+                        } else {
+                            alert('일정 삭제 실패했습니다.');
+                        }
+                    },
+                    error: function(jqXHR) {
+                        alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+                    }
+                });
+            }
+        });
+	    	  
 	    });
 </script>
 

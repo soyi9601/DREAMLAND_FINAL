@@ -112,10 +112,10 @@
 <script>
 
 
-$(".loading").hide();
+$(".loading").hide(); // 전송시 로딩화면 숨겨놓음
 
+// 기존 첨부 파일 목록 가져오기 및 input창 생성
 let insAttachList = [];
-// 기존 첨부 파일 목록 가져오기 및 파일 입력 필드 생성
 const fnAttachList = () => {
   fetch('${contextPath}/board/notice/attachList.do?noticeNo=${notice.noticeNo}', {
     method: 'GET'
@@ -174,17 +174,15 @@ const fnAttachCheck = () => {
           totalSize += files.size;
       }
 
-      console.log("files:  " + files);
+      //console.log("files:  " + files);
   });
 }
  
 
-//첨부파일 첨부 - 5개로 제한 , 2개 기본, 추가 누를시 파일input창 생기게... 없앨까? 
-    // 이거 하는중
+//첨부파일 첨부 - 5개로 제한 , 추가 누를시 파일input창 생기게
 const fnAttachInput = () => {
   $(".file-add-btn").on('click', () => {
     
-    //여기에
     // list목록 + input창 개수 
     let attachListNum = $('#attach-list').children('.attach').length;
     let inputNum = $('.file-input-div').length;
@@ -192,7 +190,7 @@ const fnAttachInput = () => {
     let totalNum = attachListNum + inputNum;
     const totalMax = 5;
     
-    
+    // 첨부파일 총합이 5개가 아닐 경우 input창 생성가능
     if (totalNum < totalMax) {
       const fileInputContainer = document.getElementById('file-input-container');
       const fileInputDiv = document.createElement('div');
@@ -205,13 +203,10 @@ const fnAttachInput = () => {
     
   });
 }
-fnAttachInput();
 
 
-
-// 첨부 파일 추가 이벤트 설정
+// 첨부 파일 추가
 let globalFormData = new FormData();
-// 첨부 파일 추가 이벤트 설정
 const fnAddAttach = () => {
   
   const fileInputContainer = document.getElementById('file-input-container');
@@ -220,20 +215,14 @@ const fnAddAttach = () => {
     if (event.target.type === 'file') {
       
       let file = event.target.files[0];
-      console.log(file);
       if (file) {
-        //globalFormData = new FormData(); // 새 formData 객체 생성
         globalFormData.append('files', file);
         globalFormData.append('noticeNo', '${notice.noticeNo}');
-        
       }
     }
   });
 }
 
-
-
-// x버튼눌러서 삭제했는데도 첨부됨 .? 왜?
 
 //첨부파일 input창 삭제
 const fnAttachDel = () => {
@@ -244,13 +233,6 @@ const fnAttachDel = () => {
     const fileName = fileInput.files[0].name;
 
     inputArea.remove();
-
-    //원래있던globalFormData를 빼야할듯
-    /*
-    console.log(globalFormData);
-    const inputsArea = $(".notice-input-area");
-    const inputCount = inputsArea.children('.file-input-div').length;
-    */
     
     const newFormData = new FormData();
     for (let pair of globalFormData.entries()) {
@@ -266,7 +248,7 @@ const fnAttachDel = () => {
   });
 } 
 
-fnAttachDel();
+
 
 const fnAddAttachGo = () => {
   $.ajax({
@@ -278,7 +260,6 @@ const fnAddAttachGo = () => {
     dataType: 'json',
     success: (resData) => {
       if (resData.attachResult) {
-        //alert('첨부 파일이 추가되었습니다.');
         fnAttachList();
       } else {
         //alert('첨부 파일이 추가되지 않았습니다.');
@@ -287,26 +268,20 @@ const fnAddAttachGo = () => {
   });
 }
 
-// 첨부 파일 삭제 (리스트항목에서 삭제, attachNo 잡아야해.)
+// 첨부 파일 삭제 (리스트항목에서 삭제, attachNo로 인식)
   const fnRemoveAttach = () => {
       $(document).on('click', '.remove-attach', (evt) => {
           if (!confirm('해당 첨부 파일을 삭제할까요?')) {
               return;
           }
           const attachNo = evt.target.dataset.attachNo;
-          //console.log('gsdg');
-          //fnRemoveAttachGo(attachNo);
-          console.log(attachNo)
 
-          // ※ attachNo가 파일명에 붙어있는게 아니라 x버튼에 붙어있음
           let parentElement = $(evt.target).parent().parent();
           console.log(parentElement);
           let children = parentElement.children();
           parentElement.remove();
           
-          //debugger;
           $("#delAttachList").val($("#delAttachList").val()+"|"+attachNo);
-          //fnRemoveAttachGo(attachNo);
           return attachNo;
       });
   }
@@ -326,52 +301,38 @@ const fnRemoveAttachGo = (attachNo) => {
     })
     .then(response => response.json())
     .then(resData => {
-      console.log(resData)
-      console.log("못찾음")
-      
         if (resData.deleteCount === 1) {
-           // alert('첨부 파일이 삭제되었습니다.');
             fnAttachList();
-            console.log(resData)
         } else {
-            //alert('첨부 파일이 삭제되지 않았습니다.');
             console.log(resData)
         }
     });
 }
 
-// 목록에서도 사라저야 하고, form리스트 다시 만들어서 보내야하지않나?
-      
-
-// 제목 필수 입력 스크립트
+// 전송
 const fnModifyUpload = () => {
   document.getElementById('frm-notice-modify').addEventListener('submit', (evt) => {
     if (document.getElementById('basic-default-name').value === '') {
       alert('제목은 필수입니다.');
       evt.preventDefault();
-      //console.log($('input[name="signal"]').val());
       return;
     }
     if (document.getElementById('basic-default-message').value === '') {
       alert('내용을 입력해주세요.');
       evt.preventDefault();
-      //console.log($('input[name="signal"]').val());
       return;
     }
 
     evt.preventDefault(); // 폼 제출 중지
     fnAddAttachGo(); // 파일 첨부 실행
-    fnRemoveAttachGo();
-    $(".loading").show();
+    fnRemoveAttachGo(); // 삭제한 파일 
+    $(".loading").show(); // 로딩화면 
     evt.target.submit(); // 폼 제출 재개
   });
 }
 
-//체크박스 선택시 value값 1로 넘긱기
+// 중요표시 체크박스
 const fnChkSig = () => {
-  
-  //$('input[name="signal"]').val(0);
-  
   $(document).on('click', '.chksignal', (e) => {
       if ($(e.target).prop('checked')) {
         $('input[name="signal"]').val(1);
@@ -381,6 +342,9 @@ const fnChkSig = () => {
   });
 }
 
+
+fnAttachInput();
+fnAttachDel();
 fnAttachList();
 fnAddAttach();
 fnModifyUpload();

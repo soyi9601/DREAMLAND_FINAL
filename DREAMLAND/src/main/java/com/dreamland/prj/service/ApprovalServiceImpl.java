@@ -1048,6 +1048,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         
 		for(int i=0; i< b.size(); i++) {
 			map.put("approver" + (i+1), approvalMapper.getEmployeeName( b.get(i)));
+			map.put("approverPosName" + (i+1), approvalMapper.getEmployeePosName( b.get(i)));
 		}
 		
 		if(Apvkind.equals("0")) {
@@ -1109,6 +1110,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         
 		for(int i=0; i< b.size(); i++) {
 			map.put("approver" + (i+1), approvalMapper.getEmployeeName( b.get(i)));
+			map.put("approverPosName" + (i+1), approvalMapper.getEmployeePosName( b.get(i)));
 		}
 		
 		if(ApvCheck == 2) {
@@ -1285,5 +1287,16 @@ public class ApprovalServiceImpl implements ApprovalService {
 				                           ,"departmentList", approvalMapper.getDepartmentList())
 				                           , HttpStatus.OK);
 	} 
+
+	@Override
+	public void deleteApp(HttpServletRequest request) {
+		int apvNo = Integer.parseInt(request.getParameter("apvNo"));
+		
+		approvalMapper.deleteApvWriter(apvNo);
+		approvalMapper.deleteApvRef(apvNo);
+		approvalMapper.deleteApp(apvNo);
+	}
+
+
 }
 	
