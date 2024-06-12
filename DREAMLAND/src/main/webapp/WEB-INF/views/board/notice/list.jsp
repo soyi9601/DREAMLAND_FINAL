@@ -24,7 +24,6 @@
       <div class="title sd-point">공지사항</div>
         
       <!-- Hoverable Table rows -->
-      
       <div class="card sd-table-wrapper">
         <div class="table-responsive text-nowrap">
           <table class="table table-hover sd-table">
@@ -44,15 +43,13 @@
               <c:forEach items="${noticeBoardList}" var="notice" varStatus="vs">
                 <tr>
                   <td>
-                  <i class="fab fa-angular fa-lg text-danger me-3"></i>
-                  ${beginNo - vs.index}
-
+                    <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                    ${beginNo - vs.index}
                   </td>
                   <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
                     <td><input type="checkbox" name="noticeChk" value="${notice.noticeNo}" data-idx="${beginNo - vs.index}"/></td>
                   </c:if>
                   <td data-notice-no="${notice.noticeNo}" class="noticeTitle">
-                    
                     <span data-notice-no="${notice.noticeNo}" class="noticeTitle">
                       <c:if test="${notice.signal eq 1}">
 	                      <span class="important badge rounded-pill bg-label-danger" data-notice-no="${notice.noticeNo}" >
@@ -64,9 +61,7 @@
 	                      <i class='bx bxs-file' data-notice-no="${notice.noticeNo}" ></i>
 	                    </c:if>
                     </span> 
-                    
                   </td>
-                  
                   <td>${notice.employee.empName}</td>
                   <td>${notice.boardCreateDt }</td>
                   <td>${notice.hit}</td>
@@ -77,9 +72,6 @@
         </div>
       </div>
       <!--/ Hoverable Table rows -->
-      
-      
-      
       
       <div class="sd-btns-area">
         <div>
@@ -105,24 +97,21 @@
 
 
 <script>
+
+// 조회수
 const fnNoticeDetail = () =>{
   $(document).on('click', '.noticeTitle', (evt)=>{
     //관리자의 경우, 조회수 증가 X
     if(${loginEmployee.empNo}===1 ){
-    //  alert('관리자');
       location.href = '${contextPath}/board/notice/detail.do?noticeNo='+evt.target.dataset.noticeNo;
     }else{
       //관리자가 아닌 경우 조회수 증가 O
-    //  alert('관리자가 아님')
-      //alert(${loginEmployee.empNo});
       location.href = '${contextPath}/board/notice/updateHit.do?noticeNo='+evt.target.dataset.noticeNo;
     }
   })
 }
 
-fnNoticeDetail();
-
-
+// list목록 체크박스-편집
 const fnNoticeListEdit = () =>{
   $(document).on('click','#list-edit-btn', (evt)=>{
     let checked = $("input[name='noticeChk']:checked");
@@ -138,14 +127,12 @@ const fnNoticeListEdit = () =>{
   })
 }
 
-fnNoticeListEdit();
 
-
+// list목록 체크박스-삭제
 const fnNoticeListDel = () =>{
   $(document).on('click','#list-del-btn',(evt)=>{
 
     let checked = $("input[name='noticeChk']:checked");
-    
     
     if(checked.length > 0){
       
@@ -157,10 +144,8 @@ const fnNoticeListDel = () =>{
         idx.push($(this).data("idx"));
       });
       
+      //게시글 거꾸로 나와서 제대로 나오게
       idx.sort((a, b) => a - b);
-      
-      // console.log("DB "+no);
-      // console.log("목록상"+idx);
       
       let msg = checked.length == 1 ? 
           idx+'번 게시글을 삭제할까요?' : 
@@ -186,17 +171,13 @@ const fnNoticeListDel = () =>{
     }else{
       alert("삭제할 게시글을 선택하세요.");
     }
-    
     function loadNoticeList(){
       location.reload();
     }
-    
   })
 }
 
-
-fnNoticeListDel();
-
+//삭제 후 메시지
 const fnRemoveResult = () => {
   const removeResult = '${removeResult}';
   if(removeResult !== '') {
@@ -204,6 +185,10 @@ const fnRemoveResult = () => {
   }
 }
 
+//함수목록
+fnNoticeDetail();
+fnNoticeListEdit();
+fnNoticeListDel();
 fnRemoveResult();
 
 </script>

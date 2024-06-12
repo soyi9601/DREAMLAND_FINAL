@@ -56,13 +56,9 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 		String boardContents = multipartRequest.getParameter("boardContents");
 		int empNo = Integer.parseInt(multipartRequest.getParameter("empNo"));
 		
-		// int signal = Integer.parseInt(multipartRequest.getParameter("signal"));
-		
 		//자꾸 null값이 들어와서 수정함
 		String signalParam = multipartRequest.getParameter("signal");
 		int signal = signalParam != null ? Integer.parseInt(signalParam) : 0;
-		
-		
 		
 		EmployeeDto emp = new EmployeeDto();
 		emp.setEmpNo(empNo);
@@ -74,9 +70,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 																.signal(signal)
 															.build();
 		
-		System.out.println("INSERT 이전 :" + notice.getNoticeNo()); 
 		int insertNoticeCount = noticeMapper.insertNoticeBoard(notice);
-		System.out.println("INSERT 이후 :" + notice.getNoticeNo());
 		
 		// 첨부파일 처리하기
 		List<MultipartFile> files = multipartRequest.getFiles("files");
@@ -94,7 +88,6 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 				
 				String uploadPath = myFileUtils.getUploadPath();
 				File dir = new File(uploadPath);
-				System.out.println("====="+dir.getAbsolutePath());
 				
 				if(!dir.exists()) {
 					dir.mkdirs();
@@ -107,8 +100,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 				try {
 					multipartFile.transferTo(file);
 					
-					// 썸네일 굳이 만들지 않을 것, 필요 없을듯
-					
+					// 썸네일 굳이 만들지 않을 것, 필요 없음
 					NoticeAttachDto attach = NoticeAttachDto.builder()
 																.uploadPath(uploadPath)
 																.filesystemName(filesystemName)
@@ -129,7 +121,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 		return (insertNoticeCount == 1) && (insertAttachCount == files.size());
 		
 		
-	} //registerNotice 끝
+	} 
 	
 	@Transactional(readOnly=true)
 	@Override
@@ -203,7 +195,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 			e.printStackTrace();
 		}
     
- // 다운로드용 응답 헤더 설정 (HTTP 참조)
+ // 다운로드용 응답 헤더 설정 
     HttpHeaders responseHeader = new HttpHeaders();
     responseHeader.add("Content-Type", "application/octet-stream");
     responseHeader.add("Content-Disposition", "attachment; filename=" + originalFilename);
@@ -220,12 +212,12 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
     int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
     List<NoticeAttachDto> attachList = noticeMapper.getAttachList(noticeNo);
     
-    // 첨부 파일이 없으면 종료
+    // 첨부 파일 없을시 종료
     if(attachList.isEmpty()) {
       return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
     }
     
-    // 임시 zip 파일 저장할 경로
+    // 저장 경로
     File tempDir = new File(myFileUtils.getTempPath());
     if(!tempDir.exists()) {
       tempDir.mkdirs();
@@ -287,9 +279,6 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 	public NoticeBoardDto getNoticeByNo(int noticeNo) {
 		return noticeMapper.getNoticeByNo(noticeNo);
 	}
-	
-	
-	// attachDTO끌고올거임
 
 	@Override
 	public int modifyNotice(NoticeBoardDto notice) {

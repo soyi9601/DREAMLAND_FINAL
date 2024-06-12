@@ -39,4 +39,9 @@ public interface BlindBoardMapper {
 	
 	//비밀번호
 	String getPasswordByCommentNo(int commentNo);
+
+	//
+	int deleteBlindByWriter(int blindNo);
+	List<BlindBoardDto> getBlindListByHot();
 }
+
