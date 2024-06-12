@@ -26,12 +26,17 @@
   <link rel="stylesheet" href="/resources/assets/css/demo.css" />
   <link rel="stylesheet" href="/resources/assets/css/main.css" />
 
+  <script src="https://cdn.jsdelivr.net/sockjs/1.0.3/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
   <link rel="stylesheet" href="/resources/assets/vendor/libs/apex-charts/apex-charts.css" />
 
-  <!-- Page CSS -->
+  <link rel="icon" href="/resources/assets/img/logo/favicon.ico">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/themes/default/style.min.css" integrity="sha512-A5OJVuNqxRragmJeYTW19bnw9M2WyxoshScX/rGTgZYj5hRXuqwZ+1AVn2d6wYTZPzPXxDeAGlae0XwTQdXjQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js" integrity="sha256-J8ay84czFazJ9wcTuSDLpPmwpMXOm573OUtZHPQqpEU=" crossorigin="anonymous"></script>
@@ -41,6 +46,9 @@
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="/resources/assets/js/config.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js" integrity="sha512-ekwRoEshEqHU64D4luhOv/WNmhml94P8X5LnZd9FNOiOfSKgkY12cDFz3ZC6Ws+7wjMPQ4bPf94d+zZ3cOjlig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+  
 
 </head>
 
@@ -67,20 +75,6 @@
         <ul class="menu-inner py-1">
           <!-- Layouts -->
           <li class="menu-item">
-            <div class="row mx-5">
-              <!-- Button trigger modal -->
-              <button
-                type="button"
-                class="btn btn-primary justify-content-sm-center"
-                id="btn-send-message"
-              >
-                쪽지보내기
-              </button>
-              </div>
-
-              <!-- Modal -->
-          </li>
-          <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-layout"></i>
               <div>인사관리</div>
@@ -92,8 +86,41 @@
                 </a>
               </li>
               <li class="menu-item">
-                <a href="layouts-without-navbar.html" class="menu-link">
-                  <div>근태1</div>
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>부서등록</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>조직도-관리자</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>조직도-유저</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>게시판</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="${contextPath}/board/faq/list.do" class="menu-link">
+                  <div>FAQ</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/board/notice/list.do" class="menu-link">
+                  <div>공지사항</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/board/blind/list.page" class="menu-link">
+                  <div>익명게시판</div>
                 </a>
               </li>
             </ul>
@@ -105,98 +132,69 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>받은쪽지함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/sendBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>보낸쪽지함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/saveBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>중요보관함</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="${contextPath}/user/removeBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                <a href="${contextPath}/employee/add" class="menu-link">
                   <div>휴지통</div>
                 </a>
               </li>
             </ul>
           </li>
-
-          <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">근태</span>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>매출</div>
+            </a>
           </li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-dock-top"></i>
-              <div>근태1</div>
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>시설</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>일정</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="pages-account-settings-account.html" class="menu-link">
-                  <div>근태22</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-account-settings-notifications.html" class="menu-link">
-                  <div>근태22</div>
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>캘린더</div>
                 </a>
               </li>
             </ul>
           </li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-              <div>결재</div>
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>근태</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                  <a href="auth-login-basic.html" class="menu-link" target="_blank">
-                    <div>Login</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="auth-register-basic.html" class="menu-link" target="_blank">
-                    <div>Register</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                    <div>Forgot Password</div>
-                  </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-              <div>Misc</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="pages-misc-error.html" class="menu-link">
-                  <div>Error</div>
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>근태관리</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div>Under Maintenance</div>
+                <a href="${contextPath}/employee/add" class="menu-link">
+                  <div>휴가관리</div>
                 </a>
               </li>
             </ul>
-          </li>
-          <!-- Components -->
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">결재</span></li>
-          <!-- Cards -->
-          <li class="menu-item">
-            <a href="cards-basic.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-collection"></i>
-              <div>결재</div>
-            </a>
           </li>
           <!-- User interface -->
           <li class="menu-item">
@@ -231,9 +229,9 @@
           <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
             <ul class="navbar-nav flex-row align-items-center ms-auto">
               <!-- 알림 -->
-              <li class="nav-item lh-1 me-3">
+              <!-- <li class="nav-item lh-1 me-3">
                 <a>알림</a>
-              </li>
+              </li> -->
               
               <!-- User -->
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -284,18 +282,9 @@
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="${contextPath}/user/receiveBox">
+                    <a class="dropdown-item" href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}">
                       <i class="bx bx-cog me-2"></i>
-                      <span class="align-middle">쪽지함</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <span class="d-flex align-items-center align-middle">
-                        <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                        <span class="flex-grow-1 align-middle">Billing</span>
-                        <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                      </span>
+                      <span class="align-middle">받은쪽지함</span>
                     </a>
                   </li>
                   <li>
@@ -304,7 +293,7 @@
                   <li>
                     <a class="dropdown-item" href="/logout">
                       <i class="bx bx-power-off me-2"></i>
-                      <span class="align-middle">Log Out</span>
+                      <span class="align-middle">로그아웃</span>
                     </a>
                   </li>
                 </ul>
@@ -314,16 +303,3 @@
           </div>
         </nav>
         <!-- / Navbar -->
-        
-        <script>
-        const fnGetContextPath = ()=>{
-        	  const host = location.host;  /* localhost:8080 */
-        	  const url = location.href;   /* http://localhost:8080/mvc/getDate.do */
-        	  const begin = url.indexOf(host) + host.length;
-        	  const end = url.indexOf('/', begin + 1);
-        	  return url.substring(begin, end);
-        	}
-          document.getElementById('btn-send-message').addEventListener('click', ()=>{
-        	  location.href=fnGetContextPath()+"/sendMessage"
-          })
-        </script>

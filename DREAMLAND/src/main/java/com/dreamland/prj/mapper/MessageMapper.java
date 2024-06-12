@@ -18,6 +18,7 @@ public interface MessageMapper {
   List<MessageDto> getMessageByReceiver(Map<String, Object> param);
   List<MessageDto> getMessageBySender(Map<String, Object> param);
   List<MessageDto> getMessageByStar(Map<String, Object> param);
+  List<MessageDto> getMessageByDelete(Map<String, Object> param);
   
   // 메시지 갯수
   int getMessageCountByReceiver(int empNo);
@@ -26,6 +27,8 @@ public interface MessageMapper {
   int getMessageCountBySender(int empNo);
   int getMessageCountByStar(int empNo);
   int getMessageCountByStarRead(int empNo);
+  int getMessageCountByDelete(int empNo);
+  int getMessageCountByDeleteRead(int empNo);
   
   // 메시지 디테일
   MessageDto getMessageDetail(int msgNo);
@@ -34,6 +37,17 @@ public interface MessageMapper {
   int updateMsgRead(int msgNo);
   
   // 저장 여부 업데이트
-  int updateMsgStar(int msgNo);
+  int updateRecMsgStar(int msgNo);
+  int updateSendMsgStar(int msgNo);
+  
+  // 삭제 여부 업데이트
+  int updateRecMsgDelete(int msgNo);
+  int updateSendMsgDelete(int msgNo);
+  
+  // 스케줄러용 논리삭제
+  void deleteOldMessages();
+  
+  // 답장할 직원 정보
+  EmployeeDto getEmployeeBySender(int senderNo);
 
 }

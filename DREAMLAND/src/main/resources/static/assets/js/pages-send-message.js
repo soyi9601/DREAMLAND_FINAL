@@ -23,7 +23,6 @@ const fnCheckByte = ()=>{
     const textVal = document.getElementById('contents').value; //입력한 문자
     const textLen = textVal.length //입력한 문자수
     
-    console.log(textLen);
     let totalByte=0;
     for(let i=0; i<textLen; i++){
       const eachChar = textVal.charAt(i);
@@ -45,7 +44,7 @@ const fnCheckByte = ()=>{
           document.getElementById("nowByte").innerText = totalByte;
             document.getElementById("nowByte").style.color = "green";
         }
-    };
+    }
 
 // 자동완성 기능
 const fnEmployeeList = (evt)=>{
@@ -79,7 +78,7 @@ const fnEmployeeList = (evt)=>{
    ,appendTo: '#auto-complete'  // div 에 항목 출력
    ,select: function(evt, ui){
       evt.preventDefault(); // 기본 동작 막기
-      const receiverContainer = $('#receiver-container');
+      // const receiverContainer = $('#receiver-container');
 
         // 선택된 아이템으로 버튼 생성하여 input 필드 안에 추가
         const button = $("<button type='button' class='btn btn-outline-secondary'></button>")
@@ -102,45 +101,31 @@ const fnEmployeeList = (evt)=>{
           .appendTo(ul);
       };
 
-
 }
 
-/*const fnEmployeeList = (evt)=>{
-  let empNameList = [];
-  let $receiver = document.getElementById('receiver');
-  let $auto = document.getElementById('auto-complete');
-  let nowIndex = 0;
-  $.ajax({
-    type: 'GET',
-    url: fnGetContextPath() + '/employeeList',
-    dataType: 'json',
-    success: (resData)=>{
-      $.each(resData.employeeList, (i, employee) => { 
-        empNameList.push(employee.empName);
-      });
-
-        
-      console.log(empNameList);
-    },
-    error: (jqXHR) => {
-      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-    }         
-  });
-  $receiver.onkeyup = (evt)=>{
-    // 검색어
-    const value = $receiver.value.trim();
-    
-    // 자동완성 필터링
-    const matchDetailList = value ? dataList.filter((label) => label.includes(value)) : [];
-    
-    switch(evt.keyCode){
-      
+// 공백 체크 함수
+const fnBlankCheck = ()=>{
+  document.getElementById('frm-send-message').addEventListener('submit', (evt)=>{ 
+    let inpContents = document.getElementById('contents');
+    let inpContainer = document.getElementById('receiver-container');
+    let hasButton = inpContainer.querySelector("button");
+    if(inpContents.value.length === 0){
+      alert('쪽지 내용을 입력해주세요');
+      evt.preventDefault();
+      return;
+    } else if(!hasButton){
+      alert('받는 사람을 입력해주세요');
+      evt.preventDefault();
+      return;
     }
     
-  }
+    alert('쪽지를 성공적으로 보냈습니다.');
+    })
   
-}*/
+}
+
 
 /************************** 함수 호출 **************************/
 document.getElementById('contents').addEventListener('keyup', fnCheckByte);
 fnEmployeeList();
+fnBlankCheck();
