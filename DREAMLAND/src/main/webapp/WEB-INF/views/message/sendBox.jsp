@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
-<jsp:include page="../layout/message-header.jsp" /> 
+<jsp:include page="../layout/header.jsp" /> 
 
             <!-- Content -->
 
@@ -17,11 +17,16 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">보낸쪽지함 <small id="send-count"></small></h5>
+	                  <form id="frm-send-box" method="POST">
+                    <div>
+                      <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
+                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
+                    </div>
 	                <div class="table-responsive text-nowrap">
 	                  <table class="table table-hover">
 	                    <thead>
 	                      <tr>
-                          <th></th>
+                          <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
                           <th>받는사람</th>
                           <th>쪽지내용</th>
                           <th>받은시간</th>
@@ -36,9 +41,9 @@
                           </c:if>
                           <c:if test="${not empty sendList}">
                             <c:forEach items="${sendList}" var="send" varStatus="vs">
-                              <tr class="clickable-row" data-href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">
-                                <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1" /></td>
-                                <td>${send.receiverName}</td>
+                              <tr>
+                                <td><input class="form-check-input" type="checkbox" value="${send.msgNo}" id="star-no" name="checkYn"/></td>
+                                <td>${send.senderName}[${send.senderDeptName}-${send.senderPosName}]</td>
                                 <td><a href="${contextPath}/user/msgSendDetail?msgNo=${send.msgNo}">${send.msgContents}</a></td>
                                 <td>${send.msgCreateDt}</td>
                                 <td>
@@ -54,12 +59,14 @@
                           </c:if>
                         </tbody>
 	                  </table>
+	                  <input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/>  
 				            <div class="tab-content">
                      <nav aria-label="Page navigation">
                          <ul class="pagination justify-content-center">${paging}</ul>
                        </nav>
                        </div>
 			                </div>
+			                </form>
 			              </div>
 					              <!--/ Hoverable Table rows -->
                    </div>
