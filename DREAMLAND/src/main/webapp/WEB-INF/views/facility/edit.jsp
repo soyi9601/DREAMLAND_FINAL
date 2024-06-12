@@ -27,47 +27,43 @@
 
                     <div class="card-body">
                         <!-- Form 시작 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-                      <form id="frm-notice-modify" 
+                      <form id="frm-facility-modify" 
                             method="POST"
                             enctype="multipart/form-data"
                             action="${contextPath}/facility/modify.do">
                         <div class="row mb-3">
-                          <input type="hidden" name="empNo"
-                              value="${loginEmployee.empNo}"> <label
-                              class="col-sm-2 col-form-label"
-                              for="basic-default-name">제목</label>
+                          <label class="col-sm-2 col-form-label">시설번호</label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control"
-                                  id="basic-default-name" placeholder="제목을 입력해주세요."
-                                  name="boardTitle" value="${notice.boardTitle}"/>
-                          </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label">중요</label>
-                          <div class="col-sm-10">
-                            <input type="checkbox" class="chksignal form-check-input" name="signal" value="${notice.signal}" ${notice.signal eq 1 ? 'checked' : ''} />
+                            <input type="text" class="deptNo"
+                                  id="basic-default-no" name="deptNo"/>
                           </div>
                         </div>
                         <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label"
-                              for="basic-default-name">작성자</label>
+                          <label class="col-sm-2 col-form-label">시설명</label>
                           <div class="col-sm-10">
-                              <input type="text" class="form-control"
-                                  id="basic-default-name" name="empName"
-                                  value="${loginEmployee.empName}" readonly />
+                            <input type="text" class="facilityName"
+                                  id="basic-default-name" name="facilityName" value="${facility.facilityName}"/>
                           </div>
                         </div>
-
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label">관리유무</label>
+                          <div class="col-sm-10">
+                            <input type='checkbox' class='chkmanagement' name='management' value="${facility.management}" ${facility.management eq 1 ? 'checked' : ''} />
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label">등록날짜</label>
+                          <div class="col-sm-10">
+                            <input type='date' class='facilityDate' name='facilityDate' value="${facility.facilityDate}"/>
+                          </div>
+                        </div>
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label"
-                              for="basic-default-message">내용</label>
+                              for="basic-default-message">비고</label>
                           <div class="col-sm-10">
                               <textarea id="basic-default-message"
-                                  class="form-control" placeholder="내용"
-                                  aria-label="Hi, Do you have a moment to talk Joe?"
-                                  aria-describedby="basic-icon-default-message2"
-                                  name="boardContents" >${notice.boardContents}</textarea>
+                                  class="form-control" placeholder="비고"
+                                  name="remarks" >${facility.remarks}</textarea>
                           </div>
                         </div>
 
@@ -98,7 +94,7 @@
 
                         <div style="display:flex;">
                           <input type="hidden" name="delAttachList" id="delAttachList">
-                          <input type="hidden" name="noticeNo" value="${notice.noticeNo}">
+                          <input type="hidden" name="facilityNo" value="${facility.facilityNo}">
                           <button type="submit" id="btn-edit-submit" class="btn-reset sd-btn sd-point-bg">수정</button>
                         </div>
                       </form>
@@ -109,15 +105,15 @@
     </div>
     <!-- / Content -->  
 </div>
-<script>
 
+<script>
 
 $(".loading").hide();
 
 let insAttachList = [];
 // 기존 첨부 파일 목록 가져오기 및 파일 입력 필드 생성
 const fnAttachList = () => {
-  fetch('${contextPath}/board/notice/attachList.do?noticeNo=${notice.noticeNo}', {
+  fetch('${contextPath}/facility/attachList.do?facilityNo=${facility.facilityNo}', {
     method: 'GET'
   })
   .then(response => response.json())
@@ -138,7 +134,7 @@ const fnAttachList = () => {
       const fileInputContainer = document.getElementById('file-input-container');
       fileInputContainer.innerHTML = '';
       
-      const maxFileInputs = 5;
+      const maxFileInputs = 2;
       const remainingFileInputs = maxFileInputs - attachList.length;
       
       for (let i = 0; i < remainingFileInputs; i++) {
@@ -179,7 +175,33 @@ const fnAttachCheck = () => {
 }
  
 
-
+//첨부파일 첨부 - 5개로 제한 , 2개 기본, 추가 누를시 파일input창 생기게... 없앨까? 
+    // 이거 하는중
+const fnAttachInput = () => {
+  $(".file-add-btn").on('click', () => {
+    
+    //여기에
+    // list목록 + input창 개수 
+    let attachListNum = $('#attach-list').children('.attach').length;
+    let inputNum = $('.file-input-div').length;
+    
+    let totalNum = attachListNum + inputNum;
+    const totalMax = 2;
+    
+    
+    if (totalNum < totalMax) {
+      const fileInputContainer = document.getElementById('file-input-container');
+      const fileInputDiv = document.createElement('div');
+      fileInputDiv.className = 'file-input-div';
+      fileInputDiv.innerHTML = '<input class="form-control" type="file" name="files" />';
+      fileInputContainer.appendChild(fileInputDiv);
+    } else {
+      alert('첨부파일은 최대 2개까지 가능합니다.');
+    }
+    
+  });
+}
+fnAttachInput();
 
 
 
@@ -200,7 +222,7 @@ const fnAddAttach = () => {
       if (file) {
         //globalFormData = new FormData(); // 새 formData 객체 생성
         globalFormData.append('files', file);
-        globalFormData.append('noticeNo', '${notice.noticeNo}');
+        globalFormData.append('facilityNo', '${facility.facilityNo}');
         
       }
     }
@@ -247,7 +269,7 @@ fnAttachDel();
 const fnAddAttachGo = () => {
   $.ajax({
     type: 'post',
-    url: '${contextPath}/board/notice/addAttach.do',
+    url: '${contextPath}/facility/addAttach.do',
     data: globalFormData,
     contentType: false,
     processData: false,
@@ -291,7 +313,7 @@ const fnAddAttachGo = () => {
         
 const fnRemoveAttachGo = (attachNo) => {
   console.log(attachNo);
-    fetch('${contextPath}/board/notice/removeAttach.do', {
+    fetch('${contextPath}/facility/removeAttach.do', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -316,20 +338,20 @@ const fnRemoveAttachGo = (attachNo) => {
     });
 }
 
-
+// 목록에서도 사라저야 하고, form리스트 다시 만들어서 보내야하지않나?
       
 
 // 제목 필수 입력 스크립트
 const fnModifyUpload = () => {
-  document.getElementById('frm-notice-modify').addEventListener('submit', (evt) => {
-    if (document.getElementById('basic-default-name').value === '') {
-      alert('제목은 필수입니다.');
+  document.getElementById('frm-facility-modify').addEventListener('submit', (evt) => {
+    if (document.getElementById('"basic-default-no"').value === '') {
+      alert('시설번호는 필수입니다.');
       evt.preventDefault();
       //console.log($('input[name="signal"]').val());
       return;
     }
-    if (document.getElementById('basic-default-message').value === '') {
-      alert('내용을 입력해주세요.');
+    if (document.getElementById('basic-default-name').value === '') {
+      alert('시설명을 입력해주세요.');
       evt.preventDefault();
       //console.log($('input[name="signal"]').val());
       return;
@@ -345,26 +367,28 @@ const fnModifyUpload = () => {
   });
 }
 
-//체크박스 선택시 value값 1로 넘긱기
-const fnChkSig = () => {
-  
-  //$('input[name="signal"]').val(0);
-  
-  $(document).on('click', '.chksignal', (e) => {
-      if ($(e.target).prop('checked')) {
-        $('input[name="signal"]').val(1);
-      } else {
-         $('input[name="signal"]').val(0); 
-      }
-  });
-}
+const fnCkgMng = () => {
+	  
+	$('input[name="management"]').val(0);
+	  
+	  $(document).on('click', '.chkmanagement', (e) => {
+	      if ($(e.target).prop('checked')) {
+	        $('input[name="management"]').val(1);
+	      } else {
+	         $('input[name="management"]').val(0); 
+	      }
+	  });
+	}
+
+
+
 
 fnAttachList();
 fnAddAttach();
 fnModifyUpload();
 fnRemoveAttach();
 fnAttachCheck();
-fnChkSig();
+fnCkgMng();
 </script>
 
 <%@ include file="../layout/footer.jsp"%>
