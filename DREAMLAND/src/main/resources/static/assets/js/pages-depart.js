@@ -14,7 +14,7 @@ $(document).ready(function() {
     fetch('/depart/departAdmin.do')
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         var nodes = [];
         data.forEach(item => {
           var deptNode = {
@@ -40,7 +40,7 @@ $(document).ready(function() {
             });             
           }
         });     
-        console.log(nodes.empNode);
+        // console.log(nodes.empNode);
         // 트리 생성
         $('#jsTree').jstree({
           plugins: ['search', 'types', 'themes', 'contextmenu'],
@@ -136,7 +136,7 @@ $(document).ready(function() {
   // 노드 클릭 이벤트
   $('#jsTree').on('select_node.jstree', function(e, data) {
     var node = data.node;
-    console.log(node);
+    // console.log(node);
     if(node.type === 'file') {
       fetch('/depart/getEmployeeInfo?empNo=' + node.id, {
         method: 'GET',

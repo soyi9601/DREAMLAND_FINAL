@@ -105,8 +105,11 @@ public class DepartServiceImpl implements DepartService {
     // 전체 부서와 사원 조회
     List<OrgChartDto> allDepart = departMapper.getDepartListUser();
     // System.out.println("allDepart=>"+allDepart.size());
+    
+    /*
     for(Object o : allDepart)
          System.out.println(o);
+    */
     
     // deptData 에 부서 데이터 추가
     Map<Integer, Map<String, Object>> departMap = new HashMap<>();
