@@ -20,7 +20,8 @@ public interface FacilityMapper {
 	List<FacilityAttachDto> getAttachList(int facilityNo);
 	
 	FacilityAttachDto getAttachByNo(int facilityNo);
-	int updateFacility(FacilityAttachDto facility);
+	int updateFacility(FacilityDto facility);
 	int deleteAttach(int attachNo);
 	int deleteFacility(int FacilityNo);
+	int deleteAttach2(int attachNo);
 }

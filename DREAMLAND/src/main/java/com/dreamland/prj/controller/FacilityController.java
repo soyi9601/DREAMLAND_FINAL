@@ -35,6 +35,13 @@ public class FacilityController {
 			return "facility/list";
 		}
 		
+		//삭제 후 비동기 목록갱신
+		@GetMapping("/listAjax")
+	  public String listAjax(Model model) {
+	      facilityService.loadFacilityList(model);
+	      return "facility/list :: .table-border-bottom-0";
+	  }
+		
 		@GetMapping("/write.page")
 		public String writePage() {
 			return "facility/write";
@@ -84,7 +91,8 @@ public class FacilityController {
 			String[] delAttachArr = facility.getDelAttachList().split("\\|");
 			for (String attachNo : delAttachArr) {
 				if(!attachNo.isEmpty()) {
-					facilityService.deleteAttach(Integer.parseInt(attachNo));
+					facilityService.deleteAttach2(Integer.parseInt(attachNo));
+					System.out.println(attachNo + "녕");
 				}
 			}
 			

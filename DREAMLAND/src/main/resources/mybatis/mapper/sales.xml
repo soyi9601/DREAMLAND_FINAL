@@ -22,6 +22,8 @@
     <result property="productSctCd" column="PRODUCT_SCT_CD"/>
     <result property="productNM" column="PRODUCT_NM"/>
     <result property="price" column="PRICE"/>
+    <result property="delyn" column="DELYN"/>
+    <result property="productNolist" column="PRODUCTNOLIST"/>
     <association property="department" javaType="DepartmentDto">
       <id property="deptNo" column="DEPT_NO"/>
     </association>
@@ -64,7 +66,7 @@
         PRICE
     ) VALUES (
     		PRODUCT_SEQ.NEXTVAL,
-        #{product.productNo},
+        #{productSctCd},
         #{department.deptNo},
         #{productNM},
         #{price}
@@ -180,9 +182,43 @@ FROM DEPARTMENT D
 ORDER BY D.DEPT_NO
 	</select>
 	
+	<select id="getProductCount">
+  	SELECT COUNT(*)
+  		FROM PRODUCT
+  </select>
+	
+	<select id="getProductList"
+  				parameterType="Map"
+  				resultMap="ProductMap">
+  	SELECT PRODUCT_NO, PRODUCT_NM, PRICE, PRODUCT_SCT_CD, DELYN, DEPT_NO, DEPT_NAME, SALES_COUNT
+FROM (
+    SELECT ROW_NUMBER() OVER ( 
+            ORDER BY 
+                CASE WHEN P.PRICE IS NOT NULL THEN 0 ELSE 1 END,
+                P.PRODUCT_NO ${sort},
+                D.DEPT_NO ASC,
+                P.PRODUCT_SCT_CD DESC
+        ) AS RN,
+        P.PRODUCT_NO, P.PRODUCT_NM, P.PRICE, P.PRODUCT_SCT_CD, P.DELYN,
+        D.DEPT_NO, D.DEPT_NAME,
+        (SELECT COUNT(*)
+         FROM SALES S
+         WHERE P.PRODUCT_NO = S.PRODUCT_NO) AS SALES_COUNT
+    FROM DEPARTMENT D
+    INNER JOIN PRODUCT P ON D.DEPT_NO = P.DEPT_NO
+)
+WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
   
-	
-	
+	<update id="updateProduct" parameterType="ProductDto">
+	UPDATE PRODUCT
+  	 SET DELYN = #{delyn}
+	 WHERE PRODUCT_NO in 
+	 <foreach collection="productNoList" item="productNoa" separator=","
+	 					open="(" close=")">
+	 	 #{productNoa}
+	 </foreach>
+	</update>	
 </mapper>
 
 	

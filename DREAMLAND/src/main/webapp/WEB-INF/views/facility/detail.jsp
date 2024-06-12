@@ -141,7 +141,7 @@ const fnDownload = () => {
 
     const fnEditUpload = () => {
       document.getElementById('btn-edit').addEventListener('click', (evt) => {
-        frmBtn.action = '${contextPath}/board/notice/edit.do';
+        frmBtn.action = '${contextPath}/facility/edit.do';
         frmBtn.submit();
       })
     }
@@ -149,7 +149,7 @@ const fnDownload = () => {
     const fnRemoveUpload = () => {
       document.getElementById('btn-remove').addEventListener('click', (evt) => {
         if(confirm('해당 게시글을 삭제할까요?')){
-          frmBtn.action = '${contextPath}/board/notice/removeNotice.do';
+          frmBtn.action = '${contextPath}/facility/removeFacility.do';
           frmBtn.submit();
         }
       })
