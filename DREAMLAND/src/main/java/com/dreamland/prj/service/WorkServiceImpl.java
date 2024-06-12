@@ -30,57 +30,87 @@ public class WorkServiceImpl implements WorkService {
   @Override
   @Transactional
   public void checkLate() {
-    workMapper.updateLate(today);
+    List<Integer> nonAdminEmpNos = workMapper.getNonAdminEmpNo();
+    for(Integer empNo : nonAdminEmpNos) {
+      String halfDayType = workMapper.getHalfDayType(today, empNo);
+      String lateCheckTime = "";
+      System.out.println(halfDayType);
+      
+      if ("morning".equals(halfDayType)) {
+        // 오전 반차인 경우 출근 시간 14:00
+        lateCheckTime = "14:00:00";
+      } else if ("afternoon".equals(halfDayType)) {
+        // 오후 반차인 경우 출근 시간 09:00
+        lateCheckTime = "09:00:00";
+      } else {
+        lateCheckTime = "09:00:00";
+      }
+      workMapper.updateLate(today, lateCheckTime, empNo);
+    }
   }
 
   // 연차
   @Override
   @Transactional
   public void checkDayoff() {
-    List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today);
-    for (Integer empNo : dayoffEmpList) {
-      Integer dayoffType = workMapper.getDayoffType(today, empNo);
-      if (dayoffType != null) {
-        WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
-        if (dayoffType == 30) {  // 연차
-          workMapper.updateDayoffStatus(today, dayoffType, empNo);
-          if (workRecord == null) {
-            workMapper.insertDayoff(today, dayoffType, empNo);
+      List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today); // 오늘 날짜 연차 사원 리스트 조회
+      for (Integer empNo : dayoffEmpList) {
+        Integer dayoffType = workMapper.getDayoffType(today, empNo);    // 연차 유형 조회
+        if (dayoffType != null && dayoffType == 30) { // 30 : 연차
+          WorkDto workRecord = workMapper.getWorkByDate(today, empNo);  // 오늘 날짜 근무기록 조회
+            workMapper.updateDayoffStatus(today, dayoffType, empNo);    // 연차 상태 업데이트
+            if (workRecord == null) {
+              workMapper.insertDayoff(today, dayoffType, empNo);        // 근무기록 없으면 데이터 삽입
           }
         }
       }
     }
-  }
   
   // 반차
   @Override
   public void checkHafDayoff() {
-    List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today);
-    for (Integer empNo : dayoffEmpList) {
-      Integer dayoffType = workMapper.getDayoffType(today, empNo);
-      if (dayoffType != null) {
-        //WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
-        if (dayoffType == 20) {  // 반차
-          workMapper.updateDayoffStatus(today, dayoffType, empNo);
-        }
-      } 
+      List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today);
+      for (Integer empNo : dayoffEmpList) {
+        Integer dayoffType = workMapper.getDayoffType(today, empNo);
+        if (dayoffType != null && dayoffType == 20) {  // 20 : 반차
+            workMapper.updateDayoffStatus(today, dayoffType, empNo);
+        } 
+      }
     }
-  }
+
   
   // 결근
   @Override
   @Transactional
   public void checkAbsence() {
-    List<Integer> empNos = workMapper.getAbsenceEmpList(today);
-    for (Integer empNo : empNos) {
-      WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
-      if (workRecord == null) {
-          workMapper.insertAbsence(today, empNo);
+      List<Integer> empNos = workMapper.getAbsenceEmpList(today); 
+      for (Integer empNo : empNos) {
+        String role = workMapper.getRoleByEmpNo(empNo);  // 관리자 체크를 쿼리문으로?
+        if(!"ROLE_ADMIN".equals(role)) {
+          WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
+          if (workRecord == null) {
+            workMapper.insertAbsence(today, empNo);
+          }
+        }
       }
     }
-  }
-
   
+  // 관리자 여부 확인
+//  @Override
+//  public boolean isAdmin() {
+//    // 현재 로그인한 사용자의 인증 정보 가져오기
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if (authentication != null && authentication.getAuthorities() != null) {
+//      for (GrantedAuthority authority : authentication.getAuthorities()) {   // 사용자가 가진 모든 권한체크 (ROLE_ADMIN 권한 여부)
+//        if (authority.getAuthority().equals("ROLE_ADMIN")) {
+//          return true;
+//        }
+//      }
+//    }
+//    return false;
+//  }
+//  
+//  
   // 지각 + 조기퇴근 + 결근 횟수 + 근무시간 조회
   @Override
   public Map<String, Object> getWorkCountByEmail(String email) {
