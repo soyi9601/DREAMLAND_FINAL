@@ -45,11 +45,12 @@
        AND WORK_DATE = TO_DATE(TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
   </select>
   
-  <update id="updateWorkOut" parameterType="WorkDto">
+  <update id="updateWorkOut" parameterType="map">
     UPDATE WORK
        SET WORK_OUT = TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
-         , WORK_TOTAL_TIME = ROUND((TO_NUMBER(TO_CHAR(CURRENT_TIMESTAMP, 'SSSSS')) - TO_NUMBER(TO_CHAR(WORK_IN, 'SSSSS'))) / 3600, 2)
-     WHERE EMP_NO = #{empNo}     
+         , WORK_TOTAL_TIME = ROUND(EXTRACT(HOUR FROM (CURRENT_TIMESTAMP - WORK_IN)) + EXTRACT(MINUTE FROM (CURRENT_TIMESTAMP - WORK_IN)) / 60, 2)
+     WHERE EMP_NO = #{empNo}
+       AND WORK_DATE = TO_DATE(#{today}, 'YYYY-MM-DD')
   </update>
   
   <update id="updateCheckedWorkOut">
