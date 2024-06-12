@@ -35,4 +35,5 @@ public interface FacilityService {
 	ResponseEntity<Map<String, Object>> addAttach(MultipartHttpServletRequest multipartRequest) throws Exception;
 	ResponseEntity<Map<String, Object>> removeAttach(int attachNo);
 	int removeFacility(int FacilityNo);
+	int deleteAttach2(int attachNo);
 }

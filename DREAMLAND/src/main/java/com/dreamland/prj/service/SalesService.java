@@ -1,12 +1,12 @@
 package com.dreamland.prj.service;
 
-
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.ui.Model;
 
+import com.dreamland.prj.dto.ProductDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -32,4 +32,7 @@ public interface SalesService {
   List<Map<String, Object>> getTrHunPartSales(Map<String, Object> params);
   List<Map<String, Object>> getFHunPartSales(Map<String, Object> params);
   List<Map<String, Object>> getFvHunPartSales(Map<String, Object> params);
+
+  void loadProductList(Model model);
+  int updateProduct(ProductDto product);
 }

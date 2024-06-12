@@ -114,15 +114,14 @@
   	 WHERE ATTACH_NO = #{attachNo} 	
  	</select>
  	
- 	<update id="updateFacility"
- 					parameterType="FacilityDto">
- 		UPDATE FACILITY
- 			 SET FACILITY_NAME = #{facilityName}
-  			 , MANAGEMENT		 = #{management}	
-  			 , FACILITY_DATE = CURRENT_DATE
-  			 , REMARKS			 = #{remarks}
-     WHERE FACILITY_NO   = #{facilityNo}
- 	</update>
+	<update id="updateFacility" parameterType="FacilityDto">
+    UPDATE FACILITY
+    SET FACILITY_NAME = #{facilityName}
+        , MANAGEMENT = #{management}    
+        , FACILITY_DATE = #{facilityDate, jdbcType=DATE}  <!-- 수정된 부분 -->
+        , REMARKS = #{remarks}
+    WHERE FACILITY_NO = #{facilityNo}
+	</update>
  	
  	<delete id="deleteAttach">
  		DELETE
@@ -136,7 +135,11 @@
  		 WHERE FACILITY_NO = #{facilityNo}	
  	</delete>
   
-	
+  <delete id="deleteAttach2">
+ 		DELETE
+ 			FROM FACILITY_ATTACH
+ 		 WHERE ATTACH_NO = #{attachNo}	
+ 	</delete>
   
   
   

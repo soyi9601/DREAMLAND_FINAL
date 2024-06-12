@@ -1,6 +1,7 @@
 package com.dreamland.prj.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
+import com.dreamland.prj.dto.ProductDto;
 import com.dreamland.prj.service.SalesService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,8 +33,13 @@ public class SalesController {
   
   @PostMapping("/productreg.do")
   public String productreg(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-  		redirectAttributes.addFlashAttribute("insertProduct", salesService.registerProduct(request));
-      return "redirect:/sales/productreg.page";
+  	int insertCount = salesService.registerProduct(request);
+		if (insertCount == 1) {
+       redirectAttributes.addFlashAttribute("errorMessage", "판매 등록 중 오류가 발생했습니다.");
+       return "redirect:/sales/productreg.page";
+		}
+  	redirectAttributes.addFlashAttribute("insertProduct", salesService.registerProduct(request));
+    return "redirect:/sales/productlist.do";
   }
   
   @GetMapping("/salesreg.page")
@@ -45,6 +52,12 @@ public class SalesController {
   @PostMapping("/salesreg.do")
   public String salesreg(HttpServletRequest request, RedirectAttributes redirectAttributes) {
   		redirectAttributes.addFlashAttribute("insertSales", salesService.registerSales(request));
+  		int insertCount = salesService.registerSales(request);
+  		if (insertCount > 0) {
+         redirectAttributes.addFlashAttribute("successMessage", "판매가 성공적으로 등록되었습니다.");
+     } else {
+         redirectAttributes.addFlashAttribute("errorMessage", "판매 등록 중 오류가 발생했습니다.");
+     }
       return "redirect:/sales/salesreg.page";
   }
   
@@ -86,9 +99,38 @@ public class SalesController {
  
   }	
   
+  @GetMapping("/productlist.do")
+	public String list(HttpServletRequest request, Model model) {
+  	model.addAttribute("request", request);
+		salesService.loadProductList(model);
+		return "sales/productlist";
+	}
   
+  @PostMapping("/updateProduct.do")
+  public String productupdate(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+  	
+  	String[] productNoArray = request.getParameterValues("productChk");
+		
+		List<String> productNos = new ArrayList<>();
+		
+		for (int i = 0; i < productNoArray.length; i++) {
+			productNos.add(productNoArray[i]);
+    }
+		
+		// ProductDto 객체 생성
+		ProductDto product = ProductDto.builder()
+																	 .delyn("Y")
+																	 .productNoList(productNos)
+																	 .build();
+		
+		salesService.updateProduct(product);
+			
+
+			return "redirect:/sales/productlist.do";
+  }
+      
+ }
  
   
   
 
-}
