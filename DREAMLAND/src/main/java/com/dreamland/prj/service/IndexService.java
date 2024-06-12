@@ -13,7 +13,7 @@ public interface IndexService {
   EmployeeDto loadUser(String email);   // 직원 조회
   
   void workIn(int empNo);               // 출근
-  void workOut(int empNo);              // 퇴근
+  Map<String, Object> workOut(int empNo);              // 퇴근
   
   boolean hasCheckedWorkIn(int empNo);  // 출근 버튼 눌렀는지 체크
   void updateCheckedWorkOut();             // 스케쥴러 - 퇴근 버튼 체크
