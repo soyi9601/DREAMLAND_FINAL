@@ -5,7 +5,7 @@
   
  <mapper namespace="com.dreamland.prj.mapper.WorkMapper">
         
-    <resultMap id="worMap" type="WorkDto">
+    <resultMap id="workMap" type="WorkDto">
       <id property="workNo" column="WORK_NO"/>
       <result property="workDate" column="WORK_DATE"/>
       <result property="workIn" column="WORK_IN"/>
@@ -20,21 +20,31 @@
       </association>
     </resultMap>
     
-    <!-- 결근리스트 조회 -->
-    <!-- <select id="getAbsenceList" resultType="WorkDto">
-        SELECT * FROM WORK
-        WHERE WORK_DATE = #{workDate}
-          AND WORK_IN IS NULL
-    </select> -->
-    
     <!-- 오늘 날짜 근무기록 조회 -->
-    <select id="getWorkListByDate" 
+    <select id="getWorkByDate" 
              parameterType="map" 
              resultType="WorkDto">
-        SELECT WORK_NO, WORK_DATE, WORK_IN, WORK_OUT, WORK_TOTAL_TIME, WORK_STATE, LATE_YN, EMP_NO
-        FROM WORK
-        WHERE WORK_DATE = TO_DATE(#{today}, 'YYYY-MM-DD')
-          AND EMP_NO = #{empNo}
+       SELECT WORK_NO, WORK_DATE, WORK_IN, WORK_OUT, WORK_TOTAL_TIME, WORK_STATE, LATE_YN, EMP_NO
+       FROM WORK
+       WHERE WORK_DATE = #{today}
+         AND EMP_NO = #{empNo}
+    </select>
+    
+    <!-- 관리자를 제외한 사원 목록 조회 -->
+    <select id="getNonAdminEmpNo" 
+            resultType="int">
+      SELECT EMP_NO
+        FROM EMPLOYEE
+       WHERE ROLE != 'ROLE_ADMIN'
+    </select>
+    
+    
+    <!-- 사원 권한 조회 -->
+    <select id="getRoleByEmpNo" 
+            resultType="String">
+      SELECT ROLE
+        FROM EMPLOYEE
+       WHERE EMP_NO = #{empNo}
     </select>
     
     <!-- 지각 처리-->
@@ -42,9 +52,77 @@
       UPDATE WORK
       SET LATE_YN = 'Y'
       WHERE WORK_DATE = #{today}
-        AND WORK_IN > TO_TIMESTAMP('09:00:00', 'HH24:MI:SS')
+        AND WORK_IN > TO_TIMESTAMP(#{lateCheckTime}, 'HH24:MI:SS')
         AND LATE_YN = 'N'
+        And EMP_NO = #{empNo}
     </update>
+    
+    <!-- 반차, 연차 사원 목록 조회 (오늘날짜) -->
+    <select id="getDayoffEmpList" 
+            resultType="int">
+       SELECT EMP_NO
+         FROM APV_LEAVE
+        WHERE LEAVE_STATUS = 1
+          AND LEAVE_START <![CDATA[ <= ]]> #{today}
+          AND LEAVE_END <![CDATA[ >= ]]> #{today}
+    </select>
+        
+     <!-- 휴가종류 조회 -->
+     <select id="getDayoffType" 
+             parameterType="map" 
+             resultType="int">
+        SELECT CASE
+                   WHEN LEAVE_CLASSIFY = '1' THEN 20
+                   WHEN LEAVE_CLASSIFY = '0' THEN 30
+                   ELSE 10  <!-- 정상출근 상태를 기본값으로 설정 -->
+               END AS dayoffType
+        FROM APV_LEAVE
+        WHERE EMP_NO = #{empNo}
+          AND LEAVE_STATUS = 1
+          AND LEAVE_START <![CDATA[ <= ]]> #{today}
+          AND LEAVE_END <![CDATA[ >= ]]> #{today}
+    </select>
+    
+    <!-- 반차 유형 조회 (오전,오후) -->
+		<select id="getHalfDayType" 
+		        parameterType="map" 
+		        resultType="string">
+		  SELECT HALFDAY
+		  FROM APV_LEAVE
+		  WHERE LEAVE_START = #{today}
+		    AND EMP_NO = #{empNo}
+		</select>
+    
+    <!-- 반차 상태 업데이트 -->
+    <update id="updateDayoffStatus">
+       UPDATE WORK
+       SET WORK_STATE = #{dayoffType}
+       WHERE WORK_DATE = #{today}
+         AND EMP_NO = #{empNo}
+    </update>
+    
+    <!-- 연차 상태 삽입 -->
+    <insert id="insertDayoff">
+        INSERT INTO WORK (
+            WORK_NO
+          , WORK_DATE
+          , WORK_IN
+          , WORK_OUT
+          , WORK_TOTAL_TIME
+          , WORK_STATE
+          , LATE_YN
+          , EMP_NO
+         ) VALUES (
+            WORK_SEQ.NEXTVAL
+          , #{today}
+          , NULL
+          , NULL
+          , 0 
+          , #{dayoffType}
+          , 'N'
+          , #{empNo}
+         )
+    </insert>
     
     <!-- 결근 사원 목록 -->
     <select id="getAbsenceEmpList" 
@@ -54,7 +132,7 @@
         WHERE EMP_NO NOT IN (
             SELECT EMP_NO
             FROM WORK
-            WHERE WORK_DATE = TO_DATE(#{today}, 'YYYY-MM-DD')
+            WHERE WORK_DATE = #{today}
         )
     </select>
     
@@ -71,7 +149,7 @@
           , EMP_NO
         ) VALUES (
             WORK_SEQ.NEXTVAL
-          , TO_DATE(#{today}, 'YYYY-MM-DD')
+          , #{today}
           , NULL
           , NULL
           , 0
@@ -80,63 +158,6 @@
           , #{empNo}
         )
     </insert>
-    
-    <!-- 반차, 연차 사원리스트 조회 (오늘날짜) -->
-    <select id="getDayoffEmpList" 
-            resultType="int">
-       SELECT EMP_NO
-         FROM APV_LEAVE
-        WHERE LEAVE_STATUS = 1
-          AND LEAVE_START <![CDATA[ <= ]]> TO_DATE(#{today}, 'YYYY-MM-DD')
-          AND LEAVE_END <![CDATA[ >= ]]> TO_DATE(#{today}, 'YYYY-MM-DD')
-    </select>
-    
-    <!-- 연차 상태 삽입 -->
-    <insert id="insertDayoff">
-        INSERT INTO WORK (
-            WORK_NO
-          , WORK_DATE
-          , WORK_IN
-          , WORK_OUT
-          , WORK_TOTAL_TIME
-          , WORK_STATE
-          , LATE_YN
-          , EMP_NO
-         ) VALUES (
-            WORK_SEQ.NEXTVAL
-          , TO_DATE(#{today}, 'YYYY-MM-DD')
-          , NULL
-          , NULL
-          , 0 
-          , #{dayoffType}
-          , 'N'
-          , #{empNo}
-         )
-    </insert>
-    
-    <!-- 반차 상태 업데이트 -->
-    <update id="updateDayoffStatus">
-       UPDATE WORK
-       SET WORK_STATE = #{dayoffType}
-       WHERE WORK_DATE = TO_DATE(#{today}, 'YYYY-MM-DD')
-         AND EMP_NO = #{empNo}
-    </update>
-    
-     <!-- 휴가종류 조회 -->
-     <select id="getDayoffType" 
-             parameterType="map" 
-             resultType="int">
-        SELECT CASE
-                   WHEN LEAVE_CLASSIFY = '1' THEN 20
-                   WHEN LEAVE_CLASSIFY = '0' THEN 30
-                   ELSE 10  <!-- 정상출근 상태를 기본값으로 설정 -->
-               END AS dayoffType
-        FROM APV_LEAVE
-        WHERE EMP_NO = #{empNo}
-          AND LEAVE_STATUS = 1
-          AND LEAVE_START <![CDATA[ <= ]]> TO_DATE(#{today}, 'YYYY-MM-DD')
-          AND LEAVE_END <![CDATA[ >= ]]> TO_DATE(#{today}, 'YYYY-MM-DD')
-    </select>
     
     <!-- 지각 횟수 -->        
     <select id="getLateCount" 
@@ -186,10 +207,10 @@
     <select id="getTotalWorkHours" 
             parameterType="map" 
             resultType="int">
-      SELECT SUM(WORK_TOTAL_TIME)
+      SELECT COALESCE(SUM(WORK_TOTAL_TIME), 0) <!-- NULL 처리 : 합계가 NULL 이면 0 반환 -->
       FROM WORK 
       WHERE EMP_NO = #{empNo}
-        AND WORK_STATE IN ('10', '20') 
+        AND WORK_STATE IN ('10', '20') <!-- 정상출근, 반차 -->
         AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
     </select>
     
@@ -197,7 +218,7 @@
     <select id="getAvgWorkHours" 
             parameterType="map" 
             resultType="double">
-      SELECT AVG(WORK_TOTAL_TIME)
+      SELECT COALESCE(AVG(WORK_TOTAL_TIME), 0.0) <!-- NULL 처리 : 평균값이 NULL 이면 0.0 반환 -->
       FROM WORK 
       WHERE EMP_NO = #{empNo}
         AND WORK_STATE IN (10, 20) <!-- 정상출근, 반차 -->
@@ -207,7 +228,7 @@
   <!-- 근무정보 기간조회 -->    
     <select id="getWorkListByPeriod"
             parameterType="map"
-            resultMap="worMap">
+            resultMap="workMap">
 	    SELECT W.WORK_NO, W.WORK_DATE, W.WORK_IN, W.WORK_OUT, W.WORK_TOTAL_TIME, W.WORK_STATE, W.LATE_YN,
 	           E.EMP_NO, E.EMP_NAME, E.ENTER_DATE
 	      FROM WORK W

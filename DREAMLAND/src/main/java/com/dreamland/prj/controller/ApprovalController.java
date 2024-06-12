@@ -32,6 +32,11 @@ public class ApprovalController {
 		}
 		return "approval/appWrite";
 	}
+	@GetMapping("/appDelete")
+	public String appDelete(HttpServletRequest request) {
+			approvalService.deleteApp(request);
+		return "approval/appMyList";
+	}
 	
 	@GetMapping("/appList" )
 	  public String applist(HttpServletRequest request, Model model) {

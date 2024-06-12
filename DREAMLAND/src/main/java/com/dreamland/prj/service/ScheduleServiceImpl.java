@@ -96,32 +96,20 @@ public class ScheduleServiceImpl implements ScheduleService {
   // 모든 일정 조회
   @Override
   public void loadSkdList(HttpServletRequest request, Model model) {
-//    세션 오류 발생용 
+    // 현재 세션에서 로그인된 사용자 정보를 가져옵니다.
+    EmployeeDto loginEmployee = (EmployeeDto) request.getSession().getAttribute("loginEmployee");
+    
+    System.out.println(loginEmployee);
+    
+    // 사용자 정보를 기반으로 일정 조회
     Map<String, Object> map = new HashMap<>();
-    
+    map.put("empNo", loginEmployee.getEmpNo());
+    map.put("deptNo", loginEmployee.getDeptNo());
+
+    // 일정 리스트를 가져와서 모델에 추가
     List<ScheduleDto> skdList = scheduleMapper.getSkdList(map);
-    System.out.println(skdList);
     model.addAttribute("skdList", skdList);
-    
-//    HttpSession session = request.getSession();
-//    // 세션 정보 저장 (사원번호 + 부서번호)
-//    int empNo = (Integer) session.getAttribute("empNo");
-//    int deptNo = (Integer) session.getAttribute("deptNo");
-//    
-//    Map<String, Object> map = new HashMap<>();
-//    map.put("empNo", empNo);
-//    map.put("deptNo", deptNo);
-//
-//    List<ScheduleDto> skdList = scheduleMapper.getSkdList(map);
-//    
-//    // 각 일정의 공유 부서 정보를 가져와서 설정
-//    for (ScheduleDto skd : skdList) {
-//        List<SkdShrDeptDto> sharedDeptNos = scheduleMapper.getShrDeptNo(skd.getSkdNo());
-//        skd.setShrDept(sharedDeptNos);
-//    }
-//
-//    System.out.println(skdList);
-//    model.addAttribute("skdList", skdList);
+
   }
   
   @Override

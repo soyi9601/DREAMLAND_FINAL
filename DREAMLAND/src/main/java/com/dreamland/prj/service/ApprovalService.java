@@ -32,6 +32,7 @@ public interface ApprovalService {
 	ResponseEntity<Map<String, Object>> loadrejectedMyReferAppList(HttpServletRequest request);
 	public void loadTempApp(HttpServletRequest request, Model model);
 	public void loadAppByNo(HttpServletRequest request, Model model);
+	public void deleteApp(HttpServletRequest request);
 	ResponseEntity<Resource> download(HttpServletRequest request);
 	ResponseEntity<Map<String, Object>> employeeList(HttpServletRequest request);
 	boolean  deleteAttach(HttpServletRequest request);
