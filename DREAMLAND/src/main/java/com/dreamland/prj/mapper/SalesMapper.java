@@ -32,4 +32,8 @@ public interface SalesMapper {
   List<Map<String, Object>> findTrHunPartSales(Map<String, Object> params);
   List<Map<String, Object>> findFHunPartSales(Map<String, Object> params);
   List<Map<String, Object>> findFvHunPartSales(Map<String, Object> params);
+
+  int getProductCount();
+  List<ProductDto> getProductList(Map<String,  Object> map);
+  int updateProduct(ProductDto product);
 }
