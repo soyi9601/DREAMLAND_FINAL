@@ -131,14 +131,9 @@ const fnAttachAdd = () => {
     const inputsArea = $(".notice-inputs-area");
     const inputCount = inputsArea.children('.notice-input-area').length;
 
-    if (inputCount < 5) { // 첨부파일 input이 5개를 넘지 않도록 제한
+    if (inputCount < 5) { 
       const newInputArea = $('<div class="notice-input-area"><input class="form-control" type="file" name="files" /></div>');
         inputsArea.append(newInputArea);
-        /*
-        if(inputCount == 4){
-           //$(".file-add-btn").css('display', 'none');
-        }
-        */
     } else {
         alert("더 이상 파일을 추가할 수 없습니다.");
     }
@@ -169,7 +164,6 @@ const fnAttachCheck = () => {
       totalSize += files.size;
     }
 
-    console.log("files:  " + files);
   });
 }
 
@@ -191,7 +185,7 @@ const fnAttachDel = () => {
 }
 
 
-//체크박스 선택시 value값 1로 넘기기 (중요버튼)
+// 공지사항 중요 체크박스
 const fnChkSig = () => {
   $('input[name="signal"]').val(0);
   $(document).on('click', '.chksignal', (e) => {
