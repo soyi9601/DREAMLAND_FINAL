@@ -112,7 +112,13 @@
             str += '<td></td>'
           }
           
-          str += '<td  data-blind-no="'+ blindHot.blindNo+'" class="blindTitle"><span class="new rounded-pill bg-label-danger">hot</span>'+blindHot.boardTitle+'</td>';
+          if (diffHours <= 24) {
+            str += '<td data-blind-no="'+blindHot.blindNo+'" class="blindTitle"><span class="new rounded-pill bg-label-success">new</span><span class="new rounded-pill bg-label-danger">hot</span>'+blindHot.boardTitle+'</td>';
+          }else {
+            str += '<td data-blind-no="'+blindHot.blindNo+'" class="blindTitle"><span class="new rounded-pill bg-label-danger">hot</span>'+blindHot.boardTitle+'</td>';
+            }
+          
+          //str += '<td  data-blind-no="'+ blindHot.blindNo+'" class="blindTitle"><span class="new rounded-pill bg-label-danger">hot</span>'+blindHot.boardTitle+'</td>';
           str += '<td class="publish-time">' + publishTime.locale('ko').fromNow() + '</td>';
           str += '<td>'+blindHot.commentCount+'</td>';
           str += '<td>'+blindHot.hit+'</td>'
@@ -180,8 +186,14 @@
           
           let titleClass = "";
           
-          if(diffHours <= 24){
+          if(diffHours <= 24 && blind.commentCount >= 5) {
+            // 24시간 이내면서 댓글수가 5개 이상인 경우
+            str += '<td data-blind-no="'+ blind.blindNo+'" class="blindTitle"><span class="new rounded-pill bg-label-success">new</span><span class="new rounded-pill bg-label-danger">hot</span>'+  blind.boardTitle + '</td>';
+          } else if(diffHours <= 24){
              str += '<td data-blind-no="'+ blind.blindNo+'"  class="blindTitle"><span class="new rounded-pill bg-label-success">new</span>'+  blind.boardTitle + '</td>';
+          }else if(blind.commentCount >= 5) {
+            // 댓글수가 5개 이상인 경우
+            str += '<td data-blind-no="'+ blind.blindNo+'" class="blindTitle"><span class="new rounded-pill bg-label-danger">hot</span>'+  blind.boardTitle + '</td>';
           }else{
              str += '<td data-blind-no="'+ blind.blindNo+'"  class="blindTitle">'+  blind.boardTitle + '</td>';
           }
@@ -207,7 +219,7 @@ const fnScrollHandler = () => {
   // 스크롤이 바닥에 닿으면 page 증가(최대 totalPage 까지) 후 새로운 목록 요청
   // 타이머 id (동작한 타이머의 동작 취소를 위한 변수)
   var timerId;  
-  let fixedBtn =$('.fixed-btn-area');
+  
   $(window).on('scroll', (evt) => {
     
     if(timerId) { 
@@ -227,14 +239,26 @@ const fnScrollHandler = () => {
         page++;
         fnGetBlindList();
         $('.loadingArea').hide();
-        fixedBtn.show();
+        
       }else{
-        fixedBtn.hide();
+        
       }
     }, 500);
   })
 }  
-  
+
+
+let fixedBtn =$('.fixed-btn-area');
+
+
+$(window).scroll(function(){
+	if($(this).scrollTop()>200){
+		fixedBtn.fadeIn('slow');
+	}else{
+		fixedBtn.fadeOut('slow');
+	}
+})
+
   
 // 조회수 쿠키 설정함수
 function setCookie(name, value, days) {

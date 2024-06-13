@@ -31,7 +31,7 @@
 												<div class="board-title-area">
 														<div class="board-title">
 																<c:if test="${notice.signal==1}">
-																		<span>중요</span>
+																		 <span class="important badge rounded-pill bg-label-danger">중요</span>
 																</c:if>
 																${notice.boardTitle}
 														</div>
