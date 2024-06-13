@@ -22,7 +22,7 @@
 	                    <thead>
 	                      <tr>
 	                        <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
-	                        <th>보낸사람</th>
+	                        <th>보낸사람/받는사람</th>
 	                        <th>쪽지내용</th>
 	                        <th>보낸시간</th>
 	                      </tr>
@@ -38,15 +38,34 @@
                               <tr>
                                 <td><input class="form-check-input" type="checkbox" value="${delete.msgNo}" id="restore-no" name="deleteYn"/></td>
                                   <c:choose>
+                                    <c:when test="${delete.sendDelYn == 'Y' }">
+                                      <c:choose>
                                       <c:when test="${delete.readYn == 'Y'}">
-                                          <td style="color: lightgray;">${delete.senderName}</td>
-                                          <td style="color: lightgray;">${delete.msgContents}</td>
+                                          <td style="color: lightgray;">${delete.senderName}[${delete.senderDeptName}-${delete.senderPosName}]</td>
+                                          <td style="color: lightgray;">[보낸쪽지] ${delete.msgContents}</td>
                                           <td style="color: lightgray;">${delete.msgCreateDt}</td>
                                       </c:when>
                                       <c:otherwise>
-                                          <td>${delete.senderName}</td>
-                                          <td>${delete.msgContents}</td>
-                                          <td>${delete.msgCreateDt}</td>
+                                              <td>${delete.senderName}[${delete.senderDeptName}-${delete.senderPosName}]</td>
+                                              <td>[보낸쪽지] ${delete.msgContents}</td>
+                                              <td>${delete.msgCreateDt}</td>
+                                          </c:otherwise>
+                                        </c:choose>
+                                      </c:when>
+                                      <c:otherwise>
+                                          <c:choose>
+                                          <c:when test="${delete.readYn == 'Y'}">
+                                              <td style="color: lightgray;">${delete.senderName}[${delete.senderDeptName}-${delete.senderPosName}]</td>
+                                              <td style="color: lightgray;">[받은쪽지] ${delete.msgContents}</td>
+                                              <td style="color: lightgray;">${delete.msgCreateDt}</td>
+                                          </c:when>
+                                          <c:otherwise>
+                                              <td>${delete.senderName}[${delete.senderDeptName}-${delete.senderPosName}]</td>
+                                              <td>[받은쪽지] ${delete.msgContents}</td>
+                                              <td>${delete.msgCreateDt}</td>
+                                          </c:otherwise>
+                                        </c:choose>
+
                                       </c:otherwise>
                                   </c:choose>
                               </tr>
