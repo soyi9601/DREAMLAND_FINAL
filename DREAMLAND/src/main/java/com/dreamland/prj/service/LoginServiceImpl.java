@@ -70,15 +70,14 @@ public class LoginServiceImpl implements LoginService {
     return newFilePath;
   }
   
+  
+  // 부서/직급 정보 가져오기
   @Override
   public void getDeptAndPos(Model model) {
     Map<String, Object> modelMap = model.asMap();
     HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
-    
     int empNo = Integer.parseInt(request.getParameter("empNo"));
-    
     EmployeeDto emp = employeeMapper.getEmployeeByEmpNo(empNo);
-    
     model.addAttribute("emp", emp);
     
   }

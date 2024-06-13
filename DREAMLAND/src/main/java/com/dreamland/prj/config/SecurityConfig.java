@@ -43,7 +43,9 @@ public class SecurityConfig {
             .requestMatchers("/resources/**").permitAll() // "/resources/**" 경로에 대한 모든 사용자 허용
             .requestMatchers("/login/**", "/auth/**").permitAll()
             .requestMatchers("/WEB-INF/views/**").permitAll() // "/WEB-INF/views/**" 경로에 대한 모든 사용자 허용
+            .requestMatchers("/auth/error").permitAll() 
             .requestMatchers(req->CorsUtils.isPreFlightRequest(req)).permitAll()
+            
             .requestMatchers("/user/**").authenticated()  // 인증만 되면 들어갈 수 있는 주소
             .requestMatchers("/manager/**", "/").hasAnyRole("ADMIN", "USER")
             .requestMatchers("/depart/addDepart.page").hasRole("ADMIN")
@@ -55,8 +57,15 @@ public class SecurityConfig {
             .loginPage("/loginPage")
             .loginProcessingUrl("/login") // login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행해준다.
             .failureHandler(customFailureHandler)
-            .defaultSuccessUrl("/")
+            .defaultSuccessUrl("/",true)  // 999 오류 해결부분
             )
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login?logout")
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID").permitAll()
+         )
+
         .exceptionHandling(exceptionHandle ->exceptionHandle
             .accessDeniedHandler(new CustomAccessDeniedHandler())
             )

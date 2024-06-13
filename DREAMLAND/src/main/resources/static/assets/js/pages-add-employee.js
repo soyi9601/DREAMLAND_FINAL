@@ -5,6 +5,9 @@
  *    1) 240524
  *        - preventDefault 완료
  *        - 정규식(이름, 이메일, 휴대전화)
+ *    2) 240613
+ *        - 이메일 중복체크 ajax 작성
+ *        - 이름, 휴대전화, 이메일 체크 함수를 oninput="함수이름()" 으로 호출 방식 변경
  */
 
 'use strict';
@@ -17,9 +20,41 @@ var mobileCheck = false;
 var deptNo = 0;
 var posNo = 0;
 var role = 0;
+var checkCount = 0;
 
+var deptDetailOptions;
 
 /************************** 함수 정의 **************************/
+// 세부부서 가져오기
+$(document).ready(function() {
+  $('#dept-no').change(function() {
+    var selectedValue = $(this).val();
+    if (selectedValue == '5000') {
+      $('#dept-no').attr('name', 'deptDetailNo');
+      $('#dept-detail-no').attr('name', 'deptNo');
+      
+      $.ajax({
+        url: '/employee/detailDepart.do', 
+        type: 'GET',
+        success: (response) => { 
+          deptDetailOptions = response.departDetailList; // 세부 부서 결과 저장
+          var $deptDetailSelect = $('#dept-detail-no');
+          $deptDetailSelect.empty(); // 기존 옵션들을 모두 제거
+          $.each(deptDetailOptions, (index, deptDetailList) => {
+            $deptDetailSelect.append(
+                $('<option></option>').val(deptDetailList.deptNo).text(deptDetailList.deptName + '[' + deptDetailList.deptNo + ']')
+            );
+          });
+        }
+      });
+    } else {
+      $('#dept-no').attr('name', 'deptNo');
+      $('#dept-detail-no').attr('name', 'deptDetailNo');
+      $('#dept-detail-no').empty()
+      }
+  });
+});
+
 // 프로필 사진 등록 함수
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
@@ -138,6 +173,25 @@ const fnCheckEmail = () => {
     emailCheck = true;
     msgEmail.innerHTML = '';
   }
+  
+  var email = inpEmail.value;
+  $.ajax({
+    url:'/employee/emailCheck.do',
+    type: 'POST',
+    data: {email:email},
+    success: (response)=>{
+      checkCount = response.checkCount;
+      if(checkCount === 1){
+          msgEmail.innerHTML = '중복된 이메일입니다. 다시 확인해주세요';
+          msgEmail.style.fontSize = '0.75rem';
+          msgEmail.style.fontWeight = 'bold';
+          msgEmail.style.color = '#EE2B4B';
+          return;
+      } else{
+      }
+    }
+    
+  })
 }
 
 // 비밀번호 자동 생성 함수
@@ -184,17 +238,19 @@ const fnAddEmployee = () =>{
       alert('권한을 확인하세요.');
       evt.preventDefault();
       return;
+    }else if(checkCount === 1){
+      alert('이메일은 중복일 수 없습니다. 다시 확인하세요.');
+      evt.preventDefault();
+      return;
     }
     
   });
 
 }
 
+
 /************************** 함수 호출 **************************/
 document.getElementById('birth').addEventListener('blur', fnGetPassword);
-document.getElementById('emp-name').addEventListener('blur', fnCheckName);
-document.getElementById('emp-mobile').addEventListener('blur', fnCheckMobile);
-document.getElementById('emp-email').addEventListener('blur', fnCheckEmail);
 
 document.getElementById('dept-no').addEventListener('change', ()=>{
   deptNo = document.getElementById('dept-no').value;
@@ -205,6 +261,10 @@ document.getElementById('pos-no').addEventListener('change', ()=>{
 document.getElementById('role').addEventListener('change', ()=>{
   role = document.getElementById('role').value;
 });
+
+document.getElementById('move-before').addEventListener('click', ()=>{
+  window.history.back();
+})
 
 fnAddEmployee();
 
