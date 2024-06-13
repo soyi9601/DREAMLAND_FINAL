@@ -1,6 +1,9 @@
 package com.dreamland.prj.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +33,23 @@ public class EmployeeContorller {
     
   }
   
+  // 세부 부서 가져오기
+  @GetMapping(value="/employee/detailDepart.do", produces = "application/json")
+  public ResponseEntity<Map<String, Object>> detailDepart(HttpServletRequest request){
+    return employeeService.getDetailDepart(request);
+  }
+  
   // 직원 등록
   @PostMapping("/employee/add.do")
   public String addEmployee(@RequestParam("profilePath") MultipartFile profilePath, HttpServletRequest request, HttpServletResponse response) {
     employeeService.addEmployee(profilePath, request, response);
     return "redirect:/employee/add";
+  }
+  
+  // 이메일 중복체크
+  @PostMapping(value="/employee/emailCheck.do", produces = "application/json")
+  public ResponseEntity<Map<String, Object>> emailCheck(HttpServletRequest request){
+    return employeeService.emailCheck(request);
   }
   
 

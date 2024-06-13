@@ -63,6 +63,7 @@
                               type="text"
                               id="emp-name"
                               name="empName"
+                              oninput="fnCheckName()"
                             />
                             <div id="name-result"></div>
                           </div>
@@ -88,6 +89,7 @@
                                 name="mobile"
                                 class="form-control"
                                 placeholder="- 붙여서 작성해주세요"
+                                oninput="fnCheckMobile()"
                               />
 	                          <div id="result-mobile"></div>
                           </div>
@@ -99,15 +101,21 @@
                               id="emp-email"
                               name="email"
                               placeholder="example@example.com"
+                              oninput="fnCheckEmail()"
                             />
                             <div id="result-email"></div>
                           </div>
-                          <div class="mb-3 col-md-6">
-                            <label class="form-label" for="deptNo">소속</label>
+                          <div class="mb-3 col-md-3">
+                            <label class="form-label" for="deptNo">소속부서</label>
                             <select id="dept-no" name="deptNo" class="select2 form-select">
                               <c:forEach var="depart" items="${deptList}">
-                                <option value="${depart.deptNo}">${depart.deptName}</option>
+                                <option value="${depart.deptNo}">${depart.deptName}[${depart.deptNo}]</option>
                               </c:forEach>
+                            </select>
+                          </div>
+                          <div class="mb-3 col-md-3">
+                            <label class="form-label" for="deptDetailNo">세부소속</label>
+                            <select id="dept-detail-no" name="deptDetailNo" class="select2 form-select">
                             </select>
                           </div>
                           <div class="mb-3 col-md-6">
@@ -149,7 +157,7 @@
                         </div>
                         <div class="mt-2">
                           <button type="submit" class="btn btn-primary me-2" id="frm-add-employee">저장</button>
-                          <button type="reset" class="btn btn-outline-secondary">취소</button>
+                          <button type="reset" class="btn btn-outline-secondary" id="move-before">취소</button>
                         </div>
                     </div>
                       </form>
