@@ -182,7 +182,7 @@
      WHERE APV_NO IN (SELECT APV_NO 
               FROM APV_WRITER 
              WHERE EMP_NO = #{empNo}
-       AND NOT APV_CHECK = 3 )
+       AND NOT APV_CHECK IN(2,3)  )
       
       
   </select>
@@ -197,7 +197,7 @@
                                   WHERE APV_STATE = 100 )
                                  WHERE rn = 1
                                    AND EMP_NO = #{empNo})
-          AND NOT B.APV_CHECK = 3 
+          AND NOT B.APV_CHECK IN(2,3) 
   </select>
   
   
@@ -229,7 +229,7 @@
       SELECT COUNT(*)
         FROM approval
        WHERE EMP_NO = #{empNo}
-         AND NOT APV_CHECK = 3
+         AND NOT APV_CHECK IN(2,3)
   </select>
   
    <select id="getMyWaitApvCount">
@@ -267,7 +267,7 @@
        WHERE APV_NO IN (SELECT APV_NO
        										FROM APV_REF
        									 WHERE EMP_NO = #{empNo})
-       	AND NOT APV_CHECK = 3
+       	AND NOT APV_CHECK IN (2,3)
   </select>
   
    <select id="getMyReferWaitApvCount">

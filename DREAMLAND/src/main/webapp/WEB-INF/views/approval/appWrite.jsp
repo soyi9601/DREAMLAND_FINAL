@@ -14,9 +14,7 @@
 <input type="hidden" id="kind" value="${kind}">
 <c:if test="${kind ==0 }">
 <body onload="showPage('approvalForm')"></body>
-
     </c:if>
-    
     <c:if test="${kind ==1 }">
 <body onload="showPage('leaveRequestForm')"></body>
     </c:if>
@@ -45,7 +43,7 @@
             <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
            <div class="section">
                 <div class="section-title">제목</div>
-                        	<input type="text" style="width:750px;" name="title"  value="${title}"></input>
+                        	<input type="text" style="width:750px;" name="title" id="title"  value="${title}"></input>
     <input type="hidden" name="temp" value="0">
     <input type="hidden" name="apvNo" id="apvNo" value="${approval.apvNo}">
             </div>
@@ -114,17 +112,21 @@
                     <tr>
                         <td style="width: 150px;" >품의 사유 및 상세 내역</td>
                         <td>
-                            <textarea class="textarea" name="contents" required>${approval.detail}</textarea>
+                            <textarea class="textarea" name="contents"  id="contents" >${approval.detail}</textarea>
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="footer">
-                위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.<br>
-                <br>
-                <div class="today"></div>
-                
-            </div>
+            	<div class="footer">
+              위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.<br>
+                     <br>
+                     <c:if test="${empty title}">
+                <div class="today"></div>        
+                </c:if>
+                     <c:if test="${not empty title}">
+                          <div>     ${ApvDate} 작성자 : ${loginEmployee.empName}</div>
+                </c:if>
+                </div>
             <br>
             <div class="button-container">
 														<div class="row mb-3">
@@ -143,11 +145,10 @@
 																    </div>
 																</div>
 
-																<div class="col-sm-10 notice-inputs-area">
-																		<div class="notice-input-area">
-																			<input class="form-control" type="file" name="files"/>
-																		</div>
-																</div>
+  <div>
+    <input type="file" name="files" id="files" multiple>
+  </div>
+    <div id="attach-list"></div>
 														</div>
               <button class="button button-primary" id="submitBtn1">임시저장</button>
               <button class="button button-primary" type="submit">제출하기</button>
@@ -165,7 +166,7 @@
         <div class="apv-container">
             <div class="title">휴가신청서</div>
                             <div class="section-title">제목</div>
-                        	<input type="text" style="width:750px;" name="title" value="${title}"></input>
+                        	<input type="text" style="width:750px;" name="title"  id="title2"  value="${title}"></input>
          <input type="hidden" name="temp" value="0">
             <input type="hidden" name="apvNo" value="${approval.apvNo}">
              <div class="section-title">결재자</div>
@@ -278,7 +279,7 @@
                					
                					
                					 <c:if test="${empty title}">
-               					<td id="leave-details"><input type="date" name="leavestart" > ~ <input type="date" name="leaveend"  ></td>
+               					<td id="leave-details"><input type="date"  id="leaveDate"  name="leavestart" > ~ <input type="date" name="leaveend"  ></td>
                          </c:if>
                          
                          
@@ -288,15 +289,19 @@
                 <tr>
                     <td>사유</td>
                     <td>
-                        <textarea class="textarea" name="contents"   required> ${approval.detail}</textarea>
+                        <textarea class="textarea" name="contents"  id="contents2" >${approval.detail}</textarea>
                     </td>
                 </tr>
             </table>
-            <div class="footer">
+             	<div class="footer">
                 위와 같은 사유로 휴가를 신청하오니 허가하여 주시기 바랍니다.<br>
                      <br>
+                     <c:if test="${empty title}">
                 <div class="today"></div>        
-                
+                </c:if>
+                     <c:if test="${not empty title}">
+                          <div>     ${ApvDate} 작성자 :${loginEmployee.empName}</div>
+                </c:if>
                 </div>
                <br>
         <div class="button-container">
@@ -315,11 +320,9 @@
 																		    	</c:if>
 																    </div>
 																</div>
-																<div class="col-sm-10 notice-inputs-area">
-																		<div class="notice-input-area">
-																			<input class="form-control" type="file" name="files"/>
-																		</div>
-																</div>
+    <input type="file" name="files" id="files" multiple>
+  </div>
+    <div id="attach-list"></div>
 														</div>
               <button class="button button-primary" id="submitBtn2">임시저장</button>
               <button class="button button-primary" type="submit">제출하기</button>
@@ -342,6 +345,65 @@ const posName = {  '10':'사원',
 		 '50' :'부장',
 		 '60' :'팀장',
 		 '100': '대표이사' }
+
+
+
+const fnRegisterUpload = () => {
+	document.getElementById('myForm').addEventListener('submit', (evt) => {
+		
+		const row = document.getElementById('selectedEmployeesRow');
+		const cells = row.getElementsByTagName('td');
+		const cellCount = cells.length;
+		
+		if(document.getElementById('title').value === '' ) {
+			alert('제목은 필수입니다.');
+			evt.preventDefault();
+			return;
+		} else if(cellCount == 1 ) {
+			alert('결재자를 선택해주세요');
+			evt.preventDefault();
+			return;
+		}
+		else if(document.getElementById('contents').value === '' ) {
+			alert('내용은 필수입니다.');
+			evt.preventDefault();
+			return;
+		} 
+	})
+	document.getElementById('myForm2').addEventListener('submit', (evt) => {
+		
+		const row = document.getElementById('selectedEmployeesRow2');
+		const cells = row.getElementsByTagName('td');
+		const cellCount = cells.length;
+	  var leaveTypePick = document.getElementById("leave-type").value;
+	  var leaveType;
+	  if(leaveTypePick ==0) {
+		  
+		  leaveType = 'leaveDate';
+	  } else {
+		  leaveType ='leaveDate2';
+	  }
+		
+		if(document.getElementById('title2').value === '' ) {
+			alert('제목은 필수입니다.');
+			evt.preventDefault();
+			return;
+		}else if(cellCount == 1 ) {
+			alert('결재자를 선택해주세요.');
+			evt.preventDefault();
+			return;
+		}else if(document.getElementById(leaveType).value === '') {
+			alert('날짜를 입력해주세요.');
+			evt.preventDefault();
+			return;
+			
+		} else if(document.getElementById('contents2').value === '' ) {
+			alert('내용은 필수입니다.');
+			evt.preventDefault();
+			return;
+		} 
+	})
+}
 		 
 		 
 function fnTdcount1(tag) {
@@ -433,10 +495,11 @@ function fnJstree() {
           // jsTree 형식에 맞게 변환하여 data 배열에 추가
           let node = {
               "id": item.empNo+"",
-              "text": item.empName,
+              "text": item.empName + " " + posName[item.posNo] ,
               "parent" : item.deptNo+"",
               "icon": "bx bx-user",
-               "data": { "rank": item.posNo+""}
+               "data": { "rank": item.posNo+"" ,
+            	            "name": item.empName+"" }
           };
           Edata.push(node);
     });
@@ -565,15 +628,16 @@ function fnJstree() {
         	if(data.node.parent == '#') {
         		return
         	}
+        	
+     
+        	
         	 var selectedNode = $('#orgChart').jstree().get_node(data.node.id);
-        	 console.log(selectedNode.data.rank + '지금 결재자');
-        	 console.log(Edata.find(({ text }) => text === approvers[tdCount-2].value).data.rank + '이전 결재자');
-        	if( +(selectedNode.data.rank) <= +(Edata.find(({ text }) => text === approvers[tdCount-2].value).data.rank) ) {
+        	if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) ) {
         		alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
         		return
         		
         	}
-            const name = data.node.text;
+            const name = data.node.data.name;
             const pos = posName[selectedNode.data.rank];
             const newCell = selectedEmployeesRow.insertCell();
             const newCell2 = selectedPositiionRow.insertCell();
@@ -586,7 +650,6 @@ function fnJstree() {
             } else {
                 openOrgChartBtn.style.display = "inline-block";
             }
-            orgChartModal.style.display = "none";
         }
     });
     $('#orgChart2').on("select_node.jstree", function (e, data) {
@@ -599,15 +662,18 @@ function fnJstree() {
     	}
     	
    	 var selectedNode = $('#orgChart2').jstree().get_node(data.node.id);
- 			if( +(selectedNode.data.rank) <= +(Edata.find(({ text }) => text === approvers2[tdCount-2].value).data.rank) ) {
- 				alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
- 				return
- 		
- 			}
+ 	if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers2[tdCount-2].value).data.rank) ) {
+		alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
+		return
+		
+	}
         if (tdCount < 5) {
-            const name = data.node.text;
+            const name = data.node.data.name;
+            const pos = posName[selectedNode.data.rank];
             const newCell = selectedEmployeesRow2.insertCell();
+            const newCell2 = selectedPositiionRow2.insertCell();
             newCell.innerHTML = '<input type="text" class="approvers2" name="approver' + tdCount+ '" value="'+name+'" ></input>'; // HTML 추가
+            newCell2.innerHTML = pos; // HTML 추가
             tdCount++;
             if (tdCount >= 5) {
                 openOrgChartBtn2.style.display = "none";
@@ -615,7 +681,6 @@ function fnJstree() {
             } else {
                 openOrgChartBtn2.style.display = "inline-block";
             }
-            orgChartModal2.style.display = "none";
         }
     });
     $('#orgChart3').on("select_node.jstree", function (e, data) {
@@ -625,7 +690,7 @@ function fnJstree() {
     		return
     	}
     
-            const name = data.node.text;
+             const name = data.node.data.name;
             referrer.value += name+ ' ';
 
 
@@ -640,7 +705,7 @@ function fnJstree() {
     		return
     	}
     
-            const name = data.node.text;
+         	const name = data.node.data.name;
             referrer2.value += name+ ' ';
 
         
@@ -656,12 +721,12 @@ function fnJstree() {
        var leaveDetails = document.getElementById("leave-details");
 
        if (leaveType == "1") { // 반차 selected
-           leaveDetails.innerHTML   = '<input type="date" name="leavestart"> '; 
-           leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday" value="morning"> 오전</label>';
+           leaveDetails.innerHTML   = '<input type="date" id="leaveDate2" name="leavestart"> '; 
+           leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday" value="morning" checked> 오전</label>';
            leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday" value="afternoon"> 오후</label>';
           
        } else { // 연차 selected
-           leaveDetails.innerHTML = '<input type="date" name="leavestart"> ~'; 
+           leaveDetails.innerHTML = '<input type="date" id="leaveDate" name="leavestart"> ~'; 
            leaveDetails.innerHTML  +=' <input type="date" name="leaveend">';
        }})
    }
@@ -671,6 +736,8 @@ function fnJstree() {
    $(document).ready(function() {
        $('#submitBtn1').click(function(event) {
            event.preventDefault(); // 기본 제출 동작을 막음
+           
+           
            $('input[name="temp"]').val('3');
            $('#myForm').submit(); // 폼 제출
        });
@@ -678,6 +745,8 @@ function fnJstree() {
 
        $('#submitBtn2').click(function(event) {
            event.preventDefault(); // 기본 제출 동작을 막음
+           
+           
            $('input[name="temp"]').val('3');
            $('#myForm2').submit(); // 폼 제출
        });
@@ -713,72 +782,47 @@ function fnJstree() {
        document.getElementById(pageId).classList.add('active');
    }
    
-// 첨부파일 첨부 - 5개로 제한 , 2개 기본, 추가 누를시 파일input창 생기게... 없앨까?
-   const fnAttachAdd = () => {
-     $(".file-add-btn").on('click', () => {
-       const inputsArea = $(".notice-inputs-area");
-       const inputCount = inputsArea.children('.notice-input-area').length;
 
-       if (inputCount < 5) { // input 창이 5개를 넘지 않도록 제한
-       	const newInputArea = $('<div class="notice-input-area"><input class="form-control" type="file" name="files" /></div>');
-           inputsArea.append(newInputArea);
-           if(inputCount == 4){
-           	 //$(".file-add-btn").css('display', 'none');
-           }
-       } else {
-           alert("더 이상 파일을 추가할 수 없습니다.");
-       }
-     });
-   }
+   var fileNo = 0;
+   var filesArr = new Array();
 
-
-   const fnAttachCheck = () => {
-     $(document).on('change', '.form-control', (e) => { 
-       const limitPerSize = 1024 * 1024 * 10; // 10MB
-       const limitTotalSize = 1024 * 1024 * 10; // 10MB
-       let totalSize = 0;
-       const files = e.target.files[0];
-
-       const inputArea = $(e.target).closest(".notice-input-area");
-       
-       
-       if (!inputArea.find('.del-btn').length) {
-         const delBtn = $('<span class="del-btn">X</span>');
-         inputArea.append(delBtn);
-       }
-       
-       
-       if (files) {
-         if (files.size > limitPerSize) {
-             alert('첨부파일의 최대 크기는 10MB입니다.');
-             e.target.value = '';
-             return;
-         }
-         totalSize += files.size;
-       }
-
-       console.log("files:  " + files);
-     });
-   }
-
-
-   // 첨부파일 input창 삭제
-   const fnAttachDel = () => {
-     $(document).on('click', '.del-btn', (e) => {
-       const inputArea = $(e.target).closest('.notice-input-area');
-       inputArea.remove();
-       
-       const inputsArea = $(".notice-inputs-area");
-       const inputCount = inputsArea.children('.notice-input-area').length;
-       
-       if(inputCount ==0){
-       	const newInputArea = $('<div class="notice-input-area"><input class="form-control" type="file" name="files" /></div>');
-         inputsArea.append(newInputArea);
-       }
-     });
-   }
    
-  
+   const fnAttachCheck = () => {
+	   document.getElementById('files').addEventListener('change', (evt) => {
+	     const limitPerSize = 1024 * 1024 * 10;
+	     const limitTotalSize = 1024 * 1024 * 100;
+	     let totalSize = 0;
+	     const files = evt.target.files;
+	     const attachList = document.getElementById('attach-list');
+	     attachList.innerHTML = '';
+	     
+	     if(files.length >5) {
+	         alert('첨부파일은 최대 5개까지 입니다.');
+	         evt.target.value = '';
+	         attachList.innerHTML = '';
+	         return;
+	     }
+	     
+	     for(let i = 0; i < files.length; i++){
+	       if(files[i].size > limitPerSize){
+	         alert('각 첨부 파일의 최대 크기는 10MB입니다.');
+	         evt.target.value = '';
+	         attachList.innerHTML = '';
+	         return;
+	       }
+	       totalSize += files[i].size;
+	       if(totalSize > limitTotalSize){
+	         alert('전체 첨부 파일의 최대 크기는 100MB입니다.');
+	         evt.target.value = '';
+	         attachList.innerHTML = '';
+	         return;
+	       }
+	       attachList.innerHTML += '<div>' + files[i].name +'</div>';
+	     }
+	   })
+	 }
+
+
    const fnAttachDelete = () => {
        // attachDelete 태그 클릭 이벤트 핸들러
        $(document).on("click", "#attachDelete", function() {
@@ -804,14 +848,18 @@ function fnJstree() {
            });
        });
    }
+   
+ 
+
+
 
    // Initialize to show the first page
   showPage('approvalForm');
   fnJstree();
   updateLeaveForm();
-	fnAttachAdd();
+  fnRegisterUpload();
 	fnAttachCheck();
-	fnAttachDel();
+	fnAttachDelete();
   fnAttachDelete();
   fnToDay();
 </script>

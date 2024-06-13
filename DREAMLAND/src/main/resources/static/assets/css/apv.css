@@ -7,11 +7,7 @@
             border: 1px solid #000;
             padding: 20px;
         }
-        .title {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
+
         .approval-table, .approval-table td {
             border: 1px solid #000;
             border-collapse: collapse;
