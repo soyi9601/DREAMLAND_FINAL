@@ -20,7 +20,7 @@
 
 
 /*모든 게시판 font-size 기본 14px로 */
-.sd-board *{font-size:14px;}
+.sd-board *{font-size:15px;}
 .sd-board .col-xxl{margin-top:40px;}
 
 
@@ -147,7 +147,7 @@
 .sd-table th{font-size:13px;}
 .sd-table th:first-child{padding-left:10px;} 
 
-.sd-table td{font-size:13px;}
+.sd-table td{font-size:15px;}
 .noticeTitle{cursor:pointer;}
 
 
@@ -188,7 +188,7 @@
 /*.bx-download{cursor:pointer;}*/
 
 .sd-notice-detail .board-title{display:flex;align-items: center;}
-.sd-notice-detail .board-title span{font-size:13px;font-weight:normal;color:#ee2b4b;padding:0px 5px;display:inline-block;border-radius:50px;border:1px solid #ee2b4b;line-height:1.3;margin-right: 12px;}
+.sd-notice-detail .board-title span{font-size:13px;font-weight:normal;color:#ee2b4b;padding:0px 5px;display:inline-block;border-radius:50px;line-height:1.3;margin-right: 12px;}
 
 .attached-file-area{border-top:1px dashed #d9dee3;padding:20px;padding-bottom:10px;background:#f5f5f9;display:flex;margin-bottom:20px;}
 .attached-file-area>p{font-weight:bold;}
@@ -228,7 +228,7 @@
   ===========================*/
 
 
-#blind-board{padding-bottom:50px !important;}
+#blind-board{padding-bottom:50px !important;position:relative;}
 #blind-list-table tbody td:first-child{padding-left:14px;}
 
 #blind-list-table tr{text-align:center;}
@@ -246,7 +246,7 @@
 .sd-table-wrapper{position:relative;}
 .loadingArea{position:absolute;top:100%;width:100%;height:50px;background:orange;display:none;}
 
-.fixed-btn-area{display:none;position:fixed;left:0;bottom:40px;width:100%;height:40px;padding:0 20px;}
+.fixed-btn-area{display:none;position:absolute;right:0;bottom:20px;width:100%;height:40px;padding:0 20px;}
 .fixed-btn-area .sd-btn-write-area{margin-top:0 !important;position:absolute;}
 
   /* ========================

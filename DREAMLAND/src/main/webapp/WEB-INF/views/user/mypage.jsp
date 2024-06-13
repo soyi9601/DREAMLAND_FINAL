@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
@@ -70,6 +71,9 @@
                           </button>
                           <p class="text-muted mb-0">JPG, GIF, PNG 가능. 최대 800KB</p>
                         </div>
+                          <div>
+                            <a href="${contextPath}/sign/generate?empNo=${loginEmployee.empNo}&empName=${loginEmployee.empName}">서명만들기</a>
+                          </div>
                            <img
                                src="${signPath}" 
                                alt="user-avatar"
@@ -120,6 +124,7 @@
                              id="emp-name"
                              name="empName"
                              value="${loginEmployee.empName}" 
+                             oninput="fnCheckName()"
                            />
 	                         <div id="name-result"></div>
                          </div>
@@ -141,6 +146,7 @@
                                name="mobile"
                                class="form-control"
                                value="${loginEmployee.mobile}"
+                               oninput="fnCheckMobile()"
                              />
 	                         <div id="result-mobile"></div>
                          </div>
@@ -156,14 +162,14 @@
                              readOnly
                            />
                          </div>
-                         <div class="mb-3 col-md-6">
-                           <label class="form-label" for="deptNo">소속</label>
+                         <div class="mb-3 col-md-3">
+                           <label class="form-label" for="deptNo">소속부서</label>
                             <input
                              class="form-control"
                              type="text"
                              id="deptName"
                              name="deptName"
-                             value="${emp.deptName}"
+                             value="<c:choose><c:when test="${fn:startsWith(emp.deptNo, '5')}">시설관리</c:when><c:otherwise>${emp.deptName}</c:otherwise></c:choose>"
                              readOnly
                            />
                             <input
@@ -172,6 +178,17 @@
                              id="deptNo"
                              name="deptNo"
                              value="${loginEmployee.deptNo}"
+                           />
+                         </div>
+                         <div class="mb-3 col-md-3">
+                           <label class="form-label" for="deptNo">세부소속</label>
+                            <input
+                             class="form-control"
+                             type="text"
+                             id="deptDetailName"
+                             name="deptDetailName"
+                             value="${emp.deptName}"
+                             readOnly
                            />
                          </div>
                          <div class="mb-3 col-md-6">
@@ -218,8 +235,10 @@
                       <label for="postcode" class="form-label">우편번호</label>
                       <input type="text" id="postcode" name="postcode" class="form-control" value="${loginEmployee.postcode}" readOnly>
                     </div>
-                    <div class="mb-3 col-md-10">
-                      <input type="button" onclick="fnExecDaumPostcode()" class="btn btn-primary me-2" value="우편번호 찾기">
+                    <div class="mb-3 col-md-10" style="display:flex;flex-direction: column;">
+                      <label for="postcode" class="form-label" style="color:transparent"> ddd</label>
+                      <input type="button" onclick="fnExecDaumPostcode()" class="btn btn-primary me-2" value="우편번호 찾기" 
+                        style="width:130px;">
                     </div>
                       <div class="mb-3 col-md-5">
                         <label for="address" class="form-label">주소</label>
@@ -237,7 +256,7 @@
                        <div class="mt-2">
                          <button type="submit" class="btn btn-primary me-2">저장</button>
                          <button type="button" class="btn btn-warning me-2" id="modify-password" >비밀번호변경</button>
-                         <button type="reset" class="btn btn-outline-secondary">취소</button>
+                         <button type="reset" class="btn btn-outline-secondary" id="move-before">취소</button>
                          </div>
                        </div>
                    </div>
@@ -250,6 +269,7 @@
            </div>
            </div>
            <!-- / Content -->
+
 <script src="../assets/js/pages-account-mypage.js"></script>
 <%@ include file="../layout/footer.jsp" %>
     

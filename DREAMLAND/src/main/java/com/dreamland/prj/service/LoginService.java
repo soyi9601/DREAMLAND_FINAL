@@ -15,6 +15,7 @@ public interface LoginService {
   
   EmployeeDto getEmployeeByEmail(String email);
   
+  // 부서/직급 정보 가져오기
   void getDeptAndPos(Model model);
   
   // 마이페이지 수정

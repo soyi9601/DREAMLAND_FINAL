@@ -22,12 +22,9 @@
 
 <!-- summernote -->
 <!-- include summernote css/js -->
-<link rel="stylesheet"
-		href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
-<script
-		src="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.js"></script>
-<script
-		src="${contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
+<script src="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.js"></script>
+<script src="${contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
 
 
 
@@ -87,7 +84,7 @@
 				</div>
 				<!-- / Content -->
 
-				<script>
+<script>
 const fnSummernoteEditor = () => {
   $('#contents').summernote({
    
@@ -107,7 +104,7 @@ const fnSummernoteEditor = () => {
   lang: 'ko-KR',
     callbacks: {
       onImageUpload: (images)=>{
-        // 비동기 방식을 이용한 이미지 업로드
+        // 업로드
         for(let i = 0; i < images.length; i++) {
           let formData = new FormData();
           formData.append('image', images[i]);
