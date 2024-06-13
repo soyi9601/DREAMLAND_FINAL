@@ -174,7 +174,7 @@ const fnWorkOut = () => {
 }
 
 // 페이지 새로고침 시 상태 유지
-window.addEventListener('load', function() {
+/*window.addEventListener('load', function() {
   if (hasCheckedWorkIn && !hasCheckedWorkOut) {
     btnWorkIn.disabled = true;
     btnWorkOut.disabled = false;
@@ -182,7 +182,7 @@ window.addEventListener('load', function() {
     btnWorkIn.disabled = false;
     btnWorkOut.disabled = true;
   }
-});
+});*/
 
 /* *********** 공지사항 *********** */
 const fnGetNotice = () => {
