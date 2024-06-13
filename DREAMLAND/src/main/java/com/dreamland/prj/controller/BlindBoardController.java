@@ -70,7 +70,7 @@ public class BlindBoardController {
 	}
 	
 	
-	@GetMapping("/edit.do")
+	@PostMapping("/edit.do")
 	public String editBlind(@RequestParam int blindNo, Model model) {
 		model.addAttribute("blind", blindBoardService.getBlindByNo(blindNo));
 		return "board/blind/edit";
