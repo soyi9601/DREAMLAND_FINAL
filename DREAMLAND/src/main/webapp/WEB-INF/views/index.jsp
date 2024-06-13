@@ -29,7 +29,7 @@
 		              <button type="button" class="btn btn-primary mb-4" id="btn-work-in" ${hasCheckedWorkIn ? 'disabled' : ''}>
 		                <span class="d-none d-sm-block">출근</span>
 		              </button>
-		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out">
+		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out" >
 		                <span class="d-none d-sm-block">퇴근</span>
 		              </button>
 		            </div>

@@ -71,173 +71,267 @@
 	              <button type="button" class="btn btn-outline-primary justify-content-sm-center" id="btn-send-message" >쪽지보내기 </button>
 	            </div>
 	          </li>
-	          <li class="menu-item">
-	            <a href="javascript:void(0);" class="menu-link menu-toggle">
-	              <i class="menu-icon tf-icons bx bx-layout"></i><div>인사관리</div>
-	            </a>
-	            <ul class="menu-sub">
-	              <li class="menu-item">
-	                <a href="${contextPath}/employee/add" class="menu-link">
-	                  <div>직원등록</div>
-	                </a>
-	              </li>
-								<li class="menu-item">
-								  <a href="${contextPath}/depart/addDepart.page" class="menu-link">
-								    <div>부서등록</div>
-								  </a>
-								</li>
-								<li class="menu-item">
-								  <a href="${contextPath}/depart/departAdmin.page" class="menu-link">
-								    <div>조직도-관리자</div>
-								  </a>
-								</li>
-								<li class="menu-item">
-								  <a href="${contextPath}/depart/depart.page" class="menu-link">
-								    <div>조직도-유저</div>
-								  </a>
-								</li>
-	            </ul>
-	          </li>
-	          <li class="menu-item">
-	            <a href="javascript:void(0);" class="menu-link menu-toggle">
-	              <i class="menu-icon tf-icons bx bx-layout"></i><div>게시판</div>
-	            </a>
-	            <ul class="menu-sub">
-	              <li class="menu-item">
-	                <a href="${contextPath}/board/faq/list.do" class="menu-link">
-	                  <div>FAQ</div>
-	                </a>
-	              </li>
-	              <li class="menu-item">
-	                <a href="${contextPath}/board/notice/list.do" class="menu-link">
-	                  <div>공지사항</div>
-	                </a>
-	              </li>
-	              <li class="menu-item">
-	                <a href="${contextPath}/board/blind/list.page" class="menu-link">
-	                  <div>익명게시판</div>
-	                </a>
-	              </li>
-	            </ul>
-	          </li>
-	          <li class="menu-item">
-	            <a href="javascript:void(0);" class="menu-link menu-toggle">
-	              <i class="menu-icon tf-icons bx bx-layout"></i><div>쪽지함</div>
-	            </a>
-	            <ul class="menu-sub">
-	              <li class="menu-item">
-	                <a href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}" class="menu-link">
-	                  <div>받은쪽지함</div>
-	                </a>
-	              </li>
-	              <li class="menu-item">
-	                <a href="${contextPath}/user/sendBox?empNo=${loginEmployee.empNo}" class="menu-link">
-	                  <div>보낸쪽지함</div>
-	                </a>
-	              </li>
-	              <li class="menu-item">
-	                <a href="${contextPath}/user/saveBox?empNo=${loginEmployee.empNo}" class="menu-link">
-	                  <div>중요보관함</div>
-	                </a>
-	              </li>
-	              <li class="menu-item">
-	                <a href="${contextPath}/user/removeBox?empNo=${loginEmployee.empNo}" class="menu-link">
-	                  <div>휴지통</div>
-	                </a>
-	              </li>
-	            </ul>
-	          </li>
-	          <li class="menu-item">
-	            <a href="javascript:void(0);" class="menu-link menu-toggle">
-	              <i class="menu-icon tf-icons bx bx-layout"></i><div>매출</div>
-	            </a>
-	            <ul class="menu-sub">
-	              <li class="menu-item">
-	                <a href="${contextPath}/sales/Allsales.page" class="menu-link">
-	                  <div>매출화면</div>
-	                </a>
-	              </li>
-	              <li class="menu-item">
-	                <a href="${contextPath}/sales/productreg.page" class="menu-link">
-	                  <div>상품등록</div>
-	                </a>
-	              </li>
-	              <li class="menu-item">
-	                <a href="${contextPath}/sales/salesreg.page" class="menu-link">
-	                  <div>매출등록</div>
-	                </a>
-	              </li>
-	            </ul>
-	          </li>
-	          <li class="menu-item">
-	            <a href="javascript:void(0);" class="menu-link menu-toggle">
-	              <i class="menu-icon tf-icons bx bx-layout"></i><div>시설</div>
-	            </a>
-	            <ul class="menu-sub">
-	              <li class="menu-item">
-	                <a href="${contextPath}/facility/list.do" class="menu-link">
-	                  <div>시설게시판</div>
-	                </a>
-	              </li>
-	              <li class="menu-item">
-	                <a href="${contextPath}/facility/write.page" class="menu-link">
-	                  <div>시설등록</div>
-	                </a>
-	              </li>
-	            </ul>
-	          </li>
-	          <li class="menu-item">
-				      <a href="javascript:void(0);" class="menu-link menu-toggle">
-				        <i class="menu-icon tf-icons bx bx-layout"></i><div>일정</div>
-				      </a>
-				      <ul class="menu-sub">
-					      <li class="menu-item">
-					        <a href="${contextPath}/schedule/calendar.do" class="menu-link">
-					          <div>캘린더</div>
-					        </a>
-					      </li>
-				      </ul>
-				    </li>
-						<li class="menu-item">
-						  <a href="javascript:void(0);" class="menu-link menu-toggle">
-						   <i class="menu-icon tf-icons bx bx-layout"></i><div>근태</div>
-						  </a>
-						  <ul class="menu-sub">
-						    <li class="menu-item">
-						      <a href="${contextPath}/work/status.do" class="menu-link">
-						        <div>근태관리</div>
-						      </a>
-						    </li>
-						  <li class="menu-item">
-						   <a href="${contextPath}/dayoff/info.do" class="menu-link">
-						    <div>휴가관리</div>
-						   </a>
-						  </li>
-						 </ul>
-						</li> 
-	          <!-- User interface -->
-	          <li class="menu-item">
-	            <a href="javascript:void(0)" class="menu-link menu-toggle">
-	              <i class="menu-icon tf-icons bx bx-box"></i>
-	              <div>결재</div>
-	            </a>
-	            <ul class="menu-sub">
-	              <li class="menu-item">
-	                <a href="${contextPath}/approval/appWrite?apvNo=000" class="menu-link">
-	                  <div>기안서 작성</div>
-	                </a>
-	                <a href="${contextPath}/approval/appList" class="menu-link">
-	                  <div>결재 문서</div>
-	                </a>
-	                <a href="${contextPath}/approval/appReferList" class="menu-link">
-	                  <div>참조 문서</div>
-	                </a>
-	                <a href="${contextPath}/approval/appMyList" class="menu-link">
-	                  <div>내 문서</div>
-	                </a>
-	              </li>
-	            </ul>
-	          </li>
+	          <c:choose>
+	            <%-- ----------------------------- 관리자 네비 ----------------------------- --%>
+              <c:when test="${loginEmployee.role == 'ROLE_ADMIN'}">
+                <li class="menu-item">
+		              <a href="javascript:void(0);" class="menu-link menu-toggle">
+		                <i class="menu-icon tf-icons bx bx-group"></i><div>인사관리</div>
+		              </a>
+		              <ul class="menu-sub">
+		                <li class="menu-item">
+		                  <a href="${contextPath}/employee/add" class="menu-link">
+		                    <div>직원등록</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/depart/addDepart.page" class="menu-link">
+		                    <div>부서등록</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/depart/departAdmin.page" class="menu-link">
+		                    <div>인사 수정 / 삭제</div>
+		                  </a>
+		                </li>
+		              </ul>
+		            </li>
+		            <li class="menu-item">
+		              <a href="javascript:void(0);" class="menu-link menu-toggle">
+		                <i class="menu-icon tf-icons bx bx-spreadsheet"></i><div>게시판</div>
+		              </a>
+		              <ul class="menu-sub">
+		                <li class="menu-item">
+		                  <a href="${contextPath}/board/faq/list.do" class="menu-link">
+		                    <div>FAQ</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/board/notice/list.do" class="menu-link">
+		                    <div>공지사항</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/board/blind/list.page" class="menu-link">
+		                    <div>익명게시판</div>
+		                  </a>
+		                </li>
+		              </ul>
+		            </li>
+		            <li class="menu-item">
+		              <a href="javascript:void(0);" class="menu-link menu-toggle">
+		                <i class="menu-icon tf-icons bx bx-paper-plane"></i><div>쪽지함</div>
+		              </a>
+		              <ul class="menu-sub">
+		                <li class="menu-item">
+		                  <a href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}" class="menu-link">
+		                    <div>받은쪽지함</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/user/sendBox?empNo=${loginEmployee.empNo}" class="menu-link">
+		                    <div>보낸쪽지함</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/user/saveBox?empNo=${loginEmployee.empNo}" class="menu-link">
+		                    <div>중요보관함</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/user/removeBox?empNo=${loginEmployee.empNo}" class="menu-link">
+		                    <div>휴지통</div>
+		                  </a>
+		                </li>
+		              </ul>
+		            </li>
+		            <li class="menu-item">
+		              <a href="javascript:void(0);" class="menu-link menu-toggle">
+		                <i class="menu-icon tf-icons bx bx-line-chart"></i><div>매출</div>
+		              </a>
+		              <ul class="menu-sub">
+		                <li class="menu-item">
+		                  <a href="${contextPath}/sales/Allsales.page" class="menu-link">
+		                    <div>매출화면</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/sales/productreg.page" class="menu-link">
+		                    <div>상품등록</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/sales/salesreg.page" class="menu-link">
+		                    <div>매출등록</div>
+		                  </a>
+		                </li>
+		              </ul>
+		            </li>
+		            <li class="menu-item">
+		              <a href="javascript:void(0);" class="menu-link menu-toggle">
+		                <i class="menu-icon tf-icons bx bx-buildings"></i><div>시설</div>
+		              </a>
+		              <ul class="menu-sub">
+		                <li class="menu-item">
+		                  <a href="${contextPath}/facility/list.do" class="menu-link">
+		                    <div>시설게시판</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/facility/write.page" class="menu-link">
+		                    <div>시설등록</div>
+		                  </a>
+		                </li>
+		              </ul>
+		            </li>
+		            <li class="menu-item">
+                   <a href="${contextPath}/depart/depart.page" class="menu-link">
+                     <i class="menu-icon tf-icons bx bx-sitemap"></i><div>조직도</div>
+                   </a>
+                 </li>
+              </c:when>
+              
+              <%-- ----------------------------- 직원 네비 ----------------------------- --%>
+              <c:otherwise>
+                <li class="menu-item">
+                  <a href="javascript:void(0);" class="menu-link menu-toggle">
+                   <i class="menu-icon tf-icons bx bx-user"></i><div>근태</div>
+                  </a>
+                  <ul class="menu-sub">
+                    <li class="menu-item">
+                      <a href="${contextPath}/work/status.do" class="menu-link">
+                        <div>근태관리</div>
+                      </a>
+                    </li>
+                  <li class="menu-item">
+                   <a href="${contextPath}/dayoff/info.do" class="menu-link">
+                    <div>휴가관리</div>
+                   </a>
+                  </li>
+                 </ul>
+                </li> 
+                <li class="menu-item">
+                  <a href="${contextPath}/schedule/calendar.do" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-calendar"></i><div>일정</div>
+                  </a>
+                </li>              
+                <li class="menu-item">
+                  <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-box"></i>
+                    <div>결재</div>
+                  </a>
+                  <ul class="menu-sub">
+                    <li class="menu-item">
+                      <a href="${contextPath}/approval/appWrite?apvNo=000" class="menu-link">
+                        <div>기안서 작성</div>
+                      </a>
+                      <a href="${contextPath}/approval/appList" class="menu-link">
+                        <div>결재 문서</div>
+                      </a>
+                      <a href="${contextPath}/approval/appReferList" class="menu-link">
+                        <div>참조 문서</div>
+                      </a>
+                      <a href="${contextPath}/approval/appMyList" class="menu-link">
+                        <div>내 문서</div>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item">
+                  <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-spreadsheet"></i><div>게시판</div>
+                  </a>
+                  <ul class="menu-sub">
+                    <li class="menu-item">
+                      <a href="${contextPath}/board/faq/list.do" class="menu-link">
+                        <div>FAQ</div>
+                      </a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="${contextPath}/board/notice/list.do" class="menu-link">
+                        <div>공지사항</div>
+                      </a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="${contextPath}/board/blind/list.page" class="menu-link">
+                        <div>익명게시판</div>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item">
+                  <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-paper-plane"></i><div>쪽지함</div>
+                  </a>
+                  <ul class="menu-sub">
+                    <li class="menu-item">
+                      <a href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                        <div>받은쪽지함</div>
+                      </a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="${contextPath}/user/sendBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                        <div>보낸쪽지함</div>
+                      </a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="${contextPath}/user/saveBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                        <div>중요보관함</div>
+                      </a>
+                    </li>
+                    <li class="menu-item">
+                      <a href="${contextPath}/user/removeBox?empNo=${loginEmployee.empNo}" class="menu-link">
+                        <div>휴지통</div>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+		            <li class="menu-item">
+		              <a href="javascript:void(0);" class="menu-link menu-toggle">
+		                <i class="menu-icon tf-icons bx bx-line-chart"></i><div>매출</div>
+		              </a>
+		              <ul class="menu-sub">
+		                <li class="menu-item">
+		                  <a href="${contextPath}/sales/Allsales.page" class="menu-link">
+		                    <div>매출화면</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/sales/productreg.page" class="menu-link">
+		                    <div>상품등록</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/sales/salesreg.page" class="menu-link">
+		                    <div>매출등록</div>
+		                  </a>
+		                </li>
+		              </ul>
+		            </li>
+		            <li class="menu-item">
+		              <a href="javascript:void(0);" class="menu-link menu-toggle">
+		                <i class="menu-icon tf-icons bx bx-buildings"></i><div>시설</div>
+		              </a>
+		              <ul class="menu-sub">
+		                <li class="menu-item">
+		                  <a href="${contextPath}/facility/list.do" class="menu-link">
+		                    <div>시설게시판</div>
+		                  </a>
+		                </li>
+		                <li class="menu-item">
+		                  <a href="${contextPath}/facility/write.page" class="menu-link">
+		                    <div>시설등록</div>
+		                  </a>
+		                </li>
+		              </ul>
+		            </li>
+		            <li class="menu-item">
+                  <a href="${contextPath}/depart/depart.page" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-sitemap"></i><div>조직도</div>
+                  </a>
+                </li>               
+              </c:otherwise>
+            </c:choose>	          
 	        </ul>
 	      </aside>
 	      <!-- / Menu -->

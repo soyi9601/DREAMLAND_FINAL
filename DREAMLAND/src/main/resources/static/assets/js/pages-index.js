@@ -85,7 +85,6 @@ function fnCalendar() {
     var calendarEl = document.getElementById('cal');
     var indexCalendar = new FullCalendar.Calendar(calendarEl, {
       height: 500,
-      paddingTop: '20px',
       initialView: 'dayGridMonth',
       headerToolbar: {
         left: 'prev,next',
@@ -110,11 +109,26 @@ function fnCalendar() {
 
 
 /* *********** 출퇴근 *********** */
-/* *********** 출근 *********** */
+
 const empNo = document.getElementById('empNo').value;
 const btnWorkIn = document.getElementById('btn-work-in');
 const btnWorkOut = document.getElementById('btn-work-out');
 
+// 초기 버튼 상태 설정
+/*
+document.addEventListener('DOMContentLoaded', function() {
+  
+  if (hasCheckedWorkIn) {
+    btnWorkIn.disabled = true;    // 이미 출근했으면 출근 버튼 비활성화
+    btnWorkOut.disabled = false;  // 퇴근 버튼 활성화
+  } else {
+    btnWorkIn.disabled = false;   // 아직 출근하지 않았으면 출근 버튼 활성화
+    btnWorkOut.disabled = true;   // 퇴근 버튼 비활성화
+  }
+})
+*/
+
+/* *********** 출근 *********** */
 const fnWorkIn = () => {
   if(btnWorkIn) {
     btnWorkIn.addEventListener('click', function() {
@@ -127,8 +141,9 @@ const fnWorkIn = () => {
       })
       .then(response => response.json())
       .then(data => {
-        alert(data.message);      
-        this.disabled = true;
+        alert(data.message); 
+        btnWorkIn.disabled = true;    // 출근 버튼 비활성화
+        btnWorkOut.disabled = false;  // 퇴근 버튼 활성화   
       });
     })      
   }
@@ -137,7 +152,7 @@ const fnWorkIn = () => {
 /* *********** 퇴근 *********** */
 const fnWorkOut = () => {
   if(btnWorkOut) {
-    btnWorkOut.addEventListener('click', function() {
+    btnWorkOut.addEventListener('click', function() {     
       fetch('/workOut?empNo=' + empNo, {
         method: 'POST',
         headers: {
@@ -146,11 +161,28 @@ const fnWorkOut = () => {
         body: JSON.stringify({}) 
       })
       .then(response => response.json())
-      .then(data => {alert(data.message);});
+      .then(data => {
+        alert(data.message);      
+        btnWorkOut.disabled = true; // 퇴근 버튼 비활성화
+      })
+      .catch(error => {
+        console.error('Error:' , error);
+        btnWorkOut.disabled = false;
+      });
     })      
   }
 }
 
+// 페이지 새로고침 시 상태 유지
+window.addEventListener('load', function() {
+  if (hasCheckedWorkIn && !hasCheckedWorkOut) {
+    btnWorkIn.disabled = true;
+    btnWorkOut.disabled = false;
+  } else {
+    btnWorkIn.disabled = false;
+    btnWorkOut.disabled = true;
+  }
+});
 
 /* *********** 공지사항 *********** */
 const fnGetNotice = () => {
