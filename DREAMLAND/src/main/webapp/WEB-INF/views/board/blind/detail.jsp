@@ -257,13 +257,14 @@ function validateEdit(blindNo, password) {
   })
   .then(response => response.json())
   .then(data => {
+  	
     // alert(data);
     if (data.success) {
-        window.location.href = '${contextPath}/board/blind/edit.do?blindNo='+blindNo
-            /*'${contextPath}/board/blind/edit.do?blindNo='+blindNo*/
-            /*'${contextPath}/board/blind/edit.do'*/
+	    	const frmBtn = document.getElementById('frm-btn');
+	      frmBtn.action = '${contextPath}/board/blind/edit.do';
+	      frmBtn.submit();
     } else {
-        alert(data.message );
+        alert(data.message);
         $('#board-password').val("");
         
     }

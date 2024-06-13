@@ -65,20 +65,25 @@
                 </div>
             </div>
         </div>
+        
+        <div class="fixed-btn-area">
+		      <div class="sd-btn-write-area">
+		            <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+		                <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
+		            </c:if>
+		            <c:if test="${not empty loginEmployee}">
+		                <p class="sd-btn sd-point-bg">
+		                    <a href="${contextPath}/board/blind/write.page">작성</a>
+		                </p>
+		            </c:if>
+		        </div>
+		    </div>
+        
+        
+        
     </div>
     
-    <div class="fixed-btn-area">
-      <div class="sd-btn-write-area">
-            <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-                <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
-            </c:if>
-            <c:if test="${not empty loginEmployee}">
-                <p class="sd-btn sd-point-bg">
-                    <a href="${contextPath}/board/blind/write.page">작성</a>
-                </p>
-            </c:if>
-        </div>
-    </div>
+   
 
     <!-- / Content -->
 </div>
@@ -134,7 +139,6 @@
   }//함수끝
 
   
-  
   let page = 1;
   let totalPage = 0;
   let totalItems = 0;  // 전체 항목 수
@@ -151,6 +155,10 @@
         
         totalPage = resData.totalPage;
         totalItems = resData.totalItems;  // 전체 항목 수를 서버에서 받음
+        
+        if(totalItems < 16){
+          $('.loadingArea').hide();
+        }
         
         // 최신 글의 전체 개수를 기반으로 인덱스 부여
         let startIndex = totalItems - (page - 1) * resData.pageSize;    
