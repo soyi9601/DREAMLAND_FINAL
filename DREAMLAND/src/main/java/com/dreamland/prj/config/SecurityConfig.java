@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -65,6 +66,11 @@ public class SecurityConfig {
             .invalidateHttpSession(true)
             .deleteCookies("JSESSIONID").permitAll()
          )
+        .sessionManagement((auth) -> auth
+            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)   // 로그인과 같은 사용자활동으로 세션이 생성되지 않았다면 세션타임아웃 발생하지 않음
+            .invalidSessionUrl("/loginPage") // 유효하지 않은 세션이면 로그인페이지로 이동
+            .sessionFixation().changeSessionId()  // 로그인시 동일한 세션에 대한 id변경(기존 세션은 동일하지만 유저가 발급받는 세션ID가 변경됨)
+            .maximumSessions(1).expiredUrl("/loginPage"))  // 사용자별 세션은 1개만 사용 가능
 
         .exceptionHandling(exceptionHandle ->exceptionHandle
             .accessDeniedHandler(new CustomAccessDeniedHandler())

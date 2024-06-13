@@ -52,7 +52,11 @@
                       </div>
                       <hr></hr>
                       <div class="row mb-3">
-                        <pre>${msgDetail.msgContents}</pre>
+                        <pre class="font-detail">${msgDetail.msgContents}</pre>
+                        <style>
+                        .font-detail{
+                          font-family: var(--bs-font-sans-serif);
+                        }</style>
                       </div>
                     </div>
                     </form>
