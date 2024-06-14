@@ -3,6 +3,8 @@ package com.dreamland.prj.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
+
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.JsTreeDto;
@@ -26,7 +28,11 @@ public interface DepartService {
   List<DepartmentDto> getAllDepart();               // Option 선택 시 모든 부서 나오기
   void addDepartment(HttpServletRequest request, HttpServletResponse response); // 부서 추가
   
-  List<Map<String, Object>> getOrgChartData();
+  List<Map<String, Object>> getOrgChartData();    // 유저 조직도 조회
+  
+  List<DepartmentDto> getDeptTitleList();
+  
+  ResponseEntity<Map<String, Object>> getDeptDetailList(HttpServletRequest request);
   
   
 }

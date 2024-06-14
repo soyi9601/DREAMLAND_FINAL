@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.dreamland.prj.dto.DepartmentDto;
@@ -168,6 +170,20 @@ public class DepartServiceImpl implements DepartService {
     orgChartData.addAll(employeeList);  // orgChartData에 employeeList 추가
         
     return orgChartData;
+  }
+  
+  // 부서 세부 조회
+  @Override
+  public List<DepartmentDto> getDeptTitleList() {
+    return departMapper.getTitleDept();
+  }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getDeptDetailList(HttpServletRequest request) {
+    ResponseEntity<Map<String, Object>> result = null;
+    List<DepartmentDto> deptDetailList = departMapper.getDeptDetail();
+    result = new ResponseEntity<>(Map.of("deptDetailList", deptDetailList), HttpStatus.OK);
+    return result;
   }
 
 }

@@ -19,7 +19,7 @@
 	      <div class="card mb-4">
 	        <h5 class="card-header">부서등록</h5>
 	        <!-- Account -->
-	        <form id="frm-add-employee" method="POST" action="${contextPath}/depart/addDepart.do">
+	        <form id="frm-add-department" method="POST" action="/depart/addDepart">
 	        <hr class="my-0" />
 		        <div class="card-body">
 	            <div class="row">
@@ -31,18 +31,23 @@
 	                 <label for="deptNo" class="form-label">부서번호</label>
 	                 <input class="form-control" type="text" id="dept-no" name="deptNo" />
 	               </div>
-	              <div class="mb-3 col-md-6">
-	                <label class="form-label" for="deptNo">소속부서</label>
-	                <select id="parent-id" name="parentId" class="select2 form-select">
-	                  <option value="">선택하세요</option>
-	                  <c:forEach var="depart" items="${depart}">
-	                    <option value="${depart.deptNo}">${depart.deptName}</option>
-	                  </c:forEach>
-	                </select>
-	              </div>
+	              <div class="mb-3 col-md-3">
+                  <label class="form-label" for="parent-id">소속부서</label>
+                  <select id="parent-id" name="parentDeptTitle" class="select2 form-select">
+                    <c:forEach var="depart" items="${deptTitleList}">
+                      <option value="${depart.deptNo}">${depart.deptName}[${depart.deptNo}]</option>
+                    </c:forEach>
+                  </select>
+                </div>
+                <div class="mb-3 col-md-3">
+                  <label class="form-label" for="parentDeptDetail">세부소속</label>
+                  <select id="parent-id-detail" name="parentDeptDetail" class="select2 form-select">
+                    <option value="">세부 소속 없음</option>
+                  </select>
+                </div>
 	            </div>
 	            <div class="mt-2">
-	              <button type="submit" class="btn btn-primary me-2" id="frm-add-department">저장</button>
+	              <button type="submit" class="btn btn-primary me-2">저장</button>
 	              <button type="reset" class="btn btn-outline-secondary">취소</button>
 	            </div>
 		        </div>
@@ -53,29 +58,7 @@
 	  </div>
 	</div>
 	<!-- / Content -->
-	<script>
-	let deptName = document.getElementById('dept-name');
-	let deptNo = document.getElementById('dept-no');
-	let parentId = document.getElementById('parent-id');
-	 const fnAddDepart = (evt) => {
-		 if(deptName === '') {
-			 alert('부서명을 입력하세요');
-			 evt.preventDefault();
-			 return;
-		 } else if(deptNo === '') {
-			 alert('부서번호를 입력하세요');
-       evt.preventDefault();
-       return;
-		 } else if(parentId === '') {
-			 alert('소속부서를 입력하세요');
-       evt.preventDefault();
-       return;
-		 }
-	 };
-	 document.getElementById('frm-add-department').addEventListener('submit', (evt) => {
-		 fnAddDepart(evt);
-	 })
-	</script>
-
+	
+<script src="../assets/js/pages-add-depart.js"></script>
 <%@ include file="../layout/footer.jsp" %>
     
