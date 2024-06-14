@@ -9,8 +9,7 @@
 <c:if test="${kind == 0}">
    <div class="container-xxl flex-grow-1 container-p-y">
 <div class="col-6 mb-4" style="width:100%; height:100%">
-
-<div class="apv-container">
+ <div class="post-list-container">
     <div id="approvalForm" >
         <!-- 품의서 내용 -->
         <div class="apv-container">
@@ -277,10 +276,10 @@
             <div class="button-container">
                      <input type="hidden" name="apvNo" value="${approval.apvNo}">
                      <input type="hidden" name="empNo" value="${loginEmployee.empNo}">
-             <button class="button button-primary"  id="approve">결재하기</button>
+             <button class="button button-primary"  id="approve" style="float: right">결재하기</button>
             </div>
             <div class="button-container">
-              <button class="button button-primary" id="rejected">반려하기</button>
+              <button class="button button-primary" id="rejected" style="float: right">반려하기</button>
             </div>
             </c:if>
                         

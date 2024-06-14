@@ -78,8 +78,7 @@
               <button
                 type="button"
                 class="btn btn-primary justify-content-sm-center"
-                id="btn-send-message"
-              >
+                id="btn-send-message">
                 쪽지보내기
               </button>
               </div>

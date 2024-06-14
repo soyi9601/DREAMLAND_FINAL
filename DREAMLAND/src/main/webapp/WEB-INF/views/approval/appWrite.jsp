@@ -7,8 +7,10 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 
 <div class="container-xxl flex-grow-1 container-p-y">
-<div class="col-6 mb-4" style="width:100%; height:100%">
-
+<div class="pv-col-6 mb-4" style="width:100%; height:100%; display: flex;
+            justify-content: center;
+            align-items: center; ">
+                           <div class="post-list-container">
 
   <c:if test="${not empty title}">
 <input type="hidden" id="kind" value="${kind}">
@@ -20,8 +22,6 @@
     </c:if>
 </c:if>
 
-<div class="apv-container">
-    <div class="title">기안서 작성하기</div>
          <div id="container">
 
     <c:if test="${empty title}">
@@ -36,22 +36,23 @@
       <form   id="myForm" method="POST"
 		enctype="multipart/form-data"
         action="${contextPath}/approval/approval.do">
-        <h2>품의서</h2>
+       
         <!-- 품의서 내용 -->
         <div class="apv-container">
-            <div class="title">품 의 서</div>
+         <h2 class="text-nowrap mb-2 text-primary">품의서</h2>
+          <br>
             <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
            <div class="section">
                 <div class="section-title">제목</div>
-                        	<input type="text" style="width:750px;" name="title" id="title"  value="${title}"></input>
+                        	<input type="text" style=" width:970px;" name="title" id="title"  value="${title}"></input>
     <input type="hidden" name="temp" value="0">
     <input type="hidden" name="apvNo" id="apvNo" value="${approval.apvNo}">
             </div>
+          <div class="section">
              <div class="section-title">결재자</div>
-                  
-
-     <button id="openOrgChartBtn" type="button">조직도 열기</button>
-     <button id="resetBtn" type="button" >지우기</button>
+                   
+     <button id="openOrgChartBtn" type="button" class="btn btn-outline-primary">조직도 열기</button>
+     <button id="resetBtn" type="button"  class="btn btn-outline-secondary" >지우기</button>
     <div id="orgChartModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -73,10 +74,7 @@
                 <c:if test="${empty title}">
                 <tr id="selectedEmployeesRow">
                     <td><input type="text" name="approver" readonly="readonly"  class="approvers" value="${loginEmployee.empName}"></input></td>
-        
-               
                 </tr>
-      
                 </c:if>
                 <c:if test="${not empty title}">
                   <tr id="selectedEmployeesRow">
@@ -88,10 +86,12 @@
                 </c:if>
                 
             </table>
+            
+            </div>
             <div class="section">
                 <div class="section-title">참조자</div>
-                    <button id="openOrgChartBtn3" type="button">조직도 열기</button>
-     								<button id="resetBtn3" type="button" >지우기</button>
+                    <button id="openOrgChartBtn3" type="button" class="btn btn-outline-primary">조직도 열기</button>
+     								<button id="resetBtn3" type="button"   class="btn btn-outline-secondary" >지우기</button>
     								<div id="orgChartModal3" class="modal">
         						<div class="modal-content">
           				  <span class="close">&times;</span>
@@ -99,23 +99,12 @@
         						</div>
     								</div>
                 
-                
-                <table class="input-table">
-                    <tr>
-                   <td>	<input type="text" style="width:750px;" name="referrer" id="referrer" value="${referrer}"></input></td>
-                    </tr>           
-                </table>
+                		<br>
+                   	<input type="text" style=" width:967px;" name="referrer" id="referrer" value="${referrer}"></input>
             </div>
             <div class="section">
-                <div class="section-title">품의 내용</div>
-                <table class="input-table">
-                    <tr>
-                        <td style="width: 150px;" >품의 사유 및 상세 내역</td>
-                        <td>
+                <div class="section-title">품의 내용 및 상세내역</div>
                             <textarea class="textarea" name="contents"  id="contents" >${approval.detail}</textarea>
-                        </td>
-                    </tr>
-                </table>
             </div>
             	<div class="footer">
               위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.<br>
@@ -150,10 +139,10 @@
   </div>
     <div id="attach-list"></div>
 														</div>
-              <button class="button button-primary" id="submitBtn1">임시저장</button>
-              <button class="button button-primary" type="submit">제출하기</button>
             </div>
         </div>
+              <button  class="btn btn-primary justify-content-sm-center" id="submitBtn1">임시저장</button>
+              <button  class="btn btn-primary justify-content-sm-center"type="submit">제출하기</button>
         </form>
     </div>
     
@@ -161,18 +150,22 @@
       <form   id="myForm2" method="POST"
 		enctype="multipart/form-data"
         action="${contextPath}/approval/leave.do">
-        <h2>휴가신청서</h2>
         <!-- 휴가신청서 내용 -->
         <div class="apv-container">
-            <div class="title">휴가신청서</div>
+           <h2 class="text-nowrap mb-2 text-primary">휴가신청서</h2>
+           <br>
+            <div class="section">
                             <div class="section-title">제목</div>
-                        	<input type="text" style="width:750px;" name="title"  id="title2"  value="${title}"></input>
+                        	<input type="text" style="width:967px;" name="title"  id="title2"  value="${title}"></input>
          <input type="hidden" name="temp" value="0">
             <input type="hidden" name="apvNo" value="${approval.apvNo}">
+            </div>
+            
+              <div class="section">
              <div class="section-title">결재자</div>
  
-     <button id="openOrgChartBtn2" type="button">조직도 열기</button>
-     <button id="resetBtn2" type="button" >지우기</button>
+     <button id="openOrgChartBtn2" type="button" class="btn btn-outline-primary">조직도 열기</button>
+     <button id="resetBtn2" type="button" class="btn btn-outline-secondary">지우기</button>
 
     <div id="orgChartModal2" class="modal">
         <div class="modal-content">
@@ -207,24 +200,24 @@
                 </c:if>
                 
             </table>
+            </div>
             <div class="section">
                  <div class="section-title">참조자</div>
-                    <button id="openOrgChartBtn4" type="button">조직도 열기</button>
-     								<button id="resetBtn4" type="button" >지우기</button>
+                    <button id="openOrgChartBtn4" type="button"  class="btn btn-outline-primary" >조직도 열기</button>
+     								<button id="resetBtn4" type="button"  class="btn btn-outline-secondary">지우기</button>
     								<div id="orgChartModal4" class="modal">
         						<div class="modal-content">
           				  <span class="close">&times;</span>
            					<div id="orgChart4"></div>
         						</div>
     								</div>
-                <table class="input-table">
-                    <tr>
-                   <td>	<input type="text" style="width:750px;" id="referrer2" name="referrer" value="${referrer}"></input></td>
-                    </tr>           
-                </table>
+    								<br>
+                   <input type="text" style="width:967px;" id="referrer2" name="referrer" value="${referrer}"></input>
             </div>
             
             <table class="input-table">
+            
+             <div class="section-title">휴가 상세 및 사유</div>
                 <tr>
                     <td>휴가 종류</td>
                     <td>
@@ -247,7 +240,6 @@
               <option value="1" selected >반차</option>
             </c:if>
             </c:if>
-            
             </c:if>
             
         </select></td>
@@ -280,11 +272,7 @@
                					
                					 <c:if test="${empty title}">
                					<td id="leave-details"><input type="date"  id="leaveDate"  name="leavestart" > ~ <input type="date" name="leaveend"  ></td>
-                         </c:if>
-                         
-                         
-                         
-                         
+                         </c:if>                  
                	 </tr>
                 <tr>
                     <td>사유</td>
@@ -292,6 +280,7 @@
                         <textarea class="textarea" name="contents"  id="contents2" >${approval.detail}</textarea>
                     </td>
                 </tr>
+            </div>
             </table>
              	<div class="footer">
                 위와 같은 사유로 휴가를 신청하오니 허가하여 주시기 바랍니다.<br>
@@ -324,15 +313,17 @@
   </div>
     <div id="attach-list"></div>
 														</div>
-              <button class="button button-primary" id="submitBtn2">임시저장</button>
-              <button class="button button-primary" type="submit">제출하기</button>
             </div>
+              <button  class="btn btn-primary justify-content-sm-center" id="submitBtn2">임시저장</button>
+              <button  class="btn btn-primary justify-content-sm-center" type="submit">제출하기</button>
         </div>
         </form>
     </div>
+  </div>
+  </div>
 </div>
-    </div>
-</div>
+
+
 
 <script>
 
