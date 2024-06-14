@@ -10,16 +10,11 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.11/index.global.min.js'></script>  
 
-<!-- moment.js CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
-
-<!-- Choices.js CDN : 멀티셀렉트, 태그입력, 검색가능한 드롭다운 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
-<!-- Popper.js CDN : 툴팁 및 팝오버  -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- jQuery Library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <style>
  /*    body {
@@ -28,20 +23,12 @@
         font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
         font-size: 14px;
     } */
+    
     #calendar {
         max-width: 1100px;
         margin: 0 auto;
     }
-    
-    /* 공유부서 select */
-    .col-md-6 {
-        width: 100%; 
-    }
-    /* 공유부서 선택된 부서 */
-    .choices__list--multiple .choices__item {
-        background-color: #90b54c;
-        border: #90b54c;
-    }
+
 </style>
 <body>
     
@@ -80,17 +67,11 @@
 	                            <option value="business-trip">출장</option>
 	                        </select>
 	                    </div>
-	                    <div class="row d-flex justify-content-center mt-100">
-	                        <div class="col-md-6">
-	                            <select id="deptNo" name="deptNo" multiple onchange="selectNum()">
-	                             <option value="1000">인사</option>
-	                             <option value="2000">경영지원</option>
-	                             <option value="3000">안전관리</option>
-	                             <option value="5000">시설운영</option>
-	                             <option value="6000">마케팅</option>
-	                            </select>
-	                        </div>
-	                    </div>
+	                    <div class="mb-3">
+                        <label for="shrEmpDept" class="form-label">공유할 사원 또는 부서 검색</label>
+                        <input id="shrEmpDept" type="text" class="form-control" placeholder="사원 또는 부서명 입력">
+                        <div id="empDept-result"></div>
+                      </div>
 	                    <div class="mb-3">
 	                        <label for="color" class="form-label">일정색상</label>
 	                        <select id="color" name="color" class="form-select" style="width: 100%;">
@@ -153,17 +134,11 @@
 	                           <option value="business-trip">출장</option>
 	                       </select>
 	                   </div>
-	                   <div class="row d-flex justify-content-center mt-100">
-	                        <div class="col-md-6">
-	                            <select id="modify-deptNo" name="modify-deptNo" multiple>
-	                                 <option value="1000">인사</option>
-	                                 <option value="2000">경영지원</option>
-	                                 <option value="3000">안전관리</option>
-	                                 <option value="5000">시설운영</option>
-	                                 <option value="6000">마케팅</option>
-	                            </select>
-	                        </div>
-	                    </div>
+	                   <div class="mb-3">
+                        <label for="modify-shrEmpDept" class="form-label">공유할 사원 또는 부서 검색</label>
+                        <input id="modify-shrEmpDept" type="text" class="form-control" placeholder="사원 또는 부서명 입력">
+                        <div id="modify-empDept-result"></div>
+                     </div>
 	                    <div class="mb-3">
 	                        <label for="modify-color" class="form-label">일정색상</label>
 	                        <select id="modify-color" name="color" class="form-select" style="width: 100%;">
@@ -192,7 +167,6 @@
 	  </div>
  </form>
 
-
   <!-- 일정 상세보기 모달 -->
     <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -219,324 +193,391 @@
         </div>
     </div> 
 
- <script>
- 
- document.addEventListener('DOMContentLoaded', function() {
-	    // 로그인된 사용자 정보 (사원번호 + 부서번호)
-	    var empNo = '${loginEmployee.empNo}'; 
-	    var deptNo = '${loginEmployee.deptNo}'; 
-	    console.log("사원번호 :" + empNo);
-	    console.log("부서번호 :" + deptNo);
-	    
-	    // 필터링된 일정 리스트 이벤트 배열에 추가
-	    var eventArray = [];
-	    <c:forEach var='skd' items='${skdList}'>
-        eventArray.push({
-            id: '${skd.skdNo}',
-            title: '${skd.skdTitle}',
-            start: '${skd.skdStart}',
-            end: '${skd.skdEnd}',
-            backgroundColor: '${skd.skdColor}',
-            extendedProps: {
-                contents: '${skd.skdContents}',
-                category: '${skd.skdCategory}',
-                writer: '${skd.employee.empName}',
-                empNo: '${skd.employee.empNo}',
-                sharedDepts: '<c:forEach var="dept" items="${skd.shrDept}">${dept.deptNo} </c:forEach>'.trim().split(' ').map(function(deptNo) {
-                    return $("#modify-deptNo option[value='" + deptNo.trim() + "']").text();
-                }).join(', ')
-            }
-        });
-        
-    </c:forEach>
-	    // 전체 일정 데이터 확인용 (개발완료 후 삭제!!)
-	    console.log("전체일정 :" , eventArray);
-	    
-	    var calendarEl = document.getElementById('calendar');
-	    var calendar = new FullCalendar.Calendar(calendarEl, {
-	        headerToolbar: {
-	            left: 'prev,next today',
-	            center: 'title',
-	            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-	        },
-	        dayMaxEvents: true, // 일정 오버되면 높이 제한
-	        events: eventArray, // 일정 캘린더에 표시
-	        dateClick: function(info) {
-	              $('#skdNo').val('');  
-	              $('#title').val('');
-	              $('#start').val(info.dateStr + "T09:00");
-	              $('#end').val(info.dateStr + "T18:00");
-	              $('#category').val('work'); 
-	              $('#color').val('gray'); 
-	              $('#contents').val('');
-	              $('#deptNo').val('');
-	              $('#insertModal').modal('show'); 
-	          },
-	          
-          /**************** 일정 상세보기 ****************/
-          eventClick: function(info) {
-							var categoryText = $("#modify-category option[value='" + info.event.extendedProps.category + "']").text();
-							
-							$('#detail-title').text(info.event.title);
-							$('#detail-time').text(moment(info.event.start).format('YYYY-MM-DD HH:mm') + ' ~ ' + moment(info.event.end).format('YYYY-MM-DD HH:mm'));
-							$('#detail-writer').text(info.event.extendedProps.writer);
-							$('#detail-category').text(categoryText);
-							$('#detail-deptNo').text(info.event.extendedProps.sharedDepts);
-							$('#detail-contents').text(info.event.extendedProps.contents);
-							$('#skdNo').val(info.event.id);
-             
-              // 일정 작성자가 현재 로그인한 사원과 동일한 경우에만 수정/삭제 버튼 표시
-              if (info.event.extendedProps.empNo == empNo) {
-                  $('#btn-edit').show();
-                  $('#btn-remove').show();
-              } else {
-                  $('#btn-edit').hide();
-                  $('#btn-remove').hide();
-              } 
-              
-              $('#detailModal').modal('show');
-          }
-	      });
+<script>
+// 전역변수
+  var calendar; 
 
-	      calendar.render(); // 캘린더 랜더링
-	      
-	      var multipleCancelButton = new Choices('#deptNo', {
-	           removeItemButton: true,
-	           maxItemCount: 5,
-	           searchResultLimit: 5,
-	           renderChoiceLimit: 5,
-	           placeholder: true,
-	           placeholderValue: '일정을 공유할 부서를 선택하세요.'
-	       });
-	      
-	      var multipleCancelButton = new Choices('#modify-deptNo', {
-	           removeItemButton: true,
-	           maxItemCount: 5,
-	           searchResultLimit: 5,
-	           renderChoiceLimit: 5,
-	           placeholder: true,
-	           placeholderValue: '일정을 공유할 부서를 선택하세요.'
-	       });
-	      
-	    /**************** 일정 등록 ****************/
-       $('#frm-schedule').on('submit', function(e) {
-			    e.preventDefault(); // 폼의 기본 제출 동작 (새로고침) 막기
-			    
-			    // formData 생성 및 부서공유 선택 추가
-			    var formData = $(this).serializeArray();
-		        var selectedDepts = $('#deptNo').val();
-		        if (selectedDepts) {
-		            selectedDepts.forEach(function(dept) {
-		                formData.push({name: 'deptNo', value: dept});
-		            });
-		        }
-			
-			    $.ajax({
-			        type: "POST",
-			        url: "${contextPath}/schedule/register.do",
-			        data: formData,
-			        dataType: "json",
-			        success: function(resData) {
-			            if (resData.insertSkdCount === 1) {
-			                $('#insertModal').modal('hide');   // 모달 닫기
-			                // 새로운 이벤트 추가
-			                var newEvent = {
-			                		id: resData.skdNo, // 반환된 일정 ID 사용
-			                    title: $('#title').val(),
-			                    start: $('#start').val(),
-			                    end: $('#end').val(),
-			                    backgroundColor: $('#color').val(),
-			                    extendedProps: {
-                               category: $('#category').val(),
-                               sharedDepts: selectedDepts.map(function(deptNo) {
-                                   return $("#deptNo option[value='" + deptNo + "']").text();
-                               }).join(', '),
-                               contents: $('#contents').val(),
-                               writer: '${loginEmployee.empName}', // 현재 로그인한 사용자 이름
-                               empNo: empNo
-	                        }
-			                };
-			                calendar.addEvent(newEvent);
-			                calendar.render();
-			                $('#frm-schedule')[0].reset();  // 폼 초기화
-			            } else {
-			                alert('일정 등록 실패했습니다.');
-			                $('#frm-schedule')[0].reset();
-			            }
-			        },
-			        error: function(jqXHR) {
-			            alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-			        }
-			    });
-			});
-	      
-        /**************** 일정 수정 ****************/
-        // 기존 일정 수정 버튼 클릭 시 모달창에 데이터 채우기
-        $('#btn-edit').on('click', function() {
-            var selectedSkdNo = $('#skdNo').val();            // 현재 선택된 일정 ID 가져오기
-            var event = calendar.getEventById(selectedSkdNo); // FullCalendar 에서 해당 일정 이벤트 가져오기
-            
-            $('#modify-skdNo').val(selectedSkdNo);
-            $('#modify-title').val(event.title);
-            $('#modify-start').val(moment(event.start).format('YYYY-MM-DDTHH:mm'));
-            $('#modify-end').val(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-            $('#modify-deptNo').val(event.extendedProps.sharedDepts.split(' ')).trigger('change');
-            $('#modify-color').val(event.backgroundColor); 
-            $('#modify-contents').val(event.extendedProps.contents);
-            
-            // 일정 상세보기 모달 숨기고 수정 모달 표시
-            $('#detailModal').modal('hide');
-            $('#modifyModal').modal('show');
-        });
-        
-        $('#frm-modify-schedule').on('submit', function(e) {
-            e.preventDefault(); // 폼의 기본 제출 동작 (새로고침) 막기
+  /*  
+  document.addEventListener('DOMContentLoaded', function() {
+       fnInitCalendar();
+       setupAutocomplete('shrEmpDept', 'empDept-result');
+       setupAutocomplete('modify-shrEmpDept', 'modify-empDept-result');
+       initFormHandlers();
+       initModifyHandlers();
+       initRemoveHandlers();
+   }); */
 
-            // formData 생성 및 부서공유 선택 추가
-            var formData = {
-                skdNo: parseInt($('#modify-skdNo').val()),
-                skdTitle: $('#modify-title').val(),
-                skdStart: $('#modify-start').val(),
-                skdEnd: $('#modify-end').val(),
-                skdCategory: $('#modify-category').val(),
-                skdColor: $('#modify-color').val(),
-                skdContents: $('#modify-contents').val(),
-                shrDept: []
-            };
+   // 일정 데이터 설정 + fullCalendar 초기화
+   const fnInitCalendar = () => {
+     
+       // 로그인된 사용자의 사원번호와 부서번호 가져오기
+       var empNo = '${loginEmployee.empNo}';
+       var deptNo = '${loginEmployee.deptNo}';
 
-            var selectedDepts = $('#modify-deptNo').val();
-            if (selectedDepts) {
-                selectedDepts.forEach(function(dept) {
-                    formData.shrDept.push({ skdNo: formData.skdNo, deptNo: dept });
-                });
-            }
+       console.log("사원번호 :" + empNo);
+       console.log("부서번호 :" + deptNo);
 
-            $.ajax({
-                type: "POST",
-                url: "${contextPath}/schedule/modify.do",
-                contentType: "application/json", // JSON 형식으로 전송
-                data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
-                dataType: "json",
-                success: function(resData) {
-                    if (resData.modifyCount === 1) {
-                        $('#modifyModal').modal('hide'); // 모달 닫기
-                        
-                        // 업데이트된 이벤트 정보 설정
-                        var event = calendar.getEventById(formData.skdNo);
-                        event.setProp('title', formData.skdTitle);
-                        event.setStart(formData.skdStart);
-                        event.setEnd(formData.skdEnd);
-                        event.setProp('backgroundColor', formData.skdColor);
-                        event.setExtendedProp('category', formData.skdCategory);
-                        event.setExtendedProp('sharedDepts', selectedDepts.map(function(dept) {
-                            return $("#modify-deptNo option[value='" + dept + "']").text();
-                        }).join(', '));
-                        event.setExtendedProp('contents', formData.skdContents);
-                        calendar.render();
-                        $('#frm-modify-schedule')[0].reset(); // 폼 초기화
-                    } else {
-                        alert('일정 수정 실패했습니다.');
-                    }
-                },
-                error: function(jqXHR) {
-                    alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-                }
-            });
-        });
+       // 필터링된 일정 리스트 이벤트 배열에 추가
+       var eventArray = [];
+       <c:forEach var='skd' items='${skdList}'>
+       eventArray.push({
+           id: '${skd.skdNo}',                 // 일정 ID
+           title: '${skd.skdTitle}',           // 제목
+           start: '${skd.skdStart}',           // 시작 시간
+           end: '${skd.skdEnd}',               // 종료 시간
+           backgroundColor: '${skd.skdColor}', // 일정 색상
+           extendedProps: {               
+               contents: '${skd.skdContents}', // 내용
+               category: '${skd.skdCategory}', // 카테고리
+               writer: '${skd.employee.empName}', // 작성자
+               empNo: '${skd.employee.empNo}',    // 작성자 사원번호
+               sharedItems: '<c:forEach var="dept" items="${skd.shrDept}">${dept.deptNo} </c:forEach>'.trim().split(' ').map(function(deptNo) {
+                     return {                    
+                         value: deptNo.trim(), // 공유부서
+                         type: '부서'
+                     };
+                 }).concat('<c:forEach var="emp" items="${skd.shrEmp}">${emp.empNo} </c:forEach>'.trim().split(' ').map(function(empNo) {
+                     return {                   
+                         value: empNo.trim(), // 공유사원
+                         type: '사원'
+                     };
+                 }))
+             }
+         });
+       </c:forEach>
 
+       console.log("전체일정 :", eventArray);
+       
+       // 캘린더 요소 선택 및 FullCalendar 초기화
+       var calendarEl = document.getElementById('calendar');
+       calendar = new FullCalendar.Calendar(calendarEl, { // 전역 변수로 참조
+           headerToolbar: {
+               left: 'prev,next today',
+               center: 'title',
+               right: 'dayGridMonth,timeGridWeek,timeGridDay'
+           },
+           dayMaxEvents: true,
+           events: eventArray,
+           dateClick: function(info) {
+               $('#skdNo').val('');
+               $('#title').val('');
+               $('#start').val(info.dateStr + "T09:00");
+               $('#end').val(info.dateStr + "T18:00");
+               $('#category').val('work');
+               $('#color').val('gray');
+               $('#contents').val('');
+               $('#shrEmpDept').val('');
+               $('#insertModal').modal('show');
+           },
+           // 일정 상세보기 이벤트
+           eventClick: function(info) { 
+               var categoryText = $("#modify-category option[value='" + info.event.extendedProps.category + "']").text();
 
-              
-         /*   $('#btn-modify-skd').on('click', function() {
-             // formData 생성 및 부서공유 선택 추가
-               var formData = $(this).serializeArray();
-                 var selectedDepts = $('#modify-deptNo').val();
-                 if (selectedDepts) {
-                     var shrDeptList = [];
-                     selectedDepts.forEach(function(dept) {
-                         shrDeptList.push({ skdNo: $('#modify-skdNo').val(), deptNo: dept });  // {skdNo, deptNo} 객채생성 -> 배열에 저장
-                         console.log('공유부서 수정 : ', shrDeptList);
-                     });
-                     formData.push({ name: 'shrDept', value: JSON.stringify(shrDeptList) }); // formData에 shrDept 필드 추가
+               $('#detail-title').text(info.event.title);
+               $('#detail-time').text(moment(info.event.start).format('YYYY-MM-DD HH:mm') + ' ~ ' + moment(info.event.end).format('YYYY-MM-DD HH:mm'));
+               $('#detail-writer').text(info.event.extendedProps.writer);
+               $('#detail-category').text(categoryText);
+               var sharedItemsText = info.event.extendedProps.sharedItems.map(function(item) {
+                   return $("#modify-shrEmpDept option[value='" + item.value + "']").text() + " (" + item.type + ")";
+               }).join(', ');
+               $('#detail-deptNo').text(sharedItemsText);
+               $('#detail-contents').text(info.event.extendedProps.contents);
+               $('#skdNo').val(info.event.id);
+               
+               // 일정 작성자가 현재 로그인한 사원과 동일한 경우에만 수정/삭제 버튼 표시
+               if (info.event.extendedProps.empNo == empNo) {
+                   $('#btn-edit').show();
+                   $('#btn-remove').show();
+               } else {
+                   $('#btn-edit').hide();
+                   $('#btn-remove').hide();
+               }
+
+               $('#detailModal').modal('show');
+           }
+       });
+
+       calendar.render();
+   }
+   
+   // 공유 사원,부서 자동완성 검색 (jQuery UI Autocomplete)
+   const fnEmpDeptList = (evt) => {
+       $("#shrEmpDept").autocomplete({
+           source: function(request, response) {  // source :  사용자가 입력한 검색어 기반으로 자동완성 함수
+         $.ajax({
+             type: 'GET',
+             url: "${contextPath}/schedule/searchEmpDeptList",
+             dataType: "json",
+             data: { query: request.term },// 사용자가 입력한 검색어 (query) -> 서버로 전송
+             success: function(resData) {  // 성공
+            response(                      // 서버로부터 받은 데이터를 처리하여 자동완성 결과로 변환 
+              $.map(resData.employees.concat(resData.departments), function(item) {
+                 if (item.empName) {
+                    // 사원
+                    return {
+                    	 label: item.empName + " (사원)",
+                       value: "E" + item.empNo, // 접두사 'E' 추가 (서버 측에서 분별하기 위함)
+                       type: "사원"
+                     };
+                 } else if (item.deptName) {
+                    // 부서
+                    return {
+                    	label: item.deptName + " (부서)",
+                      value: "D" + item.deptNo, // 접두사 'D' 추가 (서버 측에서 분별하기 위함)
+                      type: "부서"
+                   };
                  }
-             
-            var formData = {
-                skdNo: parseInt($('#modify-skdNo').val()),
-                skdTitle: $('#modify-title').val(),
-                skdStart: $('#modify-start').val(),
-                skdEnd: $('#modify-end').val(),
-                skdCategory: $('#modify-category').val(),
-                skdColor: $('#modify-color').val(),
-                skdContents: $('#modify-contents').val(),
-                shrDept: shrDeptList
-            };
-
-            
-            $.ajax({
-                type: "POST",
-                url: "${contextPath}/schedule/modify.do",
-                contentType: "application/json", // JSON 형식으로 전송
-                data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
-                dataType: "json",
-                success: function(resData) {
-                    if (resData.modifyCount === 1) {
-                        
-                        $('#modifyModal').modal('hide');    // 모달 닫기
-                        // 업데이트된 이벤트 정보 설정
-                        var event = calendar.getEventById(data.skdNo);
-                        event.setProp('title', data.skdTitle);
-                        event.setStart(data.skdStart);
-                        event.setEnd(data.skdEnd);
-                        event.setProp('color', data.skdColor);
-                        event.setExtendedProp('category', data.skdCategory);
-                        event.setExtendedProp('sharedDepts', selectedDepts.map(function(dept) {
-                            return $("#modify-deptNo option[value='" + dept + "']").text();
-                        }).join(', '));
-                        event.setExtendedProp('contents', data.skdContents);
-                        calendar.render();
-                        $('#frm-modify-schedule')[0].reset();
-                    } else {
-                        alert('일정 수정 실패했습니다.');
-                    }
-                },
-                error: function(jqXHR) {
-                    alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-                }
-            });
-        }); */
-	   
-	    	  /*  $('#btn-remove').on('click', function() {
-	    	    if(confirm('일정 삭제할까요?')){
-	    	    	  const skdNo = $('#skdNo').val();
-	    	        location.href = '${contextPath}/schedule/remove.do?skdNo=' + skdNo;
-	    	    }
-	    	  }); */
-	    	  
-        $('#btn-remove').on('click', function() {
-            if (confirm('일정 삭제할까요?')) {
-                const skdNo = $('#skdNo').val();
-
-                $.ajax({
-                    type: "POST",
-                    url: "${contextPath}/schedule/remove.do",
-                    data: { skdNo: skdNo },
-                    success: function(resData) {
-                        if (resData.removeCount === 1) {
-                            // FullCalendar에서 이벤트 제거
-                            var event = calendar.getEventById(skdNo);
-                            event.remove();
-                            $('#detailModal').modal('hide');
-                        } else {
-                            alert('일정 삭제 실패했습니다.');
-                        }
-                    },
-                    error: function(jqXHR) {
-                        alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-                    }
-                });
-            }
+              })
+           );
+         },
+           error: (jqXHR) => { // 실패
+             alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+           }
         });
-	    	  
-	    });
-</script>
+      }
+      // 옵션
+      ,focus : function(evt, ui){ return false; } // 방향키로 자동완성 키워드 선택 가능
+      ,minLength: 1 // 최소 글자 수 설정
+      ,delay: 300 // 검색 딜레이 시간 (밀리초 단위)
+      ,autoFocus: true 
+      ,appendTo: '#empDept-result'  // 검색 항목 출력할 요소 (div)
+      ,select: function(event, ui) {
+         // 선택된 항목 처리
+         var selectedItem = ui.item.value;
+         var resultContainerId = 'empDept-result'; // 선택된 항목을 표시할 컨테이너 ID
+         $("#" + resultContainerId).append(
+             '<button class="selectItem btn btn-primary btn-sm">' + ui.item.label + 
+              '<input type="hidden" name="shrNo" value="' + selectedItem + '" data-type="' + ui.item.type + '">' +
+             '</button>'
+         );
+         $('#shrEmpDept').val(''); // 입력 필드 초기화
+         return false; // 기본 동작 막기
+       }
+   }); 
+       
+      // 선택된 항목 삭제 (버튼 클릭)
+      $('#empDept-result').on('click', '.selectItem', function() {
+          $(this).remove();
+      });    
+      
+      // 모달창 닫힐 때 선택한 항목 초기화
+       $('#insertModal, #modifyModal').on('hidden.bs.modal', function () {  // hidden.bs.modal : 부트스트랩 이벤트 (모달 닫히면 발생)
+           $('#empDept-result').empty(); // 선택한 항목 초기화
+           $('#shrEmpDept').val('');     // 입력 필드 비움
+       });
+   }
+   
+   // 일정 등록
+   const fnRegisterSkd = () => {
+       $('#frm-schedule').on('submit', function(e) {
+           e.preventDefault(); // 폼의 기본 제출 동작 (새로고침)을 막음
+           
+           // 폼 데이터 배열에 저장
+           var formData = $(this).serializeArray();
+           // 선택된 사원 및 부서 배열 저장
+           var selectedItems = $('#empDept-result input[name="shrNo"]').map(function() {
+        	   return $(this).val();
+           }).get();
+           
+           console.log("선택된 공유: ", selectedItems); 
 
+           // 선택된 항목을 formData에 추가
+           selectedItems.forEach(function(item) {
+               formData.push({ name: 'shrNo', value: item });
+           });
+           
+           $.ajax({
+               type: "POST",
+               url: "${contextPath}/schedule/register.do",
+               data: formData,
+               dataType: "json",
+               success: function(resData) { 
+                   if (resData.insertSkdCount === 1) {  // 일정 등록 성공
+                       $('#insertModal').modal('hide'); // 모달 닫기
+                       // 새로운 일정 이벤트 
+                       var newEvent = {
+                           id: resData.skdNo,  // 일정번호를 id로 사용
+                           title: $('#title').val(), // 제목
+                           start: $('#start').val(), // 시작 시간
+                           end: $('#end').val(),     // 종료 시간
+                           backgroundColor: $('#color').val(),  // 일정 색상
+                           extendedProps: {
+                               category: $('#category').val(),  // 카테고리
+                               sharedItems: selectedItems.map(function(item) {
+                                   return {
+                                	    value: item,
+                                      type: item.startsWith('E') ? '사원' : '부서'
+                                   };
+                               }),
+                               contents: $('#contents').val(),      // 내용
+                               writer: '${loginEmployee.empName}',  // 현재 로그인한 사용자명
+                               empNo: empNo                         // 현재 로그인한 사용자 번호
+                           }
+                       };
+                       // 캘린더에 새로운 일정 추가
+                       calendar.addEvent(newEvent);  
+                       calendar.render();   // 랜더링
+                       $('#frm-schedule')[0].reset();  // 폼 초기화
+                       $('#empDept-result').empty();   // 선택된 사원, 부서 항목 초기화
+                   } else {
+                       alert('일정 등록 실패했습니다.');
+                       $('#frm-schedule')[0].reset();
+                       $('#empDept-result').empty();
+                   }
+               },
+               error: function(jqXHR) {
+                   alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+               }
+           });
+       });
+   }
+
+   const fnModifySkd = () => {
+	     // 상세 일정 모달창에서 수정 버튼 클릭
+       $('#btn-edit').on('click', function() {
+           var selectedSkdNo = $('#skdNo').val();   // 현재 선택된 일정 ID 가져오기
+           var event = calendar.getEventById(selectedSkdNo); // FullCalendar에서 해당 일정 이벤트 가져오기
+           
+           // 선택한 일정 데이터 수정 모달창에 입력
+           $('#modify-skdNo').val(selectedSkdNo);
+           $('#modify-title').val(event.title);
+           $('#modify-start').val(moment(event.start).format('YYYY-MM-DDTHH:mm'));
+           $('#modify-end').val(moment(event.end).format('YYYY-MM-DDTHH:mm'));
+           $('#modify-category').val(event.extendedProps.category);
+           $('#modify-color').val(event.backgroundColor);
+           $('#modify-contents').val(event.extendedProps.contents);
+           
+           // 공유 항목
+           var sharedItems = event.extendedProps.sharedItems;
+           //$('#modify-empDept-result').empty(); // 기존 선택한 항목 초기화
+           sharedItems.forEach(function(item) {
+            $('#modify-empDept-result').append(
+                '<button class="selectItem btn btn-primary btn-sm m-1">' + item.label +
+                '<input type="hidden" name="shrNo" value="' + item.value + '" data-type="' + item.type + '">' +
+                '</button>'
+             );
+          });
+           
+           // 자동 완성 함수 호출
+           fnEmpDeptList('modify-shrEmpDept', 'modify-empDept-result');
+           
+           // 상세보기 모달 숨기고 수정 모달 오픈
+           $('#detailModal').modal('hide');
+           $('#modifyModal').modal('show');
+       });
+       
+	     // 일정 수정 폼
+       $('#frm-modify-schedule').on('submit', function(e) {
+           e.preventDefault();
+
+           /* var formData = $(this).serializeArray();
+           var selectedItems = $('#modify-empDept-result input[name="shrNo"]').map(function() {
+               return $(this).val();
+           }).get();
+           selectedItems.forEach(function(item) {
+               formData.push({ name: 'shrNo', value: item });
+           }); */
+           
+           // 폼 데이터를 객체 형태로 저장
+           var formData = {
+               skdNo: parseInt($('#modify-skdNo').val()), // 일정 번호
+               skdTitle: $('#modify-title').val(), // 일정 제목
+               skdStart: $('#modify-start').val(), // 시작 시간
+               skdEnd: $('#modify-end').val(), // 종료 시간
+               skdCategory: $('#modify-category').val(), // 카테고리
+               skdColor: $('#modify-color').val(), // 일정 색상
+               skdContents: $('#modify-contents').val(), // 내용
+               sharedItems: [] // 공유 항목 (사원 및 부서)
+           };
+           
+           // 선택된 사원 및 부서 항목을 배열로 저장
+           var selectedItems = $('#modify-empDept-result input[name="shrNo"]').map(function() {
+               return {
+                   value: $(this).val(),
+                   type: $(this).data('type') // data-type 속성값
+               };
+           }).get();
+           
+           // 디버깅용
+           console.log("선택된 공유(수정): ", selectedItems);
+           
+           // 선택된 항목을 formData.sharedItems에 추가
+           formData.sharedItems = selectedItems;
+           
+           $.ajax({
+               type: "POST",
+               url: "${contextPath}/schedule/modify.do",
+               contentType: "application/json",
+               data: JSON.stringify(formData),
+               dataType: "json",
+               success: function(resData) {
+                   if (resData.modifyCount === 1) {  // 일정 수정 성공
+                       $('#modifyModal').modal('hide'); // 모달 닫기
+
+                       // 수정된 일정 이벤트 객체 생성
+                       var event = calendar.getEventById(formData.skdNo);
+                       event.setProp('title', formData.skdTitle);
+                       event.setStart(formData.skdStart);
+                       event.setEnd(formData.skdEnd);
+                       event.setProp('backgroundColor', formData.skdColor);
+                       event.setExtendedProp('category', formData.skdCategory);
+                       event.setExtendedProp('contents', formData.skdContents);
+                       event.setExtendedProp('sharedItems', selectedItems.map(function(item) {
+                           return {
+                               value: item.value,
+                               type: item.type
+                           };
+                       }));
+
+                       calendar.render();
+                       $('#frm-modify-schedule')[0].reset();
+                       $('#modify-empDept-result').empty(); // 선택된 항목 초기화
+                   } else {
+                       alert('일정 수정 실패했습니다.');
+                   }
+               },
+               error: function(jqXHR) {
+                   alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+               }
+           });
+       });
+   }
+
+   const initRemoveHandlers = () => {
+       $('#btn-remove').on('click', function() {
+           if (confirm('일정 삭제할까요?')) {
+               const skdNo = $('#skdNo').val();
+
+               $.ajax({
+                   type: "POST",
+                   url: "${contextPath}/schedule/remove.do",
+                   data: { skdNo: skdNo },
+                   success: function(resData) {
+                       if (resData.removeCount === 1) {
+                           var event = calendar.getEventById(skdNo);
+                           event.remove();
+                           $('#detailModal').modal('hide');
+                       } else {
+                           alert('일정 삭제 실패했습니다.');
+                       }
+                   },
+                   error: function(jqXHR) {
+                       alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+                   }
+               });
+           }
+       });
+   }
+
+ fnInitCalendar();
+ fnEmpDeptList();
+ fnModifySkd();
+ initModifyHandlers();
+ initRemoveHandlers();
+ 
+ 
+</script>
+    
+
+<!-- <script src="../assets/js/pages-calendar.js"></script> -->
 <%@ include file="../layout/footer.jsp" %>    
