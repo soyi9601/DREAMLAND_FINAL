@@ -6,17 +6,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dreamland.prj.mapper.MessageMapper;
+import com.dreamland.prj.service.MessageService;
 
 @Component
 public class MessageDeleteScheduler {
   
   @Autowired
-  private MessageMapper messageMapper;
+  private MessageService messageService;
   
-  @Transactional
   @Scheduled(cron = "0 0 0 * * ?")
   public void cleanupOldMessages() {
-    messageMapper.deleteOldMessages();
+    messageService.realDeleteMessage();
     
   }
 

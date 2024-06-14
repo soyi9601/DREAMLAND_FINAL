@@ -8,6 +8,7 @@
  *    2) 240613
  *        - 이메일 중복체크 ajax 작성
  *        - 이름, 휴대전화, 이메일 체크 함수를 oninput="함수이름()" 으로 호출 방식 변경
+ *        - 생년월일 : 2000-01-01, 입사일 : 오늘날짜로 변경
  */
 
 'use strict';
@@ -27,6 +28,10 @@ var deptDetailOptions;
 /************************** 함수 정의 **************************/
 // 세부부서 가져오기
 $(document).ready(function() {
+  let today = new Date();
+  let todayValue = today.toISOString().substring(0,10);
+  $('#enter-date').attr('value', todayValue);
+  
   $('#dept-no').change(function() {
     var selectedValue = $(this).val();
     if (selectedValue == '5000') {

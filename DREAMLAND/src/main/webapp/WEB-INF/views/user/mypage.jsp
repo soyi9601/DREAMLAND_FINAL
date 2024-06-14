@@ -8,7 +8,6 @@
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
 <!-- 이미지 경로 확인 -->
-<c:set var="signPath" value="${loginEmployee.signPath}"/>
 <c:set var="profilePath" value="${loginEmployee.profilePath}"/>
 <c:if test="${signPath == null}">
    <c:set var="signPath" value="../assets/img/logo/logo2.png" />
@@ -30,7 +29,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="card mb-4">
-                    <h5 class="card-header">정보수정 - 이미지 수정 후 반드시 저장 누를 것</h5>
+                    <h5 class="card-header">정보수정 - 이미지 수정 후 반드시 저장을 눌러주세요.</h5>
                     
                     <!-- Account -->
                     <form id="frm-modify-info" method="POST" action="${contextPath}/user/modify.do" enctype="multipart/form-data">
@@ -71,44 +70,6 @@
                           </button>
                           <p class="text-muted mb-0">JPG, GIF, PNG 가능. 최대 800KB</p>
                         </div>
-                          <div>
-                            <a href="${contextPath}/sign/generate?empNo=${loginEmployee.empNo}&empName=${loginEmployee.empName}">서명만들기</a>
-                          </div>
-                           <img
-                               src="${signPath}" 
-                               alt="user-avatar"
-                               class="d-block rounded"
-                               height="100"
-                               width="100"
-                               id="uploadSign"
-                           />
-                          <input
-                              type="text"
-                              id="beforeSignPath"
-                              name="beforeSignPath"
-                              class="form-control"
-                              hidden
-                              value="${loginEmployee.signPath}"
-                          />
-                       <div class="button-wrapper">
-                         <label for="signPath" class="btn btn-primary me-2 mb-4" tabindex="0">
-                           <span class="d-none d-sm-block">서명등록</span>
-                           <i class="bx bx-upload d-block d-sm-none"></i>
-                           <input
-                             type="file"
-                             id="signPath"
-                             name="signPath"
-                             class="account-sign-input"
-                             hidden
-                             accept="image/png, image/jpeg, image/gif"
-                           />
-                         </label>
-                         <button type="button" class="btn btn-outline-secondary account-sign-reset mb-4">
-                           <i class="bx bx-reset d-block d-sm-none"></i>
-                           <span class="d-none d-sm-block">초기화</span>
-                         </button>
-                         <p class="text-muted mb-0">서명 사진(gif, png, jpg 가능) 최대 100KB</p>
-                       </div>
                       </div>
 
                    </div>
@@ -169,7 +130,7 @@
                              type="text"
                              id="deptName"
                              name="deptName"
-                             value="<c:choose><c:when test="${fn:startsWith(emp.deptNo, '5')}">시설관리</c:when><c:otherwise>${emp.deptName}</c:otherwise></c:choose>"
+                             value="<c:choose><c:when test="${fn:startsWith(emp.deptNo, '5')}">시설관리</c:when><c:otherwise>${emp.deptName}[${emp.deptNo}]</c:otherwise></c:choose>"
                              readOnly
                            />
                             <input
@@ -187,7 +148,7 @@
                              type="text"
                              id="deptDetailName"
                              name="deptDetailName"
-                             value="${emp.deptName}"
+                             value="<c:choose><c:when test="${fn:startsWith(emp.deptNo, '5')}">${emp.deptName}[${emp.deptNo}]</c:when><c:otherwise></c:otherwise></c:choose>"
                              readOnly
                            />
                          </div>
@@ -221,15 +182,6 @@
                            />
                          </div>
                          <div class="mb-3 col-md-6">
-                           <label for="posNo" class="form-label">권한</label>
-                             <input
-                             class="form-control"
-                             type="text"
-                             id="role"
-                             name="role"
-                             value="${loginEmployee.role}"
-                             readOnly
-                           />
                          </div>
                     <div class="mb-3 col-md-2">
                       <label for="postcode" class="form-label">우편번호</label>
@@ -252,7 +204,7 @@
                   
                   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
                    <hr class="my-0" />
-                   <div class="card-body">
+                   <div class="pt-4">
                        <div class="mt-2">
                          <button type="submit" class="btn btn-primary me-2">저장</button>
                          <button type="button" class="btn btn-warning me-2" id="modify-password" >비밀번호변경</button>
