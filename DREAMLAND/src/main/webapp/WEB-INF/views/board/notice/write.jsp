@@ -99,10 +99,11 @@
 																		</div>
 																</div>
 														</div>
-														<div class="row justify-content-end">
-																<button type="submit"
-																		class="btn-reset sd-btn sd-point-bg">작성
-															  </button>
+														<div class="btn-area">
+															<button type="submit" class="btn-reset sd-btn sd-point-bg">작성</button>
+															<button type="button" class="btn-reset sd-btn sd-point-bg" style="margin-left:7px;">
+                                <a href="${contextPath}/board/notice/list.do">목록</a>
+                              </button>
 														</div>
 												</form>
 										</div>

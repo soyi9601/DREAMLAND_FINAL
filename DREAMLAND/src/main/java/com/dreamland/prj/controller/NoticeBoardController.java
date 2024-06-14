@@ -83,7 +83,6 @@ public class NoticeBoardController {
     return noticeBoardService.getAttachList(noticeNo);
   }
   
-  
   @PostMapping("/modify.do")
   public String modify(NoticeBoardDto notice, RedirectAttributes redirectAttributes) {
   	

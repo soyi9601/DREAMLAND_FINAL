@@ -8,7 +8,6 @@
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
 <!-- 이미지 경로 확인 -->
-<c:set var="signPath" value="${loginEmployee.signPath}"/>
 <c:set var="profilePath" value="${loginEmployee.profilePath}"/>
 <c:if test="${signPath == null}">
    <c:set var="signPath" value="../assets/img/logo/logo2.png" />

@@ -231,7 +231,6 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
     
     
     try {
-    	
     	// ZipOutputStream 객체 생성
       ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(tempFile));
 		
