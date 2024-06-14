@@ -56,11 +56,6 @@
                       <hr>
                       <div class="row mb-3">
                         <pre class="font-detail">${msgDetail.msgContents}</pre>
-                        <style>
-                        .font-detail{
-                          font-family: var(--bs-font-sans-serif);
-                          font-size: 1rem;
-                        }</style>
                       </div>
                     </div>
                     </form>
