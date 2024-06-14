@@ -49,8 +49,12 @@ public class SecurityConfig {
             
             .requestMatchers("/user/**").authenticated()  // 인증만 되면 들어갈 수 있는 주소
             .requestMatchers("/manager/**", "/").hasAnyRole("ADMIN", "USER")
+            
+            /* 관리자만 가능*/
             .requestMatchers("/depart/addDepart.page").hasRole("ADMIN")
             .requestMatchers("/depart/departAdmin.page").hasRole("ADMIN")
+            .requestMatchers("/board/faq/write.page").hasRole("ADMIN")
+            .requestMatchers("/board/notice/write.page").hasRole("ADMIN")
             .requestMatchers("/employee/**").hasRole("ADMIN")
             //.requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()) 

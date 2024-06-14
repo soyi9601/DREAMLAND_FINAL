@@ -169,7 +169,7 @@
                              type="text"
                              id="deptName"
                              name="deptName"
-                             value="<c:choose><c:when test="${fn:startsWith(emp.deptNo, '5')}">시설관리</c:when><c:otherwise>${emp.deptName}</c:otherwise></c:choose>"
+                             value="<c:choose><c:when test="${fn:startsWith(emp.deptNo, '5')}">시설관리</c:when><c:otherwise>${emp.deptName}[${emp.deptNo}]</c:otherwise></c:choose>"
                              readOnly
                            />
                             <input
@@ -187,7 +187,7 @@
                              type="text"
                              id="deptDetailName"
                              name="deptDetailName"
-                             value="${emp.deptName}"
+                             value="<c:choose><c:when test="${fn:startsWith(emp.deptNo, '5')}">${emp.deptName}[${emp.deptNo}]</c:when><c:otherwise></c:otherwise></c:choose>"
                              readOnly
                            />
                          </div>

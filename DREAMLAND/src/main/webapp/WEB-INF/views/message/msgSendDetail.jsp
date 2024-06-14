@@ -15,15 +15,17 @@
               
               <div class="row">
                 <div class="card">
-                  <h5 class="card-header">상세보기</h5>
                   <form id="frm-send-detail" method="POST">
-                    <div class="card-body">
-                    <div class="row mb-3" >
-                      <div class="d-flex flex-wrap justify-content-end" >
-                        <button type="button" class="btn btn-xs btn-warning" id="btn-save">보관하기</button>
-                        <button type="button" class="btn btn-xs btn-danger" id="btn-delete">삭제하기</button>
+                   <div class="card-header">
+                    <div class="send-btns-area">
+                      <div></div>
+                      <div>
+                        <button type="button" class="btn btn-warning" id="btn-save">보관</button>
+                        <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
                       </div>
                     </div>
+                  </div>
+                    <div class="card-body">
                       <div class="row mb-3" >
                         <label for="receiver" class="col-sm-2 col-form-label">받는사람</label>
                         <div class="col-sm-10">
@@ -56,6 +58,7 @@
                         <style>
                         .font-detail{
                           font-family: var(--bs-font-sans-serif);
+                          font-size: 1rem;
                         }</style>
                       </div>
                     </div>

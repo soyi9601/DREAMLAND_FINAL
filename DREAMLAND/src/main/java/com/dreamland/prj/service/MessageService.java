@@ -39,6 +39,9 @@ public interface MessageService {
   void getDeleteMessage(Model model);
   Map<String, Object> getDeleteCount(int empNo);
   
+  // 스케줄러 삭제
+  void realDeleteMessage();
+  
   // 답장
   void setReply(Model model);
   

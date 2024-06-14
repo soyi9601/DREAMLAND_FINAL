@@ -15,16 +15,17 @@
               
               <div class="row">
                 <div class="card">
-                  <h5 class="card-header">상세보기</h5>
                   <form id="frm-receive-detail" method="POST">
-                    <div class="card-body">
-                    <div class="row mb-3" >
-	                    <div class="d-flex flex-wrap justify-content-end" >
-	                      <button type="button" class="btn btn-primary" id="btn-reply-message">답장하기</button>
-	                      <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
-	                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
-	                    </div>
+                  <div class="card-header">
+                    <div class="send-btns-area">
+                      <div><button type="button" class="btn btn-primary" id="btn-reply-message">답장</button></div>
+                      <div>
+                        <button type="button" class="btn btn-warning" id="btn-save">보관</button>
+                        <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+                      </div>
                     </div>
+                  </div>
+                    <div class="card-body">
                       <div class="row mb-3" >
                         <label for="sender" class="col-sm-2 col-form-label">보낸사람</label>
                         <div class="col-sm-10">
@@ -52,12 +53,13 @@
 	                        />
                         </div>
                       </div>
-                      <hr></hr>
+                      <hr>
                       <div class="row mb-3">
                         <pre class="font-detail">${msgDetail.msgContents}</pre>
                         <style>
                         .font-detail{
                           font-family: var(--bs-font-sans-serif);
+                          font-size: 1rem;
                         }</style>
                       </div>
                     </div>
