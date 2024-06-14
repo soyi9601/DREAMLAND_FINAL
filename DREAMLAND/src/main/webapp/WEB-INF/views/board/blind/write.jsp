@@ -56,7 +56,6 @@
 																</div>
 														</div>
 
-
 														<textarea id="contents" name="boardContents"
 																placeholder="내용을 입력하세요"></textarea>
 

@@ -74,10 +74,7 @@
                         <input type="hidden" name="blindNo" value="${blind.blindNo}">
                       </div>
                     </div>
-                    
-                
                   </form>
-                    
                 </div>
             </div>
 
@@ -87,73 +84,61 @@
 </div>
 
 
-  <script>
-  const fnSummernoteEditor = () => {
-    $('#contents').summernote({
- 
-      height: 500,
-      lang: 'ko-KR',
-      toolbar: [
-        // [groupName, [list of button]]
-        ['fontname', ['fontname']],
-        ['fontsize', ['fontsize']],
-        ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
-        ['color', ['forecolor','color']],
-        ['para', ['paragraph']],
-        ['insert',['picture','link','video']],
-        ['view', ['help']]
-      ],
-    fontNames: ['맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체', 'Nanum Myeongjo', 'Noto Sans KR'],
-    fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+<script>
+const fnSummernoteEditor = () => {
+  $('#contents').summernote({
+    height: 500,
     lang: 'ko-KR',
-      callbacks: {
-        onImageUpload: (images)=>{
-          // 비동기 방식을 이용한 이미지 업로드
-          for(let i = 0; i < images.length; i++) {
-            let formData = new FormData();
-            formData.append('image', images[i]);
-            fetch('${contextPath}/board/blind/summernote/imageUpload.do', {
-              method: 'POST',
-              body: formData
-            })
-            .then(response=>response.json())
-            .then(resData=>{
-              $('#contents').summernote('insertImage', '${contextPath}' + resData.src);
-            })
-          }
+    toolbar: [
+      // [groupName, [list of button]]
+      ['fontname', ['fontname']],
+      ['fontsize', ['fontsize']],
+      ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+      ['color', ['forecolor','color']],
+      ['para', ['paragraph']],
+      ['insert',['picture','link','video']],
+      ['view', ['help']]
+    ],
+  fontNames: ['맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체', 'Nanum Myeongjo', 'Noto Sans KR'],
+  fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+  lang: 'ko-KR',
+    callbacks: {
+      onImageUpload: (images)=>{
+        // 비동기 방식을 이용한 이미지 업로드
+        for(let i = 0; i < images.length; i++) {
+          let formData = new FormData();
+          formData.append('image', images[i]);
+          fetch('${contextPath}/board/blind/summernote/imageUpload.do', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response=>response.json())
+          .then(resData=>{
+            $('#contents').summernote('insertImage', '${contextPath}' + resData.src);
+          })
         }
       }
-    })
-  }  
+    }
+  })
+}  
   
-  //alert( document.getElementById('oldPassword').value)
-  
-  //let passwordField;
-  //let oldPasswordField;
-  
-  const fnModifyBlind = () => {
-     document.getElementById('frm-blind-modify').addEventListener('submit', (evt) => {
-       let passwordField = document.getElementById('password').value;
+const fnModifyBlind = () => {
+   document.getElementById('frm-blind-modify').addEventListener('submit', (evt) => {
+     let passwordField = document.getElementById('password').value;
        
-       if (passwordField === '') {
-           let oldPasswordField = document.getElementById('oldPassword').value;
-           passwordField = oldPasswordField;
-           document.getElementById('password').value = passwordField;
-           
-           //alert(passwordField+'<<<이거');
-           //alert(document.getElementById('password').value)
-       }else{
-         
-         document.getElementById('password').value = encryptPassword(passwordField);
-         //alert(document.getElementById('password').value)
-       }
-       
-       //document.getElementById('password').value = encryptPassword(passwordField);
-       //alert(document.getElementById('password').value);
-       //evt.preventDefault();
-   });
+     // 비밀번호를 변경하지 않을 시, 예전 비밀번호 그대로 사용. 변경시, 새로운 비밀번호로 변경 
+     if (passwordField === '') {
+         let oldPasswordField = document.getElementById('oldPassword').value;
+         passwordField = oldPasswordField;
+         document.getElementById('password').value = passwordField;
+     }else{
+       document.getElementById('password').value = encryptPassword(passwordField);
+     }
+  });
 };
 
+
+// 사용자가 작성한 비밀번호 암호화 
 function encryptPassword(password) {
   const key = CryptoJS.enc.Utf8.parse('mysecretkey12345');
   const encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(password), key, {
@@ -168,6 +153,6 @@ fnSummernoteEditor();
 fnModifyBlind();
 
 
-  </script>
+</script>
 
     <%@ include file="../../layout/footer.jsp"%>

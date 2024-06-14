@@ -32,7 +32,7 @@
                 <input type="hidden" name="empNo" value="${loginEmployee.empNo}">
                 <label class="col-sm-2 col-form-label" for="basic-default-name">FAQ 제목</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="basic-default-name"
+                  <input type="text" class="form-control" id="basic-default-name" maxlength=32
                     placeholder="제목을 입력해주세요. Q칸에 들어갈 부분입니다." name="boardTitle" />
                 </div>
               </div>
@@ -80,7 +80,32 @@
 </div>
 
 <script>
-  
+/*
+var nameCheck = false;
+
+const fnCheckTitle = () =>{
+	alert('ggg');
+	let inpName = document.getElementById('basic-default-name');
+	let name = inpName.value;
+	let totalByte = 0;
+	for(let i = 0; i < name.length; i++){
+    if(name.charCodeAt(i) > 127) {  // 코드값이 127 초과이면 한 글자 당 2바이트 처리한다.
+      totalByte += 2;
+    } else {
+      totalByte++;
+    }
+    nameCheck = (totalByte <= 100);
+    let msgName = document.getElementById('msg-name');
+    if(!nameCheck){
+      msgName.innerHTML = '이름은 100 바이트를 초과할 수 없습니다.';
+    } else {
+      msgName.innerHTML = '';
+    }
+}
+*/
+
+
+
 /* 등록 필수*/
 const fnRegister = () =>{
 	document.getElementById('frm-faq-register').addEventListener('submit', (e) => {
@@ -108,7 +133,7 @@ const fnRegister = () =>{
   
   
 fnRegister();
-  
+fnCheckTitle();
   
 </script>
 
