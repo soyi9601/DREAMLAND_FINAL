@@ -96,10 +96,13 @@
                           
                         </div>
 
-                        <div style="display:flex;">
+                        <div class="btn-area">
                           <input type="hidden" name="delAttachList" id="delAttachList">
                           <input type="hidden" name="noticeNo" value="${notice.noticeNo}">
                           <button type="submit" id="btn-edit-submit" class="btn-reset sd-btn sd-point-bg">수정</button>
+                          <button type="button" class="btn-reset sd-btn sd-point-bg" style="margin-left:7px;">
+                            <a href="${contextPath}/board/notice/list.do">목록</a>
+                          </button>
                         </div>
                       </form>
                     </div>
