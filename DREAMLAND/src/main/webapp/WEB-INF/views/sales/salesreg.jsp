@@ -1,7 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!-- notie/list.jsp -->
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
@@ -57,6 +54,7 @@
 	        <input type="date" name="salesDate" id="salesDate">
 	       </div>
 	       	<h5 class="card-header">티켓</h5>
+	       	
 	       	<%-- Success Message --%>
 					<c:if test="${not empty successMessage}">
 					    <div class="alert alert-success" role="alert">
@@ -69,6 +67,7 @@
 					        ${errorMessage}
 					    </div>
 					</c:if>
+					
 	        <div class="table-responsive text-nowrap">
 	        	<table class="table table-dark">
 	          	<thead>
@@ -82,7 +81,7 @@
 	            <tbody class="table-border-bottom-0">
 	            	<c:forEach items="${product}" var="product">
 	              	<tr>
-	              	<c:if test="${product.department.deptNo == 5000}"> 
+	              	<c:if test="${product.department.deptNo == 5000 && product.delyn != 'Y'}"> 
 	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
 	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
 	                  <td><input type="text" name="qty" class="Tqty" oninput="validateNumberInput(this)"></td>
@@ -108,6 +107,20 @@
 	        <input type="date" name="salesDate" id="salesDate">
 	       </div>
 	       	<h5 class="card-header">주토피아</h5>
+	       	
+	       	<%-- Success Message --%>
+					<c:if test="${not empty successMessage}">
+					    <div class="alert alert-success" role="alert">
+					        ${successMessage}
+					    </div>
+					</c:if>
+					<%-- Error Message --%>
+					<c:if test="${not empty errorMessage}">
+					    <div class="alert alert-danger" role="alert">
+					        ${errorMessage}
+					    </div>
+					</c:if>
+					
 	        <div class="table-responsive text-nowrap">
 	        	<table class="table table-dark">
 	          	<thead>
@@ -121,7 +134,7 @@
 	            <tbody class="table-border-bottom-0">
 	            	<c:forEach items="${product}" var="product">
 	              	<tr>
-	              	<c:if test="${product.department.deptNo ge 5120 && product.department.deptNo le 5130}"> 
+	              	<c:if test="${product.department.deptNo ge 5120 && product.department.deptNo le 5130 && product.delyn != 'Y'}"> 
 	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
 	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
 	                  <td><input type="text" name="qty" class="Jqty" oninput="validateNumberInput(this)"></td>
@@ -146,6 +159,20 @@
 	        <input type="date" name="salesDate" id="salesDate">
 	       </div>
 	       	<h5 class="card-header">매직랜드</h5>
+	       	
+	       	<%-- Success Message --%>
+					<c:if test="${not empty successMessage}">
+					    <div class="alert alert-success" role="alert">
+					        ${successMessage}
+					    </div>
+					</c:if>
+					<%-- Error Message --%>
+					<c:if test="${not empty errorMessage}">
+					    <div class="alert alert-danger" role="alert">
+					        ${errorMessage}
+					    </div>
+					</c:if>
+					
 	        <div class="table-responsive text-nowrap">
 	        	<table class="table table-dark">
 	          	<thead>
@@ -159,7 +186,7 @@
 	            <tbody class="table-border-bottom-0">
 	            	<c:forEach items="${product}" var="product">
 	              	<tr>
-	              	<c:if test="${product.department.deptNo ge 5220 && product.department.deptNo le 5230}"> 
+	              	<c:if test="${product.department.deptNo ge 5220 && product.department.deptNo le 5230 && product.delyn != 'Y'}"> 
 	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
 	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
 	                  <td><input type="text" name="qty" class="Mqty" oninput="validateNumberInput(this)"></td>
@@ -184,6 +211,20 @@
 	        <input type="date" name="salesDate" id="salesDate">
 	       </div>
 	       	<h5 class="card-header">아메리칸어드벤처</h5>
+	       	
+	       		<%-- Success Message --%>
+					<c:if test="${not empty successMessage}">
+					    <div class="alert alert-success" role="alert">
+					        ${successMessage}
+					    </div>
+					</c:if>
+					<%-- Error Message --%>
+					<c:if test="${not empty errorMessage}">
+					    <div class="alert alert-danger" role="alert">
+					        ${errorMessage}
+					    </div>
+					</c:if>
+					
 	        <div class="table-responsive text-nowrap">
 	        	<table class="table table-dark">
 	          	<thead>
@@ -197,7 +238,7 @@
 	            <tbody class="table-border-bottom-0">
 	            	<c:forEach items="${product}" var="product">
 	              	<tr>
-	              	<c:if test="${product.department.deptNo ge 5320 && product.department.deptNo le 5330}"> 
+	              	<c:if test="${product.department.deptNo ge 5320 && product.department.deptNo le 5330 && product.delyn != 'Y'}"> 
 	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
 	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
 	                  <td><input type="text" name="qty" class="Aqty" oninput="validateNumberInput(this)"></td>
@@ -222,6 +263,20 @@
 	        <input type="date" name="salesDate" id="salesDate">
 	       </div>
 	       	<h5 class="card-header">글로버페어</h5>
+	       	
+	       		<%-- Success Message --%>
+					<c:if test="${not empty successMessage}">
+					    <div class="alert alert-success" role="alert">
+					        ${successMessage}
+					    </div>
+					</c:if>
+					<%-- Error Message --%>
+					<c:if test="${not empty errorMessage}">
+					    <div class="alert alert-danger" role="alert">
+					        ${errorMessage}
+					    </div>
+					</c:if>
+					
 	        <div class="table-responsive text-nowrap">
 	        	<table class="table table-dark">
 	          	<thead>
@@ -235,7 +290,7 @@
 	            <tbody class="table-border-bottom-0">
 	            	<c:forEach items="${product}" var="product">
 	              	<tr>
-	              	<c:if test="${product.department.deptNo ge 5420 && product.department.deptNo le 5430}"> 
+	              	<c:if test="${product.department.deptNo ge 5420 && product.department.deptNo le 5430 && product.delyn != 'Y'}"> 
 	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
 	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
 	                  <td><input type="text" name="qty" class="Gqty" oninput="validateNumberInput(this)"></td>
@@ -260,6 +315,20 @@
 	        <input type="date" name="salesDate" id="salesDate">
 	       </div>
 	       	<h5 class="card-header">유로피언어드벤처</h5>
+	       	
+	       		<%-- Success Message --%>
+					<c:if test="${not empty successMessage}">
+					    <div class="alert alert-success" role="alert">
+					        ${successMessage}
+					    </div>
+					</c:if>
+					<%-- Error Message --%>
+					<c:if test="${not empty errorMessage}">
+					    <div class="alert alert-danger" role="alert">
+					        ${errorMessage}
+					    </div>
+					</c:if>
+					
 	        <div class="table-responsive text-nowrap">
 	        	<table class="table table-dark">
 	          	<thead>
@@ -273,7 +342,7 @@
 	            <tbody class="table-border-bottom-0">
 	            	<c:forEach items="${product}" var="product">
 	              	<tr>
-	              	<c:if test="${product.department.deptNo ge 5520 && product.department.deptNo le 5530}"> 
+	              	<c:if test="${product.department.deptNo ge 5520 && product.department.deptNo le 5530 && product.delyn != 'Y'}"> 
 	                	<td><input type="hidden" name="productNo" value="${product.productNo}">${product.productSctCd}</td>
 	                  <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${product.productNM}</strong>
 	                  <td><input type="text" name="qty" class="Uqty" oninput="validateNumberInput(this)"></td>
@@ -329,5 +398,3 @@ function validateForm() {
 </html>
 
 <%@ include file="../layout/footer.jsp"%>
-	
-	

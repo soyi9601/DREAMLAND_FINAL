@@ -11,29 +11,71 @@
 
 <!-- link -->
 <link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
-<link rel="stylesheet" href="/resources/assets/vendor/fonts/boxicons.css" />
 
  		
  		<style>
- 		.card {
-            display: none;
+ 		.Allmagin {
+ 					margin : 0px 200px 100px 200px;
+ 		}
+    .title {
+    			padding : 40px 40px 0px 30px;
+    			color : #90B54C;
+    		}    
+    .card-header {
+            background-color: rgb(189,189,189,0.5);
+            padding : 40px 40px 20px 30px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
- 		.card.active {
-            display: block;
-        }
+    .btn-list {
+    				width: 120px;
+    				float: right;
+    				margin-right: 20px;
+    				border-radius: 5px;
+    				background-color: #90B54C;
+    				color: #FFFFFF;
+    		}    		    
+    .btn-reg {
+    				width: 120px;
+    				float: right;
+    				border-radius: 5px;
+    				background-color: rgb(42, 115, 255);
+    				color: #FFFFFF;
+    		}
+    .text-title {
+    				margin: 10px 40px 10px 30px;
+    		}		
+    .btn-add {
+    				width: 120px;
+    				float: right;
+    				border-radius: 5px;
+    				background-color: rgb(42, 115, 255);
+    				color: #FFFFFF;
+    		}
+   	.text-p {
+   					margin-left: 30px; 
+   			}
+   	th, td{
+   					text-align: center;  
+   	}
  		</style>
-  </head>
   
+<!-- Content wrapper -->
+<div class="content-wrapper">
 
-<body>
-
+<div class="Allmagin">
 	<form method="POST" 
     		action="${contextPath}/sales/productreg.do" 
     		id="frm-productreg">
- 
-        <!-- Bootstrap Dark Table -->
-        
-        <h5 class="card-header">상품등록</h5>
+ 	
+ 	<h1 class="title">매출</h1>	
+   	<!-- Bootstrap Dark Table -->
+   	
+  <div class="card-header">
+  	<h2>상품등록<button type="submit" id="regbtn" class="btn-reg">저장</button>
+  						<button href="${contextPath}/sales/list.do" class="btn-list">목록</button>
+  						</h2>
+  </div>
         <c:if test="${not empty requestScope.errorMessage}">
         	<div class="alert alert-danger">
             ${requestScope.errorMessage}
@@ -41,9 +83,13 @@
     		</c:if>
         
         <div>
-        	<button type="submit" id="regbtn" class="btn-reg">저장</button>
-        	 <button type="button" onclick="myFunction()">추가</button>
+        	<h3 class="text-title">주의점</h3>
+        	<p class="text-p">추가버튼을 누르면 입력화면이 나옵니다.</p>
+        	<p class="text-p">상품번호는 숫자만 입력 가능합니다. 티켓의 상품번호는 10번대 나머지 상품들은 20번부터 입력해야합니다.</p>
+        	<p class="text-p">상품은 글자만 입력 가능합니다. 가격은 숫자만 입력 가능합니다. </p>
+        	<p class="text-p">차트번호는 숫자만 입력 가능합니다. 파트번호는 현재 5000~5530번까지 입력해야합니다. <button type="button" class="btn-add" onclick="myFunction()">추가</button></p>
         </div>
+        
         
             <div class="table-responsive text-nowrap">
                 <table class="table table-dark">
@@ -62,10 +108,8 @@
                     </tbody>
                 </table>
             </div>
-        </div> 
     </form>
-</body>
-
+</div>
 <script>
 function myFunction() {
 		var addRowIndex = 0;
@@ -169,6 +213,4 @@ document.getElementById('regbtn').addEventListener('click', fnCheckPdeptNo);
 
 fnaddCheck();
 </script>
-
-	
-</html>
+<%@ include file="../layout/footer.jsp" %>   
