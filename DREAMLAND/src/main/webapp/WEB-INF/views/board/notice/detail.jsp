@@ -29,47 +29,47 @@
 
 										<div class="card-body">
 												<div class="board-title-area">
-														<div class="board-title">
-																<c:if test="${notice.signal==1}">
-																		<span>중요</span>
-																</c:if>
-																${notice.boardTitle}
+													<div class="board-title">
+														<c:if test="${notice.signal==1}">
+															<span class="important badge rounded-pill bg-label-danger">중요</span>
+														</c:if>
+														${notice.boardTitle}
+													</div>
+													<div class="board-title-etc-area">
+														<div class="board-title-etc">
+															<p>
+																	<span>${notice.employee.empName}</span>
+															</p>
+															<p>
+																	<i class='bx bx-show'></i> <span>${notice.hit}</span>
+															</p>
+															<p>
+																	<i class='bx bx-time-five'></i>
+																	<c:if
+																			test="${notice.boardCreateDt eq notice.boardModifyDt}">
+																			<span>${notice.boardCreateDt}</span>
+																	</c:if>
+																	<c:if
+																			test="${notice.boardCreateDt ne notice.boardModifyDt}">
+                                      수정일자 : <span>${notice.boardModifyDt}</span>
+																	</c:if>
+															</p>
 														</div>
-														<div class="board-title-etc-area">
-																<div class="board-title-etc">
-																		<p>
-																				<span>${notice.employee.empName}</span>
-																		</p>
-																		<p>
-																				<i class='bx bx-show'></i> <span>${notice.hit}</span>
-																		</p>
-																		<p>
-																				<i class='bx bx-time-five'></i>
-																				<c:if
-																						test="${notice.boardCreateDt eq notice.boardModifyDt}">
-																						<span>${notice.boardCreateDt}</span>
-																				</c:if>
-																				<c:if
-																						test="${notice.boardCreateDt ne notice.boardModifyDt}">
-                                            수정일자 : <span>${notice.boardModifyDt}</span>
-																				</c:if>
-																		</p>
-																</div>
 
-																<div class="board-title-btns">
-																		<c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-																				<form id="frm-btn" method="POST">
-																						<input type="hidden" name="noticeNo"
-																								value="${notice.noticeNo}">
-																						<button type="button" id="btn-edit"
-																								class="btn btn-warning btn-sm">편집</button>
-																						<button type="button" id="btn-remove"
-																								class="btn btn-danger btn-sm">삭제</button>
-																				</form>
-																		</c:if>
-																</div>
-																
+														<div class="board-title-btns">
+															<c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+																<form id="frm-btn" method="POST">
+																	<input type="hidden" name="noticeNo"
+																			value="${notice.noticeNo}">
+																	<button type="button" id="btn-edit"
+																			class="btn btn-warning btn-sm">편집</button>
+																	<button type="button" id="btn-remove"
+																			class="btn btn-danger btn-sm">삭제</button>
+																</form>
+															</c:if>
 														</div>
+															
+													</div>
 												</div>
 
 												<div class="board-contents">${notice.boardContents}</div>

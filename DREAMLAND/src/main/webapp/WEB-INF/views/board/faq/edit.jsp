@@ -69,10 +69,13 @@
                     name="boardContents">${faq.boardContents}</textarea>
                 </div>
               </div>
-              <div class="row justify-content-end">
+              <div class="row btn-area">
                 <input type="hidden" name="userNo"
                   value="${sessionScope.user.userNo}">
                 <button type="submit" class="btn-reset sd-btn sd-point-bg">수정</button>
+                <button type="button" class="btn-reset sd-btn sd-point-bg" style="margin-left:7px;">
+                  <a href="${contextPath}/board/faq/list.do">목록</a>
+                </button>
               </div>
             </form>
           </div>

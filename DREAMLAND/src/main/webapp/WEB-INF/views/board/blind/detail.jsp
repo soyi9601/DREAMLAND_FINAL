@@ -5,6 +5,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
 <c:set var="loginEmployee"
@@ -37,7 +39,10 @@
                         <!-- 익명게시판 내용 시작-->
                         <!-- 게시글 번호 :  ${blind.blindNo}-->
                         <div class="board-title-area">
-                          <div class="board-title">
+                          <div class="board-title" data-board-create-dt="${blind.boardCreateDt}">
+                            <c:if test="${blind.commentCount >= 5}">
+                              <span class="new rounded-pill bg-label-danger">hot</span>
+                            </c:if>
                             ${blind.boardTitle}
                           </div>
                           <div class="board-title-etc-area">
@@ -49,7 +54,6 @@
                               <p>
                                 <i class='bx bx-time-five'></i>
                                 <span> <fmt:formatDate value="${blind.boardCreateDt}" pattern="yyyy.MM.dd HH:mm"/></span>
-                                
                               </p>
                               <p>
                                 <i class='bx bx-comment'></i>
@@ -64,9 +68,7 @@
                               </form>
                             </div>
                           </div>
-                          
                         </div>
-                        
                         <div class="board-contents">
                           ${blind.boardContents}
                         </div>
@@ -96,8 +98,6 @@
                           <div id="paging"></div>
                         </div>
                         <!-- 댓글목록 끝-->
-                        
-                        
                     </div>
                 </div>
                 
@@ -141,39 +141,17 @@
         <input type="password" id="comment-modal-pw" name="commentPassword" class="form-control">
         <button type="submit" id="submit-btn2" class="btn-reset sd-btn sd-point-bg" >입력</button>
       </div>
-
     </form>
   </div>  
-
 </div>
 <div class="pop_bg" ></div>
 
-
-
-<!-- 게시글 편집삭제 모달창 -->
-<!-- 
-
-
-<!-- 댓글편집삭제 모달창 시작-->
-<!-- 
-<div id="commentModal" style="display:none;">
-  <form id="commentPasswordForm" 
-        method="POST" >
-    <input type="hidden" name="commentNo" value="${comment.commentNo}">
-    <label for="comment-modal-pw">Enter Password:</label>
-    <input type="password" id="comment-modal-pw" name="commentPassword">
-    <button type="submit" id="submit-btn2" >Submit</button>
-  </form>
-</div>
--->
-<!-- 댓글편집삭제 모달창 끝-->
-
 <script>
     
-//----------------------------게시글 편집, 삭제 js
+// ※ ----------------------------게시글 편집, 삭제 js
 let type;
  
-// 비밀번호받는 창 보임 & 편집(eidt) or 삭제(remove)
+// 비밀번호받는 모달창 보임 & 편집(eidt) or 삭제(remove)
 function boardPwType(x) {
   type = x;
   document.getElementById('boardPwModal').style.display = 'block';
@@ -187,7 +165,6 @@ document.getElementById('btn-edit').addEventListener('click', () => {
 });
 
 // 모달창 사라짐
-
 $('.pop_bg, .pop_x').click(function(){
   $('.pop_bg, .pop').stop(true,true).fadeOut("fast");
   document.getElementById('boardPwModal').style.display = 'none';
@@ -197,7 +174,7 @@ $('.pop_bg, .pop_x').click(function(){
 
 var frmBtn = document.getElementById('frm-btn');
  
- // 삭제버튼 누름
+// 삭제버튼 누름
 document.getElementById('btn-remove').addEventListener('click', () => {
   //관리자일 경우 , 바로 삭제
   if(${loginEmployee.role eq 'ROLE_ADMIN' }){
@@ -211,7 +188,6 @@ document.getElementById('btn-remove').addEventListener('click', () => {
       $('.pop_bg, .pop').show();
       boardPwType('remove');
     }
-    
   }
 });
  
@@ -222,6 +198,7 @@ document.getElementById('boardPasswordForm').addEventListener('submit', (e) => {
   submitPassword();
 });
 
+//편집/삭제버튼 구분 & 전송된 비밀번호 확인 
 function submitPassword() {
   
   const password = document.getElementById('board-password').value;
@@ -255,41 +232,36 @@ function validateEdit(blindNo, password) {
   })
   .then(response => response.json())
   .then(data => {
-    // alert(data);
     if (data.success) {
-        window.location.href = '${contextPath}/board/blind/edit.do?blindNo='+blindNo
-            /*'${contextPath}/board/blind/edit.do?blindNo='+blindNo*/
-            /*'${contextPath}/board/blind/edit.do'*/
+    	const frmBtn = document.getElementById('frm-btn');
+      frmBtn.action = '${contextPath}/board/blind/edit.do';
+      frmBtn.submit();
     } else {
-        alert(data.message );
-        $('#board-password').val("");
-        
+      $('#board-password').val("");
     }
   });
 }
+
 //비밀번호 맞을시, 삭제      
 function validateRemove(blindNo, password) {
   fetch('${contextPath}/board/blind/validateRemove.do', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({ blindNo: blindNo, password: password })
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({ blindNo: blindNo, password: password })
   })
   .then(response => response.json())
   .then(data => {
-      // alert(data);
-      if (data.success) {
-          window.location.href = '${contextPath}/board/blind/removeBlind.do?blindNo='+blindNo
-            
-      } else {
-          alert(data.message);
-          $('#board-password').val("");
-      }
+    if (data.success) {
+      window.location.href = '${contextPath}/board/blind/removeBlind.do?blindNo='+blindNo
+    } else {
+      $('#board-password').val("");
+    }
   });
 } 
       
-//----------------------------댓글등록, 삭제 js
+//※----------------------------댓글등록, 삭제 js
 // 댓글등록
 const fnRegisterComment = () => {
  $('#btn-comment-registrer').on('click', (e) => {
@@ -303,10 +275,10 @@ const fnRegisterComment = () => {
    }
 
    if (!commentPassword) {
-       alert('비밀번호를 입력해주세요.');
-       $('#comment-password').focus();
-       e.preventDefault();
-       return;
+     alert('비밀번호를 입력해주세요.');
+     $('#comment-password').focus();
+     e.preventDefault();
+     return;
    }
    
    $.ajax({
@@ -344,21 +316,16 @@ const fnCommentList = () => {
       data:'blindNo=${blind.blindNo}',
       dataType:'json',
       success: (resData) => {
-        console.log(resData.commentList);
+        //console.log(resData.commentList);
         const commentList = $('#comment-list');
-        //const paging = $('#paging');
         commentList.empty();
-        //paging.empty();
         if(resData.commentList.length == 0) {
           commentList.append('<div></div>');
-          //paging.empty();
-          
          $('.comment-count').text(resData.commentList.length);
          $('#comment-count').text(resData.commentList.length);
-          
           return;
         }
-        let commentCount = 0; // 댓글 수 초기화
+        let commentCount = 0; 
         $.each(resData.commentList, (i, comment)=>{
           let str = '';
           if(comment.depth==0){
@@ -375,7 +342,7 @@ const fnCommentList = () => {
             str += '  <div class="comment">'+ comment.contents + '</div>';
             str += '  <div class="comment-bottom">'
             
-              //시간 표시
+              //시간 moment함수
               const publishTime = moment(comment.createDt);
               const now = moment();
               const diffHours = now.diff(publishTime, 'hours');
@@ -390,7 +357,6 @@ const fnCommentList = () => {
             str += '          <button type="button" class="btn-reset btn-remove-comment sd-btn sd-danger-bg "  data-comment-no="' + comment.commentNo + '">삭제</button>';
             str += '        </div>'
             str+='        </div>'
-            
             str += '     </div>'
             str += '    </div>';
               }
@@ -400,15 +366,11 @@ const fnCommentList = () => {
             str += '  <form class="frm-reply">';
             str += '    <input type="hidden" name="groupNo" value="' + comment.groupNo + '">';
             str += '    <input type="hidden" name="blindNo" value="${blind.blindNo}">';
-            
-            str += '    <textarea name="contents" class="reply-contents form-control" placeholder="답글 입력"></textarea>';
+            str += '      <textarea name="contents" class="reply-contents form-control" placeholder="답글 입력"></textarea>';
             str += '    <input type="password" id="comment-password" class="form-control" name="commentPassword" placeholder="password">'
             str += '    <button type="submit" class="btn-reset sd-btn sd-point-bg btn-register-reply">등록</button>';
             str += '  </form>';
-            str += '</div>';
-            
-            
-            
+            str += '</div>';         
           }
           /****************************************************************/
           // 댓글 닫는 <div>
@@ -423,7 +385,6 @@ const fnCommentList = () => {
         })
          $('.comment-count').text(resData.commentList.length);
          $('#comment-count').text(resData.commentList.length);
-        //paging.append(resData.paging);
       },
       error: (jqXHR) => {
         alert(jqXHR.statusText + '(' + jqXHR.status + ')');
@@ -431,18 +392,17 @@ const fnCommentList = () => {
    })
 }
 
-
+/* 삭제예정
 const fnPaging = (p) => {
     page = p;
     fnCommentList();
   }
-
+*/
 
 // 버튼 누르면 댓글, 삭제 창 나오게
-
 const fnShowBtns = () => {
   $(document).on('click', '.comment-btns-area', (e) => {
-    e.stopPropagation(); // 이벤트 전파 중단
+    e.stopPropagation(); 
     const commentBtns = $(e.target).closest('.comment-btns-area').find('.comment-btns');
     if (commentBtns.hasClass('blind')) {
       commentBtns.removeClass('blind');
@@ -500,9 +460,7 @@ const fnSwitchingReplyInput = () => {
   $(document).on('click', '.btn-reply', (evt) => {
     const divReplyInput = $(evt.target).closest('.comment-div').find('.div-frm-reply')
    
-    console.log(divReplyInput)
     if(divReplyInput.hasClass('blind')){
-      //$('.div-frm-reply').addClass('blind');
       divReplyInput.removeClass('blind');
     } else {
       divReplyInput.addClass('blind');
@@ -519,7 +477,6 @@ function commentPwType(x, commentNo) {
   $('.pop_bg, .pop').show();
   document.getElementById('commentModal').style.display = 'block';
   $('#comment-modal-pw').focus();
-  //alert(commentNo+ '뱉어');
 }
 
 
@@ -527,30 +484,11 @@ function commentPwType(x, commentNo) {
 //댓글 삭제
 const fnRemoveComment = () => {
   $(document).on('click', '.btn-remove-comment', (evt) => {
-    //fnCheckSignin();
     if(!confirm('해당 댓글을 삭제할까요?')){
       return;
     }
-      // 요청
-      /*
-    $.ajax({
-      type: 'post',
-      url: '${contextPath}/board/blind/removeComment.do',
-      data: 'commentNo=' + $(evt.target).data('commentNo'),
-      // 응답
-      dataType: 'json',
-      success: (resData) => {  // resData = {"removeResult": "댓글이 삭제되었습니다."}
-        alert(resData.removeResult);
-        fnCommentList();
-      }
-    })
-    원래코드
-    */
-    
     commentNo = $(evt.target).data('commentNo')
-    //return commentNo;
     commentPwType('remove', commentNo);
-    //alert(commentNo);
   })
 }
 
@@ -561,50 +499,37 @@ document.getElementById('commentPasswordForm').addEventListener('submit', (e) =>
 });
 
 function submitPw() {
-  
   const password = document.getElementById('comment-modal-pw').value;
-  //const commentNo = document.querySelector('[name="commentNo"]').value;
-  
-  //alert('확인중 '+ password +' 확인중'+ commentNo)
   if (password) {
-          
-      if(commentType === 'edit'){
-          //validateEdit(blindNo, password);
-      }else if(commentType === 'remove'){
-          validatePw(commentNo, password);
-      }
-      
+    if(commentType === 'edit'){
+    }else if(commentType === 'remove'){
+      validatePw(commentNo, password);
+    }
   } else {
-      alert("비밀번호를 입력해주세요.");
+    alert("비밀번호를 입력해주세요.");
   }
-
-  //document.getElementById('pwModal').style.display = 'none';
 }
 
 function validatePw(commentNo, pw) {
   fetch('${contextPath}/board/blind/validatePw.do', {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: new URLSearchParams({ commentNo: commentNo, pw: pw })
   })
   .then(response => response.json())
   .then(data => {
-          // alert(data);
       if (data.success) {
-          //window.location.href = '${contextPath}/board/blind/removeComment.do?commentNo='+commentNo
-          removeComment(commentNo)
-          
+        removeComment(commentNo)
       } else {
-          alert(data.message);
-         // alert('g?')
-         // $('.pop_bg, .pop').stop(true,true).fadeOut("fast");
-          $('#comment-modal-pw').val("");
+        $('#comment-modal-pw').val("");
       }
   });
 } 
-//ajax뺌
+
+/* */
+//ajax 따로 뺌
 const removeComment = (commentNo) => {
     $.ajax({
     type: 'GET',
@@ -612,9 +537,7 @@ const removeComment = (commentNo) => {
     data: 'commentNo=' +commentNo,
     // 응답
     dataType: 'json',
-    success: (resData) => {  // resData = {"removeResult": "댓글이 삭제되었습니다."}
-      alert(resData.removeResult);
-      //alert('삭제댐ㅋ')
+    success: (resData) => {
       $('.pop_bg, .pop').stop(true,true).fadeOut("fast");
       fnCommentList();
     }
@@ -622,35 +545,18 @@ const removeComment = (commentNo) => {
 }
 
 
-
-///
-
-/*
-function updateCommentCount(blindNo) {
-    // 댓글 수 갱신을 위한 AJAX 요청
-    $.ajax({
-        type: 'GET',
-        url: '${contextPath}/board/blind/comment/count.do',
-        data: { blindNo: blindNo },
-        dataType: 'json',
-        success: function(data) {
-            // 성공적으로 데이터를 받아왔을 때
-            if (data.success) {
-                // 받아온 댓글 수로 화면 갱신
-                const commentCountSpan = $('.board-title-etc span');
-                commentCountSpan.text(data.commentCount);
-            } else {
-                // 실패한 경우에 대한 처리 (예: 알림 메시지 표시 등)
-                console.error('댓글 수 갱신에 실패하였습니다.');
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            // AJAX 요청 실패 시 처리
-            console.error('댓글 수 갱신 AJAX 요청 중 에러 발생:', textStatus, errorThrown);
-        }
-    });
+const fnTitleNew = () => {
+  const boardTitleElement = document.querySelector(".board-title");
+  const boardCreateDt = boardTitleElement.getAttribute("data-board-create-dt");
+  const now = moment();
+  const boardCreateMoment = moment(boardCreateDt);
+  
+  if (now.diff(boardCreateMoment, 'hours') < 24) {
+    const str = '<span class="new rounded-pill bg-label-success">new</span>'
+    $(".board-title").prepend(str);
+  }
 }
-*/
+
 
 
 
@@ -660,8 +566,8 @@ fnCommentList();
 fnRegisterReply();    
 fnSwitchingReplyInput();   
 fnShowBtns();
-
 fnRemoveComment();
+fnTitleNew();
 
 
   </script>

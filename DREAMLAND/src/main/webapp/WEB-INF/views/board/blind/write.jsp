@@ -7,9 +7,6 @@
 <c:set var="loginEmployee"
 		value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
-
-<jsp:include page="../../layout/header.jsp" />
-
 <!-- link -->
 <link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
 <link
@@ -20,14 +17,14 @@
 <script
 		src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
+
+<jsp:include page="../../layout/header.jsp" />
+
 <!-- summernote -->
 <!-- include summernote css/js -->
-<link rel="stylesheet"
-		href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
-<script
-		src="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.js"></script>
-<script
-		src="${contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
+<script src="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.js"></script>
+<script src="${contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
 
 
 
@@ -59,7 +56,6 @@
 																</div>
 														</div>
 
-
 														<textarea id="contents" name="boardContents"
 																placeholder="내용을 입력하세요"></textarea>
 
@@ -77,7 +73,11 @@
 														</div>
 														<div class="btn-area">
 																<button type="submit"
-																		class="btn-reset sd-btn sd-point-bg">작성</button>
+																		class="btn-reset sd-btn sd-point-bg">작성
+															 </button>
+															 <button type="button" class="btn-reset sd-btn sd-point-bg" style="margin-left:7px;">
+							                  <a href="${contextPath}/board/blind/list.page">목록</a>
+							                </button>
 														</div>
 												</form>
 										</div>
@@ -87,7 +87,7 @@
 				</div>
 				<!-- / Content -->
 
-				<script>
+<script>
 const fnSummernoteEditor = () => {
   $('#contents').summernote({
    
@@ -107,7 +107,7 @@ const fnSummernoteEditor = () => {
   lang: 'ko-KR',
     callbacks: {
       onImageUpload: (images)=>{
-        // 비동기 방식을 이용한 이미지 업로드
+        // 업로드
         for(let i = 0; i < images.length; i++) {
           let formData = new FormData();
           formData.append('image', images[i]);

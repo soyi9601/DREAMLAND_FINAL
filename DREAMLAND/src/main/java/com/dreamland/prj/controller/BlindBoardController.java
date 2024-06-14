@@ -42,14 +42,12 @@ public class BlindBoardController {
 		return blindBoardService.summernoteImageUpload(multipartFile);
 	}
 	
-	
 	@PostMapping("/registerBlind.do")
 	public String register(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		int insertCount = blindBoardService.registerBlind(request);
 		redirectAttributes.addFlashAttribute("insertResult", insertCount == 1 ? "블로그가 등록되었습니다." : "블로그가 등록되지 않았습니다.");
 		return "redirect:/board/blind/list.page";
 	}
-	
 	
 	@GetMapping(value="/getBlindList.do", produces="application/json")
 	public ResponseEntity<Map<String, Object>> getBlindList(HttpServletRequest request){
@@ -61,22 +59,19 @@ public class BlindBoardController {
 		return blindBoardService.getBlindListHot(request);
 	}
 	
-	
-	
 	@GetMapping("/detail.do")
 	public String detail(@RequestParam int blindNo, Model model) {
 		model.addAttribute("blind", blindBoardService.getBlindByNo(blindNo));
 		return "board/blind/detail";
 	}
 	
-	
-	@GetMapping("/edit.do")
+	@PostMapping("/edit.do")
 	public String editBlind(@RequestParam int blindNo, Model model) {
 		model.addAttribute("blind", blindBoardService.getBlindByNo(blindNo));
 		return "board/blind/edit";
 	}
 	
-	// 비밀번호
+	// 비밀번호 확인 후 편집
 	@PostMapping("/validateEdit.do")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> validateEdit(@RequestParam int blindNo, @RequestParam String password) {
@@ -84,11 +79,11 @@ public class BlindBoardController {
 	    if (isValid) {
 	        return ResponseEntity.ok(Map.of("success", true));
 	    } else {
-	    	
 	        return ResponseEntity.ok(Map.of("success", false, "message", "비밀번호가 맞지않습니다."));
 	    }
 	}
 	
+	//비밀번호 확인 후 삭제
 	@PostMapping("/validateRemove.do")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> validateRemove(@RequestParam int blindNo, @RequestParam String password) {
@@ -102,7 +97,6 @@ public class BlindBoardController {
 	
 	@PostMapping("/modify.do")
 	public String modify(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		
 		int modifyCount = blindBoardService.modifyBlind(request);
 		redirectAttributes
 				.addAttribute("blindNo", request.getParameter("blindNo"))
@@ -111,19 +105,7 @@ public class BlindBoardController {
 		
 	}
 	
-	
-	// 본인삭제
-	/*
-	@GetMapping("/removeBlind.do")
-	public String removeBlind(@RequestParam(value="blindNo", required=false, defaultValue = "0") int blindNo
-													 , RedirectAttributes redirectAttributes) {
-		int removeCount = blindBoardService.removeBlind(blindNo);
-		redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "게시글이 삭제되었습니다." : "게시글이 삭제되지 않았습니다.");
-    return "redirect:/board/blind/list.page";
-	}
-	*/
-	
-	// 본인삭제 수정(완전삭제X 게시글남도록) 0611
+	// 본인삭제 수정(완전삭제X 게시글남도록)
 	@GetMapping("/removeBlind.do")
 	public String removeBlind(@RequestParam(value="blindNo", required=false, defaultValue = "0") int blindNo
 													 , RedirectAttributes redirectAttributes) {
@@ -131,8 +113,6 @@ public class BlindBoardController {
 		redirectAttributes.addFlashAttribute("removeUpdateResult", removeUpdateCount == 1 ? "게시글이 삭제되었습니다." : "게시글이 삭제되지 않았습니다.");
     return "redirect:/board/blind/list.page";
 	}
-	
-	
 	
 	//관리자삭제
 	@PostMapping("/removeBlind.do")
@@ -144,7 +124,7 @@ public class BlindBoardController {
 	}
 	
 	
-	// list페이지 게시글 목록 삭제
+	// list페이지 체크박스이용한 게시글 목록 삭제
   @PostMapping("/removeNo.do")
   @ResponseBody  
   public String delete(@RequestParam List<Integer> no) {
@@ -183,7 +163,6 @@ public class BlindBoardController {
 	public ResponseEntity<Map<String, Object>> removeComment(@RequestParam(value="commentNo", required=false, defaultValue="0") int commentNo){
     return ResponseEntity.ok(Map.of("removeResult", blindBoardService.removeComment(commentNo) == 1 ? "댓글이 삭제되었습니다." : "댓글이 삭제되지 않았습니다."));
 	}
-	
 	
 	// 댓글 비밀번호확인
 	// 비밀번호
