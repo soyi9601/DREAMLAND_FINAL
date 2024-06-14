@@ -131,12 +131,9 @@ const fnRegister = () => {
     
     // 글자수제한
     if(title.length > 30){
-      e.preventDefault();
+    	evt.preventDefault();
       alert('제목의 글자수는 30자 이내로 설정해주십시오');
     }
-    
-    
-    
   })
 }
 
