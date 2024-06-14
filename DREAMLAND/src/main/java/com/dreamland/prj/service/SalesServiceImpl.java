@@ -35,9 +35,9 @@ public class SalesServiceImpl implements SalesService {
 	
 	@Override
 	public int registerProduct(HttpServletRequest request) {
-		
+
 	    // 사용자가 입력한 qty
-			String[] productSctCdArray = request.getParameterValues("productSctCd");
+	    String[] productSctCdArray = request.getParameterValues("productSctCd");
 	    String[] priceArray = request.getParameterValues("price");
 	    String[] productNMArray = request.getParameterValues("productNM");
 	    String[] deptNoArray = request.getParameterValues("deptNo");
@@ -49,14 +49,14 @@ public class SalesServiceImpl implements SalesService {
 	        int productSctCd = Integer.parseInt(productSctCdArray[i]);
 	        int price = Integer.parseInt(priceArray[i]);
 	        int deptNo = Integer.parseInt(deptNoArray[i]);
-	        String productNM = productNMArray[i];	   
-	        
+	        String productNM = productNMArray[i];   
+
 	        // 유효성 검사: 파트번호가 5000부터 6000 사이인지 확인
-	        if (!(deptNo <= 5000) || !(deptNo > 6000)) {
-	            // 유효하지 않은 파트번호이므로 해당 제품을 무시하고 다음 제품으로 넘어감
-	        	return insertCount = 1;
+	        if (deptNo < 5000 || deptNo > 6000) {
+	          // 유효하지 않은 파트번호이므로 해당 제품을 무시하고 다음 제품으로 넘어감
+	        	continue;
 	        }
-	        
+
 	        DepartmentDto departmentDto = new DepartmentDto();
 	        departmentDto.setDeptNo(deptNo);
 
@@ -69,9 +69,8 @@ public class SalesServiceImpl implements SalesService {
 	                                       .build();
 	        products.add(product);
 	    }
-	    
+
 	    // DB에 저장
-	    
 	    for (ProductDto product : products) {
 	        insertCount += salesMapper.insertProduct(product);
 	    }

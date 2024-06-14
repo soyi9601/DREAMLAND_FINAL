@@ -8,6 +8,8 @@
  *        - jQuery UI 활용해 자동완성 추가
  *    2) 240604
  *        - input 안에 button 추가
+ *    3) 240614
+ *        - 글자 바이트->글자수 함수 변경
  */
 
 'use strict';
@@ -17,34 +19,24 @@
 
 /************************** 함수 정의 **************************/
 
-// 글자크기(Byte) 계산 함수
-const fnCheckByte = ()=>{
-    const maxByte = 4000; //최대 100바이트
+// 글자수 계산 함수
+const fnCheckLength = ()=>{
+    const maxLength = 1000; //최대 1000 글자
     const textVal = document.getElementById('contents').value; //입력한 문자
     const textLen = textVal.length //입력한 문자수
     
-    let totalByte=0;
-    for(let i=0; i<textLen; i++){
-      const eachChar = textVal.charAt(i);
-        const uniChar = escape(eachChar); //유니코드 형식으로 변환
-        if(uniChar.length>4){
-          // 한글 : 2Byte
-            totalByte += 2;
-        }else{
-          // 영문,숫자,특수문자 : 1Byte
-            totalByte += 1;
-        }
-    }
     
-    if(totalByte>maxByte){
-      alert('최대 4000Byte까지만 입력가능합니다.');
-          document.getElementById("nowByte").innerText = totalByte;
+    if(textLen >maxLength){
+      contentsCheck = true;
+      alert('최대 1000글자까지만 입력가능합니다.');
+          document.getElementById("nowByte").innerText = textLen;
             document.getElementById("nowByte").style.color = "red";
         }else{
-          document.getElementById("nowByte").innerText = totalByte;
+          contentsCheck = false;
+          document.getElementById("nowByte").innerText = textLen;
             document.getElementById("nowByte").style.color = "green";
         }
-    };
+    }
 
 // 공백 체크 함수
 const fnBlankCheck = ()=>{
@@ -69,5 +61,8 @@ const fnBlankCheck = ()=>{
 
 
 /************************** 함수 호출 **************************/
-document.getElementById('contents').addEventListener('keyup', fnCheckByte);
+document.getElementById('contents').addEventListener('keyup', fnCheckLength);
+document.getElementById('btn-cancel').addEventListener('click', ()=>{
+  window.history.back();
+});
 fnBlankCheck();

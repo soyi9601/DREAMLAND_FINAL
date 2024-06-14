@@ -132,8 +132,8 @@ public class MessageServiceImpl implements MessageService {
     
     for(MessageDto msg : msgs) {
       String originContents = msg.getMsgContents();
-      if(originContents.length() > 50) {
-        String truncatedContents = originContents.substring(0, 50) + "...";
+      if(originContents.length() > 40) {
+        String truncatedContents = originContents.substring(0, 40) + "...";
         msg.setMsgContents(truncatedContents);
       }
     }
@@ -334,6 +334,13 @@ public class MessageServiceImpl implements MessageService {
     total.put("notReadCount", messageMapper.getMessageCountByDeleteRead(empNo));
     total.put("total", messageMapper.getMessageCountByDelete(empNo));
     return total;
+  }
+  
+  @Override
+  public void realDeleteMessage() {
+    // TODO Auto-generated method stub
+    messageMapper.deleteOldMessages();
+    
   }
   
   @Override
