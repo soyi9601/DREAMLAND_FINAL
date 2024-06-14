@@ -20,9 +20,9 @@
                     <div class="card-body">
                     <div class="row mb-3" >
 	                    <div class="d-flex flex-wrap justify-content-end" >
-	                      <button type="button" class="btn btn-xs btn-primary" id="btn-reply-message">답장하기</button>
-	                      <button type="button" class="btn btn-xs btn-warning" id="btn-save">보관하기</button>
-	                      <button type="button" class="btn btn-xs btn-danger" id="btn-delete">삭제하기</button>
+	                      <button type="button" class="btn btn-primary" id="btn-reply-message">답장하기</button>
+	                      <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
+	                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
 	                    </div>
                     </div>
                       <div class="row mb-3" >
@@ -54,7 +54,11 @@
                       </div>
                       <hr></hr>
                       <div class="row mb-3">
-                        <pre>${msgDetail.msgContents}</pre>
+                        <pre class="font-detail">${msgDetail.msgContents}</pre>
+                        <style>
+                        .font-detail{
+                          font-family: var(--bs-font-sans-serif);
+                        }</style>
                       </div>
                     </div>
                     </form>

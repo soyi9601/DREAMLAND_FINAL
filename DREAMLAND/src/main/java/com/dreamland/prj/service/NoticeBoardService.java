@@ -18,9 +18,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public interface NoticeBoardService {
 	boolean registerNotice(MultipartHttpServletRequest multipartRequest);
-	void loadNoticeList(Model model); // 게시물목록
-	
-	void loadNoticeByNo(int noticeNo, Model model); // 게시물각각
+	void loadNoticeList(Model model);
+	void loadNoticeByNo(int noticeNo, Model model);
 	
   ResponseEntity<Resource> download(HttpServletRequest request);
   ResponseEntity<Resource> downloadAll(HttpServletRequest request);
@@ -29,13 +28,9 @@ public interface NoticeBoardService {
   int modifyNotice(NoticeBoardDto notice);
   int deleteAttach(int attachNo);
   
-  
-   ResponseEntity<Map<String, Object>> getAttachList(int noticeNo);
-  // NoticeAttachDto loadAttachList(int noticeNo);
-  
+  ResponseEntity<Map<String, Object>> getAttachList(int noticeNo);
   ResponseEntity<Map<String, Object>> addAttach(MultipartHttpServletRequest multipartRequest) throws Exception;
   ResponseEntity<Map<String, Object>> removeAttach(int attachNo);
   int removeNotice(int noticeNo);
-  
   int updateHit(int noticeNo);
 }

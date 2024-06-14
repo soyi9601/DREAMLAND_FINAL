@@ -4,6 +4,9 @@
 
 /* 게시판 공통 */
 
+.loadingArea{}
+
+
 .sd-point{color:#90b54c;text-align:Center;}
 .sd-point-bg{background:#90b54c;}
 .sd-danger-bg{background:#ee2b4b}
@@ -17,7 +20,7 @@
 
 
 /*모든 게시판 font-size 기본 14px로 */
-.sd-board *{font-size:14px;}
+.sd-board *{font-size:15px;}
 .sd-board .col-xxl{margin-top:40px;}
 
 
@@ -144,7 +147,7 @@
 .sd-table th{font-size:13px;}
 .sd-table th:first-child{padding-left:10px;} 
 
-.sd-table td{font-size:13px;}
+.sd-table td{font-size:15px;}
 .noticeTitle{cursor:pointer;}
 
 
@@ -185,7 +188,7 @@
 /*.bx-download{cursor:pointer;}*/
 
 .sd-notice-detail .board-title{display:flex;align-items: center;}
-.sd-notice-detail .board-title span{font-size:13px;font-weight:normal;color:#ee2b4b;padding:0px 5px;display:inline-block;border-radius:50px;border:1px solid #ee2b4b;line-height:1.3;margin-right: 12px;}
+.sd-notice-detail .board-title span{font-size:13px;font-weight:normal;color:#ee2b4b;padding:0px 5px;display:inline-block;border-radius:50px;line-height:1.3;margin-right: 12px;}
 
 .attached-file-area{border-top:1px dashed #d9dee3;padding:20px;padding-bottom:10px;background:#f5f5f9;display:flex;margin-bottom:20px;}
 .attached-file-area>p{font-weight:bold;}
@@ -224,14 +227,28 @@
       └ list.jsp  ※ 목록
   ===========================*/
 
-/*#blind-board .sd-btn{position:fixed;z-index:99999999;bottom:20px;right:20px;}*/
+
+#blind-board{padding-bottom:50px !important;position:relative;}
 #blind-list-table tbody td:first-child{padding-left:14px;}
 
 #blind-list-table tr{text-align:center;}
 
 #blind-list-table .blindTitle1{text-align:left; padding-left:20px;}
 #blind-list-table .blindTitle{cursor:pointer;text-align:left;padding-left:20px;}
-  
+
+
+#blind-board .sd-btn-write-area{margin:40px 0 10px;display:block;width:100%;height:40px;position:relative;}
+#blind-board .sd-btn-write-area #list-del-btn{position:absolute;left:0;}
+#blind-board .sd-btn-write-area .sd-btn{position:absolute;right:0;}
+#blind-board .sd-table-wrapper{display:block;}
+
+
+.sd-table-wrapper{position:relative;}
+.loadingArea{position:absolute;top:100%;width:100%;height:50px;background:orange;display:none;}
+
+.fixed-btn-area{display:none;position:absolute;right:0;bottom:20px;width:100%;height:40px;padding:0 20px;}
+.fixed-btn-area .sd-btn-write-area{margin-top:0 !important;position:absolute;}
+
   /* ========================
     익명게시판(/board/blind)
       └ write.jsp  ※ 글쓰기
@@ -267,8 +284,7 @@
 */
 
 #blind-board .sd-table-wrapper{margin-top:0}
-#blind-board .sd-btn-write-area{margin:40px 0 10px;justify-content: space-between;}
-#blind-board .sd-btn-write-area .sd-btn{margin:0}
+
 /*댓글*/  
 #blind-board-detail .comment-area{padding:20px 0;border-top:1px solid #d9dee3;} 
 #blind-board-detail .comment-div:first-child .comment-area{border-top:none}

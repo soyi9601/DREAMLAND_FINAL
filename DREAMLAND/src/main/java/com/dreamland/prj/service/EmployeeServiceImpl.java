@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,11 +43,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     
     List<DepartmentDto> deptList = employeeMapper.getDeptList();
     List<PositionDto> posList = employeeMapper.getPosList();
-    //Map<String, Object> deptList = Map.of("deptList", employeeMapper.getDeptList());
-    //Map<String, Object> posList = Map.of("posList", employeeMapper.getPosList());
+
     model.addAttribute("deptList", deptList);
     model.addAttribute("posList", posList);
     
+  }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getDetailDepart(HttpServletRequest request) {
+    ResponseEntity<Map<String, Object>> result = null;
+    List<DepartmentDto> departDetailList = employeeMapper.getDeptDetailList();
+    result = new ResponseEntity<>(Map.of("departDetailList", departDetailList), HttpStatus.OK);
+    return result;
   }
   
   private String filePath(MultipartFile filePath) {
@@ -112,6 +121,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     employeeMapper.insertEmployee(emp);  
     
   }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> emailCheck(HttpServletRequest request) {
+    ResponseEntity<Map<String, Object>> result = null;
+    String email = request.getParameter("email");
+    int count = employeeMapper.emailCheck(email);
+    result = new ResponseEntity<>(Map.of("checkCount", count), HttpStatus.OK);
+    return result;
+  }
+  
   
 
 }

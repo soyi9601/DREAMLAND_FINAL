@@ -56,6 +56,13 @@ public class BlindBoardController {
 		return blindBoardService.getBlindList(request);
 	}
 	
+	@GetMapping(value="/getBlindHotList.do", produces="application/json")
+	public ResponseEntity<Map<String, Object>> getBlindHotList(HttpServletRequest request){
+		return blindBoardService.getBlindListHot(request);
+	}
+	
+	
+	
 	@GetMapping("/detail.do")
 	public String detail(@RequestParam int blindNo, Model model) {
 		model.addAttribute("blind", blindBoardService.getBlindByNo(blindNo));
@@ -63,7 +70,7 @@ public class BlindBoardController {
 	}
 	
 	
-	@GetMapping("/edit.do")
+	@PostMapping("/edit.do")
 	public String editBlind(@RequestParam int blindNo, Model model) {
 		model.addAttribute("blind", blindBoardService.getBlindByNo(blindNo));
 		return "board/blind/edit";
@@ -106,6 +113,7 @@ public class BlindBoardController {
 	
 	
 	// 본인삭제
+	/*
 	@GetMapping("/removeBlind.do")
 	public String removeBlind(@RequestParam(value="blindNo", required=false, defaultValue = "0") int blindNo
 													 , RedirectAttributes redirectAttributes) {
@@ -113,6 +121,18 @@ public class BlindBoardController {
 		redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "게시글이 삭제되었습니다." : "게시글이 삭제되지 않았습니다.");
     return "redirect:/board/blind/list.page";
 	}
+	*/
+	
+	// 본인삭제 수정(완전삭제X 게시글남도록) 0611
+	@GetMapping("/removeBlind.do")
+	public String removeBlind(@RequestParam(value="blindNo", required=false, defaultValue = "0") int blindNo
+													 , RedirectAttributes redirectAttributes) {
+		int removeUpdateCount = blindBoardService.removeUpdate(blindNo);
+		redirectAttributes.addFlashAttribute("removeUpdateResult", removeUpdateCount == 1 ? "게시글이 삭제되었습니다." : "게시글이 삭제되지 않았습니다.");
+    return "redirect:/board/blind/list.page";
+	}
+	
+	
 	
 	//관리자삭제
 	@PostMapping("/removeBlind.do")
@@ -178,4 +198,9 @@ public class BlindBoardController {
 	        return ResponseEntity.ok(Map.of("success", false, "message", "비밀번호가 맞지않습니다."));
 	    }
 	}
+	
+	
+
+	
+	
 }

@@ -39,9 +39,9 @@ public class LoginController {
     return "login/loginPage";
   }
   
-  // 정보 가져오기
+  // 부서/직급정보 가져오기
   @GetMapping("/user/mypage")
-  public String add(HttpServletRequest request, Model model) {
+  public String getInfo(HttpServletRequest request, Model model) {
     model.addAttribute("request", request);
     loginService.getDeptAndPos(model);
     return "user/mypage";
@@ -57,7 +57,7 @@ public class LoginController {
     EmployeeDto employee = loginService.getEmployeeByEmail(request.getParameter("email"));
    
     
-    return "redirect:/user/mypage";
+    return "redirect:/user/mypage?empNo=" + employee.getEmpNo();
   }
   
   // 비밀번호 변경

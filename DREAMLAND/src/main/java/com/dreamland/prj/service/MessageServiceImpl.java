@@ -90,7 +90,7 @@ public class MessageServiceImpl implements MessageService {
       if(originContents.length() > 50) {
         String truncatedContents = originContents.substring(0, 50) + "...";
         msg.setMsgContents(truncatedContents);
-      }
+      } 
     }
     model.addAttribute("beginNo", total - (page - 1) * display);
     model.addAttribute("receiveList", msgs);

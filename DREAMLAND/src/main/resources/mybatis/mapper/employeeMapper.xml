@@ -23,7 +23,7 @@
 		SELECT E.EMP_NO, E.EMP_NAME, E.DEPT_NO, E.POS_NO
          , D.DEPT_NAME AS DEPT_NAME, P.POS_NAME AS POS_NAME
 		  FROM EMPLOYEE E 
-		  JOIN DEPARTMENT D  ON E.DEPT_NO = D.DEPT_NO
+		  JOIN DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
 		  JOIN POSITION P ON E.POS_NO = P.POS_NO
 		 WHERE E.EMP_NO = #{empNo}
   </select>
@@ -77,8 +77,17 @@
   
   <select id="getDeptList"
           resultType="DepartmentDto">
-    SELECT DEPT_NO, DEPT_NAME, DEPTH, PARENT_ID, TREE_TEXT
+    SELECT DEPT_NO, DEPT_NAME
       FROM DEPARTMENT
+     WHERE DEPT_NO != 4000
+       AND PARENT_ID = '9999'
+  </select>
+  
+  <select id="getDeptDetailList"
+          resultType="DepartmentDto">
+    SELECT DEPT_NO, DEPT_NAME
+      FROM DEPARTMENT
+     WHERE PARENT_ID LIKE '5%'
   </select>
   
   <select id="getPosList"
@@ -113,5 +122,12 @@
        SET PASSWORD = #{changePw}
      WHERE EMAIL = #{email}
   </update>
+  
+  <select id="emailCheck"
+          parameterType="String">
+    SELECT COUNT(*)
+      FROM EMPLOYEE
+     WHERE EMAIL = #{email}
+  </select>
 
 </mapper>

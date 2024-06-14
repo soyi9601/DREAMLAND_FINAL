@@ -134,7 +134,7 @@ public class FacilityServiceImpl implements FacilityService {
 		
 		model.addAttribute("beginNo", total - (page -1) * display);
 		model.addAttribute("loadFacilityList", facilityMapper.getFacilityList(map));
-		model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/upload/list.do", sort, display));
+		model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/facility/list.do", sort, display));
 		model.addAttribute("display", display);
 		model.addAttribute("sort", sort);
 		model.addAttribute("page", page);
@@ -198,12 +198,17 @@ public class FacilityServiceImpl implements FacilityService {
 	
 	@Override
 	public int modifyFacility(FacilityDto facility) {
-		return facilityMapper.updateFacility(null);
+		return facilityMapper.updateFacility(facility);
 	}
 	
 	@Override
 	public int deleteAttach(int attachNo) {
 		return facilityMapper.deleteAttach(attachNo);
+	}
+	
+	@Override
+	public int deleteAttach2(int attachNo) {
+		return facilityMapper.deleteAttach2(attachNo);
 	}
 	
 	@Override

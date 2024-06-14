@@ -19,15 +19,11 @@ public interface NoticeBoardMapper {
   int insertNoticeAttach(NoticeAttachDto attach);
   int getNoticeCount();
   List<NoticeBoardDto> getNoticeList(Map<String, Object> map);
-  
   NoticeBoardDto getNoticeByNo(int noticeNo);
-  
   List<NoticeAttachDto> getAttachList(int noticeNo);
-  
   NoticeAttachDto getAttachByNo(int attachNo);
   int updateNotice(NoticeBoardDto notice);
   int deleteAttach(int attachNo);
   int deleteNotice(int noticeNo);
-  
   int updateHit(int noticeNo);
 }

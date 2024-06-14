@@ -75,9 +75,9 @@
     <select id="getBlindList"
             parameterType="Map"
             resultMap="BlindMap">
-    SELECT B.BLIND_NO, B.BOARD_TITLE, B.BOARD_CONTENTS, B.HIT, B.BOARD_CREATE_DT, B.BOARD_MODIFY_DT,
+    SELECT B.BLIND_NO, B.BOARD_TITLE, B.BOARD_CONTENTS, B.HIT, B.BOARD_CREATE_DT, B.BOARD_MODIFY_DT, DEL_YN,
            C.COMMENT_COUNT AS COMMENT_COUNT
-    FROM (SELECT BLIND_NO, BOARD_TITLE, BOARD_CONTENTS, HIT, BOARD_CREATE_DT, BOARD_MODIFY_DT,
+    FROM (SELECT BLIND_NO, BOARD_TITLE, BOARD_CONTENTS, HIT, BOARD_CREATE_DT, BOARD_MODIFY_DT, DEL_YN,
                  ROW_NUMBER() OVER (ORDER BY BLIND_NO DESC) AS RN
             FROM BLIND_BOARD) B
     LEFT JOIN (SELECT BLIND_NO, COUNT(*) AS COMMENT_COUNT
@@ -244,5 +244,40 @@
      WHERE COMMENT_NO = #{commentNo}
     </select>
     
-  
+    
+    <!-- 여기 새로함 -->
+    
+    <!--  본인에 의한 삭제: 남겨둠 -->
+    <update id="deleteBlindByWriter">
+      UPDATE BLIND_BOARD
+         SET DEL_YN = 'Y'
+       WHERE BLIND_NO = #{blindNo}
+    </update>
+    
+    
+    <!-- 하는중 댓글수 5개 이상이면 핫 -->
+    <select id="getBlindListByHot"
+            parameterType="Map"
+            resultMap="BlindMap">
+			SELECT BLIND_NO, BOARD_TITLE, BOARD_CONTENTS, HIT, BOARD_CREATE_DT, BOARD_MODIFY_DT, DEL_YN, COMMENT_COUNT
+			  FROM ( SELECT B.BLIND_NO, B.BOARD_TITLE, B.BOARD_CONTENTS, B.HIT, B.BOARD_CREATE_DT, B.BOARD_MODIFY_DT, B.DEL_YN,
+			                C.COMMENT_COUNT,
+			                ROW_NUMBER() OVER (ORDER BY C.COMMENT_COUNT DESC, B.BOARD_CREATE_DT DESC) AS RN
+			           FROM ( SELECT BLIND_NO, BOARD_TITLE, BOARD_CONTENTS, HIT, BOARD_CREATE_DT, BOARD_MODIFY_DT, DEL_YN
+			                    FROM BLIND_BOARD
+			                   WHERE DEL_YN='N') B
+			           LEFT JOIN (SELECT BLIND_NO, COUNT(*) AS COMMENT_COUNT
+			                        FROM BLIND_COMMENT
+			                       GROUP BY BLIND_NO
+			                      HAVING COUNT(*) >= 5) C 
+			             ON B.BLIND_NO = C.BLIND_NO
+			          WHERE C.COMMENT_COUNT >= 5) RankedBlinds
+			 WHERE RN BETWEEN 1 AND 5
+    </select>
+    
+    
+    
+    
+    
+    
   </mapper>

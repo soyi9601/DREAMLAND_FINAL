@@ -5,24 +5,17 @@
  *    1) 240524
  *        - preventDefault 완료
  *        - 정규식(이름, 이메일, 휴대전화)
+ *    1) 240613
+ *        - 이름, 휴대전화 체크 함수를 oninput="함수이름()" 으로 호출 방식 변경
  */
 
 'use strict';
 /************************** 변수 설정 **************************/
-var nameCheck = false;
-var mobileCheck = false;
+var nameCheck = true;
+var mobileCheck = true;
 
 
 /************************** 함수 정의 **************************/
-// contextPath 저장 함수
-/*const fnGetContextPath = ()=>{
-  const host = location.host;   localhost:8080 
-  const url = location.href;    http://localhost:8080/mvc/getDate.do 
-  const begin = url.indexOf(host) + host.length;
-  const end = url.indexOf('/', begin + 1);
-  return url.substring(begin, end);
-}*/
-
 
 // 이미지 등록 함수(프로필 사진, 전자서명)
 document.addEventListener('DOMContentLoaded', function (e) {
@@ -220,8 +213,8 @@ const moveModifyPassword = () => {
   location.href = fnGetContextPath() + '/modifyPassword';
 }
 /************************** 함수 호출 **************************/
-document.getElementById('emp-name').addEventListener('blur', fnCheckName);
-document.getElementById('emp-mobile').addEventListener('blur', fnCheckMobile);
 document.getElementById('modify-password').addEventListener('click', moveModifyPassword);
-
 fnAddEmployee();
+document.getElementById('move-before').addEventListener('click', ()=>{
+  window.history.back();
+})
