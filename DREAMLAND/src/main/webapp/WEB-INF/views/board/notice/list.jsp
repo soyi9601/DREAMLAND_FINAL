@@ -35,7 +35,7 @@
                 </c:if>
                 <th>제목</th>
                 <th>작성자</th>
-                <th>작성일자</th>
+                <th style="text-indent:20px;">작성일자</th>
                 <th>조회수</th>
               </tr>
             </thead>
@@ -64,7 +64,7 @@
                   </td>
                   <td>${notice.employee.empName}</td>
                   <td>${notice.boardCreateDt }</td>
-                  <td>${notice.hit}</td>
+                  <td style="text-indent:13px;">${notice.hit}</td>
                 </tr>
               </c:forEach>
             </tbody>
