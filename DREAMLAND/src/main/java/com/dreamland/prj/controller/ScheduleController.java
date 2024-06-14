@@ -1,5 +1,7 @@
 package com.dreamland.prj.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -11,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.PrincipalUser;
 import com.dreamland.prj.dto.ScheduleDto;
@@ -53,26 +57,31 @@ public class ScheduleController {
     return "schedule/detail";
   }
   
-  //일정 수정
+  // 일정 수정
   @PostMapping("/modify.do")
   public ResponseEntity<Map<String, Object>> modify(@RequestBody ScheduleDto schedule) {
      int modifyCount = scheduleService.modifySkd(schedule);
      return ResponseEntity.ok(Map.of("modifyCount", modifyCount));
   }
   
-//  // 일정 삭제
-//  @GetMapping("/remove.do")
-//  public String remove(@RequestParam int skdNo, RedirectAttributes redirectAttributes) {
-//    int removeCount = scheduleService.removeSkd(skdNo);
-//    redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "삭제되었습니다." : "삭제를 하지 못했습니다.");
-//    return "redirect:/schedule/calendar.do"; 
-//  }
-  
-  //일정 삭제
+  // 일정 삭제
   @PostMapping("/remove.do")
   public ResponseEntity<Map<String, Object>> remove(@RequestParam int skdNo) {
      int removeCount = scheduleService.removeSkd(skdNo);
      return ResponseEntity.ok(Map.of("removeCount", removeCount));
+  }
+  
+  // 사원 및 부서 검색
+  @GetMapping("/searchEmpDeptList")
+  public @ResponseBody Map<String, Object> getEmpDeptList(@RequestParam String query) {
+    List<EmployeeDto> employees = scheduleService.searchEmp(query);
+    List<DepartmentDto> departments = scheduleService.searchDept(query);
+    
+    Map<String, Object> result = new HashMap<>(); 
+    result.put("employees", employees);
+    result.put("departments", departments);
+    
+    return result;
   }
   
   // 현재 세션에서 로그인된 사용자 정보 가져옴
