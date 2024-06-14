@@ -109,11 +109,26 @@ function fnCalendar() {
 
 
 /* *********** 출퇴근 *********** */
-/* *********** 출근 *********** */
+
 const empNo = document.getElementById('empNo').value;
 const btnWorkIn = document.getElementById('btn-work-in');
 const btnWorkOut = document.getElementById('btn-work-out');
 
+// 초기 버튼 상태 설정
+/*
+document.addEventListener('DOMContentLoaded', function() {
+  
+  if (hasCheckedWorkIn) {
+    btnWorkIn.disabled = true;    // 이미 출근했으면 출근 버튼 비활성화
+    btnWorkOut.disabled = false;  // 퇴근 버튼 활성화
+  } else {
+    btnWorkIn.disabled = false;   // 아직 출근하지 않았으면 출근 버튼 활성화
+    btnWorkOut.disabled = true;   // 퇴근 버튼 비활성화
+  }
+})
+*/
+
+/* *********** 출근 *********** */
 const fnWorkIn = () => {
   if(btnWorkIn) {
     btnWorkIn.addEventListener('click', function() {
@@ -126,8 +141,9 @@ const fnWorkIn = () => {
       })
       .then(response => response.json())
       .then(data => {
-        alert(data.message);      
-        this.disabled = true;
+        alert(data.message); 
+        btnWorkIn.disabled = true;    // 출근 버튼 비활성화
+        btnWorkOut.disabled = false;  // 퇴근 버튼 활성화   
       });
     })      
   }
@@ -136,7 +152,7 @@ const fnWorkIn = () => {
 /* *********** 퇴근 *********** */
 const fnWorkOut = () => {
   if(btnWorkOut) {
-    btnWorkOut.addEventListener('click', function() {
+    btnWorkOut.addEventListener('click', function() {     
       fetch('/workOut?empNo=' + empNo, {
         method: 'POST',
         headers: {
@@ -145,11 +161,28 @@ const fnWorkOut = () => {
         body: JSON.stringify({}) 
       })
       .then(response => response.json())
-      .then(data => {alert(data.message);});
+      .then(data => {
+        alert(data.message);      
+        btnWorkOut.disabled = true; // 퇴근 버튼 비활성화
+      })
+      .catch(error => {
+        console.error('Error:' , error);
+        btnWorkOut.disabled = false;
+      });
     })      
   }
 }
 
+// 페이지 새로고침 시 상태 유지
+/*window.addEventListener('load', function() {
+  if (hasCheckedWorkIn && !hasCheckedWorkOut) {
+    btnWorkIn.disabled = true;
+    btnWorkOut.disabled = false;
+  } else {
+    btnWorkIn.disabled = false;
+    btnWorkOut.disabled = true;
+  }
+});*/
 
 /* *********** 공지사항 *********** */
 const fnGetNotice = () => {
@@ -167,12 +200,13 @@ const fnGetNotice = () => {
       } else {
         $.each(noticeList.slice(0, 3), (i, notice) => {
           let str = '<tr>';
-          str += '<td class="text-center" scope="col" style="width: 3%"">' +  notice.noticeNo + '</td>';
+          str += '<td class="text-center" scope="col" style="width: 12%"">' +  notice.noticeNo + '</td>';
           if(notice.signal === 1) {
-            str += '<td  class="notice-list" scope="col" style="width: 77%" data-notice-no="' + notice.noticeNo + '"><span class="notice-important">중요</span>' 
-                + notice.boardTitle + '</td>';
+            str += '<td class="notice-list" scope="col" style="width: 68%" data-notice-no="' + notice.noticeNo + '"><span class="notice-badge important badge rounded-pill bg-label-danger" data-notice-no="' 
+                + notice.noticeNo + '">중요</span><span class="board-title">' 
+                + notice.boardTitle + '</span></td>';
           } else {
-            str += '<td class="notice-list" scope="col" style="width: 77%" data-notice-no="' + notice.noticeNo + '">' + notice.boardTitle + '</td>';            
+            str += '<td class="notice-list" scope="col" style="width: 68%" data-notice-no="' + notice.noticeNo + '"><span class="board-title">' + notice.boardTitle + '</span></td>';            
           }
           str += '<td scope="col" style="width: 20%"><span class="">' + notice.boardModifyDt + '</span></td>';
           str += '</tr>';

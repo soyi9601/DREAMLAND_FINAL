@@ -17,18 +17,20 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">중요보관함 <small id="save-count"></small></h5>
+	                <div class="card-body">
+	                
 	                  <form id="frm-save-box" method="POST">
                     <div>
-                      <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
+                      <button type="button" class="btn btn-sm btn-danger" id="btn-delete">삭제</button>
                     </div>
                   <div class="table-responsive text-nowrap">
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
-                          <th>보낸사람/받는사람</th>
-                          <th>쪽지내용</th>
-                          <th>받은시간</th>
+                          <th style="width:5%;"><input class="form-check-input" type="checkbox" id="check-all"/></th>
+                          <th style="width:23%;">보낸사람/받는사람</th>
+                          <th style="width:55%;">쪽지내용</th>
+                          <th style="width:17%;">받은시간</th>
                         </tr>
                       </thead>
 
@@ -46,12 +48,12 @@
                                       <c:when  test="${save.sendStarYn == 'Y' }">
 			                                  <c:choose>
 		                                      <c:when test="${save.readYn == 'Y'}">
-	                                          <td style="color: lightgray;">${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+	                                          <td style="color: lightgray;">${save.receiverName}[${save.receiverDeptName}-${save.receiverPosName}]</td>
 	                                          <td style="color: lightgray;"><a style="color: lightgray;" href="${contextPath}/user/msgSendDetail?msgNo=${save.msgNo}">[보낸쪽지] ${save.msgContents}</a></td>
 	                                          <td style="color: lightgray;">${save.msgCreateDt}</td>
 		                                      </c:when>
 		                                      <c:otherwise>
-	                                          <td>${save.senderName}[${save.senderDeptName}-${save.senderPosName}]</td>
+	                                          <td>${save.receiverName}[${save.receiverDeptName}-${save.receiverPosName}]</td>
 	                                          <td><a href="${contextPath}/user/msgRecDetail?msgNo=${save.msgNo}">[보낸쪽지] ${save.msgContents}</a></td>
 	                                          <td>${save.msgCreateDt}</td>
 		                                      </c:otherwise>
@@ -82,7 +84,7 @@
                     <input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/>  
                     </div>
                     </form>
-                    <div class="tab-content">
+                    <div class="pt-4">
                      <nav aria-label="Page navigation">
                          <ul class="pagination justify-content-center">${paging}</ul>
                        </nav>
@@ -91,6 +93,7 @@
                     </div>
                         <!--/ Hoverable Table rows -->
                    
+                   </div>
                    </div>
 
 

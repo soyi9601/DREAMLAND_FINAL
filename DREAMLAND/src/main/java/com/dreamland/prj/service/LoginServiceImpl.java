@@ -93,14 +93,10 @@ public class LoginServiceImpl implements LoginService {
   // 마이페이지 수정
   @Override
   public void modifyUserInfo(MultipartFile profilePath
-                           , MultipartFile signPath
                            , HttpServletRequest request) {
     String newProfilePath= null;
-    String newSignPath = null;
     
-    newProfilePath = filePath(profilePath, request.getParameter("beforeProfilePath"));
-    newSignPath = filePath(signPath, request.getParameter("beforeSignPath"));
-    
+    newProfilePath = filePath(profilePath, request.getParameter("beforeProfilePath"));   
     
     String empName = request.getParameter("empName");
     Date birth = Date.valueOf(request.getParameter("birth"));
@@ -119,7 +115,6 @@ public class LoginServiceImpl implements LoginService {
                         .address(address)
                         .detailAddress(detailAddress)
                         .profilePath(newProfilePath)
-                        .signPath(newSignPath)
                         .email(email)
                       .build();
     

@@ -245,8 +245,6 @@
     </select>
     
     
-    <!-- 여기 새로함 -->
-    
     <!--  본인에 의한 삭제: 남겨둠 -->
     <update id="deleteBlindByWriter">
       UPDATE BLIND_BOARD
@@ -255,7 +253,7 @@
     </update>
     
     
-    <!-- 하는중 댓글수 5개 이상이면 핫 -->
+    <!-- 하는중 댓글수 5개 이상이면 hot버튼 붙도록 -->
     <select id="getBlindListByHot"
             parameterType="Map"
             resultMap="BlindMap">
