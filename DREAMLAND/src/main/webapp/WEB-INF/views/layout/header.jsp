@@ -394,12 +394,6 @@
 	                    </a>
 	                  </li>
 	                  <li>
-	                    <a class="dropdown-item" href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}">
-	                      <i class="bx bx-cog me-2"></i>
-	                      <span class="align-middle">받은쪽지함</span>
-	                    </a>
-	                  </li>
-	                  <li>
 	                    <div class="dropdown-divider"></div>
 	                  </li>
 	                  <li>

@@ -203,10 +203,11 @@ const fnGetNotice = () => {
           str += '<td class="text-center" scope="col" style="width: 12%"">' +  notice.noticeNo + '</td>';
           if(notice.signal === 1) {
             str += '<td class="notice-list" scope="col" style="width: 68%" data-notice-no="' + notice.noticeNo + '"><span class="notice-badge important badge rounded-pill bg-label-danger" data-notice-no="' 
-                + notice.noticeNo + '">중요</span><span class="board-title">' 
+                + notice.noticeNo + '">중요</span><span class="board-title" data-notice-no="' + notice.noticeNo + '">' 
                 + notice.boardTitle + '</span></td>';
           } else {
-            str += '<td class="notice-list" scope="col" style="width: 68%" data-notice-no="' + notice.noticeNo + '"><span class="board-title">' + notice.boardTitle + '</span></td>';            
+            str += '<td class="notice-list" scope="col" style="width: 68%" data-notice-no="' + notice.noticeNo + '"><span class="board-title" data-notice-no="' + notice.noticeNo + '">' 
+            + notice.boardTitle + '</span></td>';            
           }
           str += '<td scope="col" style="width: 20%"><span class="">' + notice.boardModifyDt + '</span></td>';
           str += '</tr>';
