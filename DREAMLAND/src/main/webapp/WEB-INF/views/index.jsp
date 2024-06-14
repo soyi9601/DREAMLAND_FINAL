@@ -29,7 +29,7 @@
 		              <button type="button" class="btn btn-primary mb-4" id="btn-work-in" ${hasCheckedWorkIn ? 'disabled' : ''}>
 		                <span class="d-none d-sm-block">출근</span>
 		              </button>
-		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out">
+		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out" >
 		                <span class="d-none d-sm-block">퇴근</span>
 		              </button>
 		            </div>
@@ -105,13 +105,13 @@
                   <div class="card-title">
                     <h5 class="text-nowrap mb-2 text-primary">공지사항</h5>
                   </div>
-                  <div class="table-responsive text-nowrap">
+                  <div class="text-nowrap">
 								    <table class="table">
 								      <thead class="table-light text-center">
 								        <tr>
-								          <th scope="col">번호</th>
-								          <th scope="col">제목</th>
-								          <th scope="col">작성일자</th>
+								          <th style="width: 12%;" scope="col">번호</th>
+								          <th style="width: 68%;" scope="col">제목</th>
+								          <th style="width: 20%;" scope="col">작성일자</th>
 								        </tr>
 								      </thead>
 								      <tbody class="table-border-bottom-0 notice-table"> </tbody>

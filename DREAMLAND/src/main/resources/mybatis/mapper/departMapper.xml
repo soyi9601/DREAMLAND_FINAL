@@ -139,5 +139,19 @@
     ) 
   </insert>
   
+  <!-- 부서 세부 조회 -->
+  <select id="getTitleDept" resultType="DepartmentDto">
+    SELECT DEPT_NO, DEPT_NAME
+			FROM DEPARTMENT
+			WHERE (DEPT_NO != 4000 AND SUBSTR(DEPT_NO, -3) = '000' AND DEPT_NO BETWEEN 1000 AND 9000)
+			   OR DEPT_NO = 9999
+  </select>
+  
+  <select id="getDeptDetail" resultType="DepartmentDto">
+    SELECT DEPT_NO, DEPT_NAME
+      FROM DEPARTMENT
+     WHERE PARENT_ID LIKE '5%'
+  </select>
+  
 
 </mapper> 
