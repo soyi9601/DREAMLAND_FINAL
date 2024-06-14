@@ -5,6 +5,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+
 <c:set var="contextPath" value="<%=request.getContextPath()%>" />
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
 <c:set var="loginEmployee"
@@ -37,7 +39,11 @@
                         <!-- 익명게시판 내용 시작-->
                         <!-- 게시글 번호 :  ${blind.blindNo}-->
                         <div class="board-title-area">
-                          <div class="board-title">
+                          <div class="board-title" data-board-create-dt="${blind.boardCreateDt}">
+                            <c:if test="${blind.commentCount >= 5}">
+                              <span class="new rounded-pill bg-label-danger">hot</span>
+                            </c:if>
+                          
                             ${blind.boardTitle}
                           </div>
                           <div class="board-title-etc-area">
@@ -49,7 +55,6 @@
                               <p>
                                 <i class='bx bx-time-five'></i>
                                 <span> <fmt:formatDate value="${blind.boardCreateDt}" pattern="yyyy.MM.dd HH:mm"/></span>
-                                
                               </p>
                               <p>
                                 <i class='bx bx-comment'></i>
@@ -64,9 +69,7 @@
                               </form>
                             </div>
                           </div>
-                          
                         </div>
-                        
                         <div class="board-contents">
                           ${blind.boardContents}
                         </div>
@@ -96,7 +99,6 @@
                           <div id="paging"></div>
                         </div>
                         <!-- 댓글목록 끝-->
-                        
                         
                     </div>
                 </div>
@@ -255,13 +257,14 @@ function validateEdit(blindNo, password) {
   })
   .then(response => response.json())
   .then(data => {
+  	
     // alert(data);
     if (data.success) {
-        window.location.href = '${contextPath}/board/blind/edit.do?blindNo='+blindNo
-            /*'${contextPath}/board/blind/edit.do?blindNo='+blindNo*/
-            /*'${contextPath}/board/blind/edit.do'*/
+	    	const frmBtn = document.getElementById('frm-btn');
+	      frmBtn.action = '${contextPath}/board/blind/edit.do';
+	      frmBtn.submit();
     } else {
-        alert(data.message );
+        alert(data.message);
         $('#board-password').val("");
         
     }
@@ -577,7 +580,6 @@ function submitPw() {
   } else {
       alert("비밀번호를 입력해주세요.");
   }
-
   //document.getElementById('pwModal').style.display = 'none';
 }
 
@@ -621,10 +623,6 @@ const removeComment = (commentNo) => {
   })
 }
 
-
-
-///
-
 /*
 function updateCommentCount(blindNo) {
     // 댓글 수 갱신을 위한 AJAX 요청
@@ -652,16 +650,52 @@ function updateCommentCount(blindNo) {
 }
 */
 
-
-
 //함수목록★
 fnRegisterComment();
 fnCommentList();
 fnRegisterReply();    
 fnSwitchingReplyInput();   
 fnShowBtns();
-
 fnRemoveComment();
+
+
+//
+/*
+document.addEventListener("DOMContentLoaded", function() {
+    // 게시글 제목 요소를 선택
+    const boardTitleElement = document.querySelector(".board-title");
+    
+    // 게시글 생성 날짜를 가져옴
+    const boardCreateDt = boardTitleElement.getAttribute("data-board-create-dt");
+
+    // 현재 날짜와 비교
+    const now = moment();
+    const boardCreateMoment = moment(boardCreateDt);
+
+    // 24시간 이내인지 확인
+    if (now.diff(boardCreateMoment, 'hours') < 24) {
+        // "new" 태그를 추가
+        const newSpan = document.createElement("span");
+        newSpan.textContent = "new";
+        boardTitleElement.appendChild(newSpan);
+    }
+});
+*/
+
+const fnTitleNew = () => {
+	const boardTitleElement = document.querySelector(".board-title");
+	const boardCreateDt = boardTitleElement.getAttribute("data-board-create-dt");
+	const now = moment();
+	const boardCreateMoment = moment(boardCreateDt);
+	
+	if (now.diff(boardCreateMoment, 'hours') < 24) {
+    // "new" 태그를 추가
+    const str = '<span class="new rounded-pill bg-label-success">new</span>'
+    $(".board-title").prepend(str);
+    }
+}
+
+fnTitleNew();
 
 
   </script>

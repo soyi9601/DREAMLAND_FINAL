@@ -112,7 +112,7 @@
 <script>
 
 
-$(".loading").hide(); // 전송시 로딩화면 숨겨놓음
+$(".loading").hide(); // 전송시 첨부파일 목록의 로딩화면 숨겨놓음
 
 // 기존 첨부 파일 목록 가져오기 및 input창 생성
 let insAttachList = [];
@@ -152,9 +152,9 @@ const fnAttachList = () => {
  
 // 첨부파일 크기제한
 const fnAttachCheck = () => {
-  $(document).on('change', '.form-control', (e) => { // 이벤트 위임 사용
-      const limitPerSize = 1024 * 1024 * 10; // 10MB
-      const limitTotalSize = 1024 * 1024 * 10; // 10MB
+  $(document).on('change', '.form-control', (e) => {
+      const limitPerSize = 1024 * 1024 * 10; 
+      const limitTotalSize = 1024 * 1024 * 10; 
       let totalSize = 0;
       const files = e.target.files[0];
       
@@ -173,8 +173,6 @@ const fnAttachCheck = () => {
           }
           totalSize += files.size;
       }
-
-      //console.log("files:  " + files);
   });
 }
  
@@ -262,34 +260,32 @@ const fnAddAttachGo = () => {
       if (resData.attachResult) {
         fnAttachList();
       } else {
-        //alert('첨부 파일이 추가되지 않았습니다.');
+        alert('첨부 파일이 추가되지 않았습니다.');
       }
     },
   });
 }
 
 // 첨부 파일 삭제 (리스트항목에서 삭제, attachNo로 인식)
-  const fnRemoveAttach = () => {
-      $(document).on('click', '.remove-attach', (evt) => {
-          if (!confirm('해당 첨부 파일을 삭제할까요?')) {
-              return;
-          }
-          const attachNo = evt.target.dataset.attachNo;
+const fnRemoveAttach = () => {
+    $(document).on('click', '.remove-attach', (evt) => {
+        if (!confirm('해당 첨부 파일을 삭제할까요?')) {
+            return;
+        }
+        const attachNo = evt.target.dataset.attachNo;
 
-          let parentElement = $(evt.target).parent().parent();
-          console.log(parentElement);
-          let children = parentElement.children();
-          parentElement.remove();
-          
-          $("#delAttachList").val($("#delAttachList").val()+"|"+attachNo);
-          return attachNo;
-      });
-  }
+        let parentElement = $(evt.target).parent().parent();
+        let children = parentElement.children();
+        parentElement.remove();
+        
+        $("#delAttachList").val($("#delAttachList").val()+"|"+attachNo);
+        return attachNo;
+    });
+}
 
-       
         
 const fnRemoveAttachGo = (attachNo) => {
-  console.log(attachNo);
+  
     fetch('${contextPath}/board/notice/removeAttach.do', {
         method: 'POST',
         headers: {
@@ -304,7 +300,7 @@ const fnRemoveAttachGo = (attachNo) => {
         if (resData.deleteCount === 1) {
             fnAttachList();
         } else {
-            console.log(resData)
+            
         }
     });
 }
@@ -325,20 +321,21 @@ const fnModifyUpload = () => {
 
     evt.preventDefault(); // 폼 제출 중지
     fnAddAttachGo(); // 파일 첨부 실행
-    fnRemoveAttachGo(); // 삭제한 파일 
+    fnRemoveAttachGo(); // 삭제한 파일 넘기기
     $(".loading").show(); // 로딩화면 
     evt.target.submit(); // 폼 제출 재개
+    
   });
 }
 
-// 중요표시 체크박스
+// 공지사항 중요 체크박스
 const fnChkSig = () => {
   $(document).on('click', '.chksignal', (e) => {
-      if ($(e.target).prop('checked')) {
-        $('input[name="signal"]').val(1);
-      } else {
-         $('input[name="signal"]').val(0); 
-      }
+    if ($(e.target).prop('checked')) {
+      $('input[name="signal"]').val(1);
+    } else {
+       $('input[name="signal"]').val(0); 
+    }
   });
 }
 

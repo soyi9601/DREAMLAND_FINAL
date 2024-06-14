@@ -6,118 +6,179 @@
  <mapper namespace="com.dreamland.prj.mapper.ScheduleMapper">
    
 	  <resultMap id="SkdMap" type="ScheduleDto">
-	      <id property="skdNo" column="SKD_NO"/>
-	      <result property="skdStart" column="SKD_START"/>
-	      <result property="skdEnd" column="SKD_END"/>
-	      <result property="skdCategory" column="SKD_CATEGORY"/>
-	      <result property="skdTitle" column="SKD_TITLE"/>
-	      <result property="skdContents" column="SKD_CONTENTS"/>
-	      <result property="skdColor" column="SKD_COLOR"/>
-	      <association property="employee" javaType="EmployeeDto">
-		        <id property="empNo" column="EMP_NO"/>
-		        <result property="empName" column="EMP_NAME"/>
-		        <result property="deptNo" column="DEPT_NO"/>
-        </association>
-        <collection property="shrDept" ofType="SkdShrDeptDto">
-            <result property="skdNo" column="SKD_NO"/>
-            <result property="deptNo" column="DEPT_NO"/>
-        </collection>
+      <id property="skdNo" column="SKD_NO"/>
+      <result property="skdStart" column="SKD_START"/>
+      <result property="skdEnd" column="SKD_END"/>
+      <result property="skdCategory" column="SKD_CATEGORY"/>
+      <result property="skdTitle" column="SKD_TITLE"/>
+      <result property="skdContents" column="SKD_CONTENTS"/>
+      <result property="skdColor" column="SKD_COLOR"/>
+      <association property="employee" javaType="EmployeeDto">
+         <id property="empNo" column="EMP_NO"/>
+         <result property="empName" column="EMP_NAME"/>
+         <result property="deptNo" column="DEPT_NO"/>
+       </association>
+       <collection property="shrEmp" ofType="SkdShrEmpDto">
+         <result property="skdNo" column="SKD_NO"/>
+         <result property="empNo" column="EMP_NO"/>
+       </collection>
+       <collection property="shrDept" ofType="SkdShrDeptDto">
+          <result property="skdNo" column="SKD_NO"/>
+          <result property="deptNo" column="DEPT_NO"/>
+       </collection>
 	  </resultMap> 
 	  
-	  
-  <!-- INSERT 수행 이전에 파라미터 ScheduleDto의 skdNo 필드에 SKD_SEQ.NEXTVAL 값을 저장 --> 
-	  <insert id="skdAdd"
+  <!-- INSERT 수행 이전에 파라미터 ScheduleDto의 skdNo 필드에 SKD_SEQ.NEXTVAL 값을 저장 -->
+  <!-- 일정 등록 --> 
+	<insert id="skdAdd"
 	          parameterType="ScheduleDto">
-	   <selectKey order="BEFORE" keyProperty="skdNo" resultType="int">
-	      SELECT SKD_SEQ.NEXTVAL
-	        FROM DUAL
-	   </selectKey>       
-	      INSERT INTO SCHEDULE (
-	          SKD_NO
-	        , SKD_START
-	        , SKD_END
-	        , SKD_CATEGORY
-	        , SKD_TITLE
-	        , SKD_CONTENTS
-	        , SKD_COLOR
-	        , EMP_NO  
-	      ) VALUES (
-	          #{skdNo}
-	        , #{skdStart}
-	        , #{skdEnd}
-	        , #{skdCategory}
-	        , #{skdTitle}
-	        , #{skdContents}
-	        , #{skdColor}
-	        , #{employee.empNo}
-	      )
-	  </insert>
+   <selectKey order="BEFORE" keyProperty="skdNo" resultType="int">
+      SELECT SKD_SEQ.NEXTVAL
+        FROM DUAL
+   </selectKey>       
+      INSERT INTO SCHEDULE (
+          SKD_NO
+        , SKD_START
+        , SKD_END
+        , SKD_CATEGORY
+        , SKD_TITLE
+        , SKD_CONTENTS
+        , SKD_COLOR
+        , EMP_NO  
+      ) VALUES (
+          #{skdNo}
+        , #{skdStart}
+        , #{skdEnd}
+        , #{skdCategory}
+        , #{skdTitle}
+        , #{skdContents}
+        , #{skdColor}
+        , #{employee.empNo}
+      )
+	 </insert>
 	  
-	  <insert id="addShrDept" 
-	          parameterType="SkdShrDeptDto">
-	     INSERT INTO SKD_SHR_DEPT (
-	         SKD_NO
-	       , DEPT_NO
-	     ) VALUES (
-	         #{skdNo}
-	       , #{deptNo}
-	     )
-    </insert>
-	  
-	  <select id="getSkdList"
-	          parameterType="Map"
-	          resultMap="SkdMap">
-      SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR,
-             E.EMP_NO, E.EMP_NAME, E.DEPT_NO,
-             SSD.DEPT_NO AS SHARED_DEPT_NO
-        FROM SCHEDULE S
-        INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
-        LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
-        WHERE S.EMP_NO = #{empNo}      <!-- 현재 로그인된 사용자가 등록한 일정 필터링  --> 
-           OR SSD.DEPT_NO = #{deptNo}  <!-- 로그인된 사용자가 소속된 부서에 공유된 일정 필터링 -->
-    
-	  </select>
-    
-    <select id="getSkdByNo"
-            resultMap="SkdMap">
-       SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR
-			      , E.EMP_NO, E.EMP_NAME, E.DEPT_NO
-			    FROM SCHEDULE S
-			    INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
-			    LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
-			    WHERE S.SKD_NO = #{skdNo}
-    </select>
-    
-    <select id="getShrDeptNo"
-            resultType="SkdShrDeptDto">
-       SELECT DEPT_NO
-         FROM SKD_SHR_DEPT
-        WHERE SKD_NO = #{skdNo}
-    </select>
-    
-    <update id="updateSkd"
-            parameterType="ScheduleDto">
-      UPDATE SCHEDULE
-			   SET SKD_START = #{skdStart},
-			       SKD_END = #{skdEnd},
-			       SKD_CATEGORY = #{skdCategory},
-			       SKD_TITLE = #{skdTitle},
-			       SKD_CONTENTS = #{skdContents},
-			       SKD_COLOR = #{skdColor}
-			 WHERE SKD_NO = #{skdNo}
-    </update>
-    
-    <delete id="deleteSkd">
-      DELETE
-        FROM SCHEDULE
+  <!-- 사원 공유 추가 -->
+  <insert id="addShrEmp" 
+          parameterType="SkdShrEmpDto">
+     INSERT INTO SKD_SHR_EMP (
+         SKD_NO
+       , EMP_NO
+     ) VALUES (
+        #{skdNo}
+      , #{empNo}
+     )
+ </insert>
+  
+  <!-- 부서 공유 추가 -->
+  <insert id="addShrDept" 
+          parameterType="SkdShrDeptDto">
+     INSERT INTO SKD_SHR_DEPT (
+         SKD_NO
+       , DEPT_NO
+     ) VALUES (
+         #{skdNo}
+       , #{deptNo}
+     )
+   </insert>
+  
+  <!-- 전체 일정 조회 (필터링) -->
+  <select id="getSkdList"
+          parameterType="Map"
+          resultMap="SkdMap">
+     SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR,
+            E.EMP_NO, E.EMP_NAME, E.DEPT_NO,
+            SSD.DEPT_NO AS SHARED_DEPT_NO,
+            SSE.EMP_NO AS SHARED_EMP_NO
+       FROM SCHEDULE S
+       INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
+       LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
+       LEFT JOIN SKD_SHR_EMP SSE ON S.SKD_NO = SSE.SKD_NO
+       WHERE S.EMP_NO = #{empNo}      <!-- 현재 로그인된 사용자가 등록한 일정 필터링  --> 
+          OR SSD.DEPT_NO = #{deptNo}  <!-- 로그인된 사용자가 소속된 부서에 공유된 일정 필터링 -->
+          OR SSE.EMP_NO = #{empNo}    <!-- 로그인된 사용자에게 공유된 일정 필터링 -->      
+          
+     <!-- 사원 공유 추가 전 쿼리문 
+     SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR,
+            E.EMP_NO, E.EMP_NAME, E.DEPT_NO,
+            SSD.DEPT_NO AS SHARED_DEPT_NO
+       FROM SCHEDULE S
+       INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
+       LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
+       WHERE S.EMP_NO = #{empNo}      현재 로그인된 사용자가 등록한 일정 필터링  
+          OR SSD.DEPT_NO = #{deptNo}  로그인된 사용자가 소속된 부서에 공유된 일정 필터링 -->
+   
+  </select>
+   
+   <!-- 일정 상세보기 (일정번호 기준 조회)  -->
+   <select id="getSkdByNo"
+           resultMap="SkdMap">
+      SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR
+		      , E.EMP_NO, E.EMP_NAME, E.DEPT_NO
+		    FROM SCHEDULE S
+		    INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
+		    LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
+		    WHERE S.SKD_NO = #{skdNo}
+   </select>
+   
+  <!-- 공유 사원 검색  -->
+  <select id="searchEmp" 
+          parameterType="String" 
+          resultType="EmployeeDto">
+      SELECT EMP_NO, EMP_NAME
+        FROM EMPLOYEE
+       WHERE EMP_NAME LIKE '%' || #{query} || '%'
+  </select>
+
+   <!-- 공유 부서 검색 -->
+  <select id="searchDept" 
+          parameterType="String" 
+          resultType="DepartmentDto">
+      SELECT DEPT_NO, DEPT_NAME
+        FROM DEPARTMENT
+       WHERE DEPT_NAME LIKE '%' || #{query} || '%'
+  </select>
+   
+   <!-- <select id="getShrDeptNo"
+           resultType="SkdShrDeptDto">
+      SELECT DEPT_NO
+        FROM SKD_SHR_DEPT
        WHERE SKD_NO = #{skdNo}
-    </delete>
-    
-    <delete id="deleteShrDept">
-        DELETE 
-          FROM SKD_SHR_DEPT 
-         WHERE SKD_NO = #{skdNo}
-    </delete>
+   </select> -->
+   
+   <!-- 일정 수정 -->
+   <update id="updateSkd"
+           parameterType="ScheduleDto">
+     UPDATE SCHEDULE
+		   SET SKD_START = #{skdStart},
+		       SKD_END = #{skdEnd},
+		       SKD_CATEGORY = #{skdCategory},
+		       SKD_TITLE = #{skdTitle},
+		       SKD_CONTENTS = #{skdContents},
+		       SKD_COLOR = #{skdColor}
+		 WHERE SKD_NO = #{skdNo}
+   </update>
+   
+   <!-- 일정 삭제 -->
+   <delete id="deleteSkd">
+     DELETE
+       FROM SCHEDULE
+      WHERE SKD_NO = #{skdNo}
+   </delete>
+   
+   <!-- 사원 공유 삭제 -->
+   <delete id="deleteShrEmp">
+      DELETE 
+        FROM SKD_SHR_EMP 
+       WHERE SKD_NO = #{skdNo}
+   </delete>
+   
+   <!-- 부서 공유 삭제 -->
+   <delete id="deleteShrDept">
+       DELETE 
+         FROM SKD_SHR_DEPT 
+        WHERE SKD_NO = #{skdNo}
+   </delete>
+   
     
     
  </mapper>

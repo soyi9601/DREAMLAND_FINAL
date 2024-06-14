@@ -16,6 +16,7 @@ public class ScheduleDto {
   private int skdNo;
   private String skdStart, skdEnd, skdCategory, skdTitle, skdContents, skdColor;
   private EmployeeDto employee;
+  private List<SkdShrEmpDto> shrEmp;
   private List<SkdShrDeptDto> shrDept;
   
 }
