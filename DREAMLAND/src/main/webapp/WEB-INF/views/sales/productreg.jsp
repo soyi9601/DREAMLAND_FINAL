@@ -52,17 +52,17 @@
     		}
    	.text-p {
    					margin: 0px 40px 20px 30px; 
-   					
    			}
-   	th, td{
+   	th {
    					text-align: center;  
    	}
    	.text-nowrap {
    					margin-top: 30px;
    	}
    	.form-control-sm {
-   					width: 50px;
+   					width: 200px;
     				height: 20px;
+    				margin: 0px 30px 0px 30px;
    	}
  		</style>
   
@@ -127,10 +127,10 @@ function myFunction() {
 	  var cell4 = row.insertCell(3);
 	  var cell5 = row.insertCell(4);
 	  cell1.innerHTML = "<td><input type='text' name='productSctCd' class='form-control form-control-sm SctCd'></td>";
-	  cell2.innerHTML = "<td><i class='fab fa-bootstrap fa-lg text me-3'></i> <strong><input type='text' name='productNM' class='form-control form-control-sm productNM'></strong></td>";
+	  cell2.innerHTML = "<td><input type='text' name='productNM' class='form-control form-control-sm productNM'></td>";
 	  cell3.innerHTML = "<td><input type='text' name='price' class='form-control form-control-sm price'></td>";
 	  cell4.innerHTML = "<td><input type='text' name='deptNo' class='form-control form-control-sm PdeptNo'></td>";
-	  cell5.innerHTML = "<td><button type='button' onclick='deleteRow(this)' class='btn rounded-pill btn-danger btn_delete'>Delect</button></td>";
+	  cell5.innerHTML = "<td><button type='button' onclick='deleteRow(this)' class='btn rounded-pill btn-danger btn_delete'>삭제</button></td>";
 	  addRowIndex = addRowIndex + 1;
 	}
 
