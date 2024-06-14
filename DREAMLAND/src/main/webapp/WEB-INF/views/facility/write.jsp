@@ -14,13 +14,15 @@
 <link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
+<!-- Content wrapper -->
+<div class="content-wrapper">
 
 <form method="POST" 
 				enctype="multipart/form-data"
     		action="${contextPath}/facility/register.do" 
     		id="frm-facilityreg">
     		
-    <div class="col-sm-10">
+    <div class="col-sm-10" id="attach-list">
 				<button type="submit" class="btn btn-primary">전송</button>
 				<button type="button" onclick="myFunction()">추가</button>
 		</div>
@@ -49,7 +51,6 @@
                 </div>
               </div>
 </form>
-</body>
 
 <script>
 function showCurrentDate() {
@@ -75,12 +76,12 @@ function myFunction() {
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
 	var cell7 = row.insertCell(6);
-	cell1.innerHTML = "<td><input type='text'  class='deptNo' name='deptNo'></td>";
-	cell2.innerHTML = "<td><input type='text'  class='facilityName' name='facilityName'></td>";
+	cell1.innerHTML = "<td><input type='text'  class='deptNo' name='deptNo' id='deptNo'></td>";
+	cell2.innerHTML = "<td><input type='text'  class='facilityName' name='facilityName' id='facilityName'></td>";
 	cell3.innerHTML = "<span id='currentDate'></span>";
 	cell4.innerHTML = "<td><input type='checkbox' class='chkmanagement' name='management'/></td>";
 	cell5.innerHTML = "<td><textarea id='basic-default-message' class='form-control' name='remarks'></textarea></td>";
-	cell6.innerHTML = "<td><input class='form-control' type='file' name='files' /></td>";
+	cell6.innerHTML = "<td><input class='form-control' type='file' name='files' id='files'/></td>";
 	cell7.innerHTML = "<td><button type='button' onclick='deleteRow(this)' class='btn_delete'>Delect</button>";
 	
 	 var currentDateElement = row.querySelector('#currentDate');
@@ -116,23 +117,46 @@ const fnCkgMng = () => {
 	  });
 	}
 
+const fnRegister = () => {
+	  document.getElementById('frm-facilityreg').addEventListener('submit', (evt) => {
+	    if(document.getElementById('facilityName').value === '') {
+	      alert('시설명은 필수입니다.');
+	      evt.preventDefault();
+	      return;
+	    }
+	  })
+	}
+
+document.getElementById('frm-facilityreg').addEventListener('submit', (evt) => {
+    const deptNos = document.querySelectorAll('.deptNo');
+    for (let deptNo of deptNos) {
+        const value = parseInt(deptNo.value, 10);
+        if (isNaN(value) || value < 5000 || value > 6000) {
+            alert("시설번호는 5000에서 6000 사이의 값이어야 합니다.");
+            evt.preventDefault();
+            return;
+        }
+    }
+});
+
+document.getElementById('frm-facilityreg').addEventListener('submit', (evt) => {
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    const maxSize = 10 * 1024 * 1024; // 10MB
+
+    for (let input of fileInputs) {
+        if (input.files.length > 0) {
+            const file = input.files[0];
+            if (file.size > maxSize) {
+                alert("파일 크기는 10MB를 초과할 수 없습니다.");
+                evt.preventDefault();
+                return;
+            }
+        }
+    }
+});
+
+fnRegister();
 fnCkgMng();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
-</html>
+
+<%@ include file="../layout/footer.jsp" %>   

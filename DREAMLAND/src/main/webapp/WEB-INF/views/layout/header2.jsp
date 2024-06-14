@@ -164,6 +164,7 @@
                   <div>매출화면</div>
                 </a>
               </li>
+              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo eq 5000 && loginEmployee.deptNo eq 1000}">
               <li class="menu-item">
                 <a href="${contextPath}/sales/productreg.page" class="menu-link">
                   <div>상품등록</div>
@@ -174,12 +175,13 @@
                   <div>매출등록</div>
                 </a>
               </li>
+              </c:if>
             </ul>
           </li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-layout"></i>
-              <div>시설</div>
+              <div>시설점검</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
@@ -187,11 +189,13 @@
                   <div>시설게시판</div>
                 </a>
               </li>
+              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo eq 5000 && loginEmployee.deptNo eq 1000}">
               <li class="menu-item">
                 <a href="${contextPath}/facility/write.page" class="menu-link">
                   <div>시설등록</div>
                 </a>
               </li>
+              </c:if>
             </ul>
           </li>
           <li class="menu-item">
