@@ -15,6 +15,7 @@
 
 <!-- Content wrapper -->
 <div class="content-wrapper sd-board">
+
   <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y sd-notice-edit">
         <div class="title sd-point">시설점검 편집</div>

@@ -38,7 +38,7 @@ public class SalesController {
        redirectAttributes.addFlashAttribute("errorMessage", "판매 등록 중 오류가 발생했습니다.");
        return "redirect:/sales/productreg.page";
 		}
-  	redirectAttributes.addFlashAttribute("insertProduct", salesService.registerProduct(request));
+  	redirectAttributes.addFlashAttribute("insertProduct", insertCount);
     return "redirect:/sales/productlist.do";
   }
   
