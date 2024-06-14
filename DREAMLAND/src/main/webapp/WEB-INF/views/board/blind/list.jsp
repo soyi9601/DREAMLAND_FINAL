@@ -264,9 +264,9 @@ $(window).scroll(function(){
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
-        let date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
+      let date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toUTCString();
     }
     document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value || "") + expires + "; path=/";
 }
@@ -339,7 +339,6 @@ const fnNoticeListDel = () =>{
     }else{
       alert("삭제할 게시글을 선택하세요.");
     }
-    
     function loadNoticeList(){
       location.reload();
     }

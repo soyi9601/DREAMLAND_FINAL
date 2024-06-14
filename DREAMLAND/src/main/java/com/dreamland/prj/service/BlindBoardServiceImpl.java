@@ -84,7 +84,6 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 			throw new RuntimeException("암호화오류", e);
 		}
 		
-		
 		BlindBoardDto blind = BlindBoardDto.builder()
 														.boardTitle(MySecurityUtils.getPreventXss(boardTitle))
 														.boardContents(MySecurityUtils.getPreventXss(boardContents))
@@ -111,13 +110,10 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	public ResponseEntity<Map<String, Object>> getBlindList(HttpServletRequest request) {
 
 		int total = blindMapper.getBlindCount();
-		
 		int display = 15;
-		
 		int page = Integer.parseInt(request.getParameter("page"));
 		
 		myPageUtils.setPaging(total, display, page);
-		
 		
 		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
 																	 , "end", myPageUtils.getEnd());
@@ -242,7 +238,6 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	}
 	
 	// 댓글
-	
 	@Override
 	public int registerComment(HttpServletRequest request) {
 
@@ -280,21 +275,10 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	public Map<String, Object> getCommentList(HttpServletRequest request) {
 
 		int blindNo = Integer.parseInt(request.getParameter("blindNo"));
-		//int page = Integer.parseInt(request.getParameter("page"));
-		
-		//int total = blindMapper.getCommentCount(blindNo);
-		
-		//int display = 10;
-		
-		//myPageUtils.setPaging(total, display, page);
 		
 		Map<String, Object> map = Map.of("blindNo", blindNo);
-																	 //, "begin", myPageUtils.getBegin()
-																	 //, "end", myPageUtils.getEnd());
-				
+
 		return Map.of("commentList", blindMapper.getCommentList(map));
-			//					, "paging", myPageUtils.getAsyncPaging());
-		
 		
 	}
 	
@@ -326,7 +310,6 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	public boolean validatePw(int commentNo, String pw) {
 		String hashedPassword = MySecurityUtils.getSha256(pw);
     String storedPassword = blindMapper.getPasswordByCommentNo(commentNo);
-    
     return hashedPassword.equals(storedPassword);
 	}
 	

@@ -9,6 +9,7 @@ public class AESUtils {
   private static final String ALGORITHM = "AES";
   private static final byte[] KEY = "mysecretkey12345".getBytes(); // 16바이트 키 (128비트)
 
+  // 암호화
   public static String encrypt(String data) throws Exception {
       SecretKeySpec secretKey = new SecretKeySpec(KEY, ALGORITHM);
       Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -17,6 +18,7 @@ public class AESUtils {
       return Base64.getEncoder().encodeToString(encryptedData);
   }
 
+  //복호화
   public static String decrypt(String encryptedData) throws Exception {
       SecretKeySpec secretKey = new SecretKeySpec(KEY, ALGORITHM);
       Cipher cipher = Cipher.getInstance(ALGORITHM);

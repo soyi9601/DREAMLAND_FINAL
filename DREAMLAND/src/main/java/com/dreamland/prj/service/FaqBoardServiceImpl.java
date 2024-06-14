@@ -52,8 +52,6 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 	@Override
 	public void loadFaqBoardList(Model model) {
 
-	  
-	
 	  Map<String, Object> modelMap = model.asMap();
 	  HttpServletRequest request = (HttpServletRequest) model.getAttribute("request");
 	  
@@ -109,10 +107,7 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 		map.put("category", category);
 		
 		int total = faqBoardMapper.getSortCount(map);
-		
 		int display = 10;
-		
-		//String sort = "desc";
 		
 		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(optPage.orElse("1"));
@@ -124,9 +119,6 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 		
 		// 카테고리 목록 가져오기
 		List<FaqBoardDto> faqList = faqBoardMapper.getSortList(map);
-		
-		System.out.println(map);
-		System.out.println(faqList);
 		
 		model.addAttribute("beginNo", total -(page - 1) * display);
 		model.addAttribute("faqBoardList", faqList);
@@ -152,12 +144,6 @@ public class FaqBoardServiceImpl implements FaqBoardService {
 		map.put("query", query);
 		
 		int total = faqBoardMapper.getSearchCount(map);
-		
-		System.out.println(total);
-		System.out.println(map);
-		System.out.println(category);
-		
-		
 		int display = 10;
 		
 		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
