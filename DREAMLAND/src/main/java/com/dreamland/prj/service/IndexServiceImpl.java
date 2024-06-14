@@ -50,18 +50,24 @@ public class IndexServiceImpl implements IndexService {
     Map<String, Object> map = new HashMap<>();
     map.put("today", today);
     map.put("empNo", empNo);
+    
     indexMapper.updateWorkOut(map);
     return map;    
   }
   
-  @Override
-  public boolean hasCheckedWorkIn(int empNo) {
+  @Override   // 출근 시간 있는지 체크
+  public boolean hasCheckedWorkIn(int empNo) {    
     return indexMapper.hasCheckedWorkIn(empNo) > 0;
   }
   
-  @Override
+  @Override   // 퇴근 시간 있는지 체크
+  public boolean hasCheckedWorkOut(int empNo) {
+    return indexMapper.hasCheckedWorkOut(empNo) > 0;
+  }
+  
+  @Override   // 퇴근 스케쥴러 확인 후 퇴근 버튼 누르지 않은 사람은 23시 59분에 퇴근시간 업데이트
   public void updateCheckedWorkOut() {
-    indexMapper.updateCheckedWorkOut();    
+    indexMapper.updateCheckedWorkOut();           
   }
   
   

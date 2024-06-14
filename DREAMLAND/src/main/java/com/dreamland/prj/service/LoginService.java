@@ -19,8 +19,7 @@ public interface LoginService {
   void getDeptAndPos(Model model);
   
   // 마이페이지 수정
-  void modifyUserInfo(MultipartFile profilePath
-                    , MultipartFile signPath 
+  void modifyUserInfo(MultipartFile profilePath 
                     , HttpServletRequest request);
   // 비밀번호 수정
   int modifyPassword(HttpServletRequest request, PrincipalUser user);

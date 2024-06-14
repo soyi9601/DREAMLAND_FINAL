@@ -33,7 +33,9 @@
   	justify-content:center;
 				}
 		</style>
-  </head>
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
 				
 			<body>	
 			<!-- Style variation -->
@@ -330,7 +332,6 @@
                   </table>
                 </div>
               </div>
-          </body>
           
 <script>
 
@@ -491,8 +492,4 @@ const yearlySalesData = {
         }
     });
 </script>
-
-
-</html>
-
 <%@ include file="../layout/footer.jsp"%>

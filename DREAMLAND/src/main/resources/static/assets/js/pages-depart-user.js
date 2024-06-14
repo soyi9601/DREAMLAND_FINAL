@@ -25,7 +25,7 @@ OrgChart.templates.employees.node = '<rect x="0" y="0" height="60" width="140" f
 OrgChart.templates.employees.field_0 = '<text data-width="140" class="field_0" style="font-size: 18px;" fill="#444" x="71" y="34" text-anchor="middle">{val}</text>';
 
 
-  console.log(orgChartData);
+  // console.log(orgChartData);
   
   var chart = new OrgChart(document.getElementById('tree'), {
     template: 'myTemplate',    

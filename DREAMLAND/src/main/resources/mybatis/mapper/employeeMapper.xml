@@ -10,11 +10,14 @@
           resultType="EmployeeDto">
     SELECT EMP_NO, EMP_NAME, BIRTH, ENTER_DATE, EMAIL, RESIGN_DATE, MOBILE
          , ADDRESS, DETAIL_ADDRESS, PASSWORD, DAY_OFF, PROFILE_PATH, USED_DAY_OFF
-         , SIGN_PATH, DEPT_NO, POS_NO, ROLE, POSTCODE
+         , DEPT_NO, POS_NO, ROLE, POSTCODE
       FROM EMPLOYEE
-    <where>
+     WHERE EMAIL = #{email}
+       AND DEPT_NO != 4000
+<!--     <where>
       <if test="email!=null">EMAIL = #{email}</if>
-    </where>
+      <if test="deptNo!=null">DEPT_NO != 4000</if>
+    </where> -->
   </select>
   
   <select id="getEmployeeByEmpNo"
@@ -48,7 +51,6 @@
       , DAY_OFF
       , PROFILE_PATH
       , USED_DAY_OFF
-      , SIGN_PATH
       , DEPT_NO
       , POS_NO
       , ROLE
@@ -67,7 +69,6 @@
       , 15
       , #{profilePath}
       , 0
-      , NULL
       , #{deptNo}
       , #{posNo}
       , #{role}
@@ -112,7 +113,6 @@
          , ADDRESS = #{address}
          , DETAIL_ADDRESS = #{detailAddress}
          , PROFILE_PATH = #{profilePath}
-         , SIGN_PATH = #{signPath}
      WHERE EMAIL = #{email}
   </update>
 

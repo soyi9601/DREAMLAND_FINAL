@@ -16,19 +16,20 @@
 	              <!-- Hoverable Table rows -->
 	              <div class="card">
 	                <h5 class="card-header">받은쪽지함 <small id="receive-count"></small></h5>
+	                <div class="card-body">
 	                  <form id="frm-receive-box" method="POST">
 	                  <div>
-	                    <button type="button" class="btn btn-warning" id="btn-save">보관하기</button>
-	                    <button type="button" class="btn btn-danger" id="btn-delete">삭제하기</button>
+	                    <button type="button" class="btn btn-sm btn-warning" id="btn-save">보관</button>
+	                    <button type="button" class="btn btn-sm btn-danger" id="btn-delete">삭제</button>
 	                  </div>
 	                <div class="table-responsive text-nowrap">
 	                  <table class="table table-hover">
 	                    <thead>
 	                      <tr>
-	                        <th><input class="form-check-input" type="checkbox" id="check-all"/></th>
-	                        <th>보낸사람</th>
-	                        <th>쪽지내용</th>
-	                        <th>받은시간</th>
+	                        <th style="width:5%;"><input class="form-check-input" type="checkbox" id="check-all"/></th>
+	                        <th style="width:23%;">보낸사람</th>
+	                        <th style="width:55%;">쪽지내용</th>
+	                        <th style="width:17%;">받은시간</th>
 	                      </tr>
 	                    </thead>
 
@@ -41,10 +42,12 @@
 											    <c:if test="${not empty receiveList}">
 										        <c:forEach items="${receiveList}" var="receive" varStatus="vs">
 									            <tr>
-								                <td><input class="form-check-input" type="checkbox" value="${receive.msgNo}" name="checkYn"/></td>
+								                <td style="width:5%;"><input class="form-check-input" type="checkbox" value="${receive.msgNo}" name="checkYn"/></td>
 											            <c:choose>
 											                <c:when test="${receive.readYn == 'Y'}">
-											                    <td style="color: lightgray;">${receive.senderName}[${receive.senderDeptName}-${receive.senderPosName}]</td>
+											                    <td style="color: lightgray;">
+											                       <a style="color: lightgray;" href="${contextPath}/user/replyMessage?senderNo=${receive.msgSender}">${receive.senderName}[${receive.senderDeptName}-${receive.senderPosName}]</a>
+											                     </td>
 											                    <td style="color: lightgray;">
 											                      <a style="color: lightgray;" href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}
 											                      </a>
@@ -52,7 +55,7 @@
 											                    <td style="color: lightgray;">${receive.msgCreateDt}</td>
 											                </c:when>
 											                <c:otherwise>
-											                    <td>${receive.senderName}[${receive.senderDeptName}-${receive.senderPosName}]</td>
+											                    <td><a href="${contextPath}/user/replyMessage?senderNo=${receive.msgSender}">${receive.senderName}[${receive.senderDeptName}-${receive.senderPosName}]</a></td>
 											                    <td><a href="${contextPath}/user/msgRecDetail?msgNo=${receive.msgNo}">${receive.msgContents}</a></td>
 											                    <td>${receive.msgCreateDt}</td>
 											                </c:otherwise>
@@ -65,7 +68,7 @@
 										<input class="form-emp-no" type="hidden" value="${loginEmployee.empNo}" id="empNo" name="empNo"/>  
                     </div>
 										</form>
-                    <div class="tab-content">
+                    <div class="pt-4">
                      <nav aria-label="Page navigation">
                          <ul class="pagination justify-content-center">${paging}</ul>
                        </nav>
@@ -73,6 +76,7 @@
                       </div>
                     </div>
                         <!--/ Hoverable Table rows -->
+                   </div>
                    </div>
 
             <!-- / Content -->

@@ -14,16 +14,18 @@ public interface IndexMapper {
 
   EmployeeDto getUser(String email);    // 직원조회
   
-  void insertWork(WorkDto work);        // 출근
+  void insertWork(WorkDto work);                  // 출근
   int updateWorkOut(Map<String, Object> map);     // 퇴근
   
-  List<NoticeBoardDto> getNoticeList(Map<String, Object> map);
+  int hasCheckedWorkIn(int empNo);                // 출근 시간 체크
+  int hasCheckedWorkOut(int empNo);               // 퇴근 시간 체크
+  void updateCheckedWorkOut();                    // 퇴근 스케쥴러
   
-  int getMessageCountByReceiver(int empNo);
+  List<NoticeBoardDto> getNoticeList(Map<String, Object> map);    // 공지사항 리스트
   
-  int getWaitCount(int empNo);
-  int getMyApvCount(int empNo);
+  int getMessageCountByReceiver(int empNo);    // 안읽은 쪽지 건수 확인
   
-  int hasCheckedWorkIn(int empNo);
-  void updateCheckedWorkOut();
+  int getWaitCount(int empNo);        // 승인 해야 할 대기 전자문서
+  int getMyApvCount(int empNo);       // 진행중인 나의 전자문서
+  
 }
