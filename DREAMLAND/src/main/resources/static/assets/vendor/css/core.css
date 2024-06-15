@@ -15651,6 +15651,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
 .app-brand-link {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .app-brand-logo {
@@ -15659,10 +15660,12 @@ html:not(.layout-footer-fixed) .content-wrapper {
   flex-shrink: 0;
   overflow: hidden;
   min-height: 1px;
+  width: 100%;
 }
 .app-brand-logo img,
 .app-brand-logo svg {
   display: block;
+  width: 100%;
 }
 
 .app-brand-text {
@@ -15676,8 +15679,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
 }
 
 .menu-vertical .app-brand {
-  padding-right: 2rem;
-  padding-left: 2rem;
+  padding: 15px 45px 25px;
 }
 
 .menu-horizontal .app-brand,

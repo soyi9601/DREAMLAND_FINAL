@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function (e) {
       
     // 전자 서명
     let accountSignImage = document.getElementById('uploadSign');
-    const signInput = document.querySelector('.account-sign-input'),
-      resetSignInput = document.querySelector('.account-sign-reset');
-    if (accountUserImage && accountSignImage) {
+    //const signInput = document.querySelector('.account-sign-input'),
+      //resetSignInput = document.querySelector('.account-sign-reset');
+    if (accountUserImage /*&& accountSignImage*/) {
       const resetImage = accountUserImage.src;
-      const resetSign = accountSignImage.src;
+      // const resetSign = accountSignImage.src;
 
       // 프로필 이미지
       fileInput.onchange = () => {
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         accountUserImage.src = resetImage;
       };
       
-      // 서명 등록
+/*      // 서명 등록
       signInput.onchange = () => {
         let maxSize = 100 * 1024;
         if (signInput.files[0]) {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
       resetSignInput.onclick = () => {
         signInput.value = '';
         accountSignImage.src = resetSign;
-      };
+      };*/
     }
   })();
 });

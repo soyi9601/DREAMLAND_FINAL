@@ -101,16 +101,22 @@ public class DepartController {
   // 부서 등록 페이지 이동
   @GetMapping("/addDepart.page")
   public String addDepart(Model model) {
-    List<DepartmentDto> depart = departService.getAllDepart();
-    model.addAttribute("depart", depart);
+    List<DepartmentDto> deptTitleList = departService.getDeptTitleList();
+    model.addAttribute("deptTitleList", deptTitleList);
     return "depart/addDepart";
   }
+  
+  //세부 부서 가져오기
+   @GetMapping(value="/detailDepart.do", produces = "application/json")
+   public ResponseEntity<Map<String, Object>> detailDepart(HttpServletRequest request){
+     return departService.getDeptDetailList(request);
+   }
     
   // 부서 등록
-  @PostMapping("/addDepart.do")
+  @PostMapping("/addDepart")
   public String registerDepart(HttpServletRequest request, HttpServletResponse response) {
     departService.addDepartment(request, response);
-    return "depart/addDepart";
+    return "redirect:/depart/addDepart.page";
   }
   
   // 유저 - 조직도 페이지 이동

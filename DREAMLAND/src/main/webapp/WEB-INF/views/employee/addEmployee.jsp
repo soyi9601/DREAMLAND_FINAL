@@ -74,7 +74,7 @@
                               type="date"
                               id="birth"
                               name="birth"
-                              value="2024-05-20"
+                              value="2000-01-01"
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -131,8 +131,7 @@
                             <input
                               class="form-control"
                               type="date"
-                              value="2024-05-20"
-                              id="enterDate"
+                              id="enter-date"
                               name="enterDate"
                             />
                           </div>
@@ -156,7 +155,7 @@
                           </div>
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2" id="frm-add-employee">저장</button>
+                          <button type="submit" class="btn btn-primary me-2" id="add-employee">저장</button>
                           <button type="reset" class="btn btn-outline-secondary" id="move-before">취소</button>
                         </div>
                     </div>

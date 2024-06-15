@@ -17,7 +17,6 @@
   <div class="container-xxl flex-grow-1 container-p-y">
 
     <div class="title sd-point">FAQ</div>
-
     <div class="row">
       <div class="col-md mb-4 mb-md-0">
         <ul class="category-list">
@@ -79,11 +78,10 @@
           <c:choose>
 					  <c:when test="${empty faqBoardList}">
 					    <div class="no-results">
-					      검색결과가 없습니다.
+					      항목이 없습니다.
 					    </div>
 					  </c:when>
 					  <c:otherwise>
-         
 		          <c:forEach items="${faqBoardList}" var="faq" varStatus="vs">
 		            <div class="card accordion-item">
 		              <div class="accordion-header faq-title-area" id="headingTwo">
@@ -118,7 +116,6 @@
 		                  </div>
 		                  <input class="faqno" type="hidden" value="${faq.faqNo}">
 		                </c:if>
-		                
 		              </div>
 		            </div>
 		          </c:forEach>
@@ -194,11 +191,11 @@ const fnAfterModifyFaq = () => {
 
 // 삭제 완료 메시지
 const fnAfterDeleteFaq = () => {
-    const modifyResult = '${removeResult}';
-    if(modifyResult !== '') {
-      alert(modifyResult);
-    }
+  const modifyResult = '${removeResult}';
+  if(modifyResult !== '') {
+    alert(modifyResult);
   }
+}
 
 fnEditFaq();  
 fnAfterModifyFaq();

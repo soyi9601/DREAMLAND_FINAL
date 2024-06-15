@@ -29,8 +29,10 @@ public class IndexController {
     String email = authentication.getName();
     EmployeeDto emp = indexService.loadUser(email);
     boolean hasCheckedWorkIn = indexService.hasCheckedWorkIn(emp.getEmpNo());
+    boolean hasCheckedWorkOut = indexService.hasCheckedWorkOut(emp.getEmpNo());
     model.addAttribute("emp", emp);
     model.addAttribute("hasCheckedWorkIn", hasCheckedWorkIn);
+    model.addAttribute("hasCheckedWorkOut", hasCheckedWorkOut);
     return "index";
   }
   

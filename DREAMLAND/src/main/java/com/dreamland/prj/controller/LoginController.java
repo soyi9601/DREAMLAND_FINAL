@@ -51,9 +51,8 @@ public class LoginController {
   // 마이페이지 수정
   @PostMapping("/user/modify.do")
   public String modifyUserInfo(@RequestParam("profilePath") MultipartFile profilePath
-                             , @RequestParam("signPath") MultipartFile signPath,
-                             HttpServletRequest request) {
-    loginService.modifyUserInfo(profilePath, signPath, request);
+                             , HttpServletRequest request) {
+    loginService.modifyUserInfo(profilePath, request);
     EmployeeDto employee = loginService.getEmployeeByEmail(request.getParameter("email"));
    
     

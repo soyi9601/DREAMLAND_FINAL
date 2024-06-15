@@ -12,10 +12,11 @@ public interface IndexService {
 
   EmployeeDto loadUser(String email);   // 직원 조회
   
-  void workIn(int empNo);               // 출근
-  Map<String, Object> workOut(int empNo);              // 퇴근
+  void workIn(int empNo);                  // 출근
+  Map<String, Object> workOut(int empNo);  // 퇴근
   
-  boolean hasCheckedWorkIn(int empNo);  // 출근 버튼 눌렀는지 체크
+  boolean hasCheckedWorkIn(int empNo);     // 출근 버튼 눌렀는지 체크
+  boolean hasCheckedWorkOut(int empNo);    // 퇴근 버튼 눌렀는지 체크
   void updateCheckedWorkOut();             // 스케쥴러 - 퇴근 버튼 체크
   
   ResponseEntity<Map<String, Object>> getNoticeList(HttpServletRequest request);  // 공지사항 조회

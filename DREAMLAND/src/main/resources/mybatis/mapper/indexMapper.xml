@@ -38,6 +38,16 @@
     )
   </insert>
   
+  <update id="updateWorkOut" parameterType="map">
+    UPDATE WORK
+       SET WORK_OUT = TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
+         , WORK_TOTAL_TIME = ROUND(EXTRACT(HOUR FROM (CURRENT_TIMESTAMP - WORK_IN)) + EXTRACT(MINUTE FROM (CURRENT_TIMESTAMP - WORK_IN)) / 60, 2)
+     WHERE EMP_NO = #{empNo}
+       AND WORK_DATE = TO_DATE(#{today}, 'YYYY-MM-DD')
+       AND WORK_IN IS NOT NULL
+       AND WORK_OUT IS NULL
+  </update>
+  
   <select id="hasCheckedWorkIn" parameterType="int" resultType="int">
     SELECT COUNT(*)
       FROM WORK
@@ -45,13 +55,13 @@
        AND WORK_DATE = TO_DATE(TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
   </select>
   
-  <update id="updateWorkOut" parameterType="map">
-    UPDATE WORK
-       SET WORK_OUT = TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS')
-         , WORK_TOTAL_TIME = ROUND(EXTRACT(HOUR FROM (CURRENT_TIMESTAMP - WORK_IN)) + EXTRACT(MINUTE FROM (CURRENT_TIMESTAMP - WORK_IN)) / 60, 2)
+  <select id="hasCheckedWorkOut" parameterType="int" resultType="int">
+    SELECT COUNT(*)
+      FROM WORK
      WHERE EMP_NO = #{empNo}
-       AND WORK_DATE = TO_DATE(#{today}, 'YYYY-MM-DD')
-  </update>
+       AND WORK_DATE = TO_DATE(TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+       AND WORK_OUT IS NOT NULL
+  </select>
   
   <update id="updateCheckedWorkOut">
     UPDATE WORK
@@ -71,14 +81,15 @@
   </select>
   
   
-  <!-- 쪽지 건수 확인 -->
+  <!-- 안읽은 쪽지 건수 확인 -->
   <select id="getMessageCountByReceiver">
     SELECT COUNT(*)
       FROM MESSAGE M JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
      WHERE M.MSG_RECEIVER = ${empNo} AND READ_YN = 'N'
   </select>
   
-  <!-- 결재 대기문서 -->
+  
+  <!-- 승인 해야 할 대기 전자문서 -->
   <select id="getWaitCount">
 	  SELECT COUNT(*)
 	    FROM APPROVAL B
@@ -92,7 +103,7 @@
 	     AND NOT B.APV_CHECK = 3
   </select>
 
-	<!-- 결재 진행문서 -->
+	<!-- 진행중인 나의 전자문서 -->
 	<select id="getMyApvCount">
 	  SELECT COUNT(*)
 	    FROM APPROVAL
