@@ -25,14 +25,14 @@ public interface DepartService {
   void updateDepart(DepartmentDto departmentDto);   // 부서 정보 수정
   void updateEmployee(EmployeeDto employeeDto);     // 직원 정보 수정
   
-  List<DepartmentDto> getAllDepart();               // Option 선택 시 모든 부서 나오기
-  void addDepartment(HttpServletRequest request, HttpServletResponse response); // 부서 추가
+  List<DepartmentDto> getAllDepart();               // 모든 부서 조회
   
-  List<Map<String, Object>> getOrgChartData();    // 유저 조직도 조회
+  void addDepartment(HttpServletRequest request, HttpServletResponse response);         // 부서 추가
+  List<DepartmentDto> getDeptTitleList();                                               // 부서 등록 시 부서 번호 조회  
+  ResponseEntity<Map<String, Object>> getDeptDetailList(HttpServletRequest request);    // 부서 등록 시 부서 번호 조회
+  boolean checkDeptNo(int deptNo);      // 부서 등록 시 부서 번호 중복체크
   
-  List<DepartmentDto> getDeptTitleList();
-  
-  ResponseEntity<Map<String, Object>> getDeptDetailList(HttpServletRequest request);
+  List<Map<String, Object>> getOrgChartData();      // 유저 조직도 조회
   
   
 }

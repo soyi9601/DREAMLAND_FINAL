@@ -29,7 +29,7 @@
 		              <button type="button" class="btn btn-primary mb-4" id="btn-work-in" ${hasCheckedWorkIn ? 'disabled' : ''}>
 		                <span class="d-none d-sm-block">출근</span>
 		              </button>
-		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out" >
+		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out" ${!hasCheckedWorkIn || hasCheckedWorkOut ? 'disabled' : ''}>
 		                <span class="d-none d-sm-block">퇴근</span>
 		              </button>
 		            </div>
@@ -145,7 +145,10 @@
 	  </div>	  
 	</div>
   <!-- / Content -->            
-
+<script>
+const hasCheckedWorkIn = ${hasCheckedWorkIn};
+const hasCheckedWorkOut = ${hasCheckedWorkOut};
+</script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
 <script src="../assets/js/pages-index.js"></script>
 <%@ include file="./layout/footer.jsp" %>
