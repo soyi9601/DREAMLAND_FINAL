@@ -22,7 +22,7 @@ nav .dropdown-item .avatar {width: 40px; height: 40px;}
 .notice-badge {margin-right: 12px; font-size: 13px; vertical-align: top;}
 .notice-list {cursor: pointer;}
 .noti-card table {table-layout: fixed;}
-.noti-card table tr td .board-title {display: inline-block; width: 90%; overflow: hidden; text-overflow: ellipsis;}
+.noti-card table tr td .board-title {display: inline-block; width: 90%; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom;}
 
 
 /* 메인 알림 영역 */
