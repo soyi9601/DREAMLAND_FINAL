@@ -95,6 +95,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    if(apvNo2.equals("")) {
 	        ApprovalDto app = ApprovalDto.builder()
 					.empNo(Integer.parseInt(approver))
+					.empName(multipartRequest.getParameter("approver"))
 					.apvTitle(title)
 					.apvKinds("0")
 					.apvCheck(temp)
@@ -289,6 +290,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         
 	    ApprovalDto app = ApprovalDto.builder()
 				.empNo(Integer.parseInt(approver))
+				.empName(multipartRequest.getParameter("approver"))
 				.apvTitle(title)
 				.apvKinds("1")
 				.apvCheck(temp)

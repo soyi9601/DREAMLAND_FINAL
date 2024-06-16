@@ -21,48 +21,54 @@
 <body onload="showPage('leaveRequestForm')"></body>
     </c:if>
 </c:if>
-
-         <div id="container">
-
-    <c:if test="${empty title}">
-  <div class="select-container">
-        <select id="pageSelector" onchange="showPage(this.value)">
-            <option value="approvalForm">품의서 작성</option>
-            <option value="leaveRequestForm">휴가신청서 작성</option>
+          <c:if test="${empty title}">
+        <select id="pageSelector" class="form-select"  style="display: inline-block;" onchange="showPage(this.value)">
+            <option value="approvalForm">품의서</option>
+            <option value="leaveRequestForm">휴가신청서</option>
         </select>
-    </div>
+        
     </c:if>
+ 
+ 
     <div id="approvalForm" class="page">
       <form   id="myForm" method="POST"
 		enctype="multipart/form-data"
         action="${contextPath}/approval/approval.do">
+        
+  
+  
+        
+
        
         <!-- 품의서 내용 -->
         <div class="apv-container">
+
          <h2 class="text-nowrap mb-2 text-primary">품의서</h2>
           <br>
             <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
            <div class="section">
                 <div class="section-title">제목</div>
-                        	<input type="text" style=" width:970px;" name="title" id="title"  value="${title}"></input>
+                        	<input type="text" style=" width:100%;" class="form-control" name="title" id="title"  value="${title}"></input>
     <input type="hidden" name="temp" value="0">
     <input type="hidden" name="apvNo" id="apvNo" value="${approval.apvNo}">
             </div>
+            <br>
           <div class="section">
              <div class="section-title">결재자</div>
                    
      <button id="openOrgChartBtn" type="button" class="btn btn-outline-primary">조직도 열기</button>
-     <button id="resetBtn" type="button"  class="btn btn-outline-secondary" >지우기</button>
+     <button id="resetBtn" type="button" class="btn btn-outline-secondary">지우기</button>
     <div id="orgChartModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id="orgChart"></div>
         </div>
     </div>
- 
-                <table class="approval-table">
+    
+    
+                <table  class="table table-bordered fixed-size">
                  <tr id="selectedPositiionRow">
-                    <td>담당</td>
+                      <td>담당</td>
                     
                   <c:if test="${not empty title}">
                   <c:if test="${not empty appovers.approver1}"><td>${appovers.approverPosName1}</td></c:if>
@@ -88,10 +94,11 @@
             </table>
             
             </div>
+            <br>
             <div class="section">
                 <div class="section-title">참조자</div>
                     <button id="openOrgChartBtn3" type="button" class="btn btn-outline-primary">조직도 열기</button>
-     								<button id="resetBtn3" type="button"   class="btn btn-outline-secondary" >지우기</button>
+     								<button id="resetBtn3" type="button"   class="btn btn-outline-secondary">지우기</button>
     								<div id="orgChartModal3" class="modal">
         						<div class="modal-content">
           				  <span class="close">&times;</span>
@@ -100,23 +107,25 @@
     								</div>
                 
                 		<br>
-                   	<input type="text" style=" width:967px;" name="referrer" id="referrer" value="${referrer}"></input>
+                   	<input type="text"  class="form-control" style=" width:100%;" name="referrer" id="referrer" value="${referrer}"></input>
             </div>
+            <br>
             <div class="section">
                 <div class="section-title">품의 내용 및 상세내역</div>
-                            <textarea class="textarea" name="contents"  id="contents" >${approval.detail}</textarea>
+                            <textarea class="form-control" name="contents"  id="contents" >${approval.detail}</textarea>
             </div>
+            <br>
+            
             	<div class="footer">
-              위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.<br>
-                     <br>
+              위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.
                      <c:if test="${empty title}">
                 <div class="today"></div>        
                 </c:if>
                      <c:if test="${not empty title}">
-                          <div>     ${ApvDate} 작성자 : ${loginEmployee.empName}</div>
+                          <div>${ApvDate} &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;    작성자 : ${loginEmployee.empName}</div>
                 </c:if>
                 </div>
-            <br>
+                 <br>
             <div class="button-container">
 														<div class="row mb-3">
 																<div class="col-sm-10 notice-input-area">
@@ -134,38 +143,44 @@
 																    </div>
 																</div>
 
-  <div>
-    <input type="file" name="files" id="files" multiple>
-  </div>
-    <div id="attach-list"></div>
 														</div>
+  <div>
+    <input class="form-control files"  style="width:350px; " type="file" name="files"  multiple>
+  </div>
+    <br>
+    <div class="attach-list"></div>
             </div>
         </div>
+                         <span class="buttons">
               <button  class="btn btn-primary justify-content-sm-center" id="submitBtn1">임시저장</button>
-              <button  class="btn btn-primary justify-content-sm-center"type="submit">제출하기</button>
+              <button  class="btn btn-primary justify-content-sm-center"type="submit">제출하기</button></span>
         </form>
     </div>
-    
+
     <div id="leaveRequestForm" class="page">
       <form   id="myForm2" method="POST"
 		enctype="multipart/form-data"
         action="${contextPath}/approval/leave.do">
+
+    
         <!-- 휴가신청서 내용 -->
         <div class="apv-container">
+        
+
            <h2 class="text-nowrap mb-2 text-primary">휴가신청서</h2>
            <br>
             <div class="section">
                             <div class="section-title">제목</div>
-                        	<input type="text" style="width:967px;" name="title"  id="title2"  value="${title}"></input>
+                        	<input type="text" class="form-control" style="width:100%;" name="title"  id="title2"  value="${title}"></input>
          <input type="hidden" name="temp" value="0">
             <input type="hidden" name="apvNo" value="${approval.apvNo}">
             </div>
-            
+            <br>
               <div class="section">
              <div class="section-title">결재자</div>
  
      <button id="openOrgChartBtn2" type="button" class="btn btn-outline-primary">조직도 열기</button>
-     <button id="resetBtn2" type="button" class="btn btn-outline-secondary">지우기</button>
+     <button id="resetBtn2" type="button"  class="btn btn-outline-secondary" >지우기</button>
 
     <div id="orgChartModal2" class="modal">
         <div class="modal-content">
@@ -174,7 +189,7 @@
         </div>
     </div>
 
-                <table class="approval-table">
+                <table class="table table-bordered fixed-size">
                  <tr id="selectedPositiionRow2">
                     <td>담당</td>
                     
@@ -201,6 +216,7 @@
                 
             </table>
             </div>
+                <br>
             <div class="section">
                  <div class="section-title">참조자</div>
                     <button id="openOrgChartBtn4" type="button"  class="btn btn-outline-primary" >조직도 열기</button>
@@ -212,17 +228,17 @@
         						</div>
     								</div>
     								<br>
-                   <input type="text" style="width:967px;" id="referrer2" name="referrer" value="${referrer}"></input>
+                   <input type="text"  class="form-control"style="width:100%;" id="referrer2" name="referrer" value="${referrer}"></input>
             </div>
-            
-            <table class="input-table">
-            
+                <br>
              <div class="section-title">휴가 상세 및 사유</div>
+            <table class="table table-bordered leavetable">
+            
                 <tr>
                     <td>휴가 종류</td>
                     <td>
                     
-            <select id="leave-type" name="leavekind">
+            <select id="leave-type" class="form-select"  style="width:100px" name="leavekind">
             <c:if test="${empty title}">
             <option value="0">연차</option>
             <option value="1">반차</option>
@@ -250,19 +266,19 @@
                     
                        <c:if test="${kind ==1 }">
                        <c:if test="${approval.leaveClassify ==0}">
-                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}"> ~  <input type="date" name="leaveend" value="${approval.leaveEnd}"></td>
+                    <td id="leave-details"><input type="date" class="form-control" style="width:150px ;display:inline-block ;"  name="leavestart" value="${approval.leaveStart}">&nbsp;  ~ &nbsp;  <input type="date" class="form-control" style="width:150px; display:inline-block ;"  name="leaveend" value="${approval.leaveEnd}"></td>
                				
 
                					</c:if>
                					                       <c:if test="${approval.leaveClassify ==1}">
-                    <td id="leave-details"><input type="date" name="leavestart" value="${approval.leaveStart}">
+                    <td id="leave-details"><input type="date" name="leavestart" class="form-control" style="width:150px; display:inline-block ;" value="${approval.leaveStart}">
                                    					  <c:if test="${approval.halfday == 'morning'}">
-               					          <label><input type="radio" name="halfday" value="morning" checked> 오전 </label>
-                                 <label><input type="radio" name="halfday" value="afternoon"> 오후</label>
+               					          <label><input type="radio" name="halfday" class="form-check-input" value="morning" checked> 오전&nbsp; </label>
+                                 <label><input type="radio" name="halfday" class="form-check-input" value="afternoon"> 오후</label>
                            </c:if>
                					  <c:if test="${approval.halfday == 'afternoon'}">
-               					          <label><input type="radio" name="halfday" value="morning"> 오전 </label>
-                                 <label><input type="radio" name="halfday" value="afternoon" checked> 오후</label>
+               					          <label><input type="radio" name="halfday" class="form-check-input" value="morning"> 오전 &nbsp;</label>
+                                 <label><input type="radio" name="halfday" class="form-check-input" value="afternoon" checked> 오후</label>
                					  
                					  </c:if> </td>
                					
@@ -271,28 +287,29 @@
                					
                					
                					 <c:if test="${empty title}">
-               					<td id="leave-details"><input type="date"  id="leaveDate"  name="leavestart" > ~ <input type="date" name="leaveend"  ></td>
+               					<td id="leave-details"><input type="date"  class="form-control"  id="leaveDate" style="width:150px; display:inline-block ;"  name="leavestart" >&nbsp;  ~ &nbsp;  <input type="date" class="form-control" style="width:150px; display:inline-block ;"  name="leaveend"  ></td>
                          </c:if>                  
                	 </tr>
                 <tr>
                     <td>사유</td>
                     <td>
-                        <textarea class="textarea" name="contents"  id="contents2" >${approval.detail}</textarea>
+                        <textarea class="form-control"  name="contents"  id="contents2" >${approval.detail}</textarea>
                     </td>
                 </tr>
-            </div>
             </table>
-             	<div class="footer">
-                위와 같은 사유로 휴가를 신청하오니 허가하여 주시기 바랍니다.<br>
-                     <br>
+                <br>
+                    <br>
+            	<div class="footer">
+              위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.
                      <c:if test="${empty title}">
                 <div class="today"></div>        
                 </c:if>
                      <c:if test="${not empty title}">
-                          <div>     ${ApvDate} 작성자 :${loginEmployee.empName}</div>
+                          <div>${ApvDate} &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;    작성자 : ${loginEmployee.empName}</div>
                 </c:if>
                 </div>
-               <br>
+                
+                    <br>
         <div class="button-container">
    														<div class="row mb-3">
 																<div class="col-sm-10 notice-input-area">
@@ -309,14 +326,18 @@
 																		    	</c:if>
 																    </div>
 																</div>
-    <input type="file" name="files" id="files" multiple>
+																</div>
+																  <div>
+    <input  class="form-control files" style="width:350px;" type="file" name="files"  multiple>
   </div>
-    <div id="attach-list"></div>
+  <br>
+    <div class="attach-list"></div>
 														</div>
             </div>
+                            <div class="buttons">
               <button  class="btn btn-primary justify-content-sm-center" id="submitBtn2">임시저장</button>
               <button  class="btn btn-primary justify-content-sm-center" type="submit">제출하기</button>
-        </div>
+    			</div>
         </form>
     </div>
   </div>
@@ -421,7 +442,7 @@ function fnToDay() {
 	var month = ('0' + (today.getMonth() + 1)).slice(-2);
 	var day = ('0' + today.getDate()).slice(-2);
 
-	var dateString = year + '년 ' + month  + '월 ' + day +'일      작성자:' + '${loginEmployee.empName}';
+	var dateString = year + '년 ' + month  + '월 ' + day +'일 &nbsp; &nbsp; 작성자 : ' + '${loginEmployee.empName}';
 	   document.getElementsByClassName('today')[0].innerHTML = dateString;
 	   document.getElementsByClassName('today')[1].innerHTML = dateString;
 }
@@ -635,18 +656,18 @@ function fnJstree() {
             newCell.innerHTML = '<input type="text" class="approvers" name="approver' + tdCount+ '" value="'+name+'" ></input>'; // HTML 추가
             newCell2.innerHTML = pos; // HTML 추가
             tdCount++;
-            if (tdCount >= 5) {
-                openOrgChartBtn.style.display = "none";
-            resetBtn.style.display = "inline-block";
-            } else {
-                openOrgChartBtn.style.display = "inline-block";
-            }
+
+        } else {
+        	
+        	alert('결재인원은 최대 4명 입니다');
+        	
         }
     });
     $('#orgChart2').on("select_node.jstree", function (e, data) {
     	   const approvers = document.getElementsByClassName("approvers");
     	    const approvers2 = document.getElementsByClassName("approvers2");
     	
+    	    if (tdCount < 5) {
     	
     	if(data.node.parent == '#') {
     		return
@@ -658,7 +679,7 @@ function fnJstree() {
 		return
 		
 	}
-        if (tdCount < 5) {
+       
             const name = data.node.data.name;
             const pos = posName[selectedNode.data.rank];
             const newCell = selectedEmployeesRow2.insertCell();
@@ -666,12 +687,10 @@ function fnJstree() {
             newCell.innerHTML = '<input type="text" class="approvers2" name="approver' + tdCount+ '" value="'+name+'" ></input>'; // HTML 추가
             newCell2.innerHTML = pos; // HTML 추가
             tdCount++;
-            if (tdCount >= 5) {
-                openOrgChartBtn2.style.display = "none";
-            resetBtn2.style.display = "inline-block";
-            } else {
-                openOrgChartBtn2.style.display = "inline-block";
-            }
+
+        } else{
+         	alert('결재인원은 최대 4명 입니다');
+        	
         }
     });
     $('#orgChart3').on("select_node.jstree", function (e, data) {
@@ -712,13 +731,13 @@ function fnJstree() {
        var leaveDetails = document.getElementById("leave-details");
 
        if (leaveType == "1") { // 반차 selected
-           leaveDetails.innerHTML   = '<input type="date" id="leaveDate2" name="leavestart"> '; 
-           leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday" value="morning" checked> 오전</label>';
-           leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday" value="afternoon"> 오후</label>';
+           leaveDetails.innerHTML   = '<input type="date" id="leaveDate2" class="form-control" style="width:150px; display:inline-block ;" name="leavestart">&nbsp;&nbsp;&nbsp;&nbsp;'; 
+           leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday" class="form-check-input" value="morning" checked> 오전</label>&nbsp;';
+           leaveDetails.innerHTML   +=' <label><input type="radio" name="halfday"class="form-check-input" value="afternoon"> 오후</label>';
           
        } else { // 연차 selected
-           leaveDetails.innerHTML = '<input type="date" id="leaveDate" name="leavestart"> ~'; 
-           leaveDetails.innerHTML  +=' <input type="date" name="leaveend">';
+           leaveDetails.innerHTML = '<input type="date" id="leaveDate"class="form-control" style="width:150px; display:inline-block ;" name="leavestart">&nbsp; ~&nbsp; '; 
+           leaveDetails.innerHTML  +=' <input type="date"class="form-control" style="width:150px; display:inline-block ;" name="leaveend">';
        }})
    }
    
@@ -779,38 +798,51 @@ function fnJstree() {
 
    
    const fnAttachCheck = () => {
-	   document.getElementById('files').addEventListener('change', (evt) => {
-	     const limitPerSize = 1024 * 1024 * 10;
-	     const limitTotalSize = 1024 * 1024 * 100;
-	     let totalSize = 0;
-	     const files = evt.target.files;
-	     const attachList = document.getElementById('attach-list');
-	     attachList.innerHTML = '';
-	     
-	     if(files.length >5) {
-	         alert('첨부파일은 최대 5개까지 입니다.');
-	         evt.target.value = '';
-	         attachList.innerHTML = '';
-	         return;
-	     }
-	     
-	     for(let i = 0; i < files.length; i++){
-	       if(files[i].size > limitPerSize){
-	         alert('각 첨부 파일의 최대 크기는 10MB입니다.');
-	         evt.target.value = '';
-	         attachList.innerHTML = '';
-	         return;
-	       }
-	       totalSize += files[i].size;
-	       if(totalSize > limitTotalSize){
-	         alert('전체 첨부 파일의 최대 크기는 100MB입니다.');
-	         evt.target.value = '';
-	         attachList.innerHTML = '';
-	         return;
-	       }
-	       attachList.innerHTML += '<div>' + files[i].name +'</div>';
-	     }
+	   var attachefiles = document.querySelectorAll('.files');
+	   console.log(attachefiles);
+	   
+	   attachefiles.forEach(function(file) {
+		   file.addEventListener('change', (evt) => {
+			     const limitPerSize = 1024 * 1024 * 10;
+			     const limitTotalSize = 1024 * 1024 * 100;
+			     let totalSize = 0;
+			     const files = evt.target.files;
+			     const attachList = document.getElementsByClassName('attach-list')[0];
+			     const attachList2 = document.getElementsByClassName('attach-list')[1];
+			     attachList.innerHTML = '';
+			     attachList2.innerHTML = '';
+			     
+			     if(files.length >5) {
+			         alert('첨부파일은 최대 5개까지 입니다.');
+			         evt.target.value = '';
+			         attachList.innerHTML = '';
+			         attachList2.innerHTML = '';
+			         return;
+			     }
+			     
+			     for(let i = 0; i < files.length; i++){
+			       if(files[i].size > limitPerSize){
+			         alert('각 첨부 파일의 최대 크기는 10MB입니다.');
+			         evt.target.value = '';
+			         attachList.innerHTML = '';
+			         attachList2.innerHTML = '';
+			         return;
+			       }
+			       totalSize += files[i].size;
+			       if(totalSize > limitTotalSize){
+			         alert('전체 첨부 파일의 최대 크기는 100MB입니다.');
+			         evt.target.value = '';
+			         attachList.innerHTML = '';
+			         attachList2.innerHTML = '';
+			         return;
+			       }
+			       attachList.innerHTML += '<div>' + files[i].name +'</div>';
+			       attachList2.innerHTML += '<div>' + files[i].name +'</div>';
+			     }
+			   })
+		   
 	   })
+
 	 }
 
 
@@ -821,7 +853,6 @@ function fnJstree() {
            var attachNo = $(this).parent().data("attach-no");
            var apvNo =  $("#apvNo").val();
            var parentElement = $(this).parent();
-           alert(attachNo);
 
            // Ajax 요청
            $.ajax({
@@ -838,6 +869,8 @@ function fnJstree() {
                }
            });
        });
+       
+       
    }
    
  
