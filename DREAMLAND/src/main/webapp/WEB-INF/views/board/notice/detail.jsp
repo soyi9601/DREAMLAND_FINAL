@@ -110,7 +110,8 @@
 						</div>
 				</div>
 				<!-- / Content -->
-
+			</div>
+</div>
 				<script>
     
 //첨부파일 다운로드

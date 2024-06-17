@@ -100,7 +100,6 @@ public class FacilityController {
 			for (String attachNo : delAttachArr) {
 				if(!attachNo.isEmpty()) {
 					facilityService.deleteAttach2(Integer.parseInt(attachNo));
-					System.out.println(attachNo + "녕");
 				}
 			}
 			

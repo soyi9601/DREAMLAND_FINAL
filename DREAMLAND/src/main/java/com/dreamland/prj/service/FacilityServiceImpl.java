@@ -43,7 +43,7 @@ public class FacilityServiceImpl implements FacilityService {
 	
 	@Override
 	public boolean registerFacility(MultipartHttpServletRequest multipartRequest) {
-		
+
 		// FACILITY 테이블에 추가하기
 		String facilityName = multipartRequest.getParameter("facilityName"); 
 		String remarks = multipartRequest.getParameter("remarks"); 

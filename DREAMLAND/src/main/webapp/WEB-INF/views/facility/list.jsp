@@ -98,7 +98,6 @@ const fnNoticeDetail = () =>{
     $(document).on('click', '.facilityline', (evt)=>{
         let facilityNo = $(evt.target).data('notice-no');
         if (facilityNo !== "undefined") {
-            console.log(facilityNo); 
             location.href = '${contextPath}/facility/detail.do?facilityNo=' + facilityNo;
         }
     });
@@ -137,7 +136,6 @@ const fnfacilityListDel = () => {
             checked.each(function () {
                 no.push($(this).val());	// 선택된 시설번호 배열에 추가
                 idx.push($(this).data("idx"));	// 선택된 인덱스 배열에 추가
-                console.log(checked);
             });
 
             let msg = checked.length == 1 ?
@@ -146,7 +144,6 @@ const fnfacilityListDel = () => {
             
             if (confirm(msg)) { // 확인 여부 다이얼로그 표시
             	const url = `${contextPath}/facility/removeNo.do`;
-                console.log("AJAX 요청 URL: ", url); // URL 확인용 로그
             		
                 // 선택된 게시글 삭제 AJAX 요청
                 $.ajax({
@@ -163,7 +160,6 @@ const fnfacilityListDel = () => {
                         }
                     },
                     error: function (xhr, status, error) {
-                        console.error("Error:", error);
                         alert("삭제 요청 중 오류가 발생했습니다.");
                     }
                 });

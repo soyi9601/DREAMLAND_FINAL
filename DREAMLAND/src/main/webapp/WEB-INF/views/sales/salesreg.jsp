@@ -415,7 +415,6 @@ function validateNumberInput(inputField) {
 function validateForm(id) {
     // 입력된 값이 비어 있는 경우
     var salesDate = document.getElementById(id)?.value?.trim();
-    console.log('salesDate', salesDate)
     if (!salesDate) {
     	event.preventDefault();
         // 경고 창 표시
