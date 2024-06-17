@@ -27,7 +27,7 @@ public interface ApprovalMapper {
 	
 	 int insertApproval(ApprovalDto appdto);
 	 int insertApvAttach(ApvAttachDto appdto);
-	 int insertApvLetter(AppletterDto appLetterdto );
+	 int insertApvLetter(AppletterDto appLetterdto);
 	 int insertApvLeave(AppleaveDto appLeaveto );
 	 int insertApvWriter(ApvWriterDto appwridto);
 	 int insertApvRef(String empNo, int apvNo);

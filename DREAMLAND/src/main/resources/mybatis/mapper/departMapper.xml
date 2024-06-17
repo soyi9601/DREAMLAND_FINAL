@@ -153,5 +153,11 @@
      WHERE PARENT_ID LIKE '5%'
   </select>
   
+  <!-- 부서 번호 중복 체크 -->
+  <select id="checkDeptNo" parameterType="int" resultType="int">
+    SELECT COUNT(*)
+      FROM DEPARTMENT
+     WHERE DEPT_NO = #{deptNo}
+  </select>
 
 </mapper> 

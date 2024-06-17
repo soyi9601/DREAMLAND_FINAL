@@ -1,34 +1,25 @@
 package com.dreamland.prj.service;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -37,17 +28,10 @@ import com.dreamland.prj.dto.AppletterDto;
 import com.dreamland.prj.dto.ApprovalDto;
 import com.dreamland.prj.dto.ApvAttachDto;
 import com.dreamland.prj.dto.ApvWriterDto;
-import com.dreamland.prj.dto.EmployeeDto;
-import com.dreamland.prj.dto.FaqBoardDto;
-import com.dreamland.prj.dto.NoticeAttachDto;
 import com.dreamland.prj.mapper.ApprovalMapper;
-import com.dreamland.prj.mapper.FaqBoardMapper;
 import com.dreamland.prj.utils.MyAppPageUtils;
 import com.dreamland.prj.utils.MyFileUtils;
-import com.dreamland.prj.utils.MySecurityUtils;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -72,8 +56,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    String contents =  multipartRequest.getParameter("contents");
 	    
 	    int temp  =  Integer.parseInt(multipartRequest.getParameter("temp"));
-	    
-	    
 	
 	    String approver =  approvalMapper.getEmployeeNo( multipartRequest.getParameter("approver"));
 	    Optional<String> approver22 = Optional.ofNullable(multipartRequest.getParameter("approver2"));

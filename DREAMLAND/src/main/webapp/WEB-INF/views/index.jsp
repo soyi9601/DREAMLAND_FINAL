@@ -29,7 +29,7 @@
 		              <button type="button" class="btn btn-primary mb-4" id="btn-work-in" ${hasCheckedWorkIn ? 'disabled' : ''}>
 		                <span class="d-none d-sm-block">출근</span>
 		              </button>
-		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out" >
+		              <button type="submit" class="btn btn-danger mb-4" id="btn-work-out" ${!hasCheckedWorkIn || hasCheckedWorkOut ? 'disabled' : ''}>
 		                <span class="d-none d-sm-block">퇴근</span>
 		              </button>
 		            </div>
@@ -136,8 +136,12 @@
           <div class="col-md-4">
             <div class="main-news-wrap">
               <div class="btn rounded-pill btn-outline-secondary mb-4 py-3 news-msg"><a href="${contextPath}/user/receiveBox?empNo=${emp.empNo}">안읽은 쪽지<br/><strong class="msg-count"></strong> 건입니다.</a></div>
-              <div class="btn rounded-pill btn-outline-success mb-4 py-3  news-await"><a href="${contextPath}/approval/appList">대기 전자문서<br/><strong class="wait-count"></strong> 건입니다.</a></div>
-              <div class="btn rounded-pill btn-outline-info py-3 news-my-await"><a href="${contextPath}/approval/appMyList">진행 전자문서<br/><strong class="my-apv-count"></strong> 건입니다.</a></div>
+              <c:choose>
+	              <c:when test="${emp.role == 'ROLE_USER'}">
+		              <div class="btn rounded-pill btn-outline-success mb-4 py-3  news-await"><a href="${contextPath}/approval/appList">대기 전자문서<br/><strong class="wait-count"></strong> 건입니다.</a></div>
+		              <div class="btn rounded-pill btn-outline-info py-3 news-my-await"><a href="${contextPath}/approval/appMyList">진행 전자문서<br/><strong class="my-apv-count"></strong> 건입니다.</a></div>
+	              </c:when>  
+               </c:choose>     
             </div>
           </div>
         </div>
@@ -145,7 +149,10 @@
 	  </div>	  
 	</div>
   <!-- / Content -->            
-
+<script>
+const hasCheckedWorkIn = ${hasCheckedWorkIn};
+const hasCheckedWorkOut = ${hasCheckedWorkOut};
+</script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
 <script src="../assets/js/pages-index.js"></script>
 <%@ include file="./layout/footer.jsp" %>
