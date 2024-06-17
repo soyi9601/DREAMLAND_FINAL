@@ -17,7 +17,7 @@ import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.ProductDto;
 import com.dreamland.prj.dto.SalesDto;
 import com.dreamland.prj.mapper.SalesMapper;
-import com.dreamland.prj.utils.MyPageUtils;
+import com.dreamland.prj.utils.MyBoardPageUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -26,25 +26,29 @@ import jakarta.servlet.http.HttpServletRequest;
 public class SalesServiceImpl implements SalesService {
 
 	private final SalesMapper salesMapper;
-	private final MyPageUtils myPageUtils;
+	private final MyBoardPageUtils myBoardPageUtils;
 	
-	public SalesServiceImpl(SalesMapper salesMapper, MyPageUtils myPageUtils){
+	public SalesServiceImpl(SalesMapper salesMapper, MyBoardPageUtils myBoardPageUtils){
 		this.salesMapper = salesMapper;
-		this.myPageUtils = myPageUtils;
+		this.myBoardPageUtils = myBoardPageUtils;
 	}
 	
 	@Override
 	public int registerProduct(HttpServletRequest request) {
 
-	    // 사용자가 입력한 qty
+			// HTTP 요청에서 사용자가 입력한 상품 정보 배열을 가져옵니다.
 	    String[] productSctCdArray = request.getParameterValues("productSctCd");
 	    String[] priceArray = request.getParameterValues("price");
 	    String[] productNMArray = request.getParameterValues("productNM");
 	    String[] deptNoArray = request.getParameterValues("deptNo");
+	    
+	    // 등록된 상품 수를 세기 위한 변수 초기화
 	    int insertCount = 0;
+	    
 	    // ProductDto 객체 생성
 	    List<ProductDto> products = new ArrayList<>();
-
+	    
+	    // 각 입력된 상품 정보를 순회하며 ProductDto 객체를 생성하여 리스트에 추가합니다.
 	    for (int i = 0; i < productSctCdArray.length; i++) {
 	        int productSctCd = Integer.parseInt(productSctCdArray[i]);
 	        int price = Integer.parseInt(priceArray[i]);
@@ -56,7 +60,8 @@ public class SalesServiceImpl implements SalesService {
 	          // 유효하지 않은 파트번호이므로 해당 제품을 무시하고 다음 제품으로 넘어감
 	        	continue;
 	        }
-
+	        
+	        // DepartmentDto 객체 생성 및 설정
 	        DepartmentDto departmentDto = new DepartmentDto();
 	        departmentDto.setDeptNo(deptNo);
 
@@ -95,19 +100,24 @@ public class SalesServiceImpl implements SalesService {
 	    List<SalesDto> saleses = new ArrayList<>();
 
 	    try {
+	    	 	// 입력된 salesDate를 LocalDate 객체로 변환합니다.
 	        LocalDate localDate = LocalDate.parse(salesDate, formatter);
+	        // LocalDate 객체를 java.sql.Date 객체로 변환합니다.
 	        java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
 	        
+	        // 각 입력된 매출 정보를 순회하며 SalesDto 객체를 생성하여 리스트에 추가합니다.
 	        for (int i = 0; i < qtyArray.length; i++) {
 	            int qty = Integer.parseInt(qtyArray[i]);
 	            int productNo = Integer.parseInt(productNoArray[i]);
 	            int deptNo = Integer.parseInt(deptNoArray[i]);
 	            
 	     
-
+	            // 유효성 검사: qty가 0보다 큰지 확인합니다.	
 	            if (qty > 0) {
+	            		// DepartmentDto 객체 생성
 	                DepartmentDto departmentDto = new DepartmentDto();
 	                departmentDto.setDeptNo(deptNo);
+	                // ProductDto 객체 생성
 	                ProductDto productDto = new ProductDto();
 	                productDto.setProductNo(productNo);
 	                
@@ -119,6 +129,7 @@ public class SalesServiceImpl implements SalesService {
 	                                         .salesDate(sqlDate)
 	                                         .build();
 	                
+	                // 생성된 SalesDto 객체를 리스트에 추가
 	                saleses.add(sales);
 	            }
 	        }
@@ -209,28 +220,35 @@ public class SalesServiceImpl implements SalesService {
 	@Override
 	public void loadProductList(Model model) {
 		
+		// Model 객체에서 HttpServletRequest를 추출
 		Map<String, Object> modelMap = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
 		
+		// 전체 상품 수를 조회
 		int total = salesMapper.getProductCount();
 		
+		// display 파라미터 값을 가져와서 설정
 		Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
 		int display = Integer.parseInt(optDisplay.orElse("20"));
 		
+		// page 파라미터 값을 가져와서 설정
 		Optional<String> optPage = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(optPage.orElse("1"));
 		
-		myPageUtils.setPaging(total, display, page);
+		// 페이지 유틸리티 객체를 사용하여 페이징 정보를 설정
+		myBoardPageUtils.setPaging(total, display, page);
 		
+		// 상품 리스트를 조회하기 위한 매개변수 맵을 생성
 		String sort = "desc";
 		
-		Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
-																	 , "end"  , myPageUtils.getEnd()
+		Map<String, Object> map = Map.of("begin", myBoardPageUtils.getBegin()
+																	 , "end"  , myBoardPageUtils.getEnd()
 																	 , "sort" , sort);
 		
+		// Model에 필요한 속성들을 추가
 		model.addAttribute("beginNo", total - (page - 1) * display);
 		model.addAttribute("loadProductList", salesMapper.getProductList(map));
-		model.addAttribute("paging", myPageUtils.getPaging(request.getContextPath() + "/sales/productlist.do", sort, display));
+		model.addAttribute("paging", myBoardPageUtils.getPaging(request.getContextPath() + "/sales/productlist.do", sort, display));
 		model.addAttribute("display", display);
 		model.addAttribute("sort", sort);
 		model.addAttribute("page", page);	

@@ -87,6 +87,7 @@ public interface ApprovalMapper {
 	 ApvWriterDto getReturnApprover(int apvNo);
 	 List<EmployeeDto> getEmployeeList();
 	 List<DepartmentDto> getDepartmentList();
+	 List<DepartmentDto> getDepartmentList2();
 	 
 	 
 }

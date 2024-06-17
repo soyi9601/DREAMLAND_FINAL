@@ -1,8 +1,6 @@
 package com.dreamland.prj.service;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.Map;
 
@@ -26,7 +24,6 @@ import com.dreamland.prj.utils.MyJavaMailUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Transactional
 @Service
@@ -50,7 +47,7 @@ public class LoginServiceImpl implements LoginService {
   private String filePath(MultipartFile filePath, String beforePath) {
     
     String newFilePath = null;
-    String beforeFilePath = beforePath;
+    //String beforeFilePath = beforePath;
     
     if(filePath != null && !filePath.isEmpty()) {
       String uploadPath = myFileUtils.getUploadPath();

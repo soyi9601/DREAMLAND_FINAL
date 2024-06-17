@@ -170,17 +170,6 @@
         AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
     </select>
     
-    <!-- 조기퇴근 횟수 -->
-   <!--  <select id="getEarlyLeaveCount" 
-            parameterType="map" 
-            resultType="int">
-      SELECT COUNT(*) 
-      FROM WORK 
-      WHERE EMP_NO = #{empNo} 
-        AND WORK_STATE = '20'
-        AND TO_CHAR(WORK_DATE, 'YYYY') = #{year}
-    </select> -->
-    
     <!-- 결근 횟수 -->
     <select id="getAbsenceCount" 
             parameterType="map" 

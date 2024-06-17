@@ -39,8 +39,8 @@ public class EmployeeServiceImpl implements EmployeeService {
   // 직원등록시 부서, 직급 가져오기
   @Override
   public void getDeptAndPos(Model model) {
-    Map<String, Object> modelMap = model.asMap();
-    HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+    //Map<String, Object> modelMap = model.asMap();
+    //HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
     
     List<DepartmentDto> deptList = employeeMapper.getDeptList();
     List<PositionDto> posList = employeeMapper.getPosList();

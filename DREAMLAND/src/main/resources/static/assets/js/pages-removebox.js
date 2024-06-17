@@ -22,7 +22,7 @@ $(document).ready(function() {
         data: 'empNo=' + empNo, 
         dataType: 'json',
         success: function(response) {
-            $('#delete-count').text(response.notReadCount + ' / ' + response.total);
+            $('#delete-count').text(response.total);
             
         },
         error: function(jqXHR, textStatus, errorThrown) {

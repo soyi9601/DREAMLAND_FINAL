@@ -2,7 +2,6 @@ package com.dreamland.prj.controller;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,10 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.PrincipalUser;
 import com.dreamland.prj.service.LoginService;
-import com.dreamland.prj.service.LoginServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 /******************************************
  * 

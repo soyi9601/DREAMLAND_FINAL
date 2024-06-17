@@ -71,7 +71,7 @@ public class MessageServiceImpl implements MessageService {
     
     int empNo = Integer.parseInt(request.getParameter("empNo"));
     int total = messageMapper.getMessageCountByReceiver(empNo);
-    int nonRead = messageMapper.getMessageCountByRecRead(empNo);
+    //int nonRead = messageMapper.getMessageCountByRecRead(empNo);
     
     Optional<String> optDisplay = Optional.ofNullable(request.getParameter("display"));
     int display = Integer.parseInt(optDisplay.orElse("5"));
