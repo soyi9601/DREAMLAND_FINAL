@@ -95,6 +95,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    if(apvNo2.equals("")) {
 	        ApprovalDto app = ApprovalDto.builder()
 					.empNo(Integer.parseInt(approver))
+					.empName(multipartRequest.getParameter("approver"))
 					.apvTitle(title)
 					.apvKinds("0")
 					.apvCheck(temp)
@@ -289,6 +290,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         
 	    ApprovalDto app = ApprovalDto.builder()
 				.empNo(Integer.parseInt(approver))
+				.empName(multipartRequest.getParameter("approver"))
 				.apvTitle(title)
 				.apvKinds("1")
 				.apvCheck(temp)
@@ -338,15 +340,12 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    
  
 		 files = multipartRequest.getFiles("files");
-		
 		if(files.get(0).getSize() == 0) {
 			insertAttachCount = 1; 
 		} else {
 			insertAttachCount = 0;
 		}
-		
 		for(MultipartFile multipartFile : files) {
-			
 			if(multipartFile != null && !multipartFile.isEmpty()) {
 				
 				String uploadPath = myFileUtils.getUploadPath();
@@ -379,7 +378,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 				
 			}  
 		}
+		
+	
 		} else {
+			System.out.println("실행3");
 			 ApprovalDto app2 = ApprovalDto.builder().apvNo(Integer.parseInt(apvNo2))
 	    			 .apvCheck(temp)
 	    			 .apvTitle(title)
@@ -406,7 +408,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 			    approvalMapper.insertApvWriter(a);
 		    	
 		    }
-		    
+			System.out.println("실행4");
 		    AppleaveDto appleave = AppleaveDto.builder()
 		    		.apvNo(Integer.parseInt(apvNo2))
 					.leaveClassify(leavekind)
@@ -430,7 +432,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 			for(MultipartFile multipartFile : files) {
 				
 				if(multipartFile != null && !multipartFile.isEmpty()) {
-					
+					System.out.println("실행5");
 					String uploadPath = myFileUtils.getUploadPath();
 					File dir = new File(uploadPath);
 					System.out.println("====="+dir.getAbsolutePath());
@@ -452,7 +454,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 																.build();
 						
 						insertAttachCount += approvalMapper.insertApvAttach(attach);
-						
+						System.out.println("실행6");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -1034,14 +1036,23 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
     @Override
     public void loadTempApp(HttpServletRequest request, Model model) {
+    	System.out.println("실행은 됨");
     	int apvNo = Integer.parseInt(request.getParameter("apvNo"));
 		String Apvstate = request.getParameter("kind");
 	    ApprovalDto a = approvalMapper.getApvDetailByNo(apvNo);
 	    String title = a.getApvTitle();
 	    String Apvkind = a.getApvKinds();
+	    Date ApvDate = a.getApvWriteDate();
 	    List<String> b = approvalMapper.getApprover(apvNo);
 	    
 	    String writer = approvalMapper.getEmployeeName(a.getEmpNo()+"");
+	    
+	    // java.sql.Date를 java.time.LocalDate로 변환
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일");
+
+        // Date를 포맷된 문자열로 변환
+        String formattedDate = formatter.format(ApvDate);
+
 	    
         Map<String, Object> map = new HashMap<>();
         map.put("writer", writer);
@@ -1088,6 +1099,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		model.addAttribute("kind2", Apvstate);
 		model.addAttribute("referrer", sb.toString());
 	    model.addAttribute("appovers", map);
+	    model.addAttribute("ApvDate", formattedDate);
     	
     }
 
@@ -1098,8 +1110,16 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    ApprovalDto a = approvalMapper.getApvDetailByNo(apvNo);
 	    String title = a.getApvTitle();
 	    String Apvkind = a.getApvKinds();
+	    Date ApvDate = a.getApvWriteDate();
 	    int ApvCheck = a.getApvCheck();
 	    List<String> b = approvalMapper.getApprover(apvNo);
+	    
+
+        // java.sql.Date를 java.time.LocalDate로 변환
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일");
+
+        // Date를 포맷된 문자열로 변환
+        String formattedDate = formatter.format(ApvDate);
 
 		
 		 
@@ -1162,6 +1182,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		model.addAttribute("kind2", Apvstate);
 		model.addAttribute("referrer", sb.toString());
 	    model.addAttribute("appovers", map);
+	    model.addAttribute("ApvDate", formattedDate);
 	    
 	}
 
