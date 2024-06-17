@@ -147,13 +147,13 @@ public class ApprovalController {
 	@PostMapping("/approval.do")
 	public String approval(MultipartHttpServletRequest multipartRequest) {
 		approvalService.registerAppletter(multipartRequest);
-		return "approval/appList";
+		return "approval/appMyList";
 	}
 	
 	@PostMapping("/leave.do")
 	public String leave(MultipartHttpServletRequest multipartRequest) {
 		approvalService.registerAppLeave(multipartRequest);
-		return "approval/appList";
+		return "approval/appMyList";
 	}
 	
 	@GetMapping("/approve.do")
