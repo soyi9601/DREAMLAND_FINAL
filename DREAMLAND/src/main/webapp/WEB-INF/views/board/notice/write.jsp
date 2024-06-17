@@ -117,11 +117,22 @@
     
 // 제목 필수 입력
 const fnRegister = () => {
+	
   document.getElementById('frm-notice-register').addEventListener('submit', (evt) => {
-    if(document.getElementById('board-title').value === '') {
+    
+  	let inpTitle= document.getElementById('board-title');
+    let title = inpTitle.value;
+  	
+  	if(document.getElementById('board-title').value === '') {
       alert('제목은 필수입니다.');
       evt.preventDefault();
       return;
+    }
+    
+    // 글자수제한
+    if(title.length > 30){
+    	evt.preventDefault();
+      alert('제목의 글자수는 30자 이내로 설정해주십시오');
     }
   })
 }

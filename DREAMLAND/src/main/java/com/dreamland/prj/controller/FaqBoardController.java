@@ -59,7 +59,7 @@ public class FaqBoardController {
 	  	return "redirect:/board/faq/list.do"; 
 	  }
 	  
-	  //카테고리 분류
+	  //카테고리별 분류
 	  @GetMapping("/sort.do")
 	  public String sort(HttpServletRequest request, Model model) {
 	    faqBoardService.loadFaqCategoryList(request, model);

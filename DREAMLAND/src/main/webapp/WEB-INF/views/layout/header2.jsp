@@ -164,7 +164,7 @@
                   <div>매출화면</div>
                 </a>
               </li>
-              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo eq 5000 && loginEmployee.deptNo eq 1000}">
+              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo >= 5000 && loginEmployee.deptNo <= 5999}">
               <li class="menu-item">
                 <a href="${contextPath}/sales/productreg.page" class="menu-link">
                   <div>상품등록</div>
@@ -189,7 +189,7 @@
                   <div>시설게시판</div>
                 </a>
               </li>
-              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo eq 5000 && loginEmployee.deptNo eq 1000}">
+              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo >= 5000 && loginEmployee.deptNo <= 5999}">
               <li class="menu-item">
                 <a href="${contextPath}/facility/write.page" class="menu-link">
                   <div>시설등록</div>

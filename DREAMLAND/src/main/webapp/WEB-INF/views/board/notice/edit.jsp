@@ -242,10 +242,8 @@ const fnAttachDel = () => {
       }
     }
     globalFormData = newFormData
-    
     const inputsArea = $(".notice-input-area");
     const inputCount = inputsArea.children('.file-input-div').length;
-    
   });
 } 
 
@@ -269,7 +267,7 @@ const fnAddAttachGo = () => {
   });
 }
 
-// 첨부 파일 삭제 (리스트항목에서 삭제, attachNo로 인식)
+// 첨부 파일 삭제 (jsp 리스트항목에서 삭제, attachNo로 인식)
 const fnRemoveAttach = () => {
     $(document).on('click', '.remove-attach', (evt) => {
         if (!confirm('해당 첨부 파일을 삭제할까요?')) {
@@ -286,9 +284,8 @@ const fnRemoveAttach = () => {
     });
 }
 
-        
+// 첨부 파일 삭제 (완전삭제)        
 const fnRemoveAttachGo = (attachNo) => {
-  
     fetch('${contextPath}/board/notice/removeAttach.do', {
         method: 'POST',
         headers: {
@@ -303,7 +300,7 @@ const fnRemoveAttachGo = (attachNo) => {
         if (resData.deleteCount === 1) {
             fnAttachList();
         } else {
-            
+        	
         }
     });
 }
