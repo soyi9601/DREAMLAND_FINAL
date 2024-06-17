@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
@@ -52,14 +51,16 @@ public class ScheduleController {
   
   // 일정 상세보기
   @GetMapping("/detail.do")
-  public String detail(@RequestParam int skdNo, Model model) {
-    model.addAttribute("skd", scheduleService.getSkdByNo(skdNo));
-    return "schedule/detail";
+  public ResponseEntity<ScheduleDto> detail(@RequestParam int skdNo) {
+    ScheduleDto schedule = scheduleService.getSkdByNo(skdNo);
+    return ResponseEntity.ok(schedule);
   }
   
   // 일정 수정
   @PostMapping("/modify.do")
   public ResponseEntity<Map<String, Object>> modify(@RequestBody ScheduleDto schedule) {
+     // 디버깅용 로그 추가
+     System.out.println("수정할 일정 데이터: " + schedule);
      int modifyCount = scheduleService.modifySkd(schedule);
      return ResponseEntity.ok(Map.of("modifyCount", modifyCount));
   }

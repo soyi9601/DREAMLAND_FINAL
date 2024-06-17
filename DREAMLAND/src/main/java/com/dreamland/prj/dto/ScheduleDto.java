@@ -18,5 +18,6 @@ public class ScheduleDto {
   private EmployeeDto employee;
   private List<SkdShrEmpDto> shrEmp;
   private List<SkdShrDeptDto> shrDept;
+  private List<String> sharedItems; // 사원 및 부서 공유 항목을 저장하는 필드
   
 }
