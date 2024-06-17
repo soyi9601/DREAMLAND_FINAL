@@ -9,7 +9,7 @@
 
 
    <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">전자결재 /</span> 내 문서함</h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">전자결재 /</span> 참조 문서</h4>
        <div class="col-12 col-md-6 col-lg-6">
            <div class="col-6 mb-4">
               <div class="post-list-container">
