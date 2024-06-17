@@ -26,6 +26,7 @@
   	</association>
   </resultMap>
   
+  <!-- FACILITY 테이블에 새로운 시설 정보를 추가 -->
   <insert id="insertFacility"
   				parameterType="FacilityDto">
   	<selectKey order="BEFORE" keyProperty="facilityNo" resultType="int">
@@ -49,6 +50,7 @@
   	)
   </insert>
   
+  <!-- FACILITY_ATTACH 테이블에 첨부 파일 정보를 추가 -->
   <insert id="insertFacilityAttach"
   				parameterType="FacilityAttachDto">
   	INSERT INTO FACILITY_ATTACH (
@@ -66,11 +68,13 @@
   	)			
   </insert>
   
+   <!-- FACILITY 테이블의 전체 레코드 수 -->
   <select id="getFacilityCount">
   	SELECT COUNT(*)
   		FROM FACILITY
   </select>
   
+   <!-- FACILITY와 DEPARTMENT 테이블을 조인하여 페이징된 시설 목록 -->
   <select id="getFacilityList"
   				parameterType="Map"
   				resultMap="FacilityMap">
@@ -91,6 +95,7 @@
   WHERE RN BETWEEN #{begin} AND #{end}	
   </select>
   
+   <!--  FACILITY_NO를 기준으로 특정 시설 정보 -->
   <select id="getFacilityByNo"
   				resultMap="FacilityMap">
   SELECT F.FACILITY_NO, F.FACILITY_NAME, F.MANAGEMENT, F.FACILITY_DATE, F.REMARKS
@@ -100,6 +105,7 @@
    WHERE F.FACILITY_NO = #{facilityNo}
   </select>
   
+  <!-- FACILITY_NO를 기준으로 첨부 파일 목록 -->
   <select id="getAttachList"
   				resultType="FacilityAttachDto">
   	SELECT ATTACH_NO, UPLOAD_PATH, FILESYSTEM_NAME, ORIGINAL_FILENAME   
@@ -107,6 +113,7 @@
   	 WHERE FACILITY_NO = #{facilityNo} 		
   </select>
   
+  <!-- ATTACH_NO를 기준으로 특정 첨부 파일 정보 -->
   <select id="getAttachByNo"
   				resultType="FacilityAttachDto">
  		SELECT ATTACH_NO, UPLOAD_PATH, FILESYSTEM_NAME, ORIGINAL_FILENAME   
@@ -114,6 +121,7 @@
   	 WHERE ATTACH_NO = #{attachNo} 	
  	</select>
  	
+ 	<!-- FACILITY 테이블에서 시설 정보 -->
 	<update id="updateFacility" parameterType="FacilityDto">
     UPDATE FACILITY
     SET FACILITY_NAME = #{facilityName}
@@ -123,37 +131,24 @@
     WHERE FACILITY_NO = #{facilityNo}
 	</update>
  	
+ 	<!-- FACILITY_ATTACH 테이블에서 FACILITY_NO를 기준으로 첨부 파일을 삭제 -->
  	<delete id="deleteAttach">
  		DELETE
  			FROM FACILITY_ATTACH
  		 WHERE FACILITY_NO = #{facilityNo}	
  	</delete>
  	
+ 	<!-- FACILITY 테이블에서 FACILITY_NO를 기준으로 시설 정보를 삭제 -->
  	<delete id="deleteFacility">
  		DELETE
  			FROM FACILITY
  		 WHERE FACILITY_NO = #{facilityNo}	
  	</delete>
   
+  <!-- FACILITY_ATTACH 테이블에서 ATTACH_NO를 기준으로 첨부 파일을 삭제 -->
   <delete id="deleteAttach2">
  		DELETE
  			FROM FACILITY_ATTACH
  		 WHERE ATTACH_NO = #{attachNo}	
  	</delete>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   </mapper>

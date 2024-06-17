@@ -337,9 +337,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 		if(file.exists()) {
 			file.delete();
 		}
-		
 		int deleteCount = noticeMapper.deleteAttach(attachNo);
-		
 		return ResponseEntity.ok(Map.of("deleteCount",deleteCount));
 	}
 

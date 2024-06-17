@@ -182,7 +182,7 @@
 		                </li>
 		                <li class="menu-item">
 		                  <a href="${contextPath}/facility/write.page" class="menu-link">
-		                    <div>시설등록</div>
+		                    <div>시설점검등록</div>
 		                  </a>
 		                </li>
 		              </ul>
