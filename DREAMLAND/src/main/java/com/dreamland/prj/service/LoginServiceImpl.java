@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginService {
     this.passwordEncoder = passwordEncoder;
   }
   
-  // 파일 경로 메소드
+  // 프로필 이미지 저장 메소드
   private String filePath(MultipartFile filePath, String beforePath) {
     
     String newFilePath = null;
@@ -125,7 +125,6 @@ public class LoginServiceImpl implements LoginService {
     PrincipalUser user = new PrincipalUser(loginEmployee);
     
     // 수정된 내용 세션 추가
-    // Authentication auth = new CustomAuthenticationProvider(this).authenticate(new UsernamePasswordAuthenticationToken(user, "updateData", user.getAuthorities()));
     Authentication auth = new DBConnectionProvider(this).authenticate(new UsernamePasswordAuthenticationToken(user, "updateData", user.getAuthorities()));
     SecurityContextHolder.getContext().setAuthentication(auth);
   }
@@ -158,7 +157,7 @@ public class LoginServiceImpl implements LoginService {
     return new ResponseEntity<>(Map.of("enableEmail", enableEmail), HttpStatus.OK);
   }
   
-  // 임시비밀번호 전송
+  // 임시비밀번호 발급
   @Override
   public ResponseEntity<Map<String, Object>> sendTempPw(Map<String, Object> params) {
     

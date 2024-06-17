@@ -18,6 +18,13 @@ import com.dreamland.prj.service.EmployeeServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/******************************************
+ * 
+ * - 직원등록
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
+
 @Controller
 public class EmployeeContorller {
   

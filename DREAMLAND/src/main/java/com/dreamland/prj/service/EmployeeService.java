@@ -10,7 +10,12 @@ import com.dreamland.prj.dto.EmployeeDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+/******************************************
+ * 
+ * - 직원등록
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
 public interface EmployeeService {
   
   // 직원등록시 부서, 직급 가져오기

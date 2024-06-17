@@ -7,7 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dreamland.prj.mapper.MessageMapper;
 import com.dreamland.prj.service.MessageService;
-
+/******************************************
+ * 
+ * - 쪽지삭제 스케줄러
+ *   ㄴ 매일 0시 0분 0초에 실행됨
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
 @Component
 public class MessageDeleteScheduler {
   

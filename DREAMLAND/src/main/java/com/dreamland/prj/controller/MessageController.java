@@ -18,6 +18,13 @@ import com.dreamland.prj.service.MessageService;
 import com.dreamland.prj.service.MessageServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
+/******************************************
+ * 
+ * - 쪽지 보내기/답장하기/보관하기/삭제하기
+ * - 받은쪽지함/보낸쪽지함/중요보관함/휴지통
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
 
 @Controller
 public class MessageController {

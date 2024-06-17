@@ -10,7 +10,14 @@ import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.PrincipalUser;
 
 import jakarta.servlet.http.HttpServletRequest;
-
+/******************************************
+ * 
+ * - 로그인
+ * - 마이페이지 정보 수정
+ * - 임시비밀번호 발급
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
 public interface LoginService {
   
   EmployeeDto getEmployeeByEmail(String email);
@@ -26,6 +33,7 @@ public interface LoginService {
   
   // 이메일 체크
   ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params);
+  
   // 임시 비밀번호 발급
   ResponseEntity<Map<String, Object>> sendTempPw(Map<String, Object> params);
 

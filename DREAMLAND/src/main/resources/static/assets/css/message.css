@@ -22,5 +22,5 @@
 .send-btns-area{display:flex;justify-content: space-between;}
 
 /* 상세보기 글꼴 */
-.font-detail{font-family: var(--bs-font-sans-serif);font-size: 1rem;}
+.font-detail{font-family: var(--bs-font-sans-serif);font-size: 1rem; white-space:pre-wrap;}
 

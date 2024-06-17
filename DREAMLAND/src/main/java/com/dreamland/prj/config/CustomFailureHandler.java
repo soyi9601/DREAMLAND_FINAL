@@ -13,6 +13,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/******************************************
+ * 
+ * 로그인 예외처리
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
+
 @Component
 public class CustomFailureHandler extends SimpleUrlAuthenticationFailureHandler{
   

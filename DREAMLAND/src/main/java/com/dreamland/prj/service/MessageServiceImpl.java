@@ -25,13 +25,14 @@ public class MessageServiceImpl implements MessageService {
   private final MessageMapper messageMapper;
   private final MyMessagePageUtils myPageUtils;
 
-  
+  //받는사람 리스트 가져오기 
   @Override
   public List<EmployeeDto> getEmployeeList(Map<String, Object> param) {
 
     return messageMapper.getEmployeeList(param);
   }
   
+  //쪽지 보내기
   @Override
   public int insertMessage(HttpServletRequest request) {
     int sender = Integer.parseInt(request.getParameter("sender"));
@@ -52,6 +53,7 @@ public class MessageServiceImpl implements MessageService {
     return insertCount;
   }
   
+  // 받은쪽지 개수
   @Override
   public Map<String, Object> getReceiveCount(int empNo) {
     Map<String, Object> total = new HashMap<>();
@@ -60,6 +62,7 @@ public class MessageServiceImpl implements MessageService {
     return total;
   }
   
+  // 받은 쪽지 리스트 페이징 처리
   @Override
   public void getReceiveMessage(Model model) {
     
@@ -101,11 +104,13 @@ public class MessageServiceImpl implements MessageService {
     
   }
   
+  // 보낸 쪽지 개수
   @Override
   public int getSendCount(int empNo) {
     return messageMapper.getMessageCountBySender(empNo);
   }
   
+  //보낸 쪽지 리스트 페이징 처리
   @Override
   public void getSendMessage(Model model) {
     
@@ -147,6 +152,7 @@ public class MessageServiceImpl implements MessageService {
 
   }
 
+  // 받은쪽지함에서 쪽지 상세보기
   @Override
   public void getMessageDetailByReceive(Model model) {
     
@@ -154,12 +160,13 @@ public class MessageServiceImpl implements MessageService {
     HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
     
     int msgNo = Integer.parseInt(request.getParameter("msgNo"));
-    int updateReadYN = messageMapper.updateMsgRead(msgNo);
+    messageMapper.updateMsgRead(msgNo);
     
     model.addAttribute("msgDetail", messageMapper.getMessageDetail(msgNo));
     
   }
-  
+
+  // 보낸쪽지함에서 쪽지 상세보기
   @Override
   public void getMessageDetailBySend(Model model) {
     
@@ -172,6 +179,7 @@ public class MessageServiceImpl implements MessageService {
     
   }
   
+  // 받은쪽지함에서 보관
   @Override
   public int saveRecMessage(HttpServletRequest request) {
     
@@ -189,6 +197,7 @@ public class MessageServiceImpl implements MessageService {
     return count;
   }
   
+  // 보낸쪽지함에서 보관
   @Override
   public int saveSendMessage(HttpServletRequest request) {
     String[] saveList = request.getParameterValues("checkYn");
@@ -205,6 +214,7 @@ public class MessageServiceImpl implements MessageService {
     return count;
   }
   
+  // 보관 쪽지 리스트 페이징 처리
   @Override
   public void getStarMessage(Model model) {
     
@@ -246,6 +256,7 @@ public class MessageServiceImpl implements MessageService {
     
   }
   
+  // 보관된 쪽지 개수
   @Override
   public Map<String, Object> getStarCount(int empNo) {
     Map<String, Object> total = new HashMap<>();
@@ -254,6 +265,7 @@ public class MessageServiceImpl implements MessageService {
     return total;
   }
   
+  // 받은쪽지함에서 삭제
   @Override
   public int deleteRecMessage(HttpServletRequest request) {
     
@@ -271,6 +283,7 @@ public class MessageServiceImpl implements MessageService {
     return count;
   }
   
+  // 보낸쪽지함에서 삭제
   @Override
   public int deleteSendMessage(HttpServletRequest request) {
     String[] saveList = request.getParameterValues("checkYn");
@@ -287,6 +300,7 @@ public class MessageServiceImpl implements MessageService {
     return count;
   }
   
+  // 휴지통 리스트 페이징 처리
   @Override
   public void getDeleteMessage(Model model) {
     
@@ -328,6 +342,7 @@ public class MessageServiceImpl implements MessageService {
     
   }
   
+  // 삭제된 쪽지 개수
   @Override
   public Map<String, Object> getDeleteCount(int empNo) {
     Map<String, Object> total = new HashMap<>();
@@ -336,6 +351,7 @@ public class MessageServiceImpl implements MessageService {
     return total;
   }
   
+  // 논리적 완전삭제(스케줄러용)
   @Override
   public void realDeleteMessage() {
     // TODO Auto-generated method stub
@@ -343,6 +359,7 @@ public class MessageServiceImpl implements MessageService {
     
   }
   
+  // 답장하기
   @Override
   public void setReply(Model model) {
     

@@ -36,6 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   }
   
+  // 직원등록시 부서, 직급 가져오기
   @Override
   public void getDeptAndPos(Model model) {
     Map<String, Object> modelMap = model.asMap();
@@ -49,6 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     
   }
   
+  // 세부부서 가져오기
   @Override
   public ResponseEntity<Map<String, Object>> getDetailDepart(HttpServletRequest request) {
     ResponseEntity<Map<String, Object>> result = null;
@@ -57,6 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     return result;
   }
   
+  // 프로필 사진 등록 메소드
   private String filePath(MultipartFile filePath) {
     
     String newFilePath = null;
@@ -82,6 +85,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     return newFilePath;
   }
   
+  
+  // 직원등록
   @Override
   public void addEmployee(MultipartFile profilePath
                         , HttpServletRequest request, HttpServletResponse response) {
@@ -105,7 +110,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // Mapper 로 보낼 EmployeeDto 객체 생성
     EmployeeDto emp = EmployeeDto.builder()
-                        .password(password) // 회원가입 되지만 시큐리티로 로그인을 할 수 없음. 이유는 패스워드가 암호화가 안되어있기 때문
+                        .password(password)
                         .empName(name)
                         .birth(birth)
                         .enterDate(enterDate)
@@ -117,11 +122,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                         .profilePath(newProfilePath)
                       .build();
     
-    // 회원 가입
+    // 직원 등록
     employeeMapper.insertEmployee(emp);  
     
   }
   
+  // 이메일 중복체크
   @Override
   public ResponseEntity<Map<String, Object>> emailCheck(HttpServletRequest request) {
     ResponseEntity<Map<String, Object>> result = null;

@@ -13,6 +13,13 @@ import org.springframework.web.cors.CorsUtils;
 
 import lombok.RequiredArgsConstructor;
 
+/******************************************
+ * 
+ * Spring Security 설정
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
+
 @RequiredArgsConstructor
 @Configuration 
 @EnableWebSecurity 
@@ -21,15 +28,13 @@ public class SecurityConfig {
   
   private final AuthenticationFailureHandler customFailureHandler;
   
-//  @Autowired
-//  private DBConnectionProvider dbprovider;
-
-  // 해당 메서드의 리턴되는 오브젝트를 IoC로 등록
+  // 비밀번호 암호화
   @Bean
   BCryptPasswordEncoder encodePwd() {
     return new BCryptPasswordEncoder();
   }
   
+  // 권한별 접근 페이지 설정
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
@@ -40,6 +45,8 @@ public class SecurityConfig {
         .requestCache(request -> request
             .requestCache(requestCache))
         .authorizeHttpRequests(authorize -> authorize
+            
+            /* 권한 없이 모두 접근 가능 */
             .requestMatchers("/loginPage").permitAll()
             .requestMatchers("/resources/**").permitAll() // "/resources/**" 경로에 대한 모든 사용자 허용
             .requestMatchers("/login/**", "/auth/**").permitAll()
@@ -47,8 +54,8 @@ public class SecurityConfig {
             .requestMatchers("/auth/error").permitAll() 
             .requestMatchers(req->CorsUtils.isPreFlightRequest(req)).permitAll()
             
+            /* 인증만 되면 접근할 수 있는 페이지 */
             .requestMatchers("/user/**").authenticated()  // 인증만 되면 들어갈 수 있는 주소
-            .requestMatchers("/manager/**", "/").hasAnyRole("ADMIN", "USER")
             
             /* 관리자만 가능*/
             .requestMatchers("/depart/addDepart.page").hasRole("ADMIN")
@@ -56,7 +63,11 @@ public class SecurityConfig {
             .requestMatchers("/board/faq/write.page").hasRole("ADMIN")
             .requestMatchers("/board/notice/write.page").hasRole("ADMIN")
             .requestMatchers("/employee/**").hasRole("ADMIN")
-            //.requestMatchers("/admin/**").hasRole("ADMIN")
+            
+            /* 유저(직원)만 가능 */
+            .requestMatchers("/approval/appWrite").hasRole("USER")
+            
+            /* 이외의 요청들은 인증이 되어야 함 */
             .anyRequest().authenticated()) 
         .formLogin(formLogin -> formLogin
             .loginPage("/loginPage")

@@ -21,6 +21,14 @@ import com.dreamland.prj.service.LoginServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+/******************************************
+ * 
+ * - 로그인 핸들러
+ * - 임시비밀번호 발급
+ * - 마이페이지 수정
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
 
 @RequiredArgsConstructor
 @Controller
