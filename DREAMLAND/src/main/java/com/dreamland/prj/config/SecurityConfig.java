@@ -67,6 +67,10 @@ public class SecurityConfig {
             /* 유저(직원)만 가능 */
             .requestMatchers("/approval/appWrite").hasRole("USER")
             
+            /* 매니저만 가능 */
+            .requestMatchers("/sales/productreg.page").hasRole("MANAGER")
+            .requestMatchers("/sales/salesreg.page").hasRole("MANAGER")
+            
             /* 이외의 요청들은 인증이 되어야 함 */
             .anyRequest().authenticated()) 
         .formLogin(formLogin -> formLogin
