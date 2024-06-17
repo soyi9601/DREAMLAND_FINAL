@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface IndexService {
 
-  EmployeeDto loadUser(String email);   // 직원 조회
+  EmployeeDto loadUser(String email);      // 직원 조회
   
   void workIn(int empNo);                  // 출근
   Map<String, Object> workOut(int empNo);  // 퇴근
@@ -25,4 +25,6 @@ public interface IndexService {
   
   int getWaitCount(int empNo);          // 내가 승인 해야 할 결재 문서 건수
   int getMyApvCount(int empNo);         // 내가 올린 결재 문서 건수
+  
+  // List<ScheduleDto> loadSkdList(EmployeeDto emp);    // 나의 일정 조회
 }

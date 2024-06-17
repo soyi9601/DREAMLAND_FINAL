@@ -28,13 +28,14 @@ public interface DepartMapper {
   void insertDepart(DepartmentDto departmentDto);   // 부서 추가
   List<DepartmentDto> getAllDepart();
   
+  List<DepartmentDto> getTitleDept();               // 세부 부서 조회
+  List<DepartmentDto> getDeptDetail();              // 세부 부서 조회
+  int checkDeptNo(int deptNo);                      // 부서 등록 시 부서 번호 중복체크
+  
   
   // 유저
   List<OrgChartDto> getDepartListUser();            // 조직도 조회
   
-  // 부서 세부 조회
-  List<DepartmentDto> getTitleDept();
-  List<DepartmentDto> getDeptDetail();
   
   
 }

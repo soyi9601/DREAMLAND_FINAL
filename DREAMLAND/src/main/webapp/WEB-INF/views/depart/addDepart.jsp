@@ -30,6 +30,7 @@
 	              <div class="mb-3 col-md-6">
 	                 <label for="deptNo" class="form-label">부서번호</label>
 	                 <input class="form-control" type="text" id="dept-no" name="deptNo" />
+	                 <div id="deptNo-result"></div>
 	               </div>
 	              <div class="mb-3 col-md-3">
                   <label class="form-label" for="parent-id">소속부서</label>

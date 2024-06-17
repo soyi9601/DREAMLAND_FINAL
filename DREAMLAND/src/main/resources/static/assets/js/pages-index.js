@@ -9,7 +9,7 @@
  *    3) 240605
  *        - 공지사항 조회
  *    4) 240610
- *        - 전자결재 카운터
+ *        - 전자결재 카운터, 안읽은 쪽지 카운터
  */
  
  
@@ -115,18 +115,22 @@ const btnWorkIn = document.getElementById('btn-work-in');
 const btnWorkOut = document.getElementById('btn-work-out');
 
 // 초기 버튼 상태 설정
-/*
+
 document.addEventListener('DOMContentLoaded', function() {
   
   if (hasCheckedWorkIn) {
-    btnWorkIn.disabled = true;    // 이미 출근했으면 출근 버튼 비활성화
-    btnWorkOut.disabled = false;  // 퇴근 버튼 활성화
+    btnWorkIn.disabled = true;
+    if (hasCheckedWorkOut) {
+        btnWorkOut.disabled = true;
+    } else {
+        btnWorkOut.disabled = false;
+    }
   } else {
-    btnWorkIn.disabled = false;   // 아직 출근하지 않았으면 출근 버튼 활성화
-    btnWorkOut.disabled = true;   // 퇴근 버튼 비활성화
+    btnWorkIn.disabled = false;
+    btnWorkOut.disabled = true;
   }
 })
-*/
+
 
 /* *********** 출근 *********** */
 const fnWorkIn = () => {
@@ -167,7 +171,6 @@ const fnWorkOut = () => {
       })
       .catch(error => {
         console.error('Error:' , error);
-        btnWorkOut.disabled = false;
       });
     })      
   }
@@ -203,10 +206,11 @@ const fnGetNotice = () => {
           str += '<td class="text-center" scope="col" style="width: 12%"">' +  notice.noticeNo + '</td>';
           if(notice.signal === 1) {
             str += '<td class="notice-list" scope="col" style="width: 68%" data-notice-no="' + notice.noticeNo + '"><span class="notice-badge important badge rounded-pill bg-label-danger" data-notice-no="' 
-                + notice.noticeNo + '">중요</span><span class="board-title">' 
+                + notice.noticeNo + '">중요</span><span class="board-title" data-notice-no="' + notice.noticeNo + '">' 
                 + notice.boardTitle + '</span></td>';
           } else {
-            str += '<td class="notice-list" scope="col" style="width: 68%" data-notice-no="' + notice.noticeNo + '"><span class="board-title">' + notice.boardTitle + '</span></td>';            
+            str += '<td class="notice-list" scope="col" style="width: 68%" data-notice-no="' + notice.noticeNo + '"><span class="board-title" data-notice-no="' + notice.noticeNo + '">' 
+            + notice.boardTitle + '</span></td>';            
           }
           str += '<td scope="col" style="width: 20%"><span class="">' + notice.boardModifyDt + '</span></td>';
           str += '</tr>';
