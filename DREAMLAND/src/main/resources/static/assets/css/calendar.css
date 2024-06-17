@@ -6,6 +6,18 @@
 /* fullcalendar */
 .fc-event-title {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 .fc-event {border: none;} /* 일정 테두리 지우기 */   
+.fc-daygrid-day-frame{cursor: pointer;}
+.fc .fc-toolbar-title {font-size: 25px;}
+.fc .fc-toolbar.fc-header-toolbar {margin: 29px 0; padding: 0px 0px; }
+.fc .fc-toolbar button {padding: 5px 5px;  height: auto;}
+.fc .fc-toolbar .fc-today-button,
+.fc .fc-toolbar .fc-dayGridMonth-button,
+.fc .fc-toolbar .fc-timeGridWeek-button,
+.fc .fc-toolbar .fc-timeGridDay-button {width: 60px;}
+.fc .fc-toolbar button.fc-button-active {background-color: #90b54c !important; border-color: #90b54c !important; color: white;}
+.fc .fc-button-primary:disabled {background-color: #90b54c !important; border-color: #90b54c !important; color: white;}
+.fc .fc-button:disabled {opacity: 1;}
+
 
 /* Autocomplete */
 .ui-autocomplete {max-height: 200px; overflow-y: auto; overflow-x: hidden; z-index: 1000; list-style: none; padding: 0; margin: 0; background-color: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);} /* 드롭다운 */

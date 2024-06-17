@@ -11,7 +11,7 @@
 .text-exp{margin-top:40px;}
 .work-info{margin-bottom: 5px}
 .input-group {display: flex; align-items: center;}
- #dateRange {flex: 1; max-width: 230px;}
+ #dateRange {flex: 1; max-width: 230px; background-color: #fff;}
 .wrap-work-list{margin-top: 10px;}
 
  /* 휴가관리 */

@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 
 import com.dreamland.prj.dto.AppleaveDto;
 import com.dreamland.prj.dto.EmployeeDto;
-import com.dreamland.prj.mapper.dayoffMapper;
+import com.dreamland.prj.mapper.DayoffMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class dayoffServiceImpl implements dayoffService {
 
-  private final dayoffMapper dayoffMapper;
+  private final DayoffMapper dayoffMapper;
   
   @Override
   public void loadDayoffData(Model model, EmployeeDto employee) {
