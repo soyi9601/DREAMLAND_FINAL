@@ -20,6 +20,7 @@ import com.dreamland.prj.service.LoginService;
 import com.dreamland.prj.service.LoginServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 /******************************************
  * 
@@ -93,7 +94,4 @@ public class LoginController {
     return loginService.sendTempPw(params);
   }
   
-
-
-    
 }

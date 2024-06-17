@@ -51,7 +51,7 @@ public class SecurityConfig {
             .requestMatchers("/resources/**").permitAll() // "/resources/**" 경로에 대한 모든 사용자 허용
             .requestMatchers("/login/**", "/auth/**").permitAll()
             .requestMatchers("/WEB-INF/views/**").permitAll() // "/WEB-INF/views/**" 경로에 대한 모든 사용자 허용
-            .requestMatchers("/auth/error").permitAll() 
+            //.requestMatchers("/auth/error").permitAll() 
             .requestMatchers(req->CorsUtils.isPreFlightRequest(req)).permitAll()
             
             /* 인증만 되면 접근할 수 있는 페이지 */

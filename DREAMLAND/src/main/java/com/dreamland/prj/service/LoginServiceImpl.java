@@ -1,6 +1,8 @@
 package com.dreamland.prj.service;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.Map;
 
@@ -24,6 +26,7 @@ import com.dreamland.prj.utils.MyJavaMailUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Transactional
 @Service
@@ -43,7 +46,7 @@ public class LoginServiceImpl implements LoginService {
     this.passwordEncoder = passwordEncoder;
   }
   
-  // 프로필 이미지 저장 메소드
+  // 파일 경로 메소드
   private String filePath(MultipartFile filePath, String beforePath) {
     
     String newFilePath = null;
@@ -125,6 +128,7 @@ public class LoginServiceImpl implements LoginService {
     PrincipalUser user = new PrincipalUser(loginEmployee);
     
     // 수정된 내용 세션 추가
+    // Authentication auth = new CustomAuthenticationProvider(this).authenticate(new UsernamePasswordAuthenticationToken(user, "updateData", user.getAuthorities()));
     Authentication auth = new DBConnectionProvider(this).authenticate(new UsernamePasswordAuthenticationToken(user, "updateData", user.getAuthorities()));
     SecurityContextHolder.getContext().setAuthentication(auth);
   }
@@ -148,6 +152,7 @@ public class LoginServiceImpl implements LoginService {
     return employeeMapper.updatePassword(email, changePw);
   }
   
+  
   // 이메일 체크
   @Override
   public ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params) {
@@ -157,7 +162,7 @@ public class LoginServiceImpl implements LoginService {
     return new ResponseEntity<>(Map.of("enableEmail", enableEmail), HttpStatus.OK);
   }
   
-  // 임시비밀번호 발급
+  // 임시비밀번호 전송
   @Override
   public ResponseEntity<Map<String, Object>> sendTempPw(Map<String, Object> params) {
     
