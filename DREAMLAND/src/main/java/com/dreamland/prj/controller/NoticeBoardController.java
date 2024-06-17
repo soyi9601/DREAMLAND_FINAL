@@ -85,16 +85,13 @@ public class NoticeBoardController {
   
   @PostMapping("/modify.do")
   public String modify(NoticeBoardDto notice, RedirectAttributes redirectAttributes) {
-  	
   	// todo delAttachList를 split("|") 해서 attachNo를 delete하는 구문 작성(service, mapper-sql)
   	String[] delAttachArr = notice.getDelAttachList().split("\\|");
   	for (String attachNo : delAttachArr) {
   	    if (!attachNo.isEmpty()) {
   	        noticeBoardService.deleteAttach(Integer.parseInt(attachNo));
-  	        System.out.println(noticeBoardService.deleteAttach(Integer.parseInt(attachNo)));
   	    }
   	}
-  	
   	// todo insAttachList를 split("|") 해서 attachNo를 insert하는 구문 작성
     redirectAttributes
       .addAttribute("noticeNo", notice.getNoticeNo())

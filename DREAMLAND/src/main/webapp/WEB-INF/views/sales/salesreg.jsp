@@ -11,15 +11,6 @@
 <!-- link -->
 <link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
-
-
-<!-- link -->
-<link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
-<link rel="stylesheet" href="/resources/assets/vendor/fonts/boxicons.css" />
-<!-- include moment.js -->
-<script src="/resources/assets/moment/moment-with-locales.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  		
  		<style>
  		.card {
@@ -28,32 +19,71 @@
     .card.active {
         display: block;
         }
+    .Allmagin {
+    		margin: 0px 200px 100px 200px;
+    		}
+    .Ss {
+    		display: flex; 
+    		justify-content: space-between;
+    }
+    .title {
+    		padding: 40px 40px 0px 30px;
+    		color:  #90B54C;
+    }    
+    select {
+    		float: right;
+    		height: 30px;
+    		margin: 50px 50px 0px 30px;
+    }
+    .card-date {
+    		display: flex; 
+    }
+    .salesDate {
+    		height: 30px;
+    		margin-top: 20px; 
+    }
+    th, tr {
+ 					text-align: center;  
+ 		}
+ 		.table table-dark {
+ 					width: 100%;
+ 		}
+ 		.btn-reg {
+ 						margin : 30px 25px 30px 0px;
+ 						height: 50px;
+    				width: 120px;
+    				float: right;
+    				background-color: #90B54C;
+    				color: #FFFFFF;
+    }
  		</style>
 
-  
+<!-- Content wrapper -->
+<div class="content-wrapper">  
 
-<body>
-
-		<label for="pageSelect">파트 선택</label>
-			<select id="pageSelect" onchange="showPage(this.value)">
-    		<option value="tickets">티켓</option>
-    		<option value="Zootopia">주토피아</option>
-    		<option value="MagicLand">매직랜드</option>
-    		<option value="AmericanAdventure">아메리칸어드벤처</option>
-    		<option value="GloverFair">글로버페어</option>
-    		<option value="EuropeanAdventure">유로피언어드벤처</option>
+<div class="Allmagin">
+	<div class="Ss">		
+		<h1 class="title">매출등록</h1>
+			<label for="pageSelect"></label>
+				<select id="pageSelect" onchange="showPage(this.value)">
+    			<option value="tickets">티켓</option>
+    			<option value="Zootopia">주토피아</option>
+    			<option value="MagicLand">매직랜드</option>
+    			<option value="AmericanAdventure">아메리칸어드벤처</option>
+    			<option value="GloverFair">글로버페어</option>
+    			<option value="EuropeanAdventure">유로피언어드벤처</option>
 			</select>
-   
+	</div>
+	
      <!-- Bootstrap Dark Table -->
      <div id="tickets" class="card">
 			 <form method="POST" 
 	    			 action="${contextPath}/sales/salesreg.do" 
 	    			 id="frm-salesreg">    		
-	       <div>
-	        <button type="submit" id="regbtn" class="btn-reg" onclick="validateForm()">저장</button>
-	        <input type="date" name="salesDate" id="salesDate">
-	       </div>
+	       <div class="card-date">
 	       	<h5 class="card-header">티켓</h5>
+	        <input type="date" name="salesDate" id="ticketDate" class="salesDate">
+	       </div>
 	       	
 	       	<%-- Success Message --%>
 					<c:if test="${not empty successMessage}">
@@ -91,10 +121,10 @@
 	              </c:forEach>
 	            </tbody>
 	          </table>
+	          <button type="submit" id="regbtn" class="btn btn-primary btn-reg" onclick="validateForm('ticketDate')">저장</button>
 	        </div>
 	     </form>
-	   </div>
-  
+  	</div>	
    
      <!-- Bootstrap Dark Table -->
      <div id="Zootopia" class="card">
@@ -102,11 +132,10 @@
 	    			 action="${contextPath}/sales/salesreg.do" 
 	    			 id="frm-salesreg">    		
 	    		
-	       <div>
-	        <button type="submit" id="regbtn" class="btn-reg" onclick="validateForm()">저장</button>
-	        <input type="date" name="salesDate" id="salesDate">
-	       </div>
+	       <div class="card-date">
 	       	<h5 class="card-header">주토피아</h5>
+	        <input type="date" name="salesDate" id="zootopiaDate" class="salesDate">
+	       </div>
 	       	
 	       	<%-- Success Message --%>
 					<c:if test="${not empty successMessage}">
@@ -144,6 +173,7 @@
 	              </c:forEach>
 	            </tbody>
 	          </table>
+	          <button type="submit" id="regbtn" class="btn btn-primary btn-reg" onclick="validateForm('zootopiaDate')">저장</button>
 	        </div>
 	     </form>
 	   </div>
@@ -154,11 +184,10 @@
 	    			 action="${contextPath}/sales/salesreg.do" 
 	    			 id="frm-salesreg">    		
 	    		
-	       <div>
-	        <button type="submit" id="regbtn" class="btn-reg" onclick="validateForm()">저장</button>
-	        <input type="date" name="salesDate" id="salesDate">
-	       </div>
+	       <div class="card-date">
 	       	<h5 class="card-header">매직랜드</h5>
+	        <input type="date" name="salesDate" id="magicDate" class="salesDate">
+	       </div>
 	       	
 	       	<%-- Success Message --%>
 					<c:if test="${not empty successMessage}">
@@ -196,6 +225,7 @@
 	              </c:forEach>
 	            </tbody>
 	          </table>
+	          <button type="submit" id="regbtn" class="btn btn-primary btn-reg" onclick="validateForm('magicDate')">저장</button>
 	        </div>
 	     </form>
 	   </div>
@@ -206,11 +236,10 @@
 	    			 action="${contextPath}/sales/salesreg.do" 
 	    			 id="frm-salesreg">    		
 	    		
-	       <div>
-	        <button type="submit" id="regbtn" class="btn-reg" onclick="validateForm()">저장</button>
-	        <input type="date" name="salesDate" id="salesDate">
-	       </div>
+	       <div class="card-date">
 	       	<h5 class="card-header">아메리칸어드벤처</h5>
+	        <input type="date" name="salesDate" id="americanDate" class="salesDate">
+	       </div>
 	       	
 	       		<%-- Success Message --%>
 					<c:if test="${not empty successMessage}">
@@ -248,6 +277,7 @@
 	              </c:forEach>
 	            </tbody>
 	          </table>
+	          <button type="submit" id="regbtn" class="btn btn-primary btn-reg" onclick="validateForm('americanDate')">저장</button>
 	        </div>
 	     </form>
 	   </div>
@@ -258,11 +288,10 @@
 	    			 action="${contextPath}/sales/salesreg.do" 
 	    			 id="frm-salesreg">    		
 	    		
-	       <div>
-	        <button type="submit" id="regbtn" class="btn-reg" onclick="validateForm()">저장</button>
-	        <input type="date" name="salesDate" id="salesDate">
-	       </div>
+	       <div class="card-date">
 	       	<h5 class="card-header">글로버페어</h5>
+	        <input type="date" name="salesDate" id="gloverDate" class="salesDate">
+	       </div>
 	       	
 	       		<%-- Success Message --%>
 					<c:if test="${not empty successMessage}">
@@ -300,6 +329,7 @@
 	              </c:forEach>
 	            </tbody>
 	          </table>
+	          <button type="submit" id="regbtn" class="btn btn-primary btn-reg" onclick="validateForm('gloverDate')">저장</button>
 	        </div>
 	     </form>
 	   </div>
@@ -310,11 +340,10 @@
 	    			 action="${contextPath}/sales/salesreg.do" 
 	    			 id="frm-salesreg">    		
 	    		
-	       <div>
-	        <button type="submit" id="regbtn" class="btn-reg" onclick="validateForm()">저장</button>
-	        <input type="date" name="salesDate" id="salesDate">
-	       </div>
+	       <div class="card-date">
 	       	<h5 class="card-header">유로피언어드벤처</h5>
+	        <input type="date" name="salesDate" id="europeanDate" class="salesDate">
+	       </div>
 	       	
 	       		<%-- Success Message --%>
 					<c:if test="${not empty successMessage}">
@@ -352,24 +381,25 @@
 	              </c:forEach>
 	            </tbody>
 	          </table>
+	          <button type="submit" id="regbtn" class="btn btn-primary btn-reg" onclick="validateForm('document.getElementById('europeanDate')')">저장</button>
 	        </div>
 	     </form>
 	   </div>
- 
+</div> 
 
       
-</body>
 
 <script>
+//페이지 ID에 해당하는 요소를 보여주는 함수
 function showPage(pageId) {
     const pages = document.querySelectorAll('.card');
     pages.forEach(page => {
         page.classList.remove('active');
     });
-    document.getElementById(pageId).classList.add('active');
+    document.getElementById(pageId).classList.add('active'); // 주어진 pageId에 해당하는 요소에 'active' 클래스를 추가하여 보여줍니다.
 }
 
-// Initialize to show the first page
+//초기화: 'tickets' 페이지를 보여줍니다
 showPage('tickets');
 
 function validateNumberInput(inputField) {
@@ -382,17 +412,19 @@ function validateNumberInput(inputField) {
     }
 }
 
-function validateForm() {
+function validateForm(id) {
     // 입력된 값이 비어 있는 경우
-    var salesDate = document.getElementById("salesDate").value.trim();
+    var salesDate = document.getElementById(id)?.value?.trim();
     if (!salesDate) {
-    		event.preventDefault();
+    	event.preventDefault();
         // 경고 창 표시
         alert("날짜를 지정하세요.");
         return false; // 폼 제출을 중단
     }
-    return true; // 폼 제출
+    return ture; // 폼 제출
 }
+
+validateForm();
 </script>
 
 </html>

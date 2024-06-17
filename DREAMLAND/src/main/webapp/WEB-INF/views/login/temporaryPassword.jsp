@@ -30,7 +30,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>DREAM LAND - 로그인</title>
+    <title>DREAM LAND - 임시비밀번호 발급</title>
 
     <meta name="description" content="" />
 

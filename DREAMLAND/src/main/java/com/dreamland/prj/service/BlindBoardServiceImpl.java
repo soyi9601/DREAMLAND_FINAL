@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.management.RuntimeErrorException;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -273,13 +271,9 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	@Transactional(readOnly=true)
 	@Override
 	public Map<String, Object> getCommentList(HttpServletRequest request) {
-
 		int blindNo = Integer.parseInt(request.getParameter("blindNo"));
-		
 		Map<String, Object> map = Map.of("blindNo", blindNo);
-
 		return Map.of("commentList", blindMapper.getCommentList(map));
-		
 	}
 	
 	@Override
@@ -305,7 +299,7 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 		return blindMapper.deleteComment(commentNo);
 	}
 	
-	
+	//비밀번호 확인
 	@Override
 	public boolean validatePw(int commentNo, String pw) {
 		String hashedPassword = MySecurityUtils.getSha256(pw);
@@ -318,10 +312,10 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 		return blindMapper.deleteBlindByWriter(blindNo);
 	}
 	
+	// 댓글5개 이상일경우, 상단에 고정
 	@Transactional(readOnly = true)
 	@Override
 	public ResponseEntity<Map<String, Object>> getBlindListHot(HttpServletRequest request) {
-		
 		List<BlindBoardDto> blindHotList = blindMapper.getBlindListByHot();
 		return new ResponseEntity<>(Map .of("blindHotList", blindHotList )
 				 , HttpStatus.OK);

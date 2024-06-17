@@ -5,6 +5,29 @@
   
 <mapper namespace="com.dreamland.prj.mapper.IndexMapper">
 	
+	<resultMap id="SkdMap" type="ScheduleDto">
+	  <id property="skdNo" column="SKD_NO"/>
+	  <result property="skdStart" column="SKD_START"/>
+	  <result property="skdEnd" column="SKD_END"/>
+	  <result property="skdCategory" column="SKD_CATEGORY"/>
+	  <result property="skdTitle" column="SKD_TITLE"/>
+	  <result property="skdContents" column="SKD_CONTENTS"/>
+	  <result property="skdColor" column="SKD_COLOR"/>
+	  <association property="employee" javaType="EmployeeDto">
+	     <id property="empNo" column="EMP_NO"/>
+	     <result property="empName" column="EMP_NAME"/>
+	     <result property="deptNo" column="DEPT_NO"/>
+	   </association>
+	   <collection property="shrEmp" ofType="SkdShrEmpDto">
+	     <result property="skdNo" column="SKD_NO"/>
+	     <result property="empNo" column="EMP_NO"/>
+	   </collection>
+	   <collection property="shrDept" ofType="SkdShrDeptDto">
+	      <result property="skdNo" column="SKD_NO"/>
+	      <result property="deptNo" column="DEPT_NO"/>
+	   </collection>
+	</resultMap> 
+	
 	<!-- 부서 + 직원 전체 리스트 조회 -->
   <select id="getUser" resultType="EmployeeDto">
     SELECT E.EMP_NO, E.EMP_NAME, E.BIRTH, E.EMAIL, E.MOBILE, E.ROLE, E.PROFILE_PATH, D.DEPT_NO, D.DEPT_NAME, P.POS_NO, P.POS_NAME
@@ -100,7 +123,7 @@
 	                               WHERE APV_STATE = 100)
 	                       WHERE RN = 1 
 	                         AND EMP_NO = #{empNo})
-	     AND NOT B.APV_CHECK = 3
+	     AND NOT B.APV_CHECK IN(2,3)
   </select>
 
 	<!-- 진행중인 나의 전자문서 -->
@@ -110,5 +133,25 @@
 	   WHERE EMP_NO = #{empNo}
 	     AND APV_CHECK = 0
 	</select>
+	
+	
+	<!-- 진행중인 나의 일정 -->
+	<!-- 
+	<select id="getSkdList"
+          parameterType="Map"
+          resultMap="SkdMap">
+     SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR
+          , E.EMP_NO, E.EMP_NAME, E.DEPT_NO
+          , SSD.DEPT_NO AS SHARED_DEPT_NO
+          , SSE.EMP_NO AS SHARED_EMP_NO
+       FROM SCHEDULE S
+      INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
+       LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
+       LEFT JOIN SKD_SHR_EMP SSE ON S.SKD_NO = SSE.SKD_NO
+      WHERE S.EMP_NO = #{empNo}      
+         OR SSD.DEPT_NO = #{deptNo}  
+         OR SSE.EMP_NO = #{empNo}        
+  </select>
+   -->
 
 </mapper> 

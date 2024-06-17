@@ -13,7 +13,6 @@ import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.FaqBoardDto;
 import com.dreamland.prj.mapper.FaqBoardMapper;
 import com.dreamland.prj.utils.MyBoardPageUtils;
-import com.dreamland.prj.utils.MyPageUtils;
 import com.dreamland.prj.utils.MySecurityUtils;
 
 import jakarta.servlet.http.HttpServletRequest;

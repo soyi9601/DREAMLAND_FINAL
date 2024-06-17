@@ -47,7 +47,6 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="/resources/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="/resources/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="/resources/assets/css/demo.css" />
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -55,7 +54,7 @@
     <!-- Page CSS -->
     <!-- Page -->
     <link rel="stylesheet" href="/resources/assets/vendor/css/pages/page-auth.css" />
-    <link rel="icon" href="/resources/favicon.ico">
+    <link rel="icon" href="/resources/assets/img/logo/favicon.ico">
     <!-- Helpers -->
     <script src="/resources/assets/vendor/js/helpers.js"></script>
 
@@ -154,7 +153,7 @@
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="/resources/assets/js/main.js"></script>
+
 
     <!-- Page JS -->
     <script src="/resources/assets/js/pages-login.js"></script>

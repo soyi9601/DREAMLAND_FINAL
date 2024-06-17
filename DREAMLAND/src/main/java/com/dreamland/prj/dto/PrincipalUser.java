@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -24,7 +23,8 @@ public class PrincipalUser implements UserDetails{
   public Collection<? extends GrantedAuthority> getAuthorities() {
     Collection<GrantedAuthority> collect = new ArrayList<>();
     collect.add(new GrantedAuthority() {
-      
+      private static final long serialVersionUID = 1L;
+
       @Override
       public String getAuthority() {
         return emp.getRole();

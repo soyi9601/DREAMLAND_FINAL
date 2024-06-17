@@ -16,17 +16,34 @@
 	input[type="radio"] {
     pointer-events: none; /* 마우스 이벤트를 비활성화하여 클릭이 무시되도록 함 */
     cursor: not-allowed; /* 마우스 커서를 바꾸어 클릭이 불가능한 상태임을 나타냄 */
-}
+	}
+	.notice-list {
+		display:flex;
+		justify-content: center; 
+	}
+	.sd-notice-detail .sd-btn1 {
+		margin-left: auto;  
+	}
+	.sd-btn1 {
+		width:70px;
+		height:36px;
+		border-radius:4px;
+		display:flex;
+    align-items:center;
+    justify-content:center;
+		color:#fff;
+		font-size:16px;
+	}
 </Style>
 
 
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board">
 
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="sd-title sd-point">시설점검</div>
+        <div class="title sd-point">시설점검</div>
 
         <!-- Basic Layout & Basic with Icons -->
         <div class="row">
@@ -67,7 +84,13 @@
 																		</c:if>
                                 </div>
                             </div>
-                            
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label"
+                                    for="basic-default-name">비고</label>
+                                <div class="col-sm-10">
+                                    ${facility.remarks}
+                                </div>
+                            </div>
                             
 
                             <div class="row mb-3">
@@ -95,7 +118,7 @@
                             <button type="button" id="btn-remove" class="btn btn-danger btn-sm">삭제</button>
                           </form>
                         </c:if>
-                          <div class="sd-btn sd-point-bg">
+                          <div class="sd-btn1 sd-point-bg">
                             <a href="${contextPath}/facility/list.do" class="notice-list-btn" style="color:white">목록</a>
                           </div>
                         </div>
@@ -110,22 +133,12 @@
     <!-- / Content -->
 
     <script>
-    
-//첨부파일 다운로드
-/*
-const fnDownload = () => {
-  $('.bx-download').on('click', (evt) => {
-    if(confirm('해당 첨부 파일을 다운로드 할까요?')) {
-      location.href = '${contextPath}/board/notice/download.do?attachNo=' + $(evt.currentTarget).parent().dataset.attachNo;
-    }
-  })
-}
-*/
+
+// 파일 다운로드 처리 함수
 const fnDownload = () => {
   $('.bx-download').on('click', (evt) => {
     if (confirm('해당 첨부 파일을 다운로드 할까요?')) {
       const attachNo = $(evt.currentTarget).parent().data('attach-no');
-      // alert(attachNo);
       location.href = '${contextPath}/facility/download.do?attachNo='+attachNo;
     }
   });
@@ -136,7 +149,8 @@ const fnDownload = () => {
 
 
     var frmBtn = document.getElementById('frm-btn');
-
+		
+ 		// 수정 폼 제출 처리 함수
     const fnEditUpload = () => {
       document.getElementById('btn-edit').addEventListener('click', (evt) => {
         frmBtn.action = '${contextPath}/facility/edit.do';
@@ -144,6 +158,7 @@ const fnDownload = () => {
       })
     }
     
+ 		// 시설물 삭제 처리 함수
     const fnRemoveUpload = () => {
       document.getElementById('btn-remove').addEventListener('click', (evt) => {
         if(confirm('해당 게시글을 삭제할까요?')){
@@ -153,7 +168,7 @@ const fnDownload = () => {
       })
     }
     
-    
+ 		// 수정 후 처리 함수
     const fnAfterModifyUpload = () => {
       const modifyResult = '${modifyResult}';
       if(modifyResult !== '') {

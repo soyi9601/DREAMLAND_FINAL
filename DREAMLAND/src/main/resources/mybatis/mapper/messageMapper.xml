@@ -13,7 +13,8 @@
 	  FROM EMPLOYEE E
 	  JOIN DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
 	  JOIN POSITION P ON E.POS_NO = P.POS_NO
-	 WHERE E.EMP_NAME LIKE '%' || #{value} || '%' OR D.DEPT_NAME LIKE '%' || #{value} || '%'
+	 WHERE (E.EMP_NAME LIKE '%' || #{value} || '%' OR D.DEPT_NAME LIKE '%' || #{value} || '%')
+	   AND E.DEPT_NO != 4000
   </select>
   
   <!-- 메시지 보내기 -->
@@ -29,6 +30,8 @@
       , READ_YN
       , SEND_DEL_YN
       , REC_DEL_YN
+      , SEND_REAL_DEL
+      , REC_REAL_DEL
       , SEND_STAR_YN
       , REC_STAR_YN
       , MSG_CREATE_DT
@@ -37,6 +40,8 @@
     ) VALUES (
         #{msgNo}
       , #{contents}
+      , 'N'
+      , 'N'
       , 'N'
       , 'N'
       , 'N'

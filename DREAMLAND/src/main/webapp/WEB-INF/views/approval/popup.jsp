@@ -1,14 +1,16 @@
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>  
       <!DOCTYPE html>
         <html lang="ko">
         <head>
             <meta charset="UTF-8">
-            <title>Popup Form</title>
+            <title>반려 사유</title>
         </head>
         <body>
             <form id="popupForm">
-                <label for="rejectedReason">Enter some text:</label>
+                <label for="rejectedReason">반려 사유:</label>
                 <input type="text" id="rejectedReason" name="rejectedReason" required>
-                <button type="submit">Submit</button>
+                <button type="submit">확인</button>
             </form>
             <script>
                 document.getElementById('popupForm').addEventListener('submit', function(event) {

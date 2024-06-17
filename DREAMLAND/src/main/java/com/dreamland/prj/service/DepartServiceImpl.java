@@ -81,11 +81,13 @@ public class DepartServiceImpl implements DepartService {
     departMapper.updateEmployee(employeeDto);
   }
   
-  // 부서 추가
+  // 부서 조회
   @Override
   public List<DepartmentDto> getAllDepart() {
     return departMapper.getAllDepart();
   }
+  
+  //부서 등록
   @Override
   public void addDepartment(HttpServletRequest request, HttpServletResponse response) {
     String deptName = request.getParameter("deptName");
@@ -99,6 +101,26 @@ public class DepartServiceImpl implements DepartService {
                             .build();
     departMapper.insertDepart(depart);
     
+  }
+  
+  // 세부 부서 조회
+  @Override
+  public List<DepartmentDto> getDeptTitleList() {
+    return departMapper.getTitleDept();
+  }
+   
+  @Override
+  public ResponseEntity<Map<String, Object>> getDeptDetailList(HttpServletRequest request) {
+    ResponseEntity<Map<String, Object>> result = null;
+    List<DepartmentDto> deptDetailList = departMapper.getDeptDetail();
+    result = new ResponseEntity<>(Map.of("deptDetailList", deptDetailList), HttpStatus.OK);
+    return result;
+  }
+  
+  // 부서 등록 시 부서 번호 중복체크
+  @Override
+  public boolean checkDeptNo(int deptNo) {
+    return departMapper.checkDeptNo(deptNo) > 0;
   }
   
   // 유저 - 조직도
@@ -172,18 +194,6 @@ public class DepartServiceImpl implements DepartService {
     return orgChartData;
   }
   
-  // 부서 세부 조회
-  @Override
-  public List<DepartmentDto> getDeptTitleList() {
-    return departMapper.getTitleDept();
-  }
   
-  @Override
-  public ResponseEntity<Map<String, Object>> getDeptDetailList(HttpServletRequest request) {
-    ResponseEntity<Map<String, Object>> result = null;
-    List<DepartmentDto> deptDetailList = departMapper.getDeptDetail();
-    result = new ResponseEntity<>(Map.of("deptDetailList", deptDetailList), HttpStatus.OK);
-    return result;
-  }
 
 }

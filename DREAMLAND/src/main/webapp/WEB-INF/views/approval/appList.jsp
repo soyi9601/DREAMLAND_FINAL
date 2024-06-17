@@ -12,10 +12,11 @@
    <!-- Content -->
 
    <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">전자결재 /</span> 결재문서</h4>
        <div class="col-12 col-md-6 col-lg-6">
            <div class="col-6 mb-4">
               <div class="post-list-container">
-   						                <div class="btn-group" role="group" aria-label="Basic example">
+   						                <div class="btn-group" role="group" aria-label="Basic example" >
        				    <button type="button"  class="btn btn-secondary status-btn active" data-kind="total">전체</button>
                   <button  type="button" class="btn btn-secondary status-btn" data-kind="wait">처리 대기</button>
                   <button type="button" class="btn btn-secondary status-btn" data-kind="confirm">처리 완료</button>

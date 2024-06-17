@@ -7,14 +7,10 @@
 .input-container button {border-color: #ced4da;margin: 2px;white-space: nowrap;}
 .input-container button:hover {cursor: pointer;color: #495057;}
 .input-container button.btn-outline-secondary {border-color: #ced4da;color: #495057;}
-.ui-autocomplete {
-  max-height: 200px;
-  overflow-y: auto;
-  /* prevent horizontal scrollbar */
-  overflow-x: hidden;
-  height: auto;
-  max-width: 800px;
-}
+
+.ui-autocomplete {max-height: 200px; overflow-y: auto; overflow-x: hidden; z-index: 1000; list-style: none; padding: 0; margin: 0; background-color: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); max-width:400px} /* 드롭다운 */
+.ui-menu-item {padding: 10px; cursor: pointer;}
+.ui-menu-item:hover {background-color: #f5f5f5;}
 .ui-menu-item div.ui-state-hover,
 .ui-menu-item div.ui-state-active {color: #ffffff;text-decoration: none;background-color: #90B54C;border-radius: 0px;-webkit-border-radius: 0px;-moz-border-radius: 0px;background-image: none;border:none;}
 
@@ -22,5 +18,5 @@
 .send-btns-area{display:flex;justify-content: space-between;}
 
 /* 상세보기 글꼴 */
-.font-detail{font-family: var(--bs-font-sans-serif);font-size: 1rem;}
+.font-detail{font-family: var(--bs-font-sans-serif);font-size: 1rem; white-space:pre-wrap;}
 

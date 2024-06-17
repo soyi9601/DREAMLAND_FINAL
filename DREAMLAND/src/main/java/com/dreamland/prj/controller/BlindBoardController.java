@@ -173,13 +173,8 @@ public class BlindBoardController {
 	    if (isValid) {
 	        return ResponseEntity.ok(Map.of("success", true));
 	    } else {
-	    	
 	        return ResponseEntity.ok(Map.of("success", false, "message", "비밀번호가 맞지않습니다."));
 	    }
 	}
-	
-	
-
-	
 	
 }

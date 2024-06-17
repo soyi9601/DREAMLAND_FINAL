@@ -22,11 +22,11 @@
 
 
 <!-- Content wrapper -->
-<div class="content-wrapper">
+<div class="content-wrapper sd-board">
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y">
-      <div class="sd-title sd-point">시설점검목록</div>
+      <div class="title sd-point">시설점검목록</div>
         
       <!-- Hoverable Table rows -->
       
@@ -72,28 +72,32 @@
       </div>
       <!--/ Hoverable Table rows -->
       
-      <div>${paging}</div>
-      
-      <div class="sd-btn-write-area">
+
+      <div class="sd-btns-area">
+        <div>
+          <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
+            <button id="list-edit-btn" class="btn-reset sd-btn sd-gray-bg">편집</button>
+            <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
+          </c:if>
+        </div>
         <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-          <button id="list-edit-btn">편집</button>
-          <button id="list-del-btn">삭제</button>
-          <p class="sd-btn-write">
-            <a href="${contextPath}/facility/write.page">작성</a>
-          </p>
-        </c:if>
+	        <div class="btn-reset sd-btn sd-point-bg" >
+	          <a href="${contextPath}/facility/write.page">작성</a>
+	        </div>
+	      </c:if>
       </div>
+      <div class="pagination">${paging}</div>
   </div>
     <!-- / Content -->
 </div>
 </body>
 
 <script>
+//상세 페이지로 이동하는 함수
 const fnNoticeDetail = () =>{
     $(document).on('click', '.facilityline', (evt)=>{
         let facilityNo = $(evt.target).data('notice-no');
         if (facilityNo !== "undefined") {
-            console.log(facilityNo); 
             location.href = '${contextPath}/facility/detail.do?facilityNo=' + facilityNo;
         }
     });
@@ -101,11 +105,13 @@ const fnNoticeDetail = () =>{
 
 fnNoticeDetail();
 
+//공지사항 목록에서 편집 버튼 클릭 시 처리하는 함수
 const fnFacilityListEdit = () => {
     $(document).on('click', '#list-edit-btn', (evt) => {
         let checked = $("input[name='facilityChk']:checked");
         if (checked.length == 1) {
             let facilityNo = checked.val(); // facilityNo 변수 정의
+         		// 편집 페이지로 이동하는 폼 생성 및 제출
             let form = $('<form action="${contextPath}/facility/edit.do" method="post">' +
                 '<input type="hidden" name="facilityNo" value="' + facilityNo + '"></input>' + '</form>');
             $('body').append(form);
@@ -118,6 +124,7 @@ const fnFacilityListEdit = () => {
 
 fnFacilityListEdit();
 
+//공지사항 목록에서 삭제 버튼 클릭 시 처리하는 함수
 const fnfacilityListDel = () => {
     $(document).on('click', '#list-del-btn', (evt) => {
         let checked = $("input[name='facilityChk']:checked");
@@ -127,19 +134,18 @@ const fnfacilityListDel = () => {
             let idx = [];
 
             checked.each(function () {
-                no.push($(this).val());
-                idx.push($(this).data("idx"));
-                console.log(checked);
+                no.push($(this).val());	// 선택된 시설번호 배열에 추가
+                idx.push($(this).data("idx"));	// 선택된 인덱스 배열에 추가
             });
 
             let msg = checked.length == 1 ?
                 '삭제할까요?' :
                 idx.join(",") + '번 게시글을(를) 삭제할까요?';
             
-            if (confirm(msg)) {
+            if (confirm(msg)) { // 확인 여부 다이얼로그 표시
             	const url = `${contextPath}/facility/removeNo.do`;
-                console.log("AJAX 요청 URL: ", url); // URL 확인용 로그
-            	
+            		
+                // 선택된 게시글 삭제 AJAX 요청
                 $.ajax({
                     url: url, 
                     type: "POST",
@@ -154,7 +160,6 @@ const fnfacilityListDel = () => {
                         }
                     },
                     error: function (xhr, status, error) {
-                        console.error("Error:", error);
                         alert("삭제 요청 중 오류가 발생했습니다.");
                     }
                 });
@@ -165,12 +170,13 @@ const fnfacilityListDel = () => {
     });
 
     function loadFacilityList() {
-        location.reload();
+        location.reload(); // 페이지 새로고침
     }
 };
 
 fnfacilityListDel();
 
+//삭제 결과를 알리는 함수
 const fnRemoveResult = () => {
     const removeResult = '${removeResult}';
     if (removeResult !== '') {

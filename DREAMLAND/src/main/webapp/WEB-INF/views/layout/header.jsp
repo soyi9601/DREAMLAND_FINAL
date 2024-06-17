@@ -62,6 +62,9 @@
 	          <a href="${contextPath}/" class="app-brand-link">
 	            <span class="app-brand-logo"><img src="/resources/assets/img/logo/logo2.png" alt="로고"></span>
 	          </a>
+	          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+	            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+	          </a>
 	        </div>
 	
 	        <ul class="menu-inner py-1">
@@ -179,7 +182,7 @@
 		                </li>
 		                <li class="menu-item">
 		                  <a href="${contextPath}/facility/write.page" class="menu-link">
-		                    <div>시설등록</div>
+		                    <div>시설점검등록</div>
 		                  </a>
 		                </li>
 		              </ul>
@@ -287,48 +290,50 @@
                   </ul>
                 </li>
 		            <li class="menu-item">
-		              <a href="javascript:void(0);" class="menu-link menu-toggle">
-		                <i class="menu-icon tf-icons bx bx-line-chart"></i><div>매출</div>
-		              </a>
-		              <ul class="menu-sub">
-		                <li class="menu-item">
-		                  <a href="${contextPath}/sales/Allsales.page" class="menu-link">
-		                    <div>매출화면</div>
-		                  </a>
-		                </li>
-		                <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo eq 5000 && loginEmployee.deptNo eq 1000}">
-              			<li class="menu-item">
-                			<a href="${contextPath}/sales/productreg.page" class="menu-link">
-                  			<div>상품등록</div>
-                			</a>
-              			</li>
-              			<li class="menu-item">
-                			<a href="${contextPath}/sales/salesreg.page" class="menu-link">
-                  			<div>매출등록</div>
-                			</a>
-              			</li>
-              			</c:if>
-		              </ul>
-		            </li>
-		            <li class="menu-item">
-		              <a href="javascript:void(0);" class="menu-link menu-toggle">
-		                <i class="menu-icon tf-icons bx bx-buildings"></i><div>시설</div>
-		              </a>
-		              <ul class="menu-sub">
-		                <li class="menu-item">
-		                  <a href="${contextPath}/facility/list.do" class="menu-link">
-		                    <div>시설게시판</div>
-		                  </a>
-		                </li>
-		                <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo eq 5000 && loginEmployee.deptNo eq 1000}">
-              				<li class="menu-item">
-                				<a href="${contextPath}/facility/write.page" class="menu-link">
-                  				<div>시설등록</div>
-                				</a>
-              				</li>
-              			</c:if>
-		              </ul>
-		            </li>
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>매출</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="${contextPath}/sales/Allsales.page" class="menu-link">
+                  <div>매출화면</div>
+                </a>
+              </li>
+              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo >= 5000 && loginEmployee.deptNo <= 5999}">
+              <li class="menu-item">
+                <a href="${contextPath}/sales/productreg.page" class="menu-link">
+                  <div>상품등록</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="${contextPath}/sales/salesreg.page" class="menu-link">
+                  <div>매출등록</div>
+                </a>
+              </li>
+              </c:if>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div>시설점검</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="${contextPath}/facility/list.do" class="menu-link">
+                  <div>시설게시판</div>
+                </a>
+              </li>
+              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo >= 5000 && loginEmployee.deptNo <= 5999}">
+              <li class="menu-item">
+                <a href="${contextPath}/facility/write.page" class="menu-link">
+                  <div>시설등록</div>
+                </a>
+              </li>
+              </c:if>
+            </ul>
+          </li>
 		            <li class="menu-item">
                   <a href="${contextPath}/depart/depart.page" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-sitemap"></i><div>조직도</div>
@@ -395,12 +400,6 @@
 	                    <a class="dropdown-item" href="${contextPath}/user/mypage?empNo=${loginEmployee.empNo}">
 	                      <i class="bx bx-user me-2"></i>
 	                      <span class="align-middle">마이페이지</span>
-	                    </a>
-	                  </li>
-	                  <li>
-	                    <a class="dropdown-item" href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}">
-	                      <i class="bx bx-cog me-2"></i>
-	                      <span class="align-middle">받은쪽지함</span>
 	                    </a>
 	                  </li>
 	                  <li>

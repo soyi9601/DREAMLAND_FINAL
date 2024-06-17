@@ -78,11 +78,7 @@
 		            </c:if>
 		        </div>
 		    </div>
-        
     </div>
-    
-   
-
     <!-- / Content -->
 </div>
 
@@ -165,7 +161,7 @@ const fnGetBlindList = () =>{
           let context = '<tr><td>'+reversedIndex+'</td>';
           
           if (userRole === 'ROLE_ADMIN') {
-            context += '<td><input type="checkbox" name="blindChk" data-idx="'+reversedIndex+'" value="' + blind.blindNo + '"/></td>'
+            context += '<td><input type="checkbox"  name="blindChk" data-idx="'+reversedIndex+'" value="' + blind.blindNo + '"/></td>'
           }
           context += '<td colspan="4" style="text-align:left;padding-left:20px;font-style:italic;">삭제된 게시글입니다.</td></tr>'
           $('#blind-list').append(context);
@@ -221,11 +217,9 @@ const fnScrollHandler = () => {
   var timerId;  
   
   $(window).on('scroll', (evt) => {
-    
     if(timerId) { 
       clearTimeout(timerId);
     }
-    
     timerId = setTimeout(() => {
       
       let scrollTop = window.scrollY;  

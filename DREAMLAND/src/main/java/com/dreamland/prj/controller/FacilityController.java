@@ -28,6 +28,7 @@ public class FacilityController {
 
 		private final FacilityService facilityService;
 		
+		//시설 목록 조회 페이지
 		@GetMapping("/list.do")
 		public String list(HttpServletRequest request, Model model) {
 			model.addAttribute("request", request);
@@ -42,11 +43,13 @@ public class FacilityController {
 	      return "facility/list :: .table-border-bottom-0";
 	  }
 		
+		// 시설 등록 페이지 이동
 		@GetMapping("/write.page")
 		public String writePage() {
 			return "facility/write";
 		}
 		
+		// 시설 등록 처리
 		@PostMapping("/register.do")
 		public String register(MultipartHttpServletRequest multipartRequest
 												,  RedirectAttributes redirectAttributes) {
@@ -54,6 +57,7 @@ public class FacilityController {
 			return "redirect:/facility/list.do";
 		}	
 		
+		// 시설 상세 정보 조회
 		@GetMapping("/detail.do")
 		public String detail(@RequestParam(value="facilityNo", required=false, defaultValue="0") int facilityNo
 												,Model model) {
@@ -61,53 +65,58 @@ public class FacilityController {
 			return "facility/detail";
 		}
 		
+		// 첨부 파일 다운로드
 		@GetMapping("/download.do")
 		public ResponseEntity<Resource> download(HttpServletRequest request) {
 			return facilityService.download(request);
 		}
 		
+		// 시설 수정 페이지 이동
 		@PostMapping("/edit.do")
 		public String edit(@RequestParam int facilityNo, Model model) {
 			model.addAttribute("facility", facilityService.getFacilityByNo(facilityNo));
 			return "facility/edit";
 		}
 		
+		// 시설 수정 페이지 이동 (다른 버전)
 		@PostMapping("/edit2.do")
 		public String edit2(@RequestParam int facilityNo, Model model) {
 			model.addAttribute("facility", facilityService.getFacilityByNo(facilityNo));
 			return "facility/edit";
 		}
 		
+		// 시설의 첨부 파일 목록 조회 (JSON 형식)
 		@GetMapping(value="/attachList.do", produces="application/json")
 		public ResponseEntity<Map<String, Object>> attachList(@RequestParam int facilityNo){
 			return facilityService.getAttachList(facilityNo);
 		}
 		
+		// 시설 수정 처리
 		@PostMapping("/modify.do")
 		public String modify(FacilityDto facility, RedirectAttributes redirectAttributes) {
 			
-			// todo delAttachList를 split("|")해서 attachNo를 delete하는 구문 작성(service, mapper-sql)
-			
+			// 삭제할 첨부 파일 목록을 처리합니다
 			String[] delAttachArr = facility.getDelAttachList().split("\\|");
 			for (String attachNo : delAttachArr) {
 				if(!attachNo.isEmpty()) {
 					facilityService.deleteAttach2(Integer.parseInt(attachNo));
-					System.out.println(attachNo + "녕");
 				}
 			}
 			
-			// todo insAttachList를 split("|")해서 attachNo를 insert하는 구문 작성
+			// 시설 정보를 수정하고 결과를 리다이렉트 속성에 추가
 			redirectAttributes
 				.addAttribute("facilityNo", facility.getFacilityNo())
 				.addFlashAttribute("modifyResult", facilityService.modifyFacility(facility) == 1 ? "수정되었습니다." : "수정을 하지 못했습니다.");
 			return "redirect:/facility/detail.do?facilityNo={facilityNo}";
 		}
 		
+		// 첨부 파일 추가 처리 (JSON 형식으로 결과 반환)
 		@PostMapping(value="/addAttach.do", produces="application/json")
 		public ResponseEntity<Map<String, Object>> addAttach(MultipartHttpServletRequest multipartRequest) throws Exception {
 			return facilityService.addAttach(multipartRequest);
 		}
 		
+		// 시설 삭제 처리
 		@PostMapping("/removeFacility.do")
 		public String removefacility(@RequestParam(value="facilityNo", required=false, defaultValue="0") int facilityNo
 															 , RedirectAttributes redirectAttributes) {
@@ -116,6 +125,7 @@ public class FacilityController {
 			return "redirect:/facility/list.do";
 		}
 		
+		// 여러 시설 삭제 처리 (비동기 방식으로 결과 반환)
 		@PostMapping("/removeNo.do")
 		@ResponseBody
 		public String delete(@RequestParam List<Integer> no) {
