@@ -28,7 +28,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     registry.addViewController("/user/sendMessage").setViewName("message/sendMessage");
     
     registry.addViewController("/manager").setViewName("manager");
-    registry.addViewController("/auth/error").setViewName("error/errorPage");
+    registry.addViewController("/auth/error").setViewName("error/403");
     registry.addViewController("/loginPage").setViewName("login/loginPage");
     registry.addViewController("/login/tempPassword").setViewName("login/temporaryPassword");
     registry.addViewController("/employee/add").setViewName("employee/addEmployee");

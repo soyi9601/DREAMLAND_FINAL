@@ -30,6 +30,8 @@
       , READ_YN
       , SEND_DEL_YN
       , REC_DEL_YN
+      , SEND_REAL_DEL
+      , REC_REAL_DEL
       , SEND_STAR_YN
       , REC_STAR_YN
       , MSG_CREATE_DT
@@ -38,6 +40,8 @@
     ) VALUES (
         #{msgNo}
       , #{contents}
+      , 'N'
+      , 'N'
       , 'N'
       , 'N'
       , 'N'
