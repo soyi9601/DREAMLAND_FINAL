@@ -290,50 +290,50 @@
                   </ul>
                 </li>
 		            <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-layout"></i>
-              <div>매출</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="${contextPath}/sales/Allsales.page" class="menu-link">
-                  <div>매출화면</div>
-                </a>
-              </li>
-              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo >= 5000 && loginEmployee.deptNo <= 5999}">
-              <li class="menu-item">
-                <a href="${contextPath}/sales/productreg.page" class="menu-link">
-                  <div>상품등록</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="${contextPath}/sales/salesreg.page" class="menu-link">
-                  <div>매출등록</div>
-                </a>
-              </li>
-              </c:if>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-layout"></i>
-              <div>시설점검</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="${contextPath}/facility/list.do" class="menu-link">
-                  <div>시설게시판</div>
-                </a>
-              </li>
-              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo >= 5000 && loginEmployee.deptNo <= 5999}">
-              <li class="menu-item">
-                <a href="${contextPath}/facility/write.page" class="menu-link">
-                  <div>시설등록</div>
-                </a>
-              </li>
-              </c:if>
-            </ul>
-          </li>
+			            <a href="javascript:void(0);" class="menu-link menu-toggle">
+			              <i class="menu-icon tf-icons bx bx-line-chart"></i>
+			              <div>매출</div>
+			            </a>
+			            <ul class="menu-sub">
+			              <li class="menu-item">
+			                <a href="${contextPath}/sales/Allsales.page" class="menu-link">
+			                  <div>매출화면</div>
+			                </a>
+			              </li>
+			              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo >= 5000 && loginEmployee.deptNo <= 5999}">
+			              <li class="menu-item">
+			                <a href="${contextPath}/sales/productreg.page" class="menu-link">
+			                  <div>상품등록</div>
+			                </a>
+			              </li>
+			              <li class="menu-item">
+			                <a href="${contextPath}/sales/salesreg.page" class="menu-link">
+			                  <div>매출등록</div>
+			                </a>
+			              </li>
+			              </c:if>
+			            </ul>
+				        </li>
+			          <li class="menu-item">
+			            <a href="javascript:void(0);" class="menu-link menu-toggle">
+			              <i class="menu-icon tf-icons bx bx-layout"></i>
+			              <div>시설점검</div>
+			            </a>
+			            <ul class="menu-sub">
+			              <li class="menu-item">
+			                <a href="${contextPath}/facility/list.do" class="menu-link">
+			                  <div>시설게시판</div>
+			                </a>
+			              </li>
+			              <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' && loginEmployee.deptNo >= 5000 && loginEmployee.deptNo <= 5999}">
+			              <li class="menu-item">
+			                <a href="${contextPath}/facility/write.page" class="menu-link">
+			                  <div>시설등록</div>
+			                </a>
+			              </li>
+			              </c:if>
+			            </ul>
+			          </li>
 		            <li class="menu-item">
                   <a href="${contextPath}/depart/depart.page" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-sitemap"></i><div>조직도</div>
