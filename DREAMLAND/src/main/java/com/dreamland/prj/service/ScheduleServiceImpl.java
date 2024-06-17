@@ -1,5 +1,6 @@
 package com.dreamland.prj.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +19,6 @@ import com.dreamland.prj.mapper.ScheduleMapper;
 
 import io.jsonwebtoken.lang.Arrays;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -126,41 +126,65 @@ public class ScheduleServiceImpl implements ScheduleService {
   
   @Override
   public ScheduleDto getSkdByNo(int skdNo) {
-    return scheduleMapper.getSkdByNo(skdNo);
-  }
+    
+    // 등록된 일정 상세보기 
+    ScheduleDto schedule = scheduleMapper.getSkdByNo(skdNo); 
+    List<String> sharedItems = new ArrayList<>();
+
+    // 사원 공유 데이터 가져오기
+    List<SkdShrEmpDto> shrEmpList = scheduleMapper.getShrEmpBySkdNo(skdNo); // sharedItems 리스트에 추가
+    for (SkdShrEmpDto shrEmp : shrEmpList) {
+        EmployeeDto emp = scheduleMapper.getEmpByNo(shrEmp.getEmpNo());
+        sharedItems.add(emp.getEmpName() + " (사원)" + "E" + shrEmp.getEmpNo()); // 사원이름과 사원번호 조합하여 리스트에 추가  ex) 김철수 (사원)E3
+    }
+
+    // 부서 공유 데이터 가져오기
+    List<SkdShrDeptDto> shrDeptList = scheduleMapper.getShrDeptBySkdNo(skdNo);
+    for (SkdShrDeptDto shrDept : shrDeptList) {
+        DepartmentDto dept = scheduleMapper.getDeptByNo(shrDept.getDeptNo());
+        sharedItems.add(dept.getDeptName() + " (부서)" + "D" + shrDept.getDeptNo());
+    }
+   
+    System.out.println("===== 공유번호 가져오기 ======");
+    System.out.println(sharedItems);
+    
+    schedule.setSharedItems(sharedItems); // ScheduleDto 객체에 sharedItems 리스트 설정
+    return schedule;
+}
   
   // 일정 수정
   @Override
   public int modifySkd(ScheduleDto schedule) {
     
-    // 기존 공유 사원 및 부서 삭제
-    scheduleMapper.deleteShrEmp(schedule.getSkdNo());
-    scheduleMapper.deleteShrDept(schedule.getSkdNo());
-    
-    List<SkdShrEmpDto> shrEmpList = schedule.getShrEmp();
-    List<SkdShrDeptDto> shrDeptList = schedule.getShrDept();
-    
-    // 사원 공유 데이터 삽입
-    if (shrEmpList != null && !shrEmpList.isEmpty()) {
-        for (SkdShrEmpDto shrEmps : shrEmpList) {
-            SkdShrEmpDto shrEmp = new SkdShrEmpDto();
-            shrEmp.setSkdNo(schedule.getSkdNo());
-            shrEmp.setEmpNo(shrEmps.getEmpNo());
-            scheduleMapper.addShrEmp(shrEmp);
-        }
-    }
-    
-    // 부서 공유 데이터 삽입
-    if (shrDeptList != null && !shrDeptList.isEmpty()) {
-        for (SkdShrDeptDto shrDeps : shrDeptList) {
-            SkdShrDeptDto shrDept = new SkdShrDeptDto();
-            shrDept.setSkdNo(schedule.getSkdNo());
-            shrDept.setDeptNo(shrDeps.getDeptNo());
-            scheduleMapper.addShrDept(shrDept);
-        }
-    }
-    System.out.println("수정 테스트 :" + schedule);
+   // 디버깅용 로그 추가
+   System.out.println("수정할 일정 데이터: " + schedule);
+ 
+   // 기존 공유 사원 및 부서 삭제
+   scheduleMapper.deleteShrEmp(schedule.getSkdNo());
+   scheduleMapper.deleteShrDept(schedule.getSkdNo());
 
+   // 공유 항목 삽입
+    List<String> sharedItems = schedule.getSharedItems();
+    if (sharedItems != null && !sharedItems.isEmpty()) {
+        Set<String> uniqueItems = new HashSet<>(sharedItems); // 중복 제거
+        for (String item : uniqueItems) {
+            if (item.startsWith("E")) {
+                // 사원
+                SkdShrEmpDto shrEmp = new SkdShrEmpDto();
+                shrEmp.setSkdNo(schedule.getSkdNo());
+                shrEmp.setEmpNo(Integer.parseInt(item.substring(1)));
+                scheduleMapper.addShrEmp(shrEmp);
+            } else if (item.startsWith("D")) {
+                // 부서
+                SkdShrDeptDto shrDept = new SkdShrDeptDto();
+                shrDept.setSkdNo(schedule.getSkdNo());
+                shrDept.setDeptNo(Integer.parseInt(item.substring(1)));
+                scheduleMapper.addShrDept(shrDept);
+            }
+        }
+    }
+    
+    System.out.println("최종 공유 항목: " + sharedItems); // 디버깅용 
     // 일정 업데이트
     return scheduleMapper.updateSkd(schedule);
   }
@@ -168,6 +192,10 @@ public class ScheduleServiceImpl implements ScheduleService {
   // 일정 삭제 
   @Override
   public int removeSkd(int skdNo) {
+    // 일정 삭제 전 공유 항목 먼저 삭제
+    scheduleMapper.deleteShrEmp(skdNo);
+    scheduleMapper.deleteShrDept(skdNo);
+    
     return  scheduleMapper.deleteSkd(skdNo);
   }
  

@@ -24,7 +24,6 @@ public interface ScheduleMapper {
   
   // 일정 상세보기
   ScheduleDto getSkdByNo(int skdNo);
-  //List<SkdShrDeptDto> getShrDeptNo(int skdNo);
   
   // 공유 검색
   List<EmployeeDto> searchEmp(String query);  
@@ -32,10 +31,14 @@ public interface ScheduleMapper {
   
   // 수정
   int updateSkd(ScheduleDto schedule);
+  List<SkdShrEmpDto> getShrEmpBySkdNo(int skdNo);
+  List<SkdShrDeptDto> getShrDeptBySkdNo(int skdNo);
+  EmployeeDto getEmpByNo(int empNo);
+  DepartmentDto getDeptByNo(int deptNo);
   
   // 삭제
-  int deleteSkd(int skdNo);     
-  int deleteShrEmp(int skdNo);  
-  int deleteShrDept(int skdNo); 
+  int deleteSkd(int skdNo);
+  int deleteShrEmp(int skdNo);   
+  int deleteShrDept(int skdNo);   
   
 }

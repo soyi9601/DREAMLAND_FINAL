@@ -95,22 +95,6 @@ public class WorkServiceImpl implements WorkService {
       }
     }
   
-  // 관리자 여부 확인
-//  @Override
-//  public boolean isAdmin() {
-//    // 현재 로그인한 사용자의 인증 정보 가져오기
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    if (authentication != null && authentication.getAuthorities() != null) {
-//      for (GrantedAuthority authority : authentication.getAuthorities()) {   // 사용자가 가진 모든 권한체크 (ROLE_ADMIN 권한 여부)
-//        if (authority.getAuthority().equals("ROLE_ADMIN")) {
-//          return true;
-//        }
-//      }
-//    }
-//    return false;
-//  }
-//  
-//  
   // 지각 + 조기퇴근 + 결근 횟수 + 근무시간 조회
   @Override
   public Map<String, Object> getWorkCountByEmail(String email) {
