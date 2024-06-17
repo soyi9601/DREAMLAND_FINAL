@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,7 +28,6 @@ import com.dreamland.prj.dto.NoticeBoardDto;
 import com.dreamland.prj.mapper.NoticeBoardMapper;
 import com.dreamland.prj.utils.MyBoardPageUtils;
 import com.dreamland.prj.utils.MyFileUtils;
-import com.dreamland.prj.utils.MyPageUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -330,9 +328,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 	
 	@Override
 	public ResponseEntity<Map<String, Object>> removeAttach(int attachNo) {
-
 		NoticeAttachDto attach = noticeMapper.getAttachByNo(attachNo);
-		
 		File file = new File(attach.getUploadPath(),attach.getFilesystemName());
 		if(file.exists()) {
 			file.delete();
@@ -352,9 +348,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 			if(file.exists()) {
 				file.delete();
 			}
-					
 		}
-		
 		return noticeMapper.deleteNotice(noticeNo);
 	}
 	
