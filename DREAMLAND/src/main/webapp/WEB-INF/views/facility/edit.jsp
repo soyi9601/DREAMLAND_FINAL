@@ -34,28 +34,28 @@
                             action="${contextPath}/facility/modify.do">
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label">시설번호</label>
-                          <div class="col-sm-10">
-                            <input type="text" class="deptNo"
-                                  id="basic-default-no" name="deptNo"/>
+                          <div class="col-sm-10 col-form-label">
+                            <input type="text" class="form-control deptNo"
+                                  id="basic-default-no" name="deptNo" oninput="handleOnInput(this, 4)"/>
                           </div>
                         </div>
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label">시설명</label>
                           <div class="col-sm-10">
-                            <input type="text" class="facilityName"
-                                  id="basic-default-name" name="facilityName" value="${facility.facilityName}"/>
+                            <input type="text" class="form-control facilityName"
+                                  id="facilityName" name="facilityName" value="${facility.facilityName}" oninput="handleOnInput(this, 4)"/>
                           </div>
                         </div>
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label">관리유무</label>
                           <div class="col-sm-10">
-                            <input type='checkbox' class='chkmanagement' name='management' value="${facility.management}" ${facility.management eq 1 ? 'checked' : ''} />
+                            <input type='checkbox' class='form-check-input chkmanagement' name='management' value="${facility.management}" ${facility.management eq 1 ? 'checked' : ''} />
                           </div>
                         </div>
                         <div class="row mb-3">
                           <label class="col-sm-2 col-form-label">등록날짜</label>
                           <div class="col-sm-10">
-                            <input type='date' class='facilityDate' name='facilityDate' value="${facility.facilityDate}"/>
+                            <input type='date' class='form-control facilityDate' name='facilityDate' value="${facility.facilityDate}"/>
                           </div>
                         </div>
                         <div class="row mb-3">
@@ -64,7 +64,7 @@
                           <div class="col-sm-10">
                               <textarea id="basic-default-message"
                                   class="form-control" placeholder="비고"
-                                  name="remarks" >${facility.remarks}</textarea>
+                                  name="remarks" oninput="handleOnInput(this, 166)">${facility.remarks}</textarea>
                           </div>
                         </div>
 
@@ -93,10 +93,13 @@
                           
                         </div>
 
-                        <div style="display:flex;">
+                        <div class="btn-area">
                           <input type="hidden" name="delAttachList" id="delAttachList">
                           <input type="hidden" name="facilityNo" value="${facility.facilityNo}">
                           <button type="submit" id="btn-edit-submit" class="btn-reset sd-btn sd-point-bg">수정</button>
+                        	<button type="button" class="btn-reset sd-btn sd-point-bg" style="margin-left:7px;">
+                            <a href="${contextPath}/facility/list.do">목록</a>
+                          </button>
                         </div>
                       </form>
                     </div>
@@ -111,7 +114,8 @@
 
 $(".loading").hide();
 
-let insAttachList = [];
+let insAttachList = []; // 새로 추가될 첨부 파일 목록 배열
+
 // 기존 첨부 파일 목록 가져오기 및 파일 입력 필드 생성
 const fnAttachList = () => {
   fetch('${contextPath}/facility/attachList.do?facilityNo=${facility.facilityNo}', {
@@ -123,6 +127,7 @@ const fnAttachList = () => {
       divAttachList.innerHTML = '';
       const attachList = resData.attachList;
       
+   		// 기존 첨부 파일 목록을 HTML에 추가
       for (let i = 0; i < attachList.length; i++) {
         const attach = attachList[i];
         let str = '<div class="attach">';
@@ -135,9 +140,10 @@ const fnAttachList = () => {
       const fileInputContainer = document.getElementById('file-input-container');
       fileInputContainer.innerHTML = '';
       
-      const maxFileInputs = 2;
+      const maxFileInputs = 2; // 최대 파일 입력 개수
       const remainingFileInputs = maxFileInputs - attachList.length;
       
+   		// 부족한 파일 입력 필드 생성
       for (let i = 0; i < remainingFileInputs; i++) {
         const fileInputDiv = document.createElement('div');
         fileInputDiv.className = 'file-input-div';
@@ -147,7 +153,7 @@ const fnAttachList = () => {
     });
  }
  
-// 첨부파일 크기제한
+//첨부 파일 크기 제한 및 삭제 버튼 추가 함수
 const fnAttachCheck = () => {
   $(document).on('change', '.form-control', (e) => { // 이벤트 위임 사용
       const limitPerSize = 1024 * 1024 * 10; // 10MB
@@ -157,6 +163,7 @@ const fnAttachCheck = () => {
       
       const inputArea = $(e.target).closest(".file-input-div");
       
+      // 삭제 버튼 추가
       if (!inputArea.find('.del-btn').length) {
         const delBtn = $('<span class="del-btn"><span class="material-symbols-outlined">cancel</span></span>');
         inputArea.append(delBtn);
@@ -189,7 +196,7 @@ const fnAttachInput = () => {
     let totalNum = attachListNum + inputNum;
     const totalMax = 2;
     
-    
+    // 최대 개수보다 작으면 파일 입력 추가
     if (totalNum < totalMax) {
       const fileInputContainer = document.getElementById('file-input-container');
       const fileInputDiv = document.createElement('div');
@@ -197,7 +204,7 @@ const fnAttachInput = () => {
       fileInputDiv.innerHTML = '<input class="form-control" type="file" name="files" />';
       fileInputContainer.appendChild(fileInputDiv);
     } else {
-      alert('첨부파일은 최대 2개까지 가능합니다.');
+      alert('첨부파일은 최대 1개까지 가능합니다.');
     }
     
   });
@@ -220,8 +227,8 @@ const fnAddAttach = () => {
       
       console.log(file);
       
+   		// 선택된 파일을 FormData에 추가
       if (file) {
-        //globalFormData = new FormData(); // 새 formData 객체 생성
         globalFormData.append('files', file);
         globalFormData.append('facilityNo', '${facility.facilityNo}');
         
@@ -229,10 +236,6 @@ const fnAddAttach = () => {
     }
   });
 }
-
-
-
-// x버튼눌러서 삭제했는데도 첨부됨 .? 왜?
 
 //첨부파일 input창 삭제
 const fnAttachDel = () => {
@@ -242,15 +245,10 @@ const fnAttachDel = () => {
     const fileInput = inputArea.find('input[type="file"]')[0];
     const fileName = fileInput.files[0].name;
 
+    // 입력 영역 삭제	
     inputArea.remove();
 
-    //원래있던globalFormData를 빼야할듯
-    /*
-    console.log(globalFormData);
-    const inputsArea = $(".notice-input-area");
-    const inputCount = inputsArea.children('.file-input-div').length;
-    */
-    
+ 		// 삭제된 파일을 FormData에서도 제거
     const newFormData = new FormData();
     for (let pair of globalFormData.entries()) {
       if (pair[1].name !== fileName) {
@@ -259,6 +257,7 @@ const fnAttachDel = () => {
     }
     globalFormData = newFormData
     
+ 		// 남아 있는 입력 영역 개수 확인
     const inputsArea = $(".notice-input-area");
     const inputCount = inputsArea.children('.file-input-div').length;
     
@@ -267,6 +266,7 @@ const fnAttachDel = () => {
 
 fnAttachDel();
 
+//Ajax를 통해 첨부 파일 추가 요청을 보내는 함수
 const fnAddAttachGo = () => {
   $.ajax({
     type: 'post',
@@ -277,10 +277,8 @@ const fnAddAttachGo = () => {
     dataType: 'json',
     success: (resData) => {
       if (resData.attachResult) {
-        //alert('첨부 파일이 추가되었습니다.');
-        fnAttachList();
+        fnAttachList(); // 첨부 파일 목록 다시 불러오기
       } else {
-        //alert('첨부 파일이 추가되지 않았습니다.');
       }
     },
   });
@@ -293,25 +291,21 @@ const fnAddAttachGo = () => {
               return;
           }
           const attachNo = evt.target.dataset.attachNo;
-          //console.log('gsdg');
-          //fnRemoveAttachGo(attachNo);
           console.log(attachNo)
 
-          // ※ attachNo가 파일명에 붙어있는게 아니라 x버튼에 붙어있음
+          // 해당 첨부 파일을 목록에서 삭제하고 관련 데이터 설정
           let parentElement = $(evt.target).parent().parent();
           console.log(parentElement);
           let children = parentElement.children();
           parentElement.remove();
           
-          //debugger;
           $("#delAttachList").val($("#delAttachList").val()+"|"+attachNo);
-          //fnRemoveAttachGo(attachNo);
           return attachNo;
       });
   }
 
        
-        
+//Ajax를 통해 첨부 파일 삭제 요청을 보내는 함수        
 const fnRemoveAttachGo = (attachNo) => {
   console.log(attachNo);
     fetch('${contextPath}/facility/removeAttach.do', {
@@ -329,18 +323,13 @@ const fnRemoveAttachGo = (attachNo) => {
       console.log("못찾음")
       
         if (resData.deleteCount === 1) {
-           // alert('첨부 파일이 삭제되었습니다.');
-            fnAttachList();
+            fnAttachList(); // 첨부 파일 목록 다시 불러오기
             console.log(resData)
         } else {
-            //alert('첨부 파일이 삭제되지 않았습니다.');
             console.log(resData)
         }
     });
 }
-
-// 목록에서도 사라저야 하고, form리스트 다시 만들어서 보내야하지않나?
-      
 
 // 제목 필수 입력 스크립트
 const fnModifyUpload = () => {
@@ -348,13 +337,11 @@ const fnModifyUpload = () => {
     if (document.getElementById('"basic-default-no"').value === '') {
       alert('시설번호는 필수입니다.');
       evt.preventDefault();
-      //console.log($('input[name="signal"]').val());
       return;
     }
     if (document.getElementById('basic-default-name').value === '') {
       alert('시설명을 입력해주세요.');
       evt.preventDefault();
-      //console.log($('input[name="signal"]').val());
       return;
     }
     
@@ -362,18 +349,20 @@ const fnModifyUpload = () => {
     
     evt.preventDefault(); // 폼 제출 중지
     fnAddAttachGo(); // 파일 첨부 실행
-    fnRemoveAttachGo();
-    $(".loading").show();
+    fnRemoveAttachGo(); // 첨부 파일 삭제 요청 실행
+    $(".loading").show(); // 로딩 표시
     evt.target.submit(); // 폼 제출 재개
   });
 }
 
+//관리 체크박스 처리 함수
 const fnCkgMng = () => {
 	  
 	$('input[name="management"]').val(0);
 	  
 	  $(document).on('click', '.chkmanagement', (e) => {
-	      if ($(e.target).prop('checked')) {
+		  	// 체크박스 상태에 따라 값 설정
+		  	if ($(e.target).prop('checked')) {
 	        $('input[name="management"]').val(1);
 	      } else {
 	         $('input[name="management"]').val(0); 
@@ -381,9 +370,14 @@ const fnCkgMng = () => {
 	  });
 	}
 
+	//입력 필드 길이 제한 처리 함수
+	function handleOnInput(el, maxlength) {
+	  	if(el.value.length > maxlength)  {
+	    	el.value = el.value.substr(0, maxlength); // 최대 길이까지 자르기
+	  	}
+		}
 
-
-
+fnRegister();
 fnAttachList();
 fnAddAttach();
 fnModifyUpload();

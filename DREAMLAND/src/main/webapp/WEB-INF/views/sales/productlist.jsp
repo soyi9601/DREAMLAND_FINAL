@@ -10,46 +10,96 @@
 <jsp:include page="../layout/header.jsp" />
 
 <!-- 링크 -->
-<link rel="stylesheet" href="/resources/assets/css/board_sd.css" />
 <link rel="stylesheet" href="/resources/assets/vendor/fonts/boxicons.css" />
+<!-- include moment.js -->
+<script src="/resources/assets/moment/moment-with-locales.min.js"></script>
 
+		<style>
+ 		.Allmagin {
+ 					margin : 0px 200px 100px 200px;
+ 		}
+ 		.title {
+ 					padding : 40px 40px 0px 30px;
+ 					color :  #90B54C;
+ 		}
+ 		.card-header {
+ 					background-color: rgb(189,189,189,0.5);
+          padding : 40px 40px 10px 30px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+ 		}
+ 		.btn-remove {
+ 				 	width: 120px;
+ 				 	height: 35px;
+    			float: right;
+    		  margin-right: 20px;
+    		  text-align: center;
+    			background-color: #EE2B4B;
+    			color: #FFFFFF; 
+ 		}
+ 		.text-nowrap {
+ 					width:100%;
+   				margin-top: 30px;
+   				background-color:#233446;
+   				padding:0 12px;
+ 		}
+ 		th, tr {
+ 					text-align: center;  
+ 		}
+ 		.table table-dark {
+ 					width: 100%;
+ 		}
+ 		.pagination{
+ 					justify-content: center;
+ 					margin: 20px 0px 20px 0px;
+ 		}
+		.pagination .page-link {
+					background:#fff;
+		}
+		</style>
+		
+		
 <!-- Content wrapper -->
 <div class="content-wrapper">
 
-<!-- 부트스트랩 다크 테이블 -->
-<div id="EuropeanAdventure" class="card">
-    <h5 class="card-header">상품목록</h5>
-    <div class="table-responsive text-nowrap">
-        <form id="productForm" method="post" action="${contextPath}/sales/updateProduct.do">
-            <table class="table table-dark">
-                <thead>
-                    <tr>
-                        <th>파트번호</th>
-                        <th>선택</th>
-                        <th>상품번호</th>
-                        <th>상품</th>
-                        <th>가격</th>
-                    </tr>
-                </thead>
-                <tbody class="table-border-bottom-0">
-                    <c:forEach items="${loadProductList}" var="ProductList">
-                    	<c:if test="${ProductList.delyn != 'Y'}">
-                        <tr>
-                            <td>${ProductList.department.deptNo}</td>
-                            <td><input type="checkbox" name="productChk" value="${ProductList.productNo}" /></td>
-                            <td>${ProductList.productSctCd}</td>
-                            <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${ProductList.productNM}</strong></td>
-                            <td>${ProductList.price}</td>
-                        </tr>
-                      </c:if>
-                    </c:forEach>
-            </table>
-            <div class="sd-btn-write-area">
-                <button type="submit" id="list-del-btn">삭제</button>
-            </div>
-        </form>
+<div class="Allmagin">
+
+<form id="productForm" method="post" action="${contextPath}/sales/updateProduct.do">
+	<h1 class="title">매출</h1>
+	
+	<!-- 부트스트랩 다크 테이블 -->
+	<div id="EuropeanAdventure" class="card">
+    <div class="card-header">    
+    	<h2>상품목록 <button type="submit" id="list-del-btn" class="btn btn-primary btn-remove">삭제</button></h2>
     </div>
-    <div>${paging}</div>
+    <div class="table-responsive text-nowrap">
+    	<table class="table table-dark">
+      	<thead>
+        	<tr>
+          	<th>파트번호</th>
+            <th>선택</th>
+            <th>상품번호</th>
+            <th>상품</th>
+            <th>가격</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+        	<c:forEach items="${loadProductList}" var="ProductList">
+          	<c:if test="${ProductList.delyn != 'Y'}">
+            	<tr>
+              	<td>${ProductList.department.deptNo}</td>
+                <td><input type="checkbox" name="productChk" value="${ProductList.productNo}" class="form-check-input"/></td>
+                <td>${ProductList.productSctCd}</td>
+                <td><i class="fab fa-angular fa-lg text me-3"></i> <strong>${ProductList.productNM}</strong></td>
+                <td>${ProductList.price}</td>
+              </tr>
+            </c:if>
+          </c:forEach>
+        </table>
+      </form>
+    </div>
+   <div class="pagination">${paging}</div>
+	</div>
 </div>
 
 <script>
