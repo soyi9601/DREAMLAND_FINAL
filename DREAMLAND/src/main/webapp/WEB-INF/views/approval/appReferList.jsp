@@ -16,25 +16,36 @@
            <div class="col-6 mb-4">
               <div class="post-list-container">
    						  <div>
-       				    <button class="status-btn" data-kind="total">전체</button>
-                  <button class="status-btn" data-kind="wait">진행 중</button>
-                  <button class="status-btn" data-kind="complete">승인</button>
-                  <button class="status-btn" data-kind="rejected">반려</button>
+              <div class="btn-group" role="group" aria-label="Basic example">
+       				    <button type="button"  class="btn btn-secondary status-btn active" data-kind="total" >전체</button>
+                  <button  type="button" class="btn btn-secondary status-btn" data-kind="wait">진행 중</button>
+                  <button type="button" class="btn btn-secondary status-btn" data-kind="complete">승인</button>
+                  <button type="button"  class="btn btn-secondary status-btn" data-kind="rejected">반려</button>
                 </div>
-            <div id="post-list-body">
-            </div>
+                   <br>
+                   <br>
+  					<table class="table">
+					
+					    <thead>
+        <tr>
+          <th>문서번호</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>작성일시</th>
+          <th>문서상태</th>
+        </tr>
+      </thead>
+        <tbody class="table-border-bottom-0" id="list">
+
+         </tbody>
+    </table>
             
                  <div class="tab-content">
                      <nav aria-label="Page navigation">
                          <ul class="pagination justify-content-center" id="pagingArea"></ul>
                        </nav>
                        </div>
-        <div class="footer">
-            문서 수 : <span id="document-count">0</span>
-            <div class="pagination">
-                <span>1</span>
-            </div>
-        </div>
+
     </div>
              </div>
          </div>
@@ -49,17 +60,25 @@
    var clickableElements;
    const id=${loginEmployee.empNo}; 
    kindbtn = document.querySelectorAll('.status-btn');
+   const list= document.getElementById("list");
+   
+
    
    kindbtn.forEach(element => {
-		    element.addEventListener('click', evt => {
-		    	kind = evt.target.dataset.kind;
-		    	FnRequestAppList(kind, 1, 'DESC', 20, id);
-		    });
-		  });
+	    element.addEventListener('click', evt => {
+	    	kindbtn.forEach(function(button) {
+	                button.classList.remove('active');
+	            });
+	    	
+	    	kind = evt.target.dataset.kind;
+	    	 evt.target.classList.add('active');
+	    	FnRequestAppList(kind, 1, 'DESC', 20, id);
+	    });
+	  });
 
    
    function  FnRequestAppList(kind, page, sort, display, id) { 
-	   $('#post-list-body').empty();
+	   $('#list').empty();
  	   $.ajax({
 		     // 요청
 		     type: 'GET',
@@ -69,14 +88,15 @@
 		     success: (resData) => { 
 		       totalPage = resData.totalPage;
 		       $.each(resData.approvalList, (i, approval) => {
-		         str = '<div class="approval" data-apv-no="' +  approval.apvNo  + '">';
-		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.apvNo  + '</span>';
-		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.apvTitle + '</span>';
-		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.empNo + '</span>';
-		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.apvWriteDate+ '</span>';
-		         str += '<span data-apv-no="' +  approval.apvNo  + '">' + approval.apvKinds + '</span>';
-		         str += '</div>';
-		         $('#post-list-body').append(str);
+		    	   var state;
+		    	   if(approval.apvCheck == 0) {
+		    		   state = '진행중'
+		    	   } else if(approval.apvCheck == 1) {
+		    		   state = '승인'
+		    	   } else if(approval.apvCheck == 2) {
+		    		   state = '반려'
+		    	   }
+		    	   list.innerHTML += '<tr class="approval" data-apv-no="'+  approval.apvNo  + '"><td data-apv-no="' +  approval.apvNo  + '">' + approval.apvNo  + '</td><td data-apv-no="' +  approval.apvNo  + '">' + approval.apvTitle + '</td><td data-apv-no="' +  approval.apvNo  + '">' + approval.empName + '</td><td data-apv-no="' +  approval.apvNo  + '">' + approval.apvWriteDate+ '</td><td data-apv-no="' +  approval.apvNo  + '">' + state + '</td></tr>';
 		       })
 	       $('#pagingArea').empty();
 	       $('#pagingArea').append(resData.paging);
@@ -100,6 +120,8 @@
 		     }
 		   });
    }
+   
+   window.onload = FnRequestAppList('total', 1, 'DESC', 20, id);
      
    </script>
 
