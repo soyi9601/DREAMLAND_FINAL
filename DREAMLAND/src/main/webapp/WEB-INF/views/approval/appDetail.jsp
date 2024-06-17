@@ -101,7 +101,7 @@
                      </div>
          </div>
             </div>
-                       <c:if test="${kind2 == 'wait' &&  loginEmployee.empName == appovers.approver1 || kind2 == 'wait' &&  loginEmployee.empName == appovers.approver2 || kind2 == 'wait' &&  loginEmployee.empName == appovers.approver3}">
+                       <c:if test="${kind2 == 'wait' &&  loginEmployee.empName == appovers.approver1 || kind2 == 'wait' &&  loginEmployee.empName == appovers.approver2 || kind2 == 'wait' &&  loginEmployee.empName == appovers.approver3 || kind2 == 'total' &&  loginEmployee.empName == appovers.approver1 || kind2 == 'total' &&  loginEmployee.empName == appovers.approver2 || kind2 == 'total' &&  loginEmployee.empName == appovers.approver3}">
             <div class="buttons">
                      <input type="hidden" name="apvNo" value="${approval.apvNo}">
                      <input type="hidden" name="empNo" value="${loginEmployee.empNo}">
