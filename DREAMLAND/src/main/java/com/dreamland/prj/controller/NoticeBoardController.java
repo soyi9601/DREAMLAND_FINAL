@@ -90,7 +90,6 @@ public class NoticeBoardController {
   	for (String attachNo : delAttachArr) {
   	    if (!attachNo.isEmpty()) {
   	        noticeBoardService.deleteAttach(Integer.parseInt(attachNo));
-  	        System.out.println(noticeBoardService.deleteAttach(Integer.parseInt(attachNo)));
   	    }
   	}
   	// todo insAttachList를 split("|") 해서 attachNo를 insert하는 구문 작성

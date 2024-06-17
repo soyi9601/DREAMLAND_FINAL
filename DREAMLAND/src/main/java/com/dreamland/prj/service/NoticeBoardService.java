@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.dreamland.prj.dto.NoticeAttachDto;
 import com.dreamland.prj.dto.NoticeBoardDto;
 
 import jakarta.servlet.http.HttpServletRequest;

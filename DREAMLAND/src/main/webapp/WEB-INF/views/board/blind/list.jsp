@@ -78,11 +78,7 @@
 		            </c:if>
 		        </div>
 		    </div>
-        
     </div>
-    
-   
-
     <!-- / Content -->
 </div>
 
@@ -221,11 +217,9 @@ const fnScrollHandler = () => {
   var timerId;  
   
   $(window).on('scroll', (evt) => {
-    
     if(timerId) { 
       clearTimeout(timerId);
     }
-    
     timerId = setTimeout(() => {
       
       let scrollTop = window.scrollY;  
