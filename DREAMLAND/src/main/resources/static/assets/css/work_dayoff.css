@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+  /* 공통 */ 
+ .work-name{margin: 20px 0 0 40px;}
+ .work-deptNo{margin: 0 0 0 46px;}
+
+/* 근무관리 */
+.col-md{margin-top:25px;}
+.card {min-height: 220px;}
+.work-today {display: flex; justify-content: center; align-items: center;}
+.text-exp{margin-top:40px;}
+.work-info{margin-bottom: 5px}
+.input-group {display: flex; align-items: center;}
+ #dateRange {flex: 1; max-width: 230px;}
+.wrap-work-list{margin-top: 10px;}
+
+ /* 휴가관리 */
+ .card-header {display: flex; justify-content: space-between; align-items: center;}
+ .col-auto {margin-right: 30px;} /* 연차신청 버튼 */
+ .wrap-list{margin-top: 25px;}
+ 
