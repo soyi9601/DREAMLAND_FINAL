@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class SalesServiceImpl implements SalesService {
-
+	
 	private final SalesMapper salesMapper;
 	private final MyBoardPageUtils myBoardPageUtils;
 	
@@ -35,7 +35,7 @@ public class SalesServiceImpl implements SalesService {
 	
 	@Override
 	public int registerProduct(HttpServletRequest request) {
-
+			
 			// HTTP 요청에서 사용자가 입력한 상품 정보 배열을 가져옵니다.
 	    String[] productSctCdArray = request.getParameterValues("productSctCd");
 	    String[] priceArray = request.getParameterValues("price");

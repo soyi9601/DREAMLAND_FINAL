@@ -47,7 +47,7 @@ public class LoginServiceImpl implements LoginService {
   private String filePath(MultipartFile filePath, String beforePath) {
     
     String newFilePath = null;
-    String beforeFilePath = beforePath;
+    //String beforeFilePath = beforePath;
     
     if(filePath != null && !filePath.isEmpty()) {
       String uploadPath = myFileUtils.getUploadPath();
@@ -148,6 +148,7 @@ public class LoginServiceImpl implements LoginService {
     employeeMapper.updatePassword(email, changePw);
     return employeeMapper.updatePassword(email, changePw);
   }
+  
   
   // 이메일 체크
   @Override

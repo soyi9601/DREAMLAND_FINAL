@@ -8,10 +8,20 @@ import org.apache.ibatis.annotations.Mapper;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.MessageDto;
 
+/******************************************
+ * 
+ * - 쪽지 mapper
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
+
 @Mapper
 public interface MessageMapper {
   
+  // 받는사람 리스트 가져오기
   List<EmployeeDto> getEmployeeList(Map<String, Object> param);
+  
+  // 쪽지보내기
   int sendMessage(Map<String, Object> param);
   
   // 메시지 리스트 받아오기

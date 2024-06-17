@@ -135,16 +135,6 @@
                               name="enterDate"
                             />
                           </div>
-<!--                           <div class="mb-3 col-md-6">
-                            <label for="dayOff" class="form-label">연차</label>
-                            <input
-                              class="form-control"
-                              type="text"
-                              id="dayOff"
-                              name="dayOff"
-                              value="15"
-                            />
-                          </div> -->
                           <div class="mb-3 col-md-6">
                             <label for="role" class="form-label">권한</label>
                             <select id="role" name="role" class="select2 form-select">

@@ -9,15 +9,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.service.MessageService;
-import com.dreamland.prj.service.MessageServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
+/******************************************
+ * 
+ * - 쪽지 보내기/답장하기/보관하기/삭제하기
+ * - 받은쪽지함/보낸쪽지함/중요보관함/휴지통
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
 
 @Controller
 public class MessageController {

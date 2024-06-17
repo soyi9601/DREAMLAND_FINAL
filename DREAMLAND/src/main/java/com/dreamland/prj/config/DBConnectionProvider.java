@@ -17,6 +17,12 @@ import com.dreamland.prj.service.LoginService;
 
 import lombok.RequiredArgsConstructor;
 
+/******************************************
+ * 
+ * 로그인 인증객체 생성 (DB 조회 사용)
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
 // 시큐리티 설정에서 loginProcessingUrl("/login");
 // /login 요청이 오면 자동으로 UserDetailsService 타입으로 IoC 되어 있는 loadUserByUsername 함수가 실행
 @Component
@@ -28,6 +34,8 @@ public class DBConnectionProvider implements UserDetailsService, AuthenticationP
   // 비밀번호 암호화 처리
   private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+  
+  // 인증 객체 생성
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
@@ -42,8 +50,6 @@ public class DBConnectionProvider implements UserDetailsService, AuthenticationP
       throw new BadCredentialsException("인증에 실패하셨습니다!");
 
     }
-    
-    //return new UsernamePasswordAuthenticationToken(loginEmployee, loginEmployee.getPassword(), loginEmployee.getAuthorities());
     return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
   }
 

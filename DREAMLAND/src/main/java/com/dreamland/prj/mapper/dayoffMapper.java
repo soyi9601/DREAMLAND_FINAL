@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.dreamland.prj.dto.AppleaveDto;
 
 @Mapper
-public interface dayoffMapper {
+public interface DayoffMapper {
   
   List<AppleaveDto> getDayoffListByYear(Map<String, Object> params);
   String getEnterDate (int empNo);

@@ -107,7 +107,6 @@ public class SalesController {
   @GetMapping("/productlist.do")
 	public String list(HttpServletRequest request, Model model) {
   	model.addAttribute("request", request);
-  	System.out.println("실행" + request);
 		salesService.loadProductList(model); // 상품 목록을 로드하는 서비스 메서드를 호출
 		return "sales/productlist";
 	}

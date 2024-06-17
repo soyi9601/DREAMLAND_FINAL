@@ -71,8 +71,6 @@
                           </div>
                         </div>
 
-
-                        
                         <div class="attached-file-area">
                           <p>첨부파일 <i class='bx bx-paperclip'></i></p>
                           <div id="attach-list" ></div>
@@ -83,7 +81,6 @@
                           </div>
                         </div>
                         
-                        
                         <div class="row mb-3">
                           <label for="formFileMultiple"
                               class="col-sm-2 col-form-label"> 파일첨부
@@ -93,7 +90,6 @@
                              <!-- <input class="form-control" type="file" name="files" id="files" />-->
                              <div id="file-input-container"></div>
                           </div>
-                          
                         </div>
 
                         <div class="btn-area">

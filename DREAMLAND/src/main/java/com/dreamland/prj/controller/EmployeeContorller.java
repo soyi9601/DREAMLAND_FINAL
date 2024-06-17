@@ -9,14 +9,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dreamland.prj.config.DBConnectionProvider;
 import com.dreamland.prj.service.EmployeeServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+/******************************************
+ * 
+ * - 직원등록
+ * 작성자 : 고은정
+ * 
+ * ****************************************/
 
 @Controller
 public class EmployeeContorller {

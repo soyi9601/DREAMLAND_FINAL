@@ -112,7 +112,7 @@
 				</div>
 		</div>
 		<!-- / Content -->
-
+</div>
 <script>
     
 // 제목 필수 입력

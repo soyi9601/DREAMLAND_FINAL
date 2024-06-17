@@ -22,7 +22,7 @@ public interface BlindBoardMapper {
 	int deleteBlindImage(String filesystemName);
 	int deleteBlindImageList(int blindNo);
 	int deleteBlind(int blindNo);
-	//
+	
 	String getPasswordByBlindNo(int blindNo);
 	
 	// 조회수
