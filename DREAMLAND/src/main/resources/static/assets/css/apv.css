@@ -2,21 +2,33 @@
 
 
         .apv-container {
-            width: 80%;
+            width: 70%;
             margin: auto;
-            border: 1px solid #000;
+            border: 1px solid #bdbdbd;
             padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+            
         }
-        .title {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
+        
+        .form-select {
+        width: 150px;
         }
-        .approval-table, .approval-table td {
-            border: 1px solid #000;
+        
+
+        .table-bordered{
+            width:100%;
+            border: 1px solid #bdbdbd;
             border-collapse: collapse;
             text-align: center;
         }
+        
+     .fixed-size {
+    width: 209px;
+    height: 50px;
+}	
+
+	
 
         .section {
             margin-bottom: 20px;
@@ -62,19 +74,26 @@
             .jstree-node.custom-node {
         background-color: #f0f0f0;
     }
-     
-     .fixed-size {
-    width: 100px;
-    height: 50px;
-}
-      
+    .approvers{
+    width:163px;
+    			border: none;
+    text-align: center;
+    }
+    .approvers2{
+    width:163px;
+    			border: none;
+    text-align: center;
+    }
+
+
   
         .post-list-container {
     min-width:1300px;
     margin: 20px auto;
     padding: 20px;
     background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+       box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
+        border-radius: 0.5rem;
 }
 
 .post-list-table {
@@ -111,9 +130,18 @@
 .pagination span:hover {
     background-color: #f1f1f1;
 }
-      tbody tr:hover {
-            cursor: pointer;
-        }
+
+        
+        
+     .buttons {
+     	float: right;
+     }
+
+.leavetable {
+	
+	text-align: left;
+}
+
 
 
    
