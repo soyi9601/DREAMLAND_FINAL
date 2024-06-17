@@ -86,11 +86,11 @@
 						</div>
 				</div>
 				<!-- / Content -->
-
+			</div>
+</div>
 <script>
 const fnSummernoteEditor = () => {
   $('#contents').summernote({
-   
     height: 500,
     lang: 'ko-KR',
     toolbar: [
@@ -126,14 +126,13 @@ const fnSummernoteEditor = () => {
 }  
   
   
-let passwordField;
+
   
 // 전송
+let passwordField;
 const fnRegister = () => {
 	document.getElementById('frm-blind-register').addEventListener('submit', (evt) => {
-	  
 	  passwordField = document.getElementById('board-pw').value;
-	  
 	  let inpTitle= document.getElementById('board-title');
 	  let title = inpTitle.value;
 	  

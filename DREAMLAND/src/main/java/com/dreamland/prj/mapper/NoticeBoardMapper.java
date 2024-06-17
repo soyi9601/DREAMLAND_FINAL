@@ -4,14 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 
 import com.dreamland.prj.dto.NoticeAttachDto;
 import com.dreamland.prj.dto.NoticeBoardDto;
-
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @Mapper
 public interface NoticeBoardMapper {

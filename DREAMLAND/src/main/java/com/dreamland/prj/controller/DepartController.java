@@ -1,5 +1,6 @@
 package com.dreamland.prj.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -119,8 +120,15 @@ public class DepartController {
     return "redirect:/depart/addDepart.page";
   }
   
-  // 유저 - 조직도 페이지 이동
+  @GetMapping(value="/checkDeptNo", produces = "application/json")
+  public ResponseEntity<Map<String, Boolean>> checkDeptNo(@RequestParam("deptNo") int deptNo) {
+    boolean check = departService.checkDeptNo(deptNo);
+    Map<String, Boolean> response = new HashMap<>();
+    response.put("check", check);
+    return ResponseEntity.ok(response);
+  }
   
+  // 유저 - 조직도 페이지 이동  
   @GetMapping("/depart.page")
   public String departUser(Model model) {
     List<Map<String, Object>> orgChartData = departService.getOrgChartData();
@@ -133,12 +141,6 @@ public class DepartController {
     }
     
     return "depart/departUser";
-  }
-  
-  
-  
-  
-  
-  
+  }  
   
 }

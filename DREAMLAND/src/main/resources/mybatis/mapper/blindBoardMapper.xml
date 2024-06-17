@@ -87,16 +87,12 @@
     WHERE B.RN BETWEEN #{begin} AND #{end}
     </select>
 
-    
-    
     <select id="getBlindByNo"
             resultMap="BlindMap">
     SELECT B.BLIND_NO, B.BOARD_TITLE, B.BOARD_CONTENTS, B.HIT, B.BOARD_CREATE_DT, B.BOARD_MODIFY_DT, B.PASSWORD,
-        (
-            SELECT COUNT(*)
+        ( SELECT COUNT(*)
             FROM BLIND_COMMENT
-            WHERE BLIND_NO = B.BLIND_NO
-        ) AS COMMENT_COUNT
+            WHERE BLIND_NO = B.BLIND_NO) AS COMMENT_COUNT
     FROM BLIND_BOARD B
     WHERE B.BLIND_NO = #{blindNo}
     </select>
@@ -108,11 +104,9 @@
            , BOARD_CONTENTS = #{boardContents}
            , BOARD_MODIFY_DT = CURRENT_TIMESTAMP
            , PASSWORD = #{password}
-           , COMMENT_COUNT = (
-            SELECT COUNT(*)
-            FROM BLIND_COMMENT
-            WHERE BLIND_NO = #{blindNo}
-        )
+           , COMMENT_COUNT = (SELECT COUNT(*)
+                                FROM BLIND_COMMENT
+                               WHERE BLIND_NO = #{blindNo})
        WHERE BLIND_NO = #{blindNo}   
     </update>
     
@@ -198,7 +192,6 @@
        ORDER BY GROUP_NO DESC, COMMENT_NO ASC
     </select>
     
-    
     <update id="updateComment"
             parameterType="Map">
       UPDATE BLIND_BOARD
@@ -272,10 +265,6 @@
 			          WHERE C.COMMENT_COUNT >= 5) RankedBlinds
 			 WHERE RN BETWEEN 1 AND 5
     </select>
-    
-    
-    
-    
     
     
   </mapper>
