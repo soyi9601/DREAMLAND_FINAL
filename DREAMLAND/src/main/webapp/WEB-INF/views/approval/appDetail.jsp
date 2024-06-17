@@ -96,7 +96,7 @@
             <div class="footer">
   위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다. &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; 
                  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; 
-                  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                  &nbsp;&nbsp; &nbsp;&nbsp;
                              ${ApvDate} &nbsp;&nbsp; 작성자 : ${appovers.writer}   
                      </div>
          </div>
@@ -271,7 +271,7 @@
              <div class="footer">
                 위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다. &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; 
                  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; 
-                            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                            &nbsp;&nbsp; &nbsp;&nbsp; 
                              ${ApvDate} &nbsp;&nbsp; 작성자 : ${appovers.writer}
                      </div>
                       </div>

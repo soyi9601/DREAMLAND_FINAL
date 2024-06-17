@@ -112,12 +112,11 @@
    <!-- 일정 상세보기 (일정번호 기준 조회)  -->
    <select id="getSkdByNo"
            resultMap="SkdMap">
-      SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR
-		      , E.EMP_NO, E.EMP_NAME, E.DEPT_NO
-		    FROM SCHEDULE S
-		    INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
-		    LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
-		    WHERE S.SKD_NO = #{skdNo}
+      SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR,
+           E.EMP_NO, E.EMP_NAME, E.DEPT_NO
+       FROM SCHEDULE S
+      INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
+      WHERE S.SKD_NO = #{skdNo}
    </select>
    
   <!-- 공유 사원 검색  -->
@@ -138,13 +137,6 @@
        WHERE DEPT_NAME LIKE '%' || #{query} || '%'
   </select>
    
-   <!-- <select id="getShrDeptNo"
-           resultType="SkdShrDeptDto">
-      SELECT DEPT_NO
-        FROM SKD_SHR_DEPT
-       WHERE SKD_NO = #{skdNo}
-   </select> -->
-   
    <!-- 일정 수정 -->
    <update id="updateSkd"
            parameterType="ScheduleDto">
@@ -157,28 +149,60 @@
 		       SKD_COLOR = #{skdColor}
 		 WHERE SKD_NO = #{skdNo}
    </update>
-   
-   <!-- 일정 삭제 -->
+
+   <!-- 공유 사원 조회 -->
+   <select id="getShrEmpBySkdNo" 
+           parameterType="int" 
+           resultType="SkdShrEmpDto">
+	    SELECT SKD_NO, EMP_NO
+	    FROM SKD_SHR_EMP
+	    WHERE SKD_NO = #{skdNo}
+   </select>
+  
+   <!-- 공유 부서 조회 -->
+	 <select id="getShrDeptBySkdNo" 
+		        parameterType="int" 
+		        resultType="SkdShrDeptDto">
+		    SELECT SKD_NO, DEPT_NO
+		    FROM SKD_SHR_DEPT
+		    WHERE SKD_NO = #{skdNo}
+	 </select>
+	 
+	 <!-- 사원명 가져오기 (수정 모달창 표시) -->
+   <select id="getEmpByNo" 
+           parameterType="int" 
+           resultType="EmployeeDto">
+	    SELECT EMP_NO, EMP_NAME 
+	      FROM EMPLOYEE 
+	     WHERE EMP_NO = #{empNo}
+   </select>
+
+   <!-- 부서명 가져오기 (수정 모달창 표시) -->
+		<select id="getDeptByNo" parameterType="int" resultType="DepartmentDto">
+		    SELECT DEPT_NO, DEPT_NAME 
+	  	    FROM DEPARTMENT 
+		     WHERE DEPT_NO = #{deptNo}
+		</select>
+	 
+	 <!-- 일정 삭제 -->
    <delete id="deleteSkd">
      DELETE
        FROM SCHEDULE
       WHERE SKD_NO = #{skdNo}
    </delete>
-   
-   <!-- 사원 공유 삭제 -->
+	 
+    <!-- 사원 공유 삭제 -->
    <delete id="deleteShrEmp">
       DELETE 
         FROM SKD_SHR_EMP 
        WHERE SKD_NO = #{skdNo}
    </delete>
-   
+  
    <!-- 부서 공유 삭제 -->
    <delete id="deleteShrDept">
        DELETE 
          FROM SKD_SHR_DEPT 
         WHERE SKD_NO = #{skdNo}
    </delete>
-   
-    
     
  </mapper>

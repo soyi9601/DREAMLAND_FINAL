@@ -7,15 +7,14 @@
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 <jsp:include page="./../layout/apv-header.jsp" />  
 
-  <!-- Content wrapper -->
-  <div class="content-wrapper">
-   <!-- Content -->
 
    <div class="container-xxl flex-grow-1 container-p-y">
        <div class="col-12 col-md-6 col-lg-6">
            <div class="col-6 mb-4">
               <div class="post-list-container">
    						  <div>
+   						                         <h2 class="text-nowrap mb-2 text-primary">참조 문서</h2>
+              		<br>
               <div class="btn-group" role="group" aria-label="Basic example">
        				    <button type="button"  class="btn btn-secondary status-btn active" data-kind="total" >전체</button>
                   <button  type="button" class="btn btn-secondary status-btn" data-kind="wait">진행 중</button>
