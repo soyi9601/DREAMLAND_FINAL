@@ -14,6 +14,8 @@
        <div class="col-12 col-md-6 col-lg-6">
            <div class="col-6 mb-4">
               <div class="post-list-container">
+                                     <h2 class="text-nowrap mb-2 text-primary">내 문서</h2>
+              		<br>
           <div class="btn-group" role="group" aria-label="Basic example">
        				    <button type="button"  class="btn btn-secondary status-btn active" data-kind="total" >전체</button>
                   <button  type="button" class="btn btn-secondary status-btn" data-kind="wait">진행 중</button>

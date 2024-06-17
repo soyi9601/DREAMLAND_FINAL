@@ -353,7 +353,7 @@ var tdCount =2;
 const posName = {  '10':'사원',
 		'20': '주임',
 		'30' : '대리',
-		 '40' : '과',
+		 '40' : '과장',
 		 '50' :'부장',
 		 '60' :'팀장',
 		 '100': '대표이사' }
@@ -382,6 +382,33 @@ const fnRegisterUpload = () => {
 			return;
 		} 
 	})
+		document.getElementById('submitBtn1').addEventListener('click', (evt) => {
+			
+			evt.preventDefault();
+		const row = document.getElementById('selectedEmployeesRow');
+		const cells = row.getElementsByTagName('td');
+		const cellCount = cells.length;
+		
+		if(document.getElementById('title').value === '' ) {
+			alert('제목은 필수입니다.');
+			evt.preventDefault();
+			return;
+		} else if(cellCount == 1 ) {
+			alert('결재자를 선택해주세요');
+			evt.preventDefault();
+			return;
+		}
+		else if(document.getElementById('contents').value === '' ) {
+			alert('내용은 필수입니다.');
+			evt.preventDefault();
+			return;
+		} 
+		  $('input[name="temp"]').val('3');
+          $('#myForm').submit(); // 폼 제출
+		
+		
+	})
+	
 	document.getElementById('myForm2').addEventListener('submit', (evt) => {
 		
 		const row = document.getElementById('selectedEmployeesRow2');
@@ -414,6 +441,45 @@ const fnRegisterUpload = () => {
 			evt.preventDefault();
 			return;
 		} 
+	})
+	
+	document.getElementById('submitBtn2').addEventListener('click', (evt) => {
+		
+		evt.preventDefault();
+		
+		const row = document.getElementById('selectedEmployeesRow2');
+		const cells = row.getElementsByTagName('td');
+		const cellCount = cells.length;
+	  var leaveTypePick = document.getElementById("leave-type").value;
+	  var leaveType;
+	  if(leaveTypePick ==0) {
+		  
+		  leaveType = 'leaveDate';
+	  } else {
+		  leaveType ='leaveDate2';
+	  }
+		
+		if(document.getElementById('title2').value === '' ) {
+			alert('제목은 필수입니다.');
+			evt.preventDefault();
+			return;
+		}else if(cellCount == 1 ) {
+			alert('결재자를 선택해주세요.');
+			evt.preventDefault();
+			return;
+		}else if(document.getElementById(leaveType).value === '') {
+			alert('날짜를 입력해주세요.');
+			evt.preventDefault();
+			return;
+			
+		} else if(document.getElementById('contents2').value === '' ) {
+			alert('내용은 필수입니다.');
+			evt.preventDefault();
+			return;
+		} 
+		
+		  $('input[name="temp"]').val('3');
+          $('#myForm2').submit(); // 폼 제출
 	})
 }
 		 
@@ -500,9 +566,18 @@ function fnJstree() {
                         "parent" : "#"
                     }
                 Edata.push(node);
-        		
-        	})
-        	console.log(Edata);
+        	});
+        	
+        	resData.departmentList2.forEach(item => {
+                let node = {
+                        "id": item.deptNo+"",
+                        "text": item.deptName+"",
+                        "parent" : "5000"
+                    }
+                Edata.push(node);
+        	});
+        	
+  
         		  resData.employeeList.forEach(item => {
           // jsTree 형식에 맞게 변환하여 data 배열에 추가
           let node = {
@@ -515,7 +590,9 @@ function fnJstree() {
           };
           Edata.push(node);
     });
-        	     	console.log(Edata);
+        		  
+        		  
+        		  
         	
         	
         	
@@ -742,26 +819,7 @@ function fnJstree() {
    }
    
    
-   // 
-   $(document).ready(function() {
-       $('#submitBtn1').click(function(event) {
-           event.preventDefault(); // 기본 제출 동작을 막음
-           
-           
-           $('input[name="temp"]').val('3');
-           $('#myForm').submit(); // 폼 제출
-       });
-       
 
-       $('#submitBtn2').click(function(event) {
-           event.preventDefault(); // 기본 제출 동작을 막음
-           
-           
-           $('input[name="temp"]').val('3');
-           $('#myForm2').submit(); // 폼 제출
-       });
-   });
-   
    
    function showPage(pageId) {
        const pages = document.querySelectorAll('.page');
@@ -799,7 +857,6 @@ function fnJstree() {
    
    const fnAttachCheck = () => {
 	   var attachefiles = document.querySelectorAll('.files');
-	   console.log(attachefiles);
 	   
 	   attachefiles.forEach(function(file) {
 		   file.addEventListener('change', (evt) => {
