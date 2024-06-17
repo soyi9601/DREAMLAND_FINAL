@@ -36,7 +36,7 @@ public class SalesController {
   @PostMapping("/productreg.do")
   public String productreg(HttpServletRequest request, RedirectAttributes redirectAttributes) {
   	int insertCount = salesService.registerProduct(request); // 상품 등록 서비스를 호출
-		if (insertCount == 1) {
+		if (insertCount == 0) {
        redirectAttributes.addFlashAttribute("errorMessage", "판매 등록 중 오류가 발생했습니다.");
        return "redirect:/sales/productreg.page"; // 오류 메시지와 함께 상품 등록 페이지로 리다이렉트
 		}

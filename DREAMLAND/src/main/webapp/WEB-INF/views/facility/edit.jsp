@@ -376,6 +376,23 @@ const fnCkgMng = () => {
 	    	el.value = el.value.substr(0, maxlength); // 최대 길이까지 자르기
 	  	}
 		}
+	
+	// 폼 유효성 검사 함수
+	const validateForm = () => {
+	    const deptNoInput = document.getElementById('basic-default-no');
+	    const deptNo = deptNoInput.value.trim();
+	    const pattern = /^[5-9][0-9]{3}$/; // 5000에서 5999 사이의 숫자 패턴
+
+	    if (!pattern.test(deptNo)) {
+	        deptNoInput.setCustomValidity('시설번호는 5000에서 5999 사이의 숫자여야 합니다.');
+	    } else {
+	        deptNoInput.setCustomValidity('');
+	    }
+	};
+
+	// 폼 제출 시 유효성 검사 실행
+	const form = document.getElementById('frm-facility-modify');
+	form.addEventListener('submit', validateForm);
 
 fnRegister();
 fnAttachList();
