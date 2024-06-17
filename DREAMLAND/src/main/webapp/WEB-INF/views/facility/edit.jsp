@@ -178,7 +178,6 @@ const fnAttachCheck = () => {
           totalSize += files.size;
       }
 
-      console.log("files:  " + files);
   });
 }
  
@@ -225,7 +224,6 @@ const fnAddAttach = () => {
       
       let file = event.target.files[0];
       
-      console.log(file);
       
    		// 선택된 파일을 FormData에 추가
       if (file) {
@@ -291,11 +289,9 @@ const fnAddAttachGo = () => {
               return;
           }
           const attachNo = evt.target.dataset.attachNo;
-          console.log(attachNo)
 
           // 해당 첨부 파일을 목록에서 삭제하고 관련 데이터 설정
           let parentElement = $(evt.target).parent().parent();
-          console.log(parentElement);
           let children = parentElement.children();
           parentElement.remove();
           
@@ -307,7 +303,6 @@ const fnAddAttachGo = () => {
        
 //Ajax를 통해 첨부 파일 삭제 요청을 보내는 함수        
 const fnRemoveAttachGo = (attachNo) => {
-  console.log(attachNo);
     fetch('${contextPath}/facility/removeAttach.do', {
         method: 'POST',
         headers: {
@@ -319,14 +314,10 @@ const fnRemoveAttachGo = (attachNo) => {
     })
     .then(response => response.json())
     .then(resData => {
-      console.log(resData)
-      console.log("못찾음")
       
         if (resData.deleteCount === 1) {
             fnAttachList(); // 첨부 파일 목록 다시 불러오기
-            console.log(resData)
         } else {
-            console.log(resData)
         }
     });
 }
