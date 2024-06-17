@@ -61,7 +61,7 @@
                     placeholder="A칸에 들어갈 부분입니다.답변을 입력해주세요."
                     aria-label="Hi, Do you have a moment to talk Joe?"
                     aria-describedby="basic-icon-default-message2"
-                    name="boardContents"></textarea>
+                    name="boardContents" cols="40" wrap="hard" ></textarea>
                 </div>
               </div>
               <div class="row btn-area">

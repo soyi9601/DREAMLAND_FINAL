@@ -107,8 +107,8 @@
 		                <div class="faqicon on"></div>
 		              </div>
 		              <div class="accordion-body">
-		                <span class="faq-a">A.</span> ${faq.boardContents}
-		              
+		                <span class="faq-a">A.</span> 
+		                <pre style="font-size:15px;font-family:var(--bs-font-sans-serif);margin-left:80px;">${faq.boardContents}</pre>
 		                <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
 		                  <div class="button-area">
 		                    <button type="button" class="btn-reset btn-edit sd-btn sd-gray-bg btn-sm">편집</button>
@@ -133,7 +133,6 @@
         </p>
       </c:if>
     </div>
-      
       
 		<c:choose>
 		  <c:when test="${empty faqBoardList}"></c:when>
