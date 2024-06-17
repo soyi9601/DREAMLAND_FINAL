@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ApprovalDto {
 	
 	private int apvNo, empNo, apvCheck;
-	private String apvKinds, apvTitle;
+	private String apvKinds, apvTitle, empName;
 	private Date apvWriteDate;
 
 }
