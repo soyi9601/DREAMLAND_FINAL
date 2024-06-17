@@ -200,7 +200,7 @@
                   <ul class="menu-sub">
                     <li class="menu-item">
                       <a href="${contextPath}/work/status.do" class="menu-link">
-                        <div>근태관리</div>
+                        <div>근무관리</div>
                       </a>
                     </li>
                   <li class="menu-item">

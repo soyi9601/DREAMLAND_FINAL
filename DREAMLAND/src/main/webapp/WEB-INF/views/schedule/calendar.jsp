@@ -6,6 +6,9 @@
 <c:set var="loginEmployee" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.employeeDto }" />
 
 <jsp:include page="../layout/header.jsp" />
+<!-- css link -->
+<link rel="stylesheet" href="/resources/assets/css/calendar.css" />
+
 <!-- FullCalendar CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.11/index.global.min.js'></script>  
@@ -16,53 +19,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<style>
- /*    body {
-        margin: 40px 10px;
-        padding: 0;
-        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-        font-size: 14px;
-    } */
-    
-    #calendar {
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-    
-    /* jQuery UI Autocomplete의 기본 드롭다운 스타일 덮어쓰기 */
-		.ui-autocomplete {
-		    max-height: 200px;
-		    overflow-y: auto;
-		    overflow-x: hidden;
-		    z-index: 1000; /* 보통 부트스트랩 모달보다 높은 z-index 값 설정 */
-		    list-style: none; 
-		    padding: 0;
-		    margin: 0;
-		    background-color: #fff; /* 배경색을 흰색으로 변경 */
-		    border: 1px solid #ccc; /* 테두리 추가 */
-		    border-radius: 4px; /* 모서리를 둥글게 */
-		    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); /* 그림자 추가 */
-		}
-		
-		/* jQuery UI Autocomplete의 결과 항목 스타일 */
-		.ui-menu-item {
-		    padding: 10px 20px;
-		    cursor: pointer;
-		}
-		
-		/* jQuery UI Autocomplete의 결과 항목에 대한 호버 스타일 */
-		.ui-menu-item:hover {
-		    background-color: #f5f5f5;
-    }
-    
-    
-</style>
 <body>
-    
-	<div class="container mt-5">
-	    <div id='calendar'></div>
-	</div>
-	
+ <div class="container-xxl flex-grow-1 container-p-y">
+<div class="card card-calendar">
+      <div class="card-body">
+        <div id='calendar'></div>
+      </div>
+    </div>
+</div>
 	<!-- 일정 등록 모달 -->
 	<form id="frm-schedule">
 	  <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true">
@@ -282,6 +246,10 @@
                $('#shrEmpDept').val('');
                $('#insertModal').modal('show');
            },
+           eventTimeFormat: { // 시간 형식 설정
+               hour: 'numeric',
+               meridiem: 'short' // 'short'을 사용하여 am/pm을 'a'/'p' 대신 'am'/'pm'으로 표시
+             },
            // 일정 클릭하면 상세보기 모달 오픈 (함수 호출)
            eventClick: fnShowDetailModal 
         });
@@ -347,7 +315,6 @@
     });
 }
 
-   
    // 공유 사원,부서 자동완성 검색 (jQuery UI Autocomplete) -> 일정등록, 일정수정에 사용
    const fnEmpDeptList = (inputId, resultId) => { 
        $('#' + inputId).autocomplete({
