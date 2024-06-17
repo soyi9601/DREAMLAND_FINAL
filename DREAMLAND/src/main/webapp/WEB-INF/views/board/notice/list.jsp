@@ -29,14 +29,14 @@
           <table class="table table-hover sd-table">
             <thead>
               <tr>
-                <th>번호</th>
+                <th style="width: 8%">번호</th>
                 <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
-                  <th>선택</th>
+                  <th style="width: 8%">선택</th>
                 </c:if>
-                <th>제목</th>
-                <th>작성자</th>
-                <th style="text-indent:20px;">작성일자</th>
-                <th>조회수</th>
+                <th style="width: 42%">제목</th>
+                <th style="width: 15%">작성자</th>
+                <th style="width: 13%;text-align:center">작성일자</th>
+                <th style="width: 10%">조회수</th>
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -47,9 +47,13 @@
                     ${beginNo - vs.index}
                   </td>
                   <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
-                    <td><input type="checkbox" name="noticeChk" value="${notice.noticeNo}" data-idx="${beginNo - vs.index}"/></td>
+                    <td style="padding-left:6px">
+                      <input type="checkbox" class="form-check-input" 
+                        name="noticeChk" value="${notice.noticeNo}" data-idx="${beginNo - vs.index}"
+                        "/>
+                    </td>
                   </c:if>
-                  <td data-notice-no="${notice.noticeNo}" class="noticeTitle">
+                  <td data-notice-no="${notice.noticeNo}" style="display:flex;">
                     <span data-notice-no="${notice.noticeNo}" class="noticeTitle">
                       <c:if test="${notice.signal eq 1}">
 	                      <span class="important badge rounded-pill bg-label-danger" data-notice-no="${notice.noticeNo}" >
@@ -63,8 +67,8 @@
                     </span> 
                   </td>
                   <td>${notice.employee.empName}</td>
-                  <td>${notice.boardCreateDt }</td>
-                  <td style="text-indent:13px;">${notice.hit}</td>
+                  <td style="text-align:Center">${notice.boardCreateDt }</td>
+                  <td style="text-indent:16px;">${notice.hit}</td>
                 </tr>
               </c:forEach>
             </tbody>
