@@ -1305,7 +1305,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public ResponseEntity<Map<String, Object>> employeeList(HttpServletRequest request) {
 		return new ResponseEntity<>(Map.of("employeeList", approvalMapper.getEmployeeList()
-				                           ,"departmentList", approvalMapper.getDepartmentList())
+				                           ,"departmentList", approvalMapper.getDepartmentList()
+				                           ,"departmentList2", approvalMapper.getDepartmentList2())
 				                           , HttpStatus.OK);
 	} 
 
