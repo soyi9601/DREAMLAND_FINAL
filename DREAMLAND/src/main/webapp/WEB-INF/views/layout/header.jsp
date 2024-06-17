@@ -62,6 +62,9 @@
 	          <a href="${contextPath}/" class="app-brand-link">
 	            <span class="app-brand-logo"><img src="/resources/assets/img/logo/logo2.png" alt="로고"></span>
 	          </a>
+	          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+	            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+	          </a>
 	        </div>
 	
 	        <ul class="menu-inner py-1">
