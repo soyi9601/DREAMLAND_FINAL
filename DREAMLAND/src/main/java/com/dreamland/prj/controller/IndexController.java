@@ -26,10 +26,11 @@ public class IndexController {
   // 직원 조회
   @GetMapping("/")
   public String index(Model model, Authentication authentication) {
-    String email = authentication.getName();
-    EmployeeDto emp = indexService.loadUser(email);
-    boolean hasCheckedWorkIn = indexService.hasCheckedWorkIn(emp.getEmpNo());
-    boolean hasCheckedWorkOut = indexService.hasCheckedWorkOut(emp.getEmpNo());
+    String email = authentication.getName();          // 로그인 한 직원의 정보 가져오기
+    EmployeeDto emp = indexService.loadUser(email);   // 이메일을 이용하여 직원 정보 조회
+    boolean hasCheckedWorkIn = indexService.hasCheckedWorkIn(emp.getEmpNo());     // 해당 직원의 출근 기록 확인
+    boolean hasCheckedWorkOut = indexService.hasCheckedWorkOut(emp.getEmpNo());   // 해당 직원의 퇴근 기록 확인
+    
     model.addAttribute("emp", emp);
     model.addAttribute("hasCheckedWorkIn", hasCheckedWorkIn);
     model.addAttribute("hasCheckedWorkOut", hasCheckedWorkOut);
@@ -77,12 +78,24 @@ public class IndexController {
     return ResponseEntity.ok(waitCount);
   }
   
-  //전자결재 진행문서(내가 결재 올린 것)
+  // 전자결재 진행문서(내가 결재 올린 것)
   @GetMapping(value="/waitMyApvCount", produces="application/json")
   public ResponseEntity<Integer> getMyApvCount(@RequestParam int empNo) {
     int myApvCount = indexService.getMyApvCount(empNo);
     return ResponseEntity.ok(myApvCount);
   }
+  
+  
+  // 일정 조회
+  /*
+  @GetMapping(value="/calendar", produces="application/json")
+  public List<ScheduleDto> getCalendarList(HttpServletRequest request, Authentication authentication) {
+    String email = authentication.getName();
+    EmployeeDto emp = indexService.loadUser(email);
+    System.out.println("emp 정보:" + emp);
+    return indexService.loadSkdList(emp);
+  }
+  */
   
   
 }

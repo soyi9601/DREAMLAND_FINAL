@@ -23,9 +23,11 @@ public interface IndexMapper {
   
   List<NoticeBoardDto> getNoticeList(Map<String, Object> map);    // 공지사항 리스트
   
-  int getMessageCountByReceiver(int empNo);    // 안읽은 쪽지 건수 확인
+  int getMessageCountByReceiver(int empNo);       // 안읽은 쪽지 건수 확인
   
   int getWaitCount(int empNo);        // 승인 해야 할 대기 전자문서
   int getMyApvCount(int empNo);       // 진행중인 나의 전자문서
+  
+  // List<ScheduleDto> getSkdList(Map<String, Object> map);        //전체 일정 조회
   
 }

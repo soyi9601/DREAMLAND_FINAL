@@ -18,26 +18,41 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		 
 		<style>
-    .custom-col {
-        flex: 0 0 20%; 
-        max-width: 20%; 
-    }
+		.Allmagin {
+ 					margin : 50px 200px 100px 200px;
+ 		}
+    
     .cardT {
         display: none;
         }
     .cardT.active {
         display: block;
         }
-    #sales {
-    display: flex;
-  	justify-content:center;
-				}
+    .row {
+    		display: flex;
+    }    
+    .row     .col-lg-8{
+    	width:auto;
+    	flex:1;
+    }
+		.px-2  {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+		}
+		select {
+					float: right;
+		}
+		.area {
+					background-color: #fff;
+					padding: 0px 30px 5px 30px;
+		}		
 		</style>
 
 <!-- Content wrapper -->
 <div class="content-wrapper">
 				
-			<body>	
+<div class="Allmagin">
 			<!-- Style variation -->
 				<div id="sales" class="row">
 			    <div class="col-6 col-md-4 col-xl-3 custom-col">
@@ -83,38 +98,34 @@
 			</div>
 			
 			
-		
+	<div class="row">	
 		<div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
     	<div class="card">
-      	<div class="row row-bordered g-0">
         	<div class="col-md-8">
-          	<h5 class="card-header m-0 me-2 pb-3">매출 추이 (그래프)</h5>
+          	<h6 class="card-header m-0 me-2 pb-3">매출 추이 (그래프)</h6>
           	<div id="totalRevenueChart" class="px-2">
-          		<canvas id="monthlySalesChart"></canvas>
+          		<canvas id="monthlySalesChart"  height="250"></canvas>
           	</div>
           </div>
-        </div>
       </div>
     </div>
     
 		<div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
     	<div class="card">
-      	<div class="row row-bordered g-0">
         	<div class="col-md-8">
           	<h5 class="card-header m-0 me-2 pb-3">매출 추이 (바)</h5>
           	<div id="totalRevenueChart" class="px-2">
-          		<canvas id="yearlySalesChart"></canvas>
+          		<canvas id="yearlySalesChart"  height="250"></canvas>
           	</div>
           </div>
         </div>
       </div>
     </div>
-    
-    
+ 
                                    
 			
-			<label for="pageSelect">지역 선택</label>
-			<select id="pageSelect" onchange="showPage(this.value)">
+			<label for="pageSelect"></label>
+			<select id="pageSelect" class="pageSelect" onchange="showPage(this.value)">
     		<option value="Zootopia">주토피아</option>
     		<option value="MagicLand">매직랜드</option>
     		<option value="AmericanAdventure">아메리칸어드벤처</option>
@@ -122,7 +133,7 @@
     		<option value="EuropeanAdventure">유로피언어드벤처</option>
 			</select>
 			
-			
+			<div class="area">
 			<!-- Hoverable Table rows -->
               <div id="Zootopia" class="cardT">
 						    <h5 class="card-header">주토피아</h5>
@@ -164,7 +175,9 @@
                   </table>
                 </div>
               </div>
-		
+						</div>
+			
+			<div class="area">			
 			<!-- Hoverable Table rows -->
               <div id="MagicLand" class="cardT">
                 <h5 class="card-header">매직랜드</h5>
@@ -206,7 +219,9 @@
                   </table>
                 </div>
               </div>
-		
+						</div>
+			
+			<div class="area">			
 			<!-- Hoverable Table rows -->
               <div id="AmericanAdventure" class="cardT">
                 <h5 class="card-header">아메리칸어드벤처</h5>
@@ -248,7 +263,9 @@
                   </table>
                 </div>
               </div>
-		
+						</div>
+			
+			<div class="area">			
 			<!-- Hoverable Table rows -->
               <div id="GloverFair" class="cardT">
                 <h5 class="card-header">글로버페어</h5>
@@ -290,7 +307,9 @@
                   </table>
                 </div>
               </div>
-		
+						</div>
+			
+			<div class="area">			
 			<!-- Hoverable Table rows -->
               <div id="EuropeanAdventure" class="cardT">
                 <h5 class="card-header">유로피언어드벤처</h5>
@@ -332,21 +351,23 @@
                   </table>
                 </div>
               </div>
-          
+             </div>
+</div>         
 <script>
 
+// 페이지 ID에 해당하는 요소를 보여주는 함수
 function showPage(pageId) {
     const pages = document.querySelectorAll('.cardT');
     pages.forEach(page => {
         page.classList.remove('active');
     });
-    document.getElementById(pageId).classList.add('active');
+    document.getElementById(pageId).classList.add('active'); // 주어진 pageId에 해당하는 요소에 'active' 클래스를 추가하여 보여줍니다
 }
 
-// Initialize to show the first page
+//초기화: 'Zootopia' 페이지를 보여줍니다.
 showPage('Zootopia');
 
-
+	 //월간 매출 Line Chart:	
    const monthlySalesData = {
         labels: [],
         sales: []
@@ -422,7 +443,8 @@ showPage('Zootopia');
             }
         }
     });    
-
+    
+//연간 매출 Bar Chart:
 const yearlySalesData = {
         labels: [],
         sales: []

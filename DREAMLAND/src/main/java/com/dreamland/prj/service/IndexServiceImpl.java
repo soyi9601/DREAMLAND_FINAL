@@ -99,5 +99,19 @@ public class IndexServiceImpl implements IndexService {
   public int getMyApvCount(int empNo) {
     return indexMapper.getMyApvCount(empNo);
   }
+  
+  // 나의 일정 조회
+  /*
+  @Override 
+  public  List<ScheduleDto> loadSkdList(EmployeeDto emp) {
+    // 사용자 정보를 기반으로 일정 조회
+    Map<String, Object> map = new HashMap<>();
+    map.put("empNo", emp.getEmpNo());
+    map.put("deptNo", emp.getDeptNo());
+
+    return indexMapper.getSkdList(map);
+    
+  }
+  */
 
 }

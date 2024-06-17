@@ -62,6 +62,9 @@
 	          <a href="${contextPath}/" class="app-brand-link">
 	            <span class="app-brand-logo"><img src="/resources/assets/img/logo/logo2.png" alt="로고"></span>
 	          </a>
+	          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+	            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+	          </a>
 	        </div>
 	
 	        <ul class="menu-inner py-1">
@@ -179,7 +182,7 @@
 		                </li>
 		                <li class="menu-item">
 		                  <a href="${contextPath}/facility/write.page" class="menu-link">
-		                    <div>시설등록</div>
+		                    <div>시설점검등록</div>
 		                  </a>
 		                </li>
 		              </ul>
@@ -395,12 +398,6 @@
 	                    <a class="dropdown-item" href="${contextPath}/user/mypage?empNo=${loginEmployee.empNo}">
 	                      <i class="bx bx-user me-2"></i>
 	                      <span class="align-middle">마이페이지</span>
-	                    </a>
-	                  </li>
-	                  <li>
-	                    <a class="dropdown-item" href="${contextPath}/user/receiveBox?empNo=${loginEmployee.empNo}">
-	                      <i class="bx bx-cog me-2"></i>
-	                      <span class="align-middle">받은쪽지함</span>
 	                    </a>
 	                  </li>
 	                  <li>
