@@ -86,6 +86,7 @@ function fnCalendar() {
     var indexCalendar = new FullCalendar.Calendar(calendarEl, {
       height: 500,
       initialView: 'dayGridMonth',
+      locale: 'ko',
       headerToolbar: {
         left: 'prev,next',
         center: 'title',
@@ -101,6 +102,21 @@ function fnCalendar() {
             indexCalendar.today();
           }
         },          
+      },
+      dayCellContent: function(info) {
+        // 날짜 텍스트를 숫자만 남기고 '일'을 제거
+        var number = document.createElement('span');
+        number.classList.add('fc-daygrid-day-number');
+        number.innerHTML = info.date.getDate(); // 날짜를 숫자로 표시
+        if (info.view.type === 'dayGridMonth') {
+          return {
+            html: number.outerHTML
+          };
+        } else {
+          return {
+            domNodes: []
+          };
+        }
       }          
     });
     indexCalendar.render();
