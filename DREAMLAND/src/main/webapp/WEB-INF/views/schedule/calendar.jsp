@@ -11,7 +11,8 @@
 
 <!-- FullCalendar CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.11/index.global.min.js'></script>  
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.11/index.global.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/core/locales/ko.js'></script>  
 
 <!-- jQuery UI CSS -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -69,7 +70,6 @@
 	                          <option value="gray"   style="color:#808080;" selected>회색</option>
 	                          <option value="red"    style="color:#FF0000;">빨간색</option>
 	                          <option value="orange" style="color:#FFA500;">주황색</option>
-	                          <option value="yellow" style="color:#FFFF00;">노란색</option>
 	                          <option value="green"  style="color:#008000;">초록색</option>
 	                          <option value="blue"   style="color:#0000FF;">파란색</option>
 	                          <option value="indigo" style="color:#000080;">남색</option>
@@ -136,7 +136,6 @@
 	                            <option value="gray"   style="color:#808080;">회색</option>
 	                            <option value="red"    style="color:#FF0000;">빨간색</option>
 	                            <option value="orange" style="color:#FFA500;">주황색</option>
-	                            <option value="yellow" style="color:#FFFF00;">노란색</option>
 	                            <option value="green"  style="color:#008000;">초록색</option>
 	                            <option value="blue"   style="color:#0000FF;">파란색</option>
 	                            <option value="indigo" style="color:#000080;">남색</option>
@@ -191,8 +190,6 @@
 
    // 일정 데이터 설정 + fullCalendar 초기화
    const fnGetSkdList = () => {
-       console.log("사원번호 :" + empNo);
-       console.log("부서번호 :" + deptNo);
 
        // 필터링된 일정 리스트 이벤트 배열에 추가
        var eventArray = [];
@@ -223,8 +220,6 @@
          });
        </c:forEach>
 
-       console.log("전체일정 :", eventArray);
-       
        // 캘린더 요소 선택 및 FullCalendar 초기화
        var calendarEl = document.getElementById('calendar');
        calendar = new FullCalendar.Calendar(calendarEl, { // 전역 변수로 참조
@@ -233,6 +228,7 @@
                center: 'title',
                right: 'dayGridMonth,timeGridWeek,timeGridDay'
            },
+           locale: 'ko',
            dayMaxEvents: true,
            events: eventArray,
            dateClick: function(info) {
@@ -248,10 +244,26 @@
            },
            eventTimeFormat: { // 시간 형식 설정
                hour: 'numeric',
-               meridiem: 'short' // 'short'을 사용하여 am/pm을 'a'/'p' 대신 'am'/'pm'으로 표시
+               meridiem: 'short' // 'short'을 사용하여 am/pm으로 표시
              },
            // 일정 클릭하면 상세보기 모달 오픈 (함수 호출)
-           eventClick: fnShowDetailModal 
+           eventClick: fnShowDetailModal ,
+           dayCellContent: function(info) {
+     	      // 날짜 텍스트를 숫자만 남기고 '일'을 제거
+     	      var number = document.createElement('span');
+     	      number.classList.add('fc-daygrid-day-number');
+     	      number.innerHTML = info.date.getDate(); // 날짜를 숫자로 표시
+
+     	      if (info.view.type === 'dayGridMonth') {
+     	        return {
+     	          html: number.outerHTML
+     	        };
+     	      } else {
+     	        return {
+     	          domNodes: []
+     	        };
+     	      }
+     	    }
         });
         calendar.render();  // 캘린더 랜더링
      }
@@ -266,14 +278,12 @@
         url: "${contextPath}/schedule/detail.do",
         data: { skdNo: selectedSkdNo },
         success: function(schedule) {
-            // 디버깅 로그 추가
-            console.log("선택된 일정: ", schedule);
-
             // 선택한 일정 데이터 상세보기 모달창에 입력
             $('#skdNo').val(schedule.skdNo);
             $('#detail-title').text(schedule.skdTitle);
             $('#detail-time').text(moment(schedule.skdStart).format('YYYY-MM-DD HH:mm') + ' ~ ' + moment(schedule.skdEnd).format('YYYY-MM-DD HH:mm'));
             $('#detail-writer').text(schedule.employee.empName);
+            $('#detail-contents').text(schedule.skdContents);
             // 카테고리 한글 변환
             var categoryText = {
                 'work': '업무',
@@ -398,8 +408,6 @@
                return $(this).val();
            }).get();
 
-           console.log("선택된 공유: ", selectedItems);
-
            selectedItems.forEach(function(item) {
                formData.push({ name: 'shrNo', value: item });
            });
@@ -410,7 +418,6 @@
                data: formData,
                dataType: "json",
                success: function(resData) {
-                   console.log('등록 성공:', resData);
                    if (resData.insertSkdCount === 1) { 
                        $('#insertModal').modal('hide'); 
                        var newEvent = {
@@ -432,7 +439,6 @@
                                })
                            }
                        };
-                       console.log('추가할 이벤트:', newEvent);
                        calendar.addEvent(newEvent);  
                        calendar.render();
                        $('#frm-schedule')[0].reset(); 
@@ -461,9 +467,6 @@
 	            url: `${contextPath}/schedule/detail.do`,
 	            data: { skdNo: selectedSkdNo },
 	            success: function(schedule) {
-	                
-	                console.log("선택된 일정: ", schedule);
-
 	                // 선택한 일정 데이터 수정 모달창에 입력
 	                $('#modify-skdNo').val(schedule.skdNo);
 	                $('#modify-title').val(schedule.skdTitle);
@@ -475,7 +478,6 @@
 
 	                // scheduleDto 에 저장된 공유 항목
 	                var sharedItems = schedule.sharedItems;
-	                console.log("공유 항목: ", sharedItems);
 
 	                $('#modify-empDept-result').empty(); // 공유 항목 초기화
 	                sharedItems.forEach(function(item) { // 저장된 공유 항목 배열을 forEach 로 꺼내기
@@ -534,13 +536,6 @@
 	        $('#modify-empDept-result input[name="shrNo"]').each(function() {
 	            formData.sharedItems.push($(this).val());
 	        });
-	        
-	        // 디버깅용
-	        console.log("선택된 공유(수정): ", formData.sharedItems);
-
-	        // 디버깅용 
-	        console.log("전송할 데이터: ", formData);
-	        
 	        // 서버로 수정된 일정 데이터 전송
 	        $.ajax({
 	            type: 'POST',
@@ -549,7 +544,6 @@
 	            data: JSON.stringify(formData),
 	            dataType: 'json',
 	            success: function(resData) {
-	                console.log('서버 응답:', resData); // 디버깅용
 	                if (resData.modifyCount === 1) {  // 일정 수정 성공
 	                    $('#modifyModal').modal('hide'); // 모달 닫기
 
