@@ -127,7 +127,6 @@ const fnGetBlindHotList = () =>{
   })//ajax끝
 }//함수끝
 
-  
 let page = 1;
 let totalPage = 0;
 let totalItems = 0;  // 전체 항목 수
@@ -347,7 +346,6 @@ const fnRemoveResult = () => {
     alert(removeResult);
   }
 }
-
 fnGetBlindHotList();
 fnGetBlindList();
 fnScrollHandler();
