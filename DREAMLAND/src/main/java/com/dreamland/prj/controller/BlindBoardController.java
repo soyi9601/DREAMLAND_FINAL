@@ -59,7 +59,7 @@ public class BlindBoardController {
 		return blindBoardService.getBlindListHot(request);
 	}
 	
-	@GetMapping("/detail.do")
+	@RequestMapping("/detail.do")
 	public String detail(@RequestParam int blindNo, Model model) {
 		model.addAttribute("blind", blindBoardService.getBlindByNo(blindNo));
 		return "board/blind/detail";
