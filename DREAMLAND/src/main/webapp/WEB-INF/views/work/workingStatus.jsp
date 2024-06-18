@@ -33,16 +33,7 @@
         <div class="work-name">
           <h3 class="card-title">${loginEmployee.empName}</h3>
         </div>
-        <span class="work-deptNo badge rounded-pill bg-label-secondary">
-          <c:choose>
-            <c:when test="${loginEmployee.deptNo == 9999}">대표이사</c:when>
-            <c:when test="${loginEmployee.deptNo == 1000}">인사팀</c:when>
-            <c:when test="${loginEmployee.deptNo == 2000}">경영지원팀</c:when>
-            <c:when test="${loginEmployee.deptNo == 3000}">안전관리팀</c:when>
-            <c:when test="${loginEmployee.deptNo == 5000}">시설운영팀</c:when>
-            <c:when test="${loginEmployee.deptNo == 6000}">마케팅팀</c:when>
-          </c:choose>
-        </span>
+        <span class="work-deptNo badge rounded-pill bg-label-secondary">${department.deptName}</span>
       </div>
     </div>
     <div class="work-today text-center mb-1">
@@ -55,7 +46,7 @@
       <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-8">
-            <div class="card-body">
+            <div class="card-body work-status">
               <h5 class="card-title">근태 현황</h5>
               <p class="card-text">
                 <p id="late_count">지각 <span id="lateCount" class="badge badge-center bg-label-danger">${lateCount}</span></p>
@@ -73,11 +64,11 @@
       <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-8">
-            <div class="card-body">
+            <div class="card-body work-time">
               <h5 class="card-title">근무 시간</h5>
-              <p id="total_work_days">총 근무일수 : <span id="totalWorkDays">${totalWorkDays}</span>일</p>
-              <p id="total_work_hours">총 근무시간 : <span id="totalWorkHours">${totalWorkHours}</span>시간</p>
-              <p id="average_work_hours">평균 근무시간 : <span id="averageWorkHours">${avgWorkHours}</span>시간</p>
+              <p id="total_work_days">근무일수 <span id="totalWorkDays" class="badge badge-center bg-label-secondary">${totalWorkDays}</span> 일</p>
+              <p id="total_work_hours">근무시간 <span id="totalWorkHours" class="badge badge-center bg-label-secondary">${totalWorkHours}</span> 시간</p>
+              <p id="average_work_hours">평균 근무시간 <span id="averageWorkHours"  class="badge bg-label-secondary">${avgWorkHours}</span> 시간</p>
             </div>
           </div>
         </div>
@@ -124,7 +115,7 @@
  
  // 근무 리스트 조회
  const fnWorkList = () => {
-      const enterDate = new Date("${employee.enterDate}"); // 입사일
+      const enterDate = new Date("${loginEmployee.enterDate}"); // 입사일
        const now = new Date();
 
        flatpickr("#dateRange", {
@@ -188,7 +179,6 @@
       function getWorkState(workState) {
           switch (workState) {
               case '10': return '정상출근';
-              //case '20': return '조기퇴근';
               case '20': return '반차';
               case '30': return '연차';
               case '40': return '결근';
