@@ -39,7 +39,7 @@ public class WorkCheckScheduler {
       workService.checkDayoff();
       log.info("============= 연차 체크 성공 =============");
     } catch (Exception e) {
-      log.error("============= 연차 체크 성공 =============", e);
+      log.error("============= 연차 체크 실패 =============", e);
     }
   }
   
@@ -52,7 +52,7 @@ public class WorkCheckScheduler {
       workService.checkHafDayoff();
       log.info("============= 반차 체크 성공 =============");
     } catch (Exception e) {
-      log.error("============= 반차 체크 성공 =============", e);
+      log.error("============= 반차 체크 실패 =============", e);
     }
   }
   
@@ -65,7 +65,7 @@ public class WorkCheckScheduler {
       workService.checkAbsence();
       log.info("============= 결근 체크 성공 =============");
     } catch (Exception e) {
-      log.error("============ 결근 체크 성공 =============", e);
+      log.error("============ 결근 체크 실패 =============", e);
     }
   }
 }

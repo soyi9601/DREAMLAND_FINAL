@@ -29,33 +29,10 @@ public class DayoffController {
   @GetMapping("/info.do")
   public String dayoffPage(Model model) {
       EmployeeDto loginEmployee = getEmployeeFromSession();
-      System.out.println("====== 로그인 정보 ======");
-      System.out.println(loginEmployee);
       dayoffService.loadDayoffData(model, loginEmployee);
       return "dayoff/info";
   }
 	
-	// 휴가관리 페이지이동
-//  @GetMapping("/info.do")
-//  public String dayoffPage(Model model) {
-//    EmployeeDto employee = getEmployeeFromSession();
-//    int totalDayOff = employee.getDayOff();
-//    int usedDayOff = employee.getUsedDayOff();
-//    int remainingDayOff = dayoffService.calculateRemainingDayOff(totalDayOff, usedDayOff);
-//    System.out.println("===== 연차 내역 =====");
-//    System.out.println(totalDayOff);
-//    System.out.println(usedDayOff);
-//    
-//    List<Integer> yearList = dayoffService.getYearList(employee.getEmpNo());
-//    
-//    model.addAttribute("totalDayOff", totalDayOff);
-//    model.addAttribute("usedDayOff", usedDayOff);
-//    model.addAttribute("remainingDayOff", remainingDayOff);
-//    model.addAttribute("yearList", yearList);
-//    
-//    return "dayoff/info";
-//  }
-  
   // 휴가 리스트 조회 (연도별)
   @GetMapping("/list.do")
   public ResponseEntity<Map<String, Object>> getLeaveListByYear(@RequestParam int year) {
