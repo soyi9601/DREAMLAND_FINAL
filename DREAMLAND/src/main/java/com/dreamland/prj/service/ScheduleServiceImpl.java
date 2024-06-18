@@ -43,19 +43,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     String contents = request.getParameter("contents");
     String color = request.getParameter("color");
     
-    
-    // 로그 출력
-    System.out.println("============ service ===========");
-    System.out.println("title: " + title);
-    System.out.println("start: " + start);
-    System.out.println("end: " + end);
-    System.out.println("category: " + category);
-    System.out.println("color: " + color);
-    System.out.println("contents: " + contents);
-    System.out.println("empNo: " + empNo);
-    System.out.println("===============================");
-    
-    
     // EmployeeDto 객체 생성 
     EmployeeDto emp = new EmployeeDto();
     emp.setEmpNo(empNo);
@@ -74,22 +61,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     // DB에 일정 저장
     int insertCount = scheduleMapper.skdAdd(schedule); 
     
-    System.err.println("======== 일정 등록 ========");
-    System.out.println(schedule);
-    
     // 삽입된 일정의 SKD_NO 가져오기
     int skdNo = schedule.getSkdNo();
-    System.out.println("Schedule SKD_NO: " + skdNo); 
     
     // 부서 공유 데이터 삽입
     String[] shrNos = request.getParameterValues("shrNo");  
-    System.err.println("======== 공유 번호 확인 ========");
      if (shrNos != null) {
        Set<String> shrNoList = new HashSet<>(Arrays.asList(shrNos));  // 중복 데이터 제거 (중복 삽입 방지)
        
         for (String shrNo : shrNoList) {
           // shrNo 앞에 E, D 로 구분 (E : 사원, D : 부서)
-          System.out.println("shrNo: " + shrNo); 
           if(shrNo.startsWith("E")) { // 사원
             SkdShrEmpDto shrEmp = new SkdShrEmpDto();
             shrEmp.setSkdNo(skdNo); // SKD_NO 설정
@@ -145,9 +126,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         sharedItems.add(dept.getDeptName() + " (부서)" + "D" + shrDept.getDeptNo());
     }
    
-    System.out.println("===== 공유번호 가져오기 ======");
-    System.out.println(sharedItems);
-    
     schedule.setSharedItems(sharedItems); // ScheduleDto 객체에 sharedItems 리스트 설정
     return schedule;
 }
@@ -155,10 +133,6 @@ public class ScheduleServiceImpl implements ScheduleService {
   // 일정 수정
   @Override
   public int modifySkd(ScheduleDto schedule) {
-    
-   // 디버깅용 로그 추가
-   System.out.println("수정할 일정 데이터: " + schedule);
- 
    // 기존 공유 사원 및 부서 삭제
    scheduleMapper.deleteShrEmp(schedule.getSkdNo());
    scheduleMapper.deleteShrDept(schedule.getSkdNo());
@@ -184,7 +158,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
     }
     
-    System.out.println("최종 공유 항목: " + sharedItems); // 디버깅용 
     // 일정 업데이트
     return scheduleMapper.updateSkd(schedule);
   }

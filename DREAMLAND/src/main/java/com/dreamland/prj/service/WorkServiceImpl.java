@@ -34,7 +34,6 @@ public class WorkServiceImpl implements WorkService {
     for(Integer empNo : nonAdminEmpNos) {
       String halfDayType = workMapper.getHalfDayType(today, empNo);
       String lateCheckTime = "";
-      System.out.println(halfDayType);
       
       if ("morning".equals(halfDayType)) {
         // 오전 반차인 경우 출근 시간 14:00
@@ -85,7 +84,7 @@ public class WorkServiceImpl implements WorkService {
   public void checkAbsence() {
       List<Integer> empNos = workMapper.getAbsenceEmpList(today); 
       for (Integer empNo : empNos) {
-        String role = workMapper.getRoleByEmpNo(empNo);  // 관리자 체크를 쿼리문으로?
+        String role = workMapper.getRoleByEmpNo(empNo); 
         if(!"ROLE_ADMIN".equals(role)) {
           WorkDto workRecord = workMapper.getWorkByDate(today, empNo);
           if (workRecord == null) {
@@ -106,25 +105,12 @@ public class WorkServiceImpl implements WorkService {
     map.put("empNo", empNo);
     map.put("year", year);
     
-    // 로그 추가
-    System.out.println("======= 파라미터 테스트 =======");
-    System.out.println(map);
-    
     int lateCount = workMapper.getLateCount(map);
     // int earlyLeaveCount = workMapper.getEarlyLeaveCount(map);
     int absenceCount = workMapper.getAbsenceCount(map);
     int totalWorkDays = workMapper.getTotalWorkDays(map);
     int totalWorkHours = workMapper.getTotalWorkHours(map);
     String avgWorkHours = String.format("%.2f", workMapper.getAvgWorkHours(map)); 
-
-    // 로그 추가
-    System.out.println("======= 쿼리 결과 =======");
-    System.out.println("Late Count: " + lateCount);
-    //System.out.println("Early Leave Count: " + earlyLeaveCount);
-    System.out.println("Absence Count: " + absenceCount);
-    System.out.println("total Work Days: " + totalWorkDays);
-    System.out.println("total Work Hours: " + totalWorkHours);
-    System.out.println("avg Work Hours: " + avgWorkHours);
 
     Map<String, Object> counts = new HashMap<>();
     counts.put("lateCount", lateCount);

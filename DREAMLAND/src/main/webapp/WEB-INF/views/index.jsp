@@ -23,7 +23,7 @@
 	              <input id="empNo" type="hidden" name="empNo" value="${emp.empNo}">
 	              <div class="button-wrapper text-end"></div>
 	            </c:when>
-	            <c:when test="${emp.role == 'ROLE_USER'}">
+	            <c:when test="${emp.role == 'ROLE_USER' || emp.role == 'ROLE_MANAGER'}">
 	              <div class="button-wrapper text-end">
                   <input id="empNo" type="hidden" name="empNo" value="${emp.empNo}">
 		              <button type="button" class="btn btn-primary mb-4" id="btn-work-in" ${hasCheckedWorkIn ? 'disabled' : ''}>
@@ -61,7 +61,7 @@
 	                 <c:when test="${emp.role == 'ROLE_ADMIN'}">
 	                   <strong>${emp.empName}</strong>
 	                 </c:when>
-	                 <c:when test="${emp.role == 'ROLE_USER'}">
+	                 <c:when test="${emp.role == 'ROLE_USER' || emp.role == 'ROLE_MANAGER'}">
                      <strong>${emp.empName} ${emp.posName}</strong>
                    </c:when>                   
 	                </c:choose><br/>
@@ -137,7 +137,7 @@
             <div class="main-news-wrap">
               <div class="btn rounded-pill btn-outline-secondary mb-4 py-3 news-msg"><a href="${contextPath}/user/receiveBox?empNo=${emp.empNo}">안읽은 쪽지<br/><strong class="msg-count"></strong> 건입니다.</a></div>
               <c:choose>
-	              <c:when test="${emp.role == 'ROLE_USER'}">
+	              <c:when test="${emp.role == 'ROLE_USER' || emp.role == 'ROLE_MANAGER'}">
 		              <div class="btn rounded-pill btn-outline-success mb-4 py-3  news-await"><a href="${contextPath}/approval/appList">대기 전자문서<br/><strong class="wait-count"></strong> 건입니다.</a></div>
 		              <div class="btn rounded-pill btn-outline-info py-3 news-my-await"><a href="${contextPath}/approval/appMyList">진행 전자문서<br/><strong class="my-apv-count"></strong> 건입니다.</a></div>
 	              </c:when>  
