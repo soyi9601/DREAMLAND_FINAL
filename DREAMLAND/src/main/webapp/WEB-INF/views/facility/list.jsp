@@ -54,7 +54,7 @@
             		  <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
             		  	<td><input type="checkbox" name="facilityChk" value="${facility.facilityNo}" data-idx="${beginNo - vs.index}"/></td>
             		  </c:if>
-            		  <td data-facility-name="${facility.facilityName}" class="facilityName">${facility.facilityName}</td>
+            		  <td data-facility-no="${facility.facilityNo}" class="facilityName">${facility.facilityName}</td>
             		  <td data-notice-no="${facility.facilityNo}" class="facilityline">${facility.facilityDate}</td>
             		  <td>
             		  	<c:if test="${facility.management eq 1}">
@@ -95,8 +95,8 @@
 <script>
 //상세 페이지로 이동하는 함수
 const fnNoticeDetail = () =>{
-    $(document).on('click', '.facilityline', (evt)=>{
-        let facilityNo = $(evt.target).data('notice-no');
+    $(document).on('click', '.facilityName', (evt)=>{
+        let facilityNo = $(evt.target).data('facility-no');
         if (facilityNo !== "undefined") {
             location.href = '${contextPath}/facility/detail.do?facilityNo=' + facilityNo;
         }
