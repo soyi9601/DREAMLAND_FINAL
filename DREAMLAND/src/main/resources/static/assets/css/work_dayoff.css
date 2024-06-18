@@ -8,6 +8,7 @@
 .col-md{margin-top:25px;}
 .card {min-height: 220px;}
 .work-today {display: flex; justify-content: center; align-items: center;}
+.bg-label-danger{margin-left: 5px;}
 .text-exp{margin-top:40px;}
 .work-info{margin-bottom: 5px}
 .input-group {display: flex; align-items: center;}

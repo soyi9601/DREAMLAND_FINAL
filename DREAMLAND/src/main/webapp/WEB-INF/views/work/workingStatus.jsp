@@ -58,8 +58,8 @@
             <div class="card-body">
               <h5 class="card-title">근태 현황</h5>
               <p class="card-text">
-                <p id="late_count">지각 : <span id="lateCount">${lateCount}</span>회</p>
-                <p id="absence_count">결근 : <span id="absenceCount">${absenceCount}</span>회</p>
+                <p id="late_count">지각 <span id="lateCount" class="badge badge-center bg-label-danger">${lateCount}</span></p>
+                <p id="absence_count">결근  <span id="absenceCount" class="badge badge-center bg-label-danger">${absenceCount}</span></p>
               </p>
               <div class="text-exp">
                 <p class="card-text"><small class="text-muted">올해 기준으로 표시됩니다.</small></p>
