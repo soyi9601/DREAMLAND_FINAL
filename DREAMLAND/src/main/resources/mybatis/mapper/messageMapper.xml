@@ -199,9 +199,8 @@
       FROM MESSAGE M JOIN EMPLOYEE ES 
         ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER 
                                       ON M.MSG_RECEIVER = ER.EMP_NO
-     WHERE ((M.MSG_RECEIVER = #{empNo} AND M.REC_STAR_YN = 'Y')
-        OR (M.MSG_SENDER = #{empNo} AND M.SEND_STAR_YN = 'Y'))
-        AND (M.REC_DEL_YN = 'N' AND M.SEND_DEL_YN = 'N')
+     WHERE ((M.MSG_RECEIVER = #{empNo} AND M.REC_STAR_YN = 'Y' AND M.REC_DEL_YN = 'N' )
+        OR (M.MSG_SENDER = #{empNo} AND M.SEND_STAR_YN = 'Y' AND M.SEND_DEL_YN = 'N'))
   </select>
   
   <!-- 중요보관함 개수 - 읽지 않은 쪽지 -->
@@ -210,10 +209,8 @@
       FROM MESSAGE M JOIN EMPLOYEE ES 
         ON M.MSG_SENDER = ES.EMP_NO JOIN EMPLOYEE ER 
         ON M.MSG_RECEIVER = ER.EMP_NO
-     WHERE ((M.MSG_RECEIVER = #{empNo} AND M.REC_STAR_YN = 'Y') OR (M.MSG_SENDER = #{empNo} AND M.SEND_STAR_YN = 'Y')) 
+     WHERE ((M.MSG_RECEIVER = #{empNo} AND M.REC_STAR_YN = 'Y' AND M.REC_DEL_YN = 'N' ) OR (M.MSG_SENDER = #{empNo} AND M.SEND_STAR_YN = 'Y' AND M.SEND_DEL_YN = 'N')) 
        AND M.READ_YN = 'N' 
-       AND M.REC_DEL_YN = 'N' 
-       AND M.SEND_DEL_YN = 'N'
   </select>
   
   <!-- 중요보관함 리스트 -->
@@ -229,10 +226,8 @@
                 , M.MSG_NO, M.MSG_CONTENTS, M.READ_YN, M.REC_DEL_YN, M.SEND_DEL_YN
                 , M.REC_STAR_YN, M.SEND_STAR_YN, M.MSG_CREATE_DT, M.MSG_SENDER, M.MSG_RECEIVER
              FROM MESSAGE M
-            WHERE ((M.MSG_RECEIVER = #{empNo} AND M.REC_STAR_YN = 'Y') 
-               OR (M.MSG_SENDER = #{empNo} AND M.SEND_STAR_YN = 'Y'))
-              AND M.REC_DEL_YN = 'N' 
-              AND M.SEND_DEL_YN = 'N') M
+            WHERE ((M.MSG_RECEIVER = #{empNo} AND M.REC_STAR_YN = 'Y' AND M.REC_DEL_YN = 'N' ) 
+               OR (M.MSG_SENDER = #{empNo} AND M.SEND_STAR_YN = 'Y' AND M.SEND_DEL_YN = 'N'))) M
      JOIN EMPLOYEE ES ON M.MSG_SENDER = ES.EMP_NO
      JOIN EMPLOYEE ER ON M.MSG_RECEIVER = ER.EMP_NO
      JOIN DEPARTMENT DS ON ES.DEPT_NO = DS.DEPT_NO

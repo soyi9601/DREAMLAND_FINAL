@@ -45,6 +45,7 @@ public interface MessageService {
   // 삭제
   int deleteRecMessage(HttpServletRequest request);   // 받은쪽지함에서 삭제
   int deleteSendMessage(HttpServletRequest request);  // 보낸쪽지함에서 삭제
+  int deleteSaveMessage(HttpServletRequest request);  // 중요보관함에서 삭제
   void getDeleteMessage(Model model);                 // 휴지통 리스트 페이징 처리
   Map<String, Object> getDeleteCount(int empNo);      // 삭제된 쪽지 개수
   
