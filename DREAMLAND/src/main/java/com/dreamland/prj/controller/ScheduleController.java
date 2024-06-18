@@ -59,8 +59,6 @@ public class ScheduleController {
   // 일정 수정
   @PostMapping("/modify.do")
   public ResponseEntity<Map<String, Object>> modify(@RequestBody ScheduleDto schedule) {
-     // 디버깅용 로그 추가
-     System.out.println("수정할 일정 데이터: " + schedule);
      int modifyCount = scheduleService.modifySkd(schedule);
      return ResponseEntity.ok(Map.of("modifyCount", modifyCount));
   }

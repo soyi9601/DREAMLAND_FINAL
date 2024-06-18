@@ -85,6 +85,7 @@
                 GROUP BY BLIND_NO) C
                    ON B.BLIND_NO = C.BLIND_NO
     WHERE B.RN BETWEEN #{begin} AND #{end}
+    ORDER BY B.BOARD_CREATE_DT DESC
     </select>
 
     <select id="getBlindByNo"

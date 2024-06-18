@@ -141,6 +141,7 @@
                               <option value="">선택하세요</option>
                               <option value="ROLE_USER">직원</option>
                               <option value="ROLE_ADMIN">관리자</option>
+                              <option value="ROLE_MANAGER">매니저</option>
                             </select>
                           </div>
                         </div>

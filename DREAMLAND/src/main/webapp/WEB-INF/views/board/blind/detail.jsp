@@ -237,6 +237,7 @@ function validateEdit(blindNo, password) {
       frmBtn.action = '${contextPath}/board/blind/edit.do';
       frmBtn.submit();
     } else {
+    	alert('비밀번호가 일치하지 않습니다.');
       $('#board-password').val("");
     }
   });
@@ -256,6 +257,7 @@ function validateRemove(blindNo, password) {
     if (data.success) {
       window.location.href = '${contextPath}/board/blind/removeBlind.do?blindNo='+blindNo
     } else {
+    	alert('비밀번호가 일치하지 않습니다.');
       $('#board-password').val("");
     }
   });
@@ -523,6 +525,7 @@ function validatePw(commentNo, pw) {
       if (data.success) {
         removeComment(commentNo)
       } else {
+      	alert('비밀번호가 일치하지 않습니다.');
         $('#comment-modal-pw').val("");
       }
   });
@@ -570,6 +573,6 @@ fnRemoveComment();
 fnTitleNew();
 
 
-  </script>
+</script>
 
 <%@ include file="../../layout/footer.jsp"%>
