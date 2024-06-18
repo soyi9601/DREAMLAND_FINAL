@@ -300,6 +300,28 @@ public class MessageServiceImpl implements MessageService {
     return count;
   }
   
+  @Override
+  public int deleteSaveMessage(HttpServletRequest request) {
+    String[] saveList = request.getParameterValues("checkYn");
+    String[] sendYnList = request.getParameterValues("checkSendYn");
+
+    int count = 0;
+    // 문자열 배열을 int 배열로 변환
+    int[] msgNoList = new int[saveList.length];
+    for (int i = 0; i < saveList.length; i++) {
+      msgNoList[i] = Integer.parseInt(saveList[i]);
+      if(sendYnList[i].equals("Y")) {
+        messageMapper.updateSendMsgDelete(msgNoList[i]);
+        count++;       
+      } else if(sendYnList[i].equals("N")) {
+        messageMapper.updateRecMsgDelete(msgNoList[i]);
+        count++;
+      }
+    }
+    
+    return count;
+  }
+  
   // 휴지통 리스트 페이징 처리
   @Override
   public void getDeleteMessage(Model model) {
