@@ -2,7 +2,7 @@
 
   /* 공통 */ 
  .work-name{margin: 20px 0 0 40px;}
- .work-deptNo{margin: 0 0 0 46px;}
+ .work-deptNo{margin: 0 0 0 40px;}
 
 /* 근무관리 */
 .col-md{margin-top:25px;}
@@ -11,12 +11,16 @@
 .bg-label-danger{margin-left: 5px;}
 .text-exp{margin-top:40px;}
 .work-info{margin-bottom: 5px}
+.work-time{margin-bottom: 10px;}
+.work-time span {margin-left: 10px;} 
+.work-time .badge {color: #555 !important;}
+.work-status span {margin-left: 10px;} 
 .input-group {display: flex; align-items: center;}
  #dateRange {flex: 1; max-width: 230px; background-color: #fff;}
 .wrap-work-list{margin-top: 10px;}
 
  /* 휴가관리 */
- .card-header {display: flex; justify-content: space-between; align-items: center;}
- .col-auto {margin-right: 30px;} /* 연차신청 버튼 */
- .wrap-list{margin-top: 25px;}
- 
+.card-header {display: flex; justify-content: space-between; align-items: center;}
+.col-auto {margin-right: 30px;} /* 연차신청 버튼 */
+.wrap-list{margin-top: 25px;}
+.badge.bg-primary {background-color: rgba(144, 181, 76, 0.9) !important;}

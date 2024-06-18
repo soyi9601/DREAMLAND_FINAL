@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.dreamland.prj.dto.AppleaveDto;
+import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.mapper.DayoffMapper;
 
@@ -20,9 +21,15 @@ import lombok.RequiredArgsConstructor;
 public class dayoffServiceImpl implements dayoffService {
 
   private final DayoffMapper dayoffMapper;
+  private final DepartService departService;
   
+  // 휴가정보 조회
   @Override
   public void loadDayoffData(Model model, EmployeeDto employee) {
+    DepartmentDto department = departService.getDepartById(employee.getDeptNo());
+    model.addAttribute("loginEmployee", employee);
+    model.addAttribute("department", department);
+    
     double totalDayOff = employee.getDayOff();                            // 총 연차
     double usedDayOff = employee.getUsedDayOff();                         // 사용연차
     double remainDayOff = calculateRemainDayOff(totalDayOff, usedDayOff); // 잔여연차

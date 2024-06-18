@@ -53,7 +53,8 @@
 	                        <label for="category" class="form-label">카테고리</label>
 	                        <select id="category" name="category" class="form-select">
 	                            <option value="work" selected>업무</option>
-	                            <option value="meeting">회의</option>
+	                            <option value="team-meeting">회의</option>
+	                            <option value="business-meeting">미팅</option>
 	                            <option value="outing">외근</option>
 	                            <option value="business-trip">출장</option>
 	                        </select>
@@ -118,10 +119,11 @@
 	                   <div class="mb-3">
 	                       <label for="modify-category" class="form-label">카테고리</label>
 	                       <select id="modify-category" name="category" class="form-select">
-	                           <option value="work">업무</option>
-	                           <option value="meeting">회의</option>
-	                           <option value="outing">외근</option>
-	                           <option value="business-trip">출장</option>
+	                           <option value="work" selected>업무</option>
+                             <option value="team-meeting">회의</option>
+                             <option value="business-meeting">미팅</option>
+                             <option value="outing">외근</option>
+                             <option value="business-trip">출장</option>
 	                       </select>
 	                   </div>
 	                   <div class="mb-3">
@@ -286,7 +288,8 @@
             // 카테고리 한글 변환
             var categoryText = {
                 'work': '업무',
-                'meeting': '회의',
+                'team-meeting': '회의',
+                'business-meeting' : '미팅',
                 'outing': '외근',
                 'business-trip': '출장'
             }[schedule.skdCategory];

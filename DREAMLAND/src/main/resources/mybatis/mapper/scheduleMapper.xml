@@ -96,17 +96,6 @@
        WHERE S.EMP_NO = #{empNo}      <!-- 현재 로그인된 사용자가 등록한 일정 필터링  --> 
           OR SSD.DEPT_NO = #{deptNo}  <!-- 로그인된 사용자가 소속된 부서에 공유된 일정 필터링 -->
           OR SSE.EMP_NO = #{empNo}    <!-- 로그인된 사용자에게 공유된 일정 필터링 -->      
-          
-     <!-- 사원 공유 추가 전 쿼리문 
-     SELECT S.SKD_NO, S.SKD_START, S.SKD_END, S.SKD_CATEGORY, S.SKD_TITLE, S.SKD_CONTENTS, S.SKD_COLOR,
-            E.EMP_NO, E.EMP_NAME, E.DEPT_NO,
-            SSD.DEPT_NO AS SHARED_DEPT_NO
-       FROM SCHEDULE S
-       INNER JOIN EMPLOYEE E ON S.EMP_NO = E.EMP_NO
-       LEFT JOIN SKD_SHR_DEPT SSD ON S.SKD_NO = SSD.SKD_NO
-       WHERE S.EMP_NO = #{empNo}      현재 로그인된 사용자가 등록한 일정 필터링  
-          OR SSD.DEPT_NO = #{deptNo}  로그인된 사용자가 소속된 부서에 공유된 일정 필터링 -->
-   
   </select>
    
    <!-- 일정 상세보기 (일정번호 기준 조회)  -->
@@ -178,7 +167,9 @@
    </select>
 
    <!-- 부서명 가져오기 (수정 모달창 표시) -->
-		<select id="getDeptByNo" parameterType="int" resultType="DepartmentDto">
+		<select id="getDeptByNo" 
+		        parameterType="int" 
+		        resultType="DepartmentDto">
 		    SELECT DEPT_NO, DEPT_NAME 
 	  	    FROM DEPARTMENT 
 		     WHERE DEPT_NO = #{deptNo}
