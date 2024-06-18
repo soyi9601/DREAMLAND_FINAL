@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.dreamland.prj.dto.AppleaveDto;
+import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.mapper.DayoffMapper;
 
@@ -20,19 +21,20 @@ import lombok.RequiredArgsConstructor;
 public class dayoffServiceImpl implements dayoffService {
 
   private final DayoffMapper dayoffMapper;
+  private final DepartService departService;
   
+  // 휴가정보 조회
   @Override
   public void loadDayoffData(Model model, EmployeeDto employee) {
-    double totalDayOff = employee.getDayOff();                               // 총 연차
-    double usedDayOff = employee.getUsedDayOff();                            // 사용연차
-    double remainDayOff = calculateRemainDayOff(totalDayOff, usedDayOff);    // 잔여연차
-    //double usedDayOffDouble = (double) usedDayOff; // 사용 연차를 double로 변환
-    //double remainDayOff = calculateRemainDayOff(totalDayOff, usedDayOffDouble); // 잔여 연차 계산
+    DepartmentDto department = departService.getDepartById(employee.getDeptNo());
+    model.addAttribute("loginEmployee", employee);
+    model.addAttribute("department", department);
+    
+    double totalDayOff = employee.getDayOff();                            // 총 연차
+    double usedDayOff = employee.getUsedDayOff();                         // 사용연차
+    double remainDayOff = calculateRemainDayOff(totalDayOff, usedDayOff); // 잔여연차
     List<Integer> yearList = getYearList(employee.getEmpNo());            // 사원의 입사연도 ~ 현재연도까지 연도리스트 가져옴 -> 드롭다운에 사용
 
-    System.out.println("======= 휴가 내역 =========");
-    System.out.println(usedDayOff);
-    System.out.println(remainDayOff);
     model.addAttribute("totalDayOff", totalDayOff);
     model.addAttribute("usedDayOff", usedDayOff);
     model.addAttribute("remainDayOff", remainDayOff);

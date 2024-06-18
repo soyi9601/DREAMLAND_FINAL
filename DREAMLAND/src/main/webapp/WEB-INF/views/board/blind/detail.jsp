@@ -75,7 +75,7 @@
                         
                         <!-- 댓글등록 창-->
                         <div>
-                          <form id="frm-comment">
+                          <form id="frm-comment" method="post">
                             <input type="hidden" name="blindNo" value="${blind.blindNo}">
                             <textarea id="comment-contents" class="form-control" name="contents" placeholder="댓글을 작성해주세요!"></textarea>
                             <input type="password" id="comment-password" class="form-control" name="commentPassword" placeholder="password">
@@ -233,10 +233,11 @@ function validateEdit(blindNo, password) {
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-    	const frmBtn = document.getElementById('frm-btn');
+      const frmBtn = document.getElementById('frm-btn');
       frmBtn.action = '${contextPath}/board/blind/edit.do';
       frmBtn.submit();
     } else {
+      alert('비밀번호가 일치하지 않습니다.');
       $('#board-password').val("");
     }
   });
@@ -256,6 +257,7 @@ function validateRemove(blindNo, password) {
     if (data.success) {
       window.location.href = '${contextPath}/board/blind/removeBlind.do?blindNo='+blindNo
     } else {
+      alert('비밀번호가 일치하지 않습니다.');
       $('#board-password').val("");
     }
   });
@@ -264,7 +266,7 @@ function validateRemove(blindNo, password) {
 //※----------------------------댓글등록, 삭제 js
 // 댓글등록
 const fnRegisterComment = () => {
- $('#btn-comment-registrer').on('click', (e) => {
+ $('#frm-comment').on('submit', (e) => {
    
    const commentContents = $('#comment-contents').val();
    const commentPassword = $('#comment-password').val();
@@ -288,7 +290,6 @@ const fnRegisterComment = () => {
      dataType:'json',
      success:(resData) => {
        if(resData.insertCount === 1){
-         updateCommentCount('${blind.blindNo}');
          alert('댓글이 등록되었습니다.');
          $('#comment-contents').val('');
          $('#comment-password').val('');
@@ -523,6 +524,7 @@ function validatePw(commentNo, pw) {
       if (data.success) {
         removeComment(commentNo)
       } else {
+        alert('비밀번호가 일치하지 않습니다.');
         $('#comment-modal-pw').val("");
       }
   });
@@ -570,6 +572,6 @@ fnRemoveComment();
 fnTitleNew();
 
 
-  </script>
+</script>
 
 <%@ include file="../../layout/footer.jsp"%>
