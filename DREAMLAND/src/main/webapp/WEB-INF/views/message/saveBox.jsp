@@ -43,7 +43,9 @@
                           <c:if test="${not empty saveList}">
                             <c:forEach items="${saveList}" var="save" varStatus="vs">
                               <tr>
-                                <td><input class="form-check-input" type="checkbox" value="${save.msgNo}" id="check-no" name="checkYn"/></td>
+                                <td><input class="check-no form-check-input" type="checkbox" value="${save.msgNo}" id="check-no" name="checkYn"/>
+                                    <input type="hidden" class="save-check" name="checkSendYn" value="${save.sendStarYn}">
+                                </td>
                                   <c:choose>
                                       <c:when  test="${save.sendStarYn == 'Y' }">
 			                                  <c:choose>

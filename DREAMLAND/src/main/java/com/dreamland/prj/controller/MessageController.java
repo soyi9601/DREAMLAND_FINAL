@@ -115,7 +115,6 @@ public class MessageController {
     int empNo = Integer.parseInt(request.getParameter("empNo"));
     messageService.saveSendMessage(request);
     String referer = request.getHeader("referer");
-    messageService.saveRecMessage(request);
     if(referer.contains("empNo")) {
       return "redirect:"+referer;
     }else {
@@ -158,7 +157,7 @@ public class MessageController {
   @PostMapping("/user/deleteSaveMsg.do")
   public String saveMsgRemove(HttpServletRequest request) {
     int empNo = Integer.parseInt(request.getParameter("empNo"));
-    messageService.deleteRecMessage(request);
+    messageService.deleteSaveMessage(request);
     return "redirect:/user/saveBox?empNo=" + empNo;
   }
   
