@@ -44,79 +44,97 @@ public class FacilityServiceImpl implements FacilityService {
 	@Override
 	public boolean registerFacility(MultipartHttpServletRequest multipartRequest) {
 
-		// FACILITY 테이블에 추가하기
-		String facilityName = multipartRequest.getParameter("facilityName"); 
-		String remarks = multipartRequest.getParameter("remarks"); 
-		int deptNo = Integer.parseInt(multipartRequest.getParameter("deptNo"));
-		
-		//매개변수를 처리하고 기본값을 설정
-		String managementParam = multipartRequest.getParameter("management");
-		int management = managementParam != null ? Integer.parseInt(managementParam) : 0;
-		
-		// DepartmentDto 객체를 생성
-		DepartmentDto dept = new DepartmentDto();
-		dept.setDeptNo(deptNo);
-		
-		// FacilityDto 객체를 빌더 패턴을 사용하여 생성
-		FacilityDto facility = FacilityDto.builder()
-															.facilityName(facilityName)
-															.remarks(remarks)
-															.management(management)
-															.department(dept)
-														.build();
-		
-		// Mapper를 사용하여 시설을 데이터베이스에 추가
-		int insertFacilityCount = facilityMapper.insertFacility(facility);
-		
-		// 첨부 파일 처리하기
-		List<MultipartFile> files = multipartRequest.getFiles("files");
-		
-		// 첨부 파일 삽입 횟수를 카운트
-		int insertAttachCount;
-		if(files.get(0).getSize() == 0) {
-			insertAttachCount = 1;
-		} else {
-			insertAttachCount = 0;
+		    String[] facilityNames = multipartRequest.getParameterValues("facilityName");
+		    String[] remarksArray = multipartRequest.getParameterValues("remarks");
+		    String[] deptNos = multipartRequest.getParameterValues("deptNo");
+		    String[] managementParams = multipartRequest.getParameterValues("management");
+		    List<MultipartFile> files = multipartRequest.getFiles("files");
+		    int totalInsertedCount = 0;
+
+		    // 시설 개수만큼 반복
+		    for (int i = 0; i < facilityNames.length; i++) {
+		        String facilityName = facilityNames[i];
+		        String remarks = remarksArray[i];
+		        int deptNo = Integer.parseInt(deptNos[i]);
+		        int management = managementParams != null && i < managementParams.length && managementParams[i] != null ? Integer.parseInt(managementParams[i]) : 0;
+
+		        DepartmentDto dept = new DepartmentDto();
+		        dept.setDeptNo(deptNo);
+
+		        FacilityDto facility = FacilityDto.builder()
+		                .facilityName(facilityName)
+		                .remarks(remarks)
+		                .management(management)
+		                .department(dept)
+		                .build();
+
+		        try {
+		            int insertFacilityCount = facilityMapper.insertFacility(facility);
+
+		            // 해당 시설의 파일들을 가져오기 (파일 필드 이름은 files + i)
+	//	            List<MultipartFile> files = multipartRequest.getFiles("files");
+		            int insertAttachCount = 0;
+	//===============================================================	            
+		            MultipartFile multipartFile = files.get(i);
+		            String uploadPath = myFileUtils.getUploadPath();
+                File dir = new File(uploadPath);
+                if (!dir.exists()) 
+                    dir.mkdirs();
+                String originalFilename = multipartFile.getOriginalFilename();
+                String filesystemName = myFileUtils.getFilesystemName(originalFilename);
+                File file = new File(dir, filesystemName);
+
+                multipartFile.transferTo(file);
+
+                FacilityAttachDto facilityAttach = FacilityAttachDto.builder()
+                        .uploadPath(uploadPath)
+                        .filesystemName(filesystemName)
+                        .originalFilename(originalFilename)
+                        .facilityNo(facility.getFacilityNo())
+                        .build();
+
+                insertAttachCount += facilityMapper.insertFacilityAttach(facilityAttach);
+//============================================================================                
+/*
+		            // 파일들을 순회하며 처리
+		            for (MultipartFile multipartFile : files) {
+		                if (multipartFile != null && !multipartFile.isEmpty()) {
+		                    String uploadPath = myFileUtils.getUploadPath();
+		                    File dir = new File(uploadPath);
+		                    if (!dir.exists()) 
+		                        dir.mkdirs();
+		                    }
+
+		                    String originalFilename = multipartFile.getOriginalFilename();
+		                    String filesystemName = myFileUtils.getFilesystemName(originalFilename);
+		                    File file = new File(dir, filesystemName);
+
+		                    multipartFile.transferTo(file);
+
+		                    FacilityAttachDto facilityAttach = FacilityAttachDto.builder()
+		                            .uploadPath(uploadPath)
+		                            .filesystemName(filesystemName)
+		                            .originalFilename(originalFilename)
+		                            .facilityNo(facility.getFacilityNo())
+		                            .build();
+
+		                    insertAttachCount += facilityMapper.insertFacilityAttach(facilityAttach);
+		                }
+		            }
+*/
+
+		            // 해당 시설의 시설 등록과 파일 등록이 모두 성공적인 경우
+		            if (insertFacilityCount == 1 && insertAttachCount == files.size()) {
+		                totalInsertedCount++;
+		            }
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+
+		    // 모든 시설 등록이 성공적인 경우 true 반환
+		    return totalInsertedCount == facilityNames.length;
 		}
-		
-		// 각 파일을 반복하며 처리
-		for(MultipartFile multipartFile : files) {
-			if(multipartFile != null && !multipartFile.isEmpty()) {
-				// 파일을 업로드할 경로
-				String uploadPath = myFileUtils.getUploadPath();
-				File dir = new File(uploadPath);
-				if(!dir.exists()) {
-					dir.mkdirs();
-				}
-				
-				// 파일 정보를 준비하고 파일을 저장
-				String originalFilename = multipartFile.getOriginalFilename();
-				String filesystemName = myFileUtils.getFilesystemName(originalFilename);
-				File file = new File(dir, filesystemName);
-				
-				try {
-					multipartFile.transferTo(file);
-					
-					// FacilityAttachDto 객체 생성
-					FacilityAttachDto FacilityAttach = FacilityAttachDto.builder()
-																						 		.uploadPath(uploadPath)
-																						 		.filesystemName(filesystemName)
-																						 		.originalFilename(originalFilename)
-																						 		.facilityNo(facility.getFacilityNo())
-																						 	.build();
-					
-					// Mapper를 사용하여 시설 첨부 파일을 데이터베이스에 추가
-					insertAttachCount += facilityMapper.insertFacilityAttach(FacilityAttach);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		// 시설 및 모든 첨부 파일이 성공적으로 삽입되었는지 확인하고 결과를 반환
-		return (insertFacilityCount == 1) && (insertAttachCount == files.size());
-	}
 
 	@Transactional(readOnly=true)
 	@Override
