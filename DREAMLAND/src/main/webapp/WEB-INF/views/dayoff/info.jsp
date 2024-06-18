@@ -27,16 +27,7 @@
         <div class="work-name">
           <h3 class="card-title">${loginEmployee.empName}</h3>
         </div>
-        <span class="work-deptNo badge rounded-pill bg-label-secondary">
-          <c:choose>
-            <c:when test="${loginEmployee.deptNo == 9999}">대표이사</c:when>
-            <c:when test="${loginEmployee.deptNo == 1000}">인사팀</c:when>
-            <c:when test="${loginEmployee.deptNo == 2000}">경영지원팀</c:when>
-            <c:when test="${loginEmployee.deptNo == 3000}">안전관리팀</c:when>
-            <c:when test="${loginEmployee.deptNo == 5000}">시설운영팀</c:when>
-            <c:when test="${loginEmployee.deptNo == 6000}">마케팅팀</c:when>
-          </c:choose>
-        </span>
+        <span class="work-deptNo badge rounded-pill bg-label-secondary">${department.deptName}</span>
       </div>
       <div class="col-auto">
         <a class="btn btn-outline-primary" href="${contextPath}/approval/appWrite?apvNo=000">연차신청</a>

@@ -9,7 +9,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
+import com.dreamland.prj.dto.DepartmentDto;
 import com.dreamland.prj.dto.EmployeeDto;
 import com.dreamland.prj.dto.WorkDto;
 import com.dreamland.prj.mapper.WorkMapper;
@@ -21,14 +23,61 @@ import lombok.RequiredArgsConstructor;
 public class WorkServiceImpl implements WorkService {
   
   private final WorkMapper workMapper;
-  private final LoginService loginService;
+  private final DepartService departService;
   
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
   String today = sdf.format(new Date());
   
+  // 근무정보 조회 
+  @Override
+  public void loadWorkData(Model model, EmployeeDto employee) {
+    DepartmentDto department = departService.getDepartById(employee.getDeptNo());  // 부서번호 가져오기
+    model.addAttribute("loginEmployee", employee);
+    model.addAttribute("department", department);
+    
+    int year = java.time.Year.now().getValue();
+
+    Map<String, Object> map = new HashMap<>();
+    map.put("empNo", employee.getEmpNo());
+    map.put("year", year);
+
+    int lateCount = workMapper.getLateCount(map);
+    int absenceCount = workMapper.getAbsenceCount(map);
+    int totalWorkDays = workMapper.getTotalWorkDays(map);
+    int totalWorkHours = workMapper.getTotalWorkHours(map);
+    String avgWorkHours = String.format("%.2f", workMapper.getAvgWorkHours(map)); 
+
+    model.addAttribute("lateCount", lateCount);
+    model.addAttribute("absenceCount", absenceCount);
+    model.addAttribute("totalWorkDays", totalWorkDays);
+    model.addAttribute("totalWorkHours", totalWorkHours);
+    model.addAttribute("avgWorkHours", avgWorkHours);
+    
+  }  
+  
+  // 근무정보 리스트 (기간조회)
+  @Override
+  public Map<String, Object> getWorkListByPeriod(int empNo, String startDate, String endDate) {
+    Map<String, Object> map = new HashMap<>();
+    map.put("empNo", empNo);
+    map.put("startDate", startDate);
+    map.put("endDate", endDate);
+   
+    List<WorkDto> workList = workMapper.getWorkListByPeriod(map);
+
+    if (workList == null || workList.isEmpty()) {
+        workList = new ArrayList<>(); // 값이 비어있을 때, 빈 리스트 반환
+    }
+    
+    Map<String, Object> result = new HashMap<>();
+    result.put("workList", workList);
+
+    return result;
+
+  }
+  
   // 지각
   @Override
-  @Transactional
   public void checkLate() {
     List<Integer> nonAdminEmpNos = workMapper.getNonAdminEmpNo();
     for(Integer empNo : nonAdminEmpNos) {
@@ -50,7 +99,6 @@ public class WorkServiceImpl implements WorkService {
 
   // 연차
   @Override
-  @Transactional
   public void checkDayoff() {
       List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today); // 오늘 날짜 연차 사원 리스트 조회
       for (Integer empNo : dayoffEmpList) {
@@ -80,7 +128,6 @@ public class WorkServiceImpl implements WorkService {
   
   // 결근
   @Override
-  @Transactional
   public void checkAbsence() {
       List<Integer> empNos = workMapper.getAbsenceEmpList(today); 
       for (Integer empNo : empNos) {
@@ -93,58 +140,4 @@ public class WorkServiceImpl implements WorkService {
         }
       }
     }
-  
-  // 지각 + 조기퇴근 + 결근 횟수 + 근무시간 조회
-  @Override
-  public Map<String, Object> getWorkCountByEmail(String email) {
-    EmployeeDto employeeDto = loginService.getEmployeeByEmail(email);
-    Integer empNo = loginService.getEmployeeByEmail(email).getEmpNo();
-    int year = java.time.Year.now().getValue();
-    
-    Map<String, Object> map = new HashMap<>();
-    map.put("empNo", empNo);
-    map.put("year", year);
-    
-    int lateCount = workMapper.getLateCount(map);
-    // int earlyLeaveCount = workMapper.getEarlyLeaveCount(map);
-    int absenceCount = workMapper.getAbsenceCount(map);
-    int totalWorkDays = workMapper.getTotalWorkDays(map);
-    int totalWorkHours = workMapper.getTotalWorkHours(map);
-    String avgWorkHours = String.format("%.2f", workMapper.getAvgWorkHours(map)); 
-
-    Map<String, Object> counts = new HashMap<>();
-    counts.put("lateCount", lateCount);
-    //counts.put("earlyLeaveCount", earlyLeaveCount);
-    counts.put("absenceCount", absenceCount);
-    counts.put("totalWorkDays", totalWorkDays);
-    counts.put("totalWorkHours", totalWorkHours);
-    counts.put("avgWorkHours", avgWorkHours);
-    counts.put("employee", employeeDto); 
-
-    return counts;
-    
-  }
-  
-  // 근무정보 리스트 (기간조회)
-  @Override
-  public Map<String, Object> getWorkListByPeriod(String email, String startDate, String endDate) {
-    Integer empNo = loginService.getEmployeeByEmail(email).getEmpNo();
-    
-    Map<String, Object> map = new HashMap<>();
-    map.put("empNo", empNo);
-    map.put("startDate", startDate);
-    map.put("endDate", endDate);
-   
-    List<WorkDto> workList = workMapper.getWorkListByPeriod(map);
-
-    if (workList == null || workList.isEmpty()) {
-        workList = new ArrayList<>(); // 값이 비어있을 때, 빈 리스트 반환
-    }
-    
-    Map<String, Object> result = new HashMap<>();
-    result.put("workList", workList);
-
-    return result;
-
-  }
-}
+ }
