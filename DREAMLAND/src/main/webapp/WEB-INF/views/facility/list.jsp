@@ -51,10 +51,10 @@
             				<i class="fab fa-angular fa-lg text-danger me-3"></i>
             					${beginNo - vs.index}
             		  </td>
-            		  <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
+            		  <c:if test="${loginEmployee.role eq 'ROLE_MANAGER'}">
             		  	<td><input type="checkbox" name="facilityChk" value="${facility.facilityNo}" data-idx="${beginNo - vs.index}"/></td>
             		  </c:if>
-            		  <td data-facility-name="${facility.facilityName}" class="facilityName">${facility.facilityName}</td>
+            		  <td data-facility-no="${facility.facilityNo}" class="facilityName">${facility.facilityName}</td>
             		  <td data-notice-no="${facility.facilityNo}" class="facilityline">${facility.facilityDate}</td>
             		  <td>
             		  	<c:if test="${facility.management eq 1}">
@@ -75,7 +75,7 @@
 
       <div class="sd-btns-area">
         <div>
-          <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
+          <c:if test="${loginEmployee.role eq 'ROLE_MANAGER'}">
             <button id="list-edit-btn" class="btn-reset sd-btn sd-gray-bg">편집</button>
             <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
           </c:if>
@@ -96,7 +96,7 @@
 //상세 페이지로 이동하는 함수
 const fnNoticeDetail = () =>{
     $(document).on('click', '.facilityName', (evt)=>{
-        let facilityNo = $(evt.target).data('notice-no');
+        let facilityNo = $(evt.target).data('facility-no');
         if (facilityNo !== "undefined") {
             location.href = '${contextPath}/facility/detail.do?facilityNo=' + facilityNo;
         }
