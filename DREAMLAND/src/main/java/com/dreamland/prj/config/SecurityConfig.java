@@ -65,7 +65,7 @@ public class SecurityConfig {
             .requestMatchers("/employee/**").hasRole("ADMIN")
             
             /* 유저(직원)만 가능 */
-            .requestMatchers("/approval/appWrite").hasRole("USER")
+            .requestMatchers("/approval/appWrite").hasAnyRole("USER", "MANAGER")
             
             /* 매니저만 가능 */
             .requestMatchers("/sales/productreg.page").hasRole("MANAGER")
