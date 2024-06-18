@@ -721,11 +721,19 @@ function fnJstree() {
      
         	
         	 var selectedNode = $('#orgChart').jstree().get_node(data.node.id);
-        	if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) ) {
-        		alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
-        		return
-        		
-        	}
+        	 
+        	 
+        	 
+        	 	if ( !((+(selectedNode.data.rank) == +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank)) && +(selectedNode.data.rank) == 60)  ) {
+        	 		
+        	 		
+        	 		if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) ) {
+        	 			alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
+        	 			return
+        	 			
+        	 		}
+        			
+        		}
             const name = data.node.data.name;
             const pos = posName[selectedNode.data.rank];
             const newCell = selectedEmployeesRow.insertCell();
@@ -751,9 +759,12 @@ function fnJstree() {
     	}
     	
    	 var selectedNode = $('#orgChart2').jstree().get_node(data.node.id);
- 	if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers2[tdCount-2].value).data.rank) ) {
-		alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
-		return
+ 	if ( !(+(selectedNode.data.rank) == +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) == 60) ) {
+ 		if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) ) {
+ 			alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
+ 			return
+ 			
+ 		}
 		
 	}
        
