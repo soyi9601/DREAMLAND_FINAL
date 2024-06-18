@@ -95,7 +95,7 @@
 <script>
 //상세 페이지로 이동하는 함수
 const fnNoticeDetail = () =>{
-    $(document).on('click', '.facilityline', (evt)=>{
+    $(document).on('click', '.facilityName', (evt)=>{
         let facilityNo = $(evt.target).data('notice-no');
         if (facilityNo !== "undefined") {
             location.href = '${contextPath}/facility/detail.do?facilityNo=' + facilityNo;

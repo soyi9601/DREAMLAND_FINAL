@@ -48,7 +48,7 @@
             <!--  <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">-->
            <div class="section">
                 <div class="section-title">제목</div>
-                        	<input type="text" style=" width:100%;" class="form-control" name="title" id="title"  value="${title}"></input>
+                        	<input type="text" style=" width:100%;" class="form-control" name="title" id="title"  value="${title}" maxlength='33'></input>
     <input type="hidden" name="temp" value="0">
     <input type="hidden" name="apvNo" id="apvNo" value="${approval.apvNo}">
             </div>
@@ -107,12 +107,12 @@
     								</div>
                 
                 		<br>
-                   	<input type="text"  class="form-control" style=" width:100%;" name="referrer" id="referrer" value="${referrer}"></input>
+                   	<input type="text"  class="form-control" style=" width:100%;" name="referrer" id="referrer" value="${referrer}" maxlength='40'></input>
             </div>
             <br>
             <div class="section">
                 <div class="section-title">품의 내용 및 상세내역</div>
-                            <textarea class="form-control" name="contents"  id="contents" >${approval.detail}</textarea>
+                            <textarea class="form-control" name="contents"  id="contents" maxlength='333'>${approval.detail}</textarea>
             </div>
             <br>
             
@@ -171,7 +171,7 @@
            <br>
             <div class="section">
                             <div class="section-title">제목</div>
-                        	<input type="text" class="form-control" style="width:100%;" name="title"  id="title2"  value="${title}"></input>
+                        	<input type="text" class="form-control" style="width:100%;" name="title"  id="title2"  value="${title}" maxlength='33'></input>
          <input type="hidden" name="temp" value="0">
             <input type="hidden" name="apvNo" value="${approval.apvNo}">
             </div>
@@ -228,7 +228,7 @@
         						</div>
     								</div>
     								<br>
-                   <input type="text"  class="form-control"style="width:100%;" id="referrer2" name="referrer" value="${referrer}"></input>
+                   <input type="text"  class="form-control"style="width:100%;" id="referrer2" name="referrer" value="${referrer}" maxlength='40'></input>
             </div>
                 <br>
              <div class="section-title">휴가 상세 및 사유</div>
@@ -293,14 +293,14 @@
                 <tr>
                     <td>사유</td>
                     <td>
-                        <textarea class="form-control"  name="contents"  id="contents2" >${approval.detail}</textarea>
+                        <textarea class="form-control"  name="contents"  id="contents2"  maxlength='333'>${approval.detail}</textarea>
                     </td>
                 </tr>
             </table>
                 <br>
                     <br>
             	<div class="footer">
-              위와 같은 사유로 품의서를 제출하오니 허가하여 주시기 바랍니다.
+              위와 같은 사유로 휴가신청서를 제출하오니 허가하여 주시기 바랍니다.
                      <c:if test="${empty title}">
                 <div class="today"></div>        
                 </c:if>
@@ -572,7 +572,7 @@ function fnJstree() {
                 let node = {
                         "id": item.deptNo+"",
                         "text": item.deptName+"",
-                        "parent" : "5000"
+                        "parent" : item.parentId
                     }
                 Edata.push(node);
         	});
@@ -721,11 +721,19 @@ function fnJstree() {
      
         	
         	 var selectedNode = $('#orgChart').jstree().get_node(data.node.id);
-        	if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) ) {
-        		alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
-        		return
-        		
-        	}
+        	 
+        	 
+        	 
+        	 	if ( !((+(selectedNode.data.rank) == +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank)) && +(selectedNode.data.rank) == 60)  ) {
+        	 		
+        	 		
+        	 		if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) ) {
+        	 			alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
+        	 			return
+        	 			
+        	 		}
+        			
+        		}
             const name = data.node.data.name;
             const pos = posName[selectedNode.data.rank];
             const newCell = selectedEmployeesRow.insertCell();
@@ -751,9 +759,12 @@ function fnJstree() {
     	}
     	
    	 var selectedNode = $('#orgChart2').jstree().get_node(data.node.id);
- 	if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers2[tdCount-2].value).data.rank) ) {
-		alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
-		return
+ 	if ( !(+(selectedNode.data.rank) == +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) == 60) ) {
+ 		if( +(selectedNode.data.rank) <= +(Object.values(Edata).find(item => item.data && item.data.name === approvers[tdCount-2].value).data.rank) ) {
+ 			alert("이전 결재자보다 직급이 높은 사원을 선택하십시오");
+ 			return
+ 			
+ 		}
 		
 	}
        

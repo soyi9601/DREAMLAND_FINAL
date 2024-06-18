@@ -646,9 +646,10 @@ SELECT APV_NO, EMP_NO, APV_WRITE_DATE, APV_CHECK, APV_KINDS, APV_TITLE, EMP_NAME
 	  
 	  	 <select id="getDepartmentList2"
 	 			resultType="DepartmentDto">
-	 			SELECT DEPT_NO, DEPT_NAME
+	 			SELECT DEPT_NO, DEPT_NAME, PARENT_ID
 	 			  FROM DEPARTMENT
-	 			 WHERE PARENT_ID = '5000'
+	 			 WHERE PARENT_ID >= '5000'
+	 			    AND NOT PARENT_ID = 9999
 	  </select>
   
 </mapper>

@@ -52,25 +52,15 @@
             </div>
             
              <c:if test="${reject == 1}">
+             <br>
                     <div class="section">
                 <div class="section-title">반려자</div>
-                <table class="input-table">
-                    <tr>
-                        <td>
-                        	${returner}
-                        </td>
-                    </tr>
-                </table>
+                	<input type="text" style=" width:100%;    background-color: #ffffff;" class="form-control" name="title" id="title"  readonly="readonly" value="	${returner}"></input>
             </div>
+            <br>
                     <div class="section">
                 <div class="section-title">반려사유</div>
-                <table class="input-table">
-                    <tr>
-                        <td>
-                        	${returnReason}
-                        </td>
-                    </tr>
-                </table>
+                	<input type="text" style=" width:100%;    background-color: #ffffff;" class="form-control" name="title" id="title"  readonly="readonly" value="	${returnReason}"></input>
             </div>
                 </c:if>
                     <br>
@@ -227,28 +217,17 @@
                 </tr>
             </table>
             <br>
-                      <c:if test="${reject == 1}">
+ <c:if test="${reject == 1}">
+             <br>
                     <div class="section">
                 <div class="section-title">반려자</div>
-                <table class="input-table">
-                    <tr>
-                        <td>
-                        	${returner}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-                    <div class="section">
-                <div class="section-title">반려사유</div>
-                <table class="input-table">
-                    <tr>
-                        <td>
-                        	${returnReason}
-                        </td>
-                    </tr>
-                </table>
+                	<input type="text" style=" width:100%;    background-color: #ffffff;" class="form-control" name="title" id="title"  readonly="readonly" value="	${returner}"></input>
             </div>
             <br>
+                    <div class="section">
+                <div class="section-title">반려사유</div>
+                	<input type="text" style=" width:100%;    background-color: #ffffff;" class="form-control" name="title" id="title"  readonly="readonly" value="	${returnReason}"></input>
+            </div>
                 </c:if>
                 
       		<div class="row mb-3">
