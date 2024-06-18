@@ -572,7 +572,7 @@ function fnJstree() {
                 let node = {
                         "id": item.deptNo+"",
                         "text": item.deptName+"",
-                        "parent" : "5000"
+                        "parent" : item.parentId
                     }
                 Edata.push(node);
         	});
