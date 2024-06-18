@@ -94,34 +94,6 @@ public class FacilityServiceImpl implements FacilityService {
                         .build();
 
                 insertAttachCount += facilityMapper.insertFacilityAttach(facilityAttach);
-//============================================================================                
-/*
-		            // 파일들을 순회하며 처리
-		            for (MultipartFile multipartFile : files) {
-		                if (multipartFile != null && !multipartFile.isEmpty()) {
-		                    String uploadPath = myFileUtils.getUploadPath();
-		                    File dir = new File(uploadPath);
-		                    if (!dir.exists()) 
-		                        dir.mkdirs();
-		                    }
-
-		                    String originalFilename = multipartFile.getOriginalFilename();
-		                    String filesystemName = myFileUtils.getFilesystemName(originalFilename);
-		                    File file = new File(dir, filesystemName);
-
-		                    multipartFile.transferTo(file);
-
-		                    FacilityAttachDto facilityAttach = FacilityAttachDto.builder()
-		                            .uploadPath(uploadPath)
-		                            .filesystemName(filesystemName)
-		                            .originalFilename(originalFilename)
-		                            .facilityNo(facility.getFacilityNo())
-		                            .build();
-
-		                    insertAttachCount += facilityMapper.insertFacilityAttach(facilityAttach);
-		                }
-		            }
-*/
 
 		            // 해당 시설의 시설 등록과 파일 등록이 모두 성공적인 경우
 		            if (insertFacilityCount == 1 && insertAttachCount == files.size()) {
