@@ -32,7 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
   // 일정 등록
   @Override
-  public int registerSkd(HttpServletRequest request) {
+  public Map<String, Object> registerSkd(HttpServletRequest request) {
     
     // 뷰에서 전달된 데이터
     int empNo = Integer.parseInt(request.getParameter("empNo"));
@@ -84,7 +84,11 @@ public class ScheduleServiceImpl implements ScheduleService {
          }
        }
      } 
-    return insertCount; // 모든 데이터 처리 후 일정 삽입 결과 반환
+     // 등록된 일정의 skdNo와 insertCount 반환
+     Map<String, Object> result = new HashMap<>();
+     result.put("insertSkdCount", insertCount);
+     result.put("skdNo", skdNo);
+     return result; // 모든 데이터 처리 후 일정 삽입 결과 반환
   }
   
   // 전체 일정 조회 (필터링)
@@ -111,6 +115,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 등록된 일정 상세보기 
     ScheduleDto schedule = scheduleMapper.getSkdByNo(skdNo); 
     List<String> sharedItems = new ArrayList<>();
+    System.out.println(schedule);
 
     // 사원 공유 데이터 가져오기
     List<SkdShrEmpDto> shrEmpList = scheduleMapper.getShrEmpBySkdNo(skdNo); // sharedItems 리스트에 추가

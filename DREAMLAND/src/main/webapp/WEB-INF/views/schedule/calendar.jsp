@@ -82,7 +82,6 @@
 	                    </div>
 	                    <!-- 세션 정보 -->
 	                    <input type="hidden" name="empNo" value="${loginEmployee.empNo}"> 
-	                    <!-- <input type="hidden" name="empNo" value="2">  --> 
 	              
 	                <div class="modal-footer">
 	                    <button id="btn-close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -220,7 +219,7 @@
              }
          });
        </c:forEach>
-
+       
        // 캘린더 요소 선택 및 FullCalendar 초기화
        var calendarEl = document.getElementById('calendar');
        calendar = new FullCalendar.Calendar(calendarEl, { // 전역 변수로 참조
@@ -264,15 +263,15 @@
      	          domNodes: []
      	        };
      	      }
-     	    }
+     	    } 
         });
         calendar.render();  // 캘린더 랜더링
      }
    
    // 일정 상세보기
    const fnShowDetailModal = (info) => {
-    var selectedSkdNo = info.event.id;
-
+	   var selectedSkdNo = info.event.id;
+    
     // 선택된 일정 상세 데이터 가져오기
     $.ajax({
         type: 'GET',
@@ -403,7 +402,7 @@
    // 일정 등록
    const fnRegisterSkd = () => {
        $('#frm-schedule').on('submit', function(e) {
-          // e.preventDefault(); // 폼의 기본 제출 동작 (새로고침)을 막음
+          e.preventDefault(); // 폼의 기본 제출 동작 (새로고침)을 막음
 
            var formData = $(this).serializeArray();
            var selectedItems = $('#empDept-result input[name="shrNo"]').map(function() {
@@ -415,13 +414,13 @@
            });
 
            $.ajax({
-               type: "POST",
-               url: "${contextPath}/schedule/register.do",
+               type: 'POST',
+               url: '${contextPath}/schedule/register.do',
                data: formData,
-               dataType: "json",
+               dataType: 'json',
                success: function(resData) {
                    if (resData.insertSkdCount === 1) { 
-                       $('#insertModal').modal('hide'); 
+                       $('#insertModal').modal('hide');
                        var newEvent = {
                            id: resData.skdNo, 
                            title: $('#title').val(), 
@@ -441,8 +440,7 @@
                                })
                            }
                        };
-                       calendar.addEvent(newEvent);  
-                       calendar.render();
+                       calendar.addEvent(newEvent);  //fullcalendar에 일정 추가
                        $('#frm-schedule')[0].reset(); 
                        $('#empDept-result').empty(); 
                    } else {
@@ -466,7 +464,7 @@
 	        // 선택된 일정 상세 데이터 가져오기
 	        $.ajax({
 	            type: 'GET',
-	            url: `${contextPath}/schedule/detail.do`,
+	            url: '${contextPath}/schedule/detail.do',
 	            data: { skdNo: selectedSkdNo },
 	            success: function(schedule) {
 	                // 선택한 일정 데이터 수정 모달창에 입력
