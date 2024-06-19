@@ -37,7 +37,6 @@ public class BlindBoardServiceImpl implements BlindBoardService {
 	private final MyPageUtils myPageUtils;
 	private final MyFileUtils myFileUtils;
 
-	
 	public BlindBoardServiceImpl(BlindBoardMapper blindMapper, MyPageUtils myPageUtils, MyFileUtils myFileUtils) {
 		super();
 		this.blindMapper = blindMapper;
