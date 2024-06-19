@@ -111,7 +111,7 @@
   
   <update id="updateEmployee" parameterType="EmployeeDto">
     UPDATE EMPLOYEE
-       SET EMP_NAME = #{empName}, EMAIL = #{email}, MOBILE = #{mobile}, ROLE = #{role}, DEPT_NO = #{deptNo}, POS_NO = #{posNo}
+       SET EMP_NAME = #{empName}, EMAIL = #{email}, MOBILE = #{mobile}, ROLE = #{role}, DEPT_NO = #{deptNo}, POS_NO = #{posNo}, BIRTH = #{birth}, ENTER_DATE = #{enterDate}
      WHERE EMP_NO = #{empNo}
   </update>
   

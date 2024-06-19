@@ -75,8 +75,6 @@
                           <div id="attach-list" ></div>
                           <div class="loading">
                             <span></span>
-                            <span></span>
-                            <span></span>
                           </div>
                         </div>
                         
@@ -129,6 +127,7 @@ const fnAttachList = () => {
       
    		// 기존 첨부 파일 목록을 HTML에 추가
       for (let i = 0; i < attachList.length; i++) {
+    	  
         const attach = attachList[i];
         let str = '<div class="attach">';
         str += '<span>' + attach.originalFilename + '</span>';
@@ -182,20 +181,18 @@ const fnAttachCheck = () => {
 }
  
 
-//첨부파일 첨부 - 5개로 제한 , 2개 기본, 추가 누를시 파일input창 생기게... 없앨까? 
-    // 이거 하는중
+//첨부파일 첨부 - 5개로 제한 , 추가 누를시 파일input창 생기게
 const fnAttachInput = () => {
   $(".file-add-btn").on('click', () => {
     
-    //여기에
     // list목록 + input창 개수 
     let attachListNum = $('#attach-list').children('.attach').length;
     let inputNum = $('.file-input-div').length;
     
     let totalNum = attachListNum + inputNum;
-    const totalMax = 2;
+    const totalMax = 1;
     
-    // 최대 개수보다 작으면 파일 입력 추가
+    // 첨부파일 총합이 5개가 아닐 경우 input창 생성가능
     if (totalNum < totalMax) {
       const fileInputContainer = document.getElementById('file-input-container');
       const fileInputDiv = document.createElement('div');
@@ -208,7 +205,7 @@ const fnAttachInput = () => {
     
   });
 }
-fnAttachInput();
+
 
 
 
@@ -262,25 +259,43 @@ const fnAttachDel = () => {
   });
 } 
 
-fnAttachDel();
 
-//Ajax를 통해 첨부 파일 추가 요청을 보내는 함수
 const fnAddAttachGo = () => {
-  $.ajax({
-    type: 'post',
-    url: '${contextPath}/facility/addAttach.do',
-    data: globalFormData,
-    contentType: false,
-    processData: false,
-    dataType: 'json',
-    success: (resData) => {
-      if (resData.attachResult) {
-        fnAttachList(); // 첨부 파일 목록 다시 불러오기
-      } else {
-      }
-    },
-  });
-}
+
+	  // FormData의 내용을 출력하여 확인
+	  for (let pair of globalFormData.entries()) {
+	    console.log(pair[0] + ': ' + pair[1].name); // 파일 이름 출력
+	  }
+
+	  $.ajax({
+	    type: 'post',
+	    url: '${contextPath}/facility/addAttach.do',
+	    data: globalFormData,
+	    contentType: false,
+	    processData: false,
+	    dataType: 'json',
+	    success: (resData) => {
+	      if (resData.attachResult) {
+	        fnAttachList(); // 첨부 파일 목록 다시 불러오기
+	      } else {
+	    	  alert('첨부 파일이 추가되지 않았습니다.');	
+	      }
+	    }, 
+	  });
+	}
+
+	// 폼 제출 이벤트 핸들러
+	document.getElementById('frm-facility-modify').addEventListener('submit', (evt) => {
+	  evt.preventDefault(); // 폼 제출 중지
+	  console.log("폼 제출 중지됨");
+
+	  fnAddAttachGo(); // 파일 첨부 실행
+	  $(".loading").show(); // 로딩 표시
+
+	  setTimeout(() => {
+	    evt.target.submit(); // 폼 제출 재개
+	  }, 1000); // AJAX 요청이 완료되기 전에 폼 제출을 재개하지 않도록 약간의 딜레이를 추가
+	});
 
 // 첨부 파일 삭제 (리스트항목에서 삭제, attachNo 잡아야해.)
   const fnRemoveAttach = () => {
@@ -385,7 +400,8 @@ const fnCkgMng = () => {
 	const form = document.getElementById('frm-facility-modify');
 	form.addEventListener('submit', validateForm);
 
-fnRegister();
+fnAttachInput();
+fnAttachDel();
 fnAttachList();
 fnAddAttach();
 fnModifyUpload();
