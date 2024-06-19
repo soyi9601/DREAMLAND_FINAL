@@ -45,8 +45,9 @@ public class ScheduleController {
 	
   //일정 등록
   @PostMapping(value="/register.do", produces="application/json")
-  public ResponseEntity<Map<String, Object>> register(HttpServletRequest requset) {
-    return ResponseEntity.ok(Map.of("insertSkdCount", scheduleService.registerSkd(requset)));
+  public ResponseEntity<Map<String, Object>> register(HttpServletRequest request) {
+    Map<String, Object> result = scheduleService.registerSkd(request);
+    return ResponseEntity.ok(result);
   }
   
   // 일정 상세보기
