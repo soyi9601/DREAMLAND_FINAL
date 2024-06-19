@@ -36,7 +36,7 @@
             <thead>
               <tr>
               	<th>번호</th>
-                <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
+                <c:if test="${loginEmployee.role eq 'ROLE_MANAGER'}">
                 	<th>선택</th>
                 </c:if>
                 <th>시설명</th>

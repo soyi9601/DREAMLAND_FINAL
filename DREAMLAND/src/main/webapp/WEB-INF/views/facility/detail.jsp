@@ -111,7 +111,7 @@
                             </div>
                         </form>
                         <div class="notice-list">
-                        <c:if test="${loginEmployee.role eq 'ROLE_ADMIN' }">
+                        <c:if test="${loginEmployee.role eq 'ROLE_MANAGER' }">
                           <form id="frm-btn" method="POST">  
                             <input type="hidden" name="facilityNo" value="${facility.facilityNo}">
                             <button type="button" id="btn-edit" class="btn btn-warning btn-sm">편집</button>
@@ -136,9 +136,9 @@
 
 // 파일 다운로드 처리 함수
 const fnDownload = () => {
-  $('.bx-download').on('click', (evt) => {
+  $('.attach').on('click', (evt) => {
     if (confirm('해당 첨부 파일을 다운로드 할까요?')) {
-      const attachNo = $(evt.currentTarget).parent().data('attach-no');
+      const attachNo = $(evt.currentTarget).data('attach-no');
       location.href = '${contextPath}/facility/download.do?attachNo='+attachNo;
     }
   });

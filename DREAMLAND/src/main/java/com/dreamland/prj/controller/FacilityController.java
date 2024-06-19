@@ -78,13 +78,6 @@ public class FacilityController {
 			return "facility/edit";
 		}
 		
-		// 시설 수정 페이지 이동 (다른 버전)
-		@PostMapping("/edit2.do")
-		public String edit2(@RequestParam int facilityNo, Model model) {
-			model.addAttribute("facility", facilityService.getFacilityByNo(facilityNo));
-			return "facility/edit";
-		}
-		
 		// 시설의 첨부 파일 목록 조회 (JSON 형식)
 		@GetMapping(value="/attachList.do", produces="application/json")
 		public ResponseEntity<Map<String, Object>> attachList(@RequestParam int facilityNo){
@@ -111,10 +104,11 @@ public class FacilityController {
 		}
 		
 		// 첨부 파일 추가 처리 (JSON 형식으로 결과 반환)
-		@PostMapping(value="/addAttach.do", produces="application/json")
-		public ResponseEntity<Map<String, Object>> addAttach(MultipartHttpServletRequest multipartRequest) throws Exception {
-			return facilityService.addAttach(multipartRequest);
-		}
+	  @PostMapping(value="/addAttach.do", produces="application/json")
+	  public ResponseEntity<Map<String, Object>> addAttach(MultipartHttpServletRequest multipartRequest) throws Exception {
+	    System.out.println(multipartRequest + "안녕");
+	  	return facilityService.addAttach(multipartRequest);
+	  }
 		
 		// 시설 삭제 처리
 		@PostMapping("/removeFacility.do")
