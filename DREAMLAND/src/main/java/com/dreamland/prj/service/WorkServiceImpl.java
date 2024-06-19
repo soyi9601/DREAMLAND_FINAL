@@ -79,12 +79,13 @@ public class WorkServiceImpl implements WorkService {
   // 지각
   @Override
   public void checkLate() {
-    List<Integer> nonAdminEmpNos = workMapper.getNonAdminEmpNo();
-    for(Integer empNo : nonAdminEmpNos) {
-      String halfDayType = workMapper.getHalfDayType(today, empNo);
+    List<Integer> nonAdminEmpNos = workMapper.getNonAdminEmpNo();  // 전사원 번호 가져오기 (관리자 제외)
+    for(Integer empNo : nonAdminEmpNos) { // 사원번호 기준 지각체크                    
+      String halfDayType = workMapper.getHalfDayType(today, empNo);  // 반차 종류 조회 (오전/오후)
       String lateCheckTime = "";
       
-      if ("morning".equals(halfDayType)) {
+      // 반차 종류에 따라 지각 체크 시간 설정
+      if ("morning".equals(halfDayType)) {           
         // 오전 반차인 경우 출근 시간 14:00
         lateCheckTime = "14:00:00";
       } else if ("afternoon".equals(halfDayType)) {
@@ -102,7 +103,7 @@ public class WorkServiceImpl implements WorkService {
   public void checkDayoff() {
       List<Integer> dayoffEmpList = workMapper.getDayoffEmpList(today); // 오늘 날짜 연차 사원 리스트 조회
       for (Integer empNo : dayoffEmpList) {
-        Integer dayoffType = workMapper.getDayoffType(today, empNo);    // 연차 유형 조회
+        Integer dayoffType = workMapper.getDayoffType(today, empNo);    // 연차 종류 조회
         if (dayoffType != null && dayoffType == 30) { // 30 : 연차
           WorkDto workRecord = workMapper.getWorkByDate(today, empNo);  // 오늘 날짜 근무기록 조회
             workMapper.updateDayoffStatus(today, dayoffType, empNo);    // 연차 상태 업데이트

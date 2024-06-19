@@ -183,7 +183,7 @@ public class FacilityServiceImpl implements FacilityService {
 			}
 			//Other
 			else {
-				originalFilename = new String(originalFilename.getBytes("UTF-8"), "ISO-8858-1");
+				originalFilename = new String(originalFilename.getBytes("UTF-8"), "ISO-8859-1");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -222,7 +222,9 @@ public class FacilityServiceImpl implements FacilityService {
 	
 	@Override
 	public ResponseEntity<Map<String, Object>> getAttachList(int facilityNo) {
+		System.out.println(facilityMapper.getAttachList(facilityNo) + "안녕");	
 		return ResponseEntity.ok(Map.of("attachList", facilityMapper.getAttachList(facilityNo)));
+		
 	}
 	
 	@Override
@@ -240,7 +242,7 @@ public class FacilityServiceImpl implements FacilityService {
 				if (!dir.exists()) {
 						dir.mkdirs();
 				}
-				
+				 System.out.println(dir + "안녕");
 				// 파일의 원본 파일명과 시스템 파일명을 설정하고 파일을 업로드
 				String originalFilename = multipartFile.getOriginalFilename();
 				String filesystemName = myFileUtils.getFilesystemName(originalFilename);
