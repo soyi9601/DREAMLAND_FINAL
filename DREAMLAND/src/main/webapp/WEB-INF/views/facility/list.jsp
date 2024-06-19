@@ -51,7 +51,7 @@
             				<i class="fab fa-angular fa-lg text-danger me-3"></i>
             					${beginNo - vs.index}
             		  </td>
-            		  <c:if test="${loginEmployee.role eq 'ROLE_MANAGER'}">
+            		  <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
             		  	<td><input type="checkbox" name="facilityChk" value="${facility.facilityNo}" data-idx="${beginNo - vs.index}"/></td>
             		  </c:if>
             		  <td data-facility-no="${facility.facilityNo}" class="facilityName">${facility.facilityName}</td>
@@ -75,7 +75,7 @@
 
       <div class="sd-btns-area">
         <div>
-          <c:if test="${loginEmployee.role eq 'ROLE_MANAGER'}">
+          <c:if test="${loginEmployee.role eq 'ROLE_ADMIN'}">
             <button id="list-edit-btn" class="btn-reset sd-btn sd-gray-bg">편집</button>
             <button id="list-del-btn" class="btn-reset sd-btn sd-danger-bg">삭제</button>
           </c:if>
